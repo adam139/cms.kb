@@ -1,0 +1,83 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    xmlns:grok="http://namespaces.zope.org/grok"
+    xmlns:plone="http://namespaces.plone.org/plone"
+    i18n_domain="cms.db">
+
+  <!-- Register static resource directory -->
+	<browser:resourceDirectory
+  		name="cms.db"
+  		directory="static" />
+
+    <browser:page
+        name="cms-db-macros"
+        for="*"
+        permission="zope2.View"
+        class=".macros.Macros"/>
+    
+    <!-- Control panel form -->
+    <browser:page 
+        name="sys-settings"
+        for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+        class=".controlpanel.SettingsControlPanel"
+        permission="cms.db.set_log"
+        />    
+    <browser:page
+        name="yaoxing_listings"
+        template="templates/yaoxing_listings.pt"
+        for="cms.db.contents.ormfolder.Iormfolder"
+        permission="cms.db.view_db"
+        class=".ajax_listing.YaoXingsView"/>          
+   
+    <browser:page
+        name="yaowei_listings"
+        permission="cms.db.view_db"    
+        for="cms.db.contents.ormfolder.Iormfolder"        
+        template="templates/yaowei_listings.pt"
+        class=".ajax_listing.YaoWeiesView"/>
+    <browser:page
+        name="jingluo_listings"
+        permission="cms.db.view_db"    
+        for="cms.db.contents.ormfolder.Iormfolder"        
+        template="templates/jingluo_listings.pt"
+        class=".ajax_listing.JingLuoesView"/>
+    <browser:page
+        name="yao_listings"
+        permission="cms.db.view_db"    
+        for="cms.db.contents.ormfolder.Iormfolder"        
+        template="templates/yao_listings.pt"
+        class=".ajax_listing.YaoesView"/>
+    <browser:page
+        name="chufang_listings"
+        permission="cms.db.view_db"    
+        for="cms.db.contents.ormfolder.Iormfolder"        
+        template="templates/chufang_listings.pt"
+        class=".ajax_listing.ChuFangsView"/>
+    <browser:page
+        name="bingren_listings"
+        permission="cms.db.view_db"    
+        for="cms.db.contents.ormfolder.Iormfolder"        
+        template="templates/bingren_listings.pt"
+        class=".ajax_listing.BingRensView"/>
+    <browser:page
+        name="dizhi_listings"
+        permission="cms.db.view_db"    
+        for="cms.db.contents.ormfolder.Iormfolder"        
+        template="templates/dizhi_listings.pt"
+        class=".ajax_listing.DiZhiesView"/>
+    <browser:page
+        name="danwei_listings"
+        permission="cms.db.view_db"    
+        for="cms.db.contents.ormfolder.Iormfolder"        
+        template="templates/danwei_listings.pt"
+        class=".ajax_listing.DanWeiesView"/>
+    <browser:page
+        name="yisheng_listings"
+        permission="cms.db.view_db"    
+        for="cms.db.contents.ormfolder.Iormfolder"        
+        template="templates/yisheng_listings.pt"
+        class=".ajax_listing.YiShengsView"/>
+                                     
+               
+</configure>

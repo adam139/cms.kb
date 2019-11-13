@@ -1,0 +1,248 @@
+<metal:block define-macro="styles">
+       <link rel="stylesheet" type="text/css"
+            tal:define="navroot context/@@plone_portal_state/navigation_root_url"
+            tal:attributes="href string:${navroot}/++resource++cms.db/style.css"
+            />
+</metal:block>
+<metal:block define-macro="log_navbar" i18n:domain="cms.db">
+ <nav class="navbar navbar-default" role="navigation">
+  <div class="container-fluid" tal:define="is_editable context/@@plone_context_state/is_editable;
+               kb python:context">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#log-navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#" tal:content="kb/title" tal:attributes="href kb/absolute_url">Brand</a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="log-navbar-collapse">
+      <ul class="nav navbar-nav">                
+        <li class="dropdown active">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">系统日志<span class="caret"></span></a>          
+          <ul class="dropdown-menu" role="menu">
+          	<li>
+          		<a tal:attributes="href string:${kb/absolute_url}/@@admin_logs">
+                     审计日志
+                </a>
+             </li>
+          </ul>
+        </li>      
+      </ul>      
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav> 
+</metal:block>
+<metal:block define-macro="navbar" i18n:domain="cms.db">
+ <nav class="navbar navbar-default" role="navigation">
+  <div class="container-fluid" tal:define="is_editable context/@@plone_context_state/is_editable;
+               kb python:context">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse-kb-orm">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#" tal:content="kb/title" tal:attributes="href kb/absolute_url">Brand</a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="navbar-collapse-kb-orm">
+      <ul class="nav navbar-nav">
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">电磁兼容型号参数库<span class="caret"></span></a>          
+          <ul class="dropdown-menu" role="menu">
+            <li>
+                 <a tal:attributes="href string:${kb/absolute_url}/@@fashej_listings">
+                     发射机
+                  </a>
+                  </li>
+                  <li>
+                 <a tal:attributes="href string:${kb/absolute_url}/@@fashetx_listings">
+                     发射天线
+                  </a>
+                  </li>
+                  <li>
+                 <a tal:attributes="href string:${kb/absolute_url}/@@jieshouj_listings">
+                     接收机
+                  </a>
+                  </li>
+                  <li>
+                 <a tal:attributes="href string:${kb/absolute_url}/@@jieshoutx_listings">
+                     接收天线
+                  </a>
+                  </li>
+          </ul>
+        </li>
+		<li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">电磁兼容环境数据库<span class="caret"></span></a>          
+          <ul class="dropdown-menu" role="menu">
+          	<li>
+                 <a tal:attributes="href string:${kb/absolute_url}/@@bachang_listings">
+                     靶场信息
+                  </a>
+                  </li>
+                  <li>
+                 <a tal:attributes="href string:${kb/absolute_url}/@@bachangzhdw_listings">
+                     靶场遮挡物信息
+                  </a>
+                  </li>
+                  <li>
+                 <a tal:attributes="href string:${kb/absolute_url}/@@bachangfshj_listings">
+                     靶场发射机信息
+                  </a>
+                  </li>
+          </ul>
+        </li>        
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">电磁兼容测试数据库<span class="caret"></span></a>          
+          <ul class="dropdown-menu" role="menu">
+          	<li>
+                 <a tal:attributes="href string:${kb/absolute_url}/@@ceshishysh_listings">
+                     测试实验室
+                  </a>
+                  </li>
+                  <li>
+                 <a tal:attributes="href string:${kb/absolute_url}/@@ceshiry_listings">
+                     测试人员
+                  </a>
+                  </li>
+                  <li>
+                 <a tal:attributes="href string:${kb/absolute_url}/@@ceshiff_listings">
+                     测试方法
+                  </a>
+                  </li>
+                  <li>
+                 <a tal:attributes="href string:${kb/absolute_url}/@@ceshibg_listings">
+                     测试报告
+                  </a>
+                  </li>
+                  <li>
+                 <a tal:attributes="href string:${kb/absolute_url}/@@ceshixm_listings">
+                     测试项目
+                  </a>
+                  </li>                  
+          </ul>
+        </li>      
+ <!--       <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">电磁兼容公用数据库<span class="caret"></span></a>          
+          <ul class="dropdown-menu" role="menu">
+          	<li>
+                 <a tal:attributes="href string:${kb/absolute_url}/@@fashej_listings">
+                     典型天线增益子库
+                  </a>
+                  </li>
+                  <li>
+                 <a tal:attributes="href string:${kb/absolute_url}/@@fashetx_listings">
+                     天线子库
+                  </a>
+                  </li>
+                  <li>
+                 <a tal:attributes="href string:${kb/absolute_url}/@@jieshouj_listings">
+                     接收机子库
+                  </a>
+                  </li>
+                  <li>
+                 <a tal:attributes="href string:${kb/absolute_url}/@@jieshoutx_listings">
+                     发射机子库
+                  </a>
+                  </li>
+          </ul>
+        </li>      -->      
+      </ul>      
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav> 
+</metal:block>          
+<metal:block define-macro="navbar2" i18n:domain="cms.db">
+<div class="row-fluid">
+<div class="navbar col-xs-12"
+   tal:define="is_editable context/@@plone_context_state/is_editable;
+               kb python:context">
+   <div class="navbar-inner"> 
+      <div class="container"> 
+        <a class="btn btn-navbar" data-toggle="collapse" data-target="#kb-nav">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        </a>
+        <a class="brand" 
+            tal:content="kb/title" tal:attributes="href kb/absolute_url">
+        </a>
+        <div class="nav-collapse" id="kb-nav">
+         <ul class="nav navbar-nav" style="font-size:13px">           
+            <tal:cond condition="is_editable">
+            <li class="divider-vertical"></li>
+            <li class="dropdown"><a href="#"
+                  class="dropdown-toggle"
+                  data-toggle="dropdown">
+                  <b>电磁兼容型号参数库</b>
+                  <b class="caret"></b>
+               </a>
+               <ul class="dropdown-menu">
+                  <li>
+                 <a tal:attributes="href string:${kb/absolute_url}/@@fashej_listings">
+                     发射机
+                  </a>
+                  </li>
+                  <li>
+                 <a tal:attributes="href string:${kb/absolute_url}/@@fashetx_listings">
+                     发射天线
+                  </a>
+                  </li>
+                  <li>
+                 <a tal:attributes="href string:${kb/absolute_url}/@@jieshouj_listings">
+                     接收机
+                  </a>
+                  </li>
+                  <li>
+                 <a tal:attributes="href string:${kb/absolute_url}/@@jieshoutx_listings">
+                     接收天线
+                  </a>
+                  </li>
+               </ul>
+               </li>
+            <li class="divider-vertical"></li>
+            <li class="dropdown"><a href="#"
+                  class="dropdown-toggle"
+                  data-toggle="dropdown">
+                  <b>电磁兼容公用数据库</b>
+                  <b class="caret"></b>
+               </a>
+               <ul class="dropdown-menu">
+                  <li>
+                 <a tal:attributes="href string:${kb/absolute_url}/@@fashej_listings">
+                     典型天线增益子库
+                  </a>
+                  </li>
+                  <li>
+                 <a tal:attributes="href string:${kb/absolute_url}/@@fashetx_listings">
+                     天线子库
+                  </a>
+                  </li>
+                  <li>
+                 <a tal:attributes="href string:${kb/absolute_url}/@@jieshouj_listings">
+                     接收机子库
+                  </a>
+                  </li>
+                  <li>
+                 <a tal:attributes="href string:${kb/absolute_url}/@@jieshoutx_listings">
+                     发射机子库
+                  </a>
+                  </li>
+               </ul>
+               </li>               
+            </tal:cond>
+         </ul>    
+         </div>
+      </div> 
+   </div> 
+</div>
+</div>
+</metal:block>
