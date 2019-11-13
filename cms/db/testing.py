@@ -1,8 +1,3 @@
-import os
-import tempfile
-
-import sqlalchemy
-
 from plone.app.testing import PloneSandboxLayer
 from plone.app.testing import applyProfile
 from plone.app.testing import PLONE_FIXTURE
@@ -21,7 +16,9 @@ class Base(PloneSandboxLayer):
     def setUpZope(self, app, configurationContext):
         # Load ZCML
         import cms.db
+        import cms.policy
 
+        xmlconfig.file('configure.zcml', cms.policy, context=configurationContext)
         xmlconfig.file('configure.zcml', cms.db, context=configurationContext)      
 
     
@@ -31,6 +28,7 @@ class Base(PloneSandboxLayer):
 #        os.unlink(self.dbFileName)
         
     def setUpPloneSite(self, portal):
+        applyProfile(portal, 'cms.policy:default')
         applyProfile(portal, 'cms.db:default')
 
 

@@ -10,8 +10,8 @@ from datetime import datetime
 from zope import schema
 from zope.interface import Interface,implements
 
-from Chinese.medical.science import ORMBase as Base
-from Chinese.medical.science import _
+from cms.db import ORMBase as Base
+from cms.db import _
 
 
 ###药味
@@ -338,7 +338,7 @@ class IYiSheng(Interface):
         )
     xingbie = schema.Choice(
             title=_(u"xing bie"),
-            vocabulary='Chinese.medical.science.vocabulary.xiebie',
+            vocabulary='cms.db.vocabulary.xiebie',
             required=True,            
         )    
     shengri = schema.Date(
@@ -393,7 +393,7 @@ class IBingRen(Interface):
         )
     xingbie = schema.Choice(
             title=_(u"xing bie"),
-            vocabulary='Chinese.medical.science.vocabulary.xiebie',
+            vocabulary='cms.db.vocabulary.xiebie',
             required=True,            
         )    
     shengri = schema.Date(

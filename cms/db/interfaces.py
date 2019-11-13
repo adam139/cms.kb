@@ -5,7 +5,9 @@ from zope import schema
 from cms.db import _
 
  
-         
+class ISysSettings(Interface):
+    """ system settings
+    """         
 
 class InputError(Exception):
     """Exception raised if there is an error making a data input

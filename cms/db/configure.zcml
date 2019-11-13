@@ -3,19 +3,17 @@
     xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
     xmlns:five="http://namespaces.zope.org/five"
     xmlns:i18n="http://namespaces.zope.org/i18n"
-    i18n_domain="Chinese.medical.science">
+    i18n_domain="cms.db">
 
   <i18n:registerTranslations directory="locales" />
   
   <includeDependencies package="." />
   
-  <!--   
-  <include file="cms.policy.permissions.zcml" /> 
-     
-  <include package="emc.policy.browser" />
+  
+  <include package="cms.policy" /> 
 
   <include package=".browser" />
-  -->
+
  <utility
 	provides=".interfaces.IDbapi"
 	component=".ORMdbAPI.yaoxing"
@@ -31,12 +29,16 @@
 	component=".ORMdbAPI.jingluo"
 	name="jingluo"
 	/>
-			
+ <utility
+	provides=".interfaces.IDbapi"
+	component=".ORMdbAPI.dizhi"
+	name="dizhi"
+	/>			
   <genericsetup:registerProfile
       name="default"
-      title="Chinese.medical.science"
+      title="Chinese medical science system database"
       directory="profiles/default"
-      description='Profile for Chinese.medical.science'
+      description='Profile for cms.db'
       provides="Products.GenericSetup.interfaces.EXTENSION"
       />
 
