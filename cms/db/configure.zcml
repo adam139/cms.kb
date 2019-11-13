@@ -1,19 +1,43 @@
 <configure
     xmlns="http://namespaces.zope.org/zope"
+    xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
     xmlns:five="http://namespaces.zope.org/five"
     xmlns:i18n="http://namespaces.zope.org/i18n"
-    xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
-    i18n_domain="cms.db">
+    i18n_domain="Chinese.medical.science">
 
-  <five:registerPackage package="." initialize=".initialize" />
+  <i18n:registerTranslations directory="locales" />
+  
+  <includeDependencies package="." />
+  
+  <!--   
+  <include file="cms.policy.permissions.zcml" /> 
+     
+  <include package="emc.policy.browser" />
 
+  <include package=".browser" />
+  -->
+ <utility
+	provides=".interfaces.IDbapi"
+	component=".ORMdbAPI.yaoxing"
+	name="yaoxing"
+	/>
+ <utility
+	provides=".interfaces.IDbapi"
+	component=".ORMdbAPI.yaowei"
+	name="yaowei"
+	/>
+ <utility
+	provides=".interfaces.IDbapi"
+	component=".ORMdbAPI.jingluo"
+	name="jingluo"
+	/>
+			
   <genericsetup:registerProfile
       name="default"
-      title="cms.db"
+      title="Chinese.medical.science"
       directory="profiles/default"
-      description="Installs the cms.db package"
+      description='Profile for Chinese.medical.science'
       provides="Products.GenericSetup.interfaces.EXTENSION"
       />
-  <!-- -*- extra stuff goes here -*- -->
-  
+
 </configure>

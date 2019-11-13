@@ -1,0 +1,121 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: my315ok.socialorgnization\n"
+"POT-Creation-Date: 2019-11-12 07:49+0000\n"
+"PO-Revision-Date: 2019-11-12 15:55+0800\n"
+"Last-Translator: Adam <yuejun.tang@gmail.com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"Language-Code: zh_CN\n"
+"Language-Name: English\n"
+"Preferred-Encodings: utf-8 latin1\n"
+"Domain: my315ok.socialorgnization\n"
+"Language: zh\n"
+"X-Generator: Poedit 1.8.7.1\n"
+
+#: configure.zcml:16
+msgid "Chinese.medical.science"
+msgstr "中医AI系统"
+
+#: profiles/default/controlpanel.xml
+msgid "Log settings"
+msgstr ""
+
+#: configure.zcml:16
+msgid "Profile for Chinese.medical.science"
+msgstr ""
+
+#: orm.py:411
+msgid "chu fang"
+msgstr "处方"
+
+#: orm.py:351
+msgid "dan wei"
+msgstr "单位"
+
+#: orm.py:303
+msgid "di zhi"
+msgstr "地址"
+
+#: orm.py:348
+msgid "dian hua"
+msgstr "电话"
+
+#: orm.py:333
+msgid "foreagn key link to danwei"
+msgstr ""
+
+#: orm.py:115
+msgid "foreagn key link to wei"
+msgstr ""
+
+#: orm.py:118
+msgid "foreagn key link to yao xing"
+msgstr ""
+
+#: orm.py:168
+msgid "foreagn key link to yisheng"
+msgstr ""
+
+#: orm.py:127
+msgid "gui jing"
+msgstr "归经"
+
+#: orm.py:252
+msgid "guo jia"
+msgstr "国家"
+
+#: orm.py:177
+msgid "ji liang"
+msgstr "剂量"
+
+#: orm.py:265
+msgid "jie dao"
+msgstr "街道"
+
+#: orm.py:76
+msgid "ming cheng"
+msgstr "名称"
+
+#: vocabulary.py:14
+msgid "nan"
+msgstr "男"
+
+#: vocabulary.py:14
+msgid "nv"
+msgstr "女"
+
+#: orm.py:257
+msgid "sheng(state)"
+msgstr "省"
+
+#: orm.py:261
+msgid "shi (city)"
+msgstr "市"
+
+#: orm.py:23
+msgid "table primary key"
+msgstr ""
+
+#: orm.py:26
+msgid "wu wei qizhong zhi yiwei"
+msgstr "五味其中之一味"
+
+#: orm.py:340
+msgid "xing bie"
+msgstr "性别"
+
+#: orm.py:336
+msgid "xing ming"
+msgstr "姓名"
+
+#: orm.py:51
+msgid "yao xing"
+msgstr "药性"
+
+#: orm.py:124
+msgid "zhu zhi"
+msgstr "主治"

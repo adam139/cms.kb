@@ -25,7 +25,8 @@ setup(name='cms.db',
       zip_safe=False,
       install_requires=[
           'setuptools',
-          # -*- Extra requirements: -*-
+          'MySQL-python',
+          'SQLAlchemy', 
       ],
       extras_require={
     'test': ['plone.app.testing',]
