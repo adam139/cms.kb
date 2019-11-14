@@ -16,8 +16,10 @@ class Base(PloneSandboxLayer):
     def setUpZope(self, app, configurationContext):
         # Load ZCML
         import cms.db
+        import cms.theme
         import cms.policy
 
+        xmlconfig.file('configure.zcml', cms.theme, context=configurationContext)
         xmlconfig.file('configure.zcml', cms.policy, context=configurationContext)
         xmlconfig.file('configure.zcml', cms.db, context=configurationContext)      
 
@@ -29,6 +31,7 @@ class Base(PloneSandboxLayer):
         
     def setUpPloneSite(self, portal):
         applyProfile(portal, 'cms.policy:default')
+        applyProfile(portal, 'cms.theme:default')
         applyProfile(portal, 'cms.db:default')
 
 

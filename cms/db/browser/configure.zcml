@@ -15,7 +15,21 @@
         for="*"
         permission="zope2.View"
         class=".macros.Macros"/>
-    
+    <browser:page
+        name="yaoxing_ajaxsearch"
+        for="*"
+        permission="zope2.View"
+        class=".ajax_listing.YaoXingAjaxsearch"/> 
+     <browser:page
+        name="yaowei_ajaxsearch"
+        for="*"
+        permission="zope2.View"
+        class=".ajax_listing.YaoWeiAjaxsearch"/> 
+     <browser:page
+        name="jingluo_ajaxsearch"
+        for="*"
+        permission="zope2.View"
+        class=".ajax_listing.JingLuoAjaxsearch"/>     
     <!-- Control panel form -->
     <browser:page 
         name="sys-settings"

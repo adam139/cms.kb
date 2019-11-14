@@ -99,7 +99,7 @@ class Dbapi(object):
         exec import_str        
         start = int(kwargs['start']) 
         size = int(kwargs['size'])
-        max = size + start + 1 
+        max = size + start + 1
         keyword = kwargs['SearchableText']        
         direction = kwargs['sort_order'].strip()        
 
@@ -112,8 +112,9 @@ class Dbapi(object):
                     (SELECT * FROM %s ORDER BY id DESC) a  
                     WHERE rownum < :max) WHERE rn > :start""" % self.table
                     else:                            
+                        max = max - 1                        
                         sqltext = """SELECT * FROM %s 
-                         ORDER BY id DESC limit :start,:size""" % self.table                    
+                         ORDER BY id DESC limit :start,:max""" % self.table                    
                     selectcon = text(sqltext)
                 else:
                     if linkstr.startswith("oracle"):
@@ -122,8 +123,9 @@ class Dbapi(object):
                     (SELECT * FROM %s ORDER BY id ASC) a  
                     WHERE rownum < :max) WHERE rn > :start""" % self.table
                     else:                  
+                        max = max - 1                        
                         sqltext = """SELECT * FROM %s 
-                         ORDER BY id ASC limit :start,:size""" % self.table                                        
+                         ORDER BY id ASC limit :start,:max""" % self.table                                        
                     selectcon = text(sqltext)                    
                 clmns = self.get_columns()
                 recorders = session.query(tablecls).with_entities(*clmns).\
@@ -138,9 +140,10 @@ class Dbapi(object):
                      WHERE rownum < :max) WHERE rn > :start
                     """ % dict(tbl=self.table,ktxt=keysrchtxt)
                     else:
+                        max = max - 1
                         sqltext = """SELECT * FROM %(tbl)s
                         WHERE %(ktxt)s 
-                        ORDER BY id DESC limit :start,:size
+                        ORDER BY id DESC limit :start,:max
                          """ % dict(tbl=self.table,ktxt=keysrchtxt)                        
                     selectcon = text(sqltxt)
                 else:
@@ -151,9 +154,10 @@ class Dbapi(object):
                      WHERE rownum < :max) WHERE rn > :start
                     """ % dict(tbl=self.table,ktxt=keysrchtxt)
                     else:
+                        max = max - 1
                         sqltext = """SELECT * FROM %(tbl)s
                         WHERE %(ktxt)s 
-                        ORDER BY id ASC limit :start,:size
+                        ORDER BY id ASC limit :start,:max
                          """ % dict(tbl=self.table,ktxt=keysrchtxt)                                                                 
                     selectcon = text(sqltxt)
                 clmns = self.get_columns()

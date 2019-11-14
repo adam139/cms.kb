@@ -14,9 +14,9 @@
   </head>
 <body>
 	<div metal:fill-slot="main">
-		<metal:block   use-macro="context/@@emc-kb-macros/macros/log_navbar"/>
+		<metal:block   use-macro="context/@@cms-db-macros/macros/navbar"/>
 		<div id="ajaxsearch" style="display: none" 
-			tal:attributes="data-ajax-target python:context.absolute_url() + '/@@admin_logs_ajaxsearch';
+			tal:attributes="data-ajax-target python:context.absolute_url() + '/@@yaowei_ajaxsearch';
 			data-ajax-export python:context.absolute_url() + '/@@export_csv'"></div>
 		<div class="container-fluid">
 			<div class="row ajaxsearch">
@@ -36,7 +36,7 @@
 			</div>
 			<div class="row">
 				<div class="col-sm-9 col-xs-9">
-                <h1 class="documentFirstHeading">药性</h1>
+                <h1 class="documentFirstHeading">药味</h1>
                 </div>
                 <div id="export" class="col-sm-3 col-xs-3">
 					<button value="导出" class="btn btn-default " type="submit">
@@ -75,14 +75,11 @@
             <table class="row table table-striped table-bordered table-condensed listing">
             	<thead>
             		<tr data-toggle="tooltip" title="点击排序">
-            			<th class="col-md-1 text-center">主体</th>
-            			<th class="col-md-1 text-left">客体</th>
-            			<th class="col-md-2 text-left">时间</th>
-            			<th class="col-md-2 text-center">ip</th>
-            			<th class="col-md-1 text-left">类型</th>
-            			<th class="col-md-1 text-left">等级</th>
-            			<th class="col-md-3 text-left">描述</th>
-            			<th class="col-md-1 text-left">结果</th>
+            			<th class="col-md-1 text-center">序号</th>
+            			<th class="col-md-2 text-left">药味</th>
+            			<th class="col-md-7 text-left">说明</th>           			            			            			
+            			<th class="col-md-1 text-center">编辑</th>
+            			<th class="col-md-1 text-center">删除</th>
             		</tr>
             	</thead>
             	<tbody id="searchResultDiv">

@@ -1,7 +1,7 @@
-from plone.testing.z2 import Browser
-
+#-*- coding: UTF-8 -*-
 import unittest
 import transaction
+from plone.testing.z2 import Browser
 from zope import event
 
 from cms.db.testing import FUNCTIONAL_TESTING
@@ -11,11 +11,30 @@ from plone.app.testing import setRoles,login,logout
 from cms.db.contents.folder import Ifolder
 from cms.db.contents.ormfolder import Iormfolder
 
+from cms.db import  Session
+from cms.db.orm import YaoWei,YaoXing,JingLuo
+
 
 class TestView(unittest.TestCase):
     
     layer = FUNCTIONAL_TESTING
     def setUp(self):
+
+        yaowei1 = YaoWei("酸")
+        yaowei2 = YaoWei("苦")
+        yaowei3 = YaoWei("甘")
+        yaowei4 = YaoWei("辛")
+        yaowei5 = YaoWei("咸")
+        Session.add_all([yaowei1,yaowei2,yaowei3,yaowei4,yaowei5])
+        yaoxing1 = YaoXing("大热")
+        yaoxing2 = YaoXing("热")
+        yaoxing3 = YaoXing("温")
+        yaoxing4 = YaoXing("凉")
+        yaoxing5 = YaoXing("寒")
+        yaoxing6 = YaoXing("大寒")
+        Session.add_all([yaoxing1,yaoxing2,yaoxing3,yaoxing4,yaoxing5,yaoxing6])
+        
+        Session.commit()        
         portal = self.layer['portal']
 
         setRoles(portal, TEST_USER_ID, ('Manager',))
@@ -25,6 +44,14 @@ class TestView(unittest.TestCase):
         portal['folder'].invokeFactory('cms.db.ormfolder', 'ormfolder')       
         self.portal = portal
 
+    def tearDown(self):
+        
+        items = Session.query(YaoWei).all()
+        items.extend(Session.query(YaoXing).all())        
+        for item in items:
+            Session.delete(item)            
+        Session.commit()
+                
         
     def testfolderView(self):
 
@@ -34,9 +61,8 @@ class TestView(unittest.TestCase):
         browser = Browser(app)
         browser.handleErrors = False             
         browser.addHeader('Authorization', 'Basic %s:%s' % (TEST_USER_NAME, TEST_USER_PASSWORD,))
-#         import pdb
-#         pdb.set_trace()
-#         transaction.commit()
+
+        transaction.commit()
 
         browser.open(portal['folder'].absolute_url())
         
@@ -58,23 +84,12 @@ class TestView(unittest.TestCase):
         self.assertTrue('class="pat-structure"' in browser.contents)
     
     def testYaoXingView(self):
-        app = self.layer['app']
-        portal = self.layer['portal']
+        # add data to yaoxing table
 
-        browser = Browser(app)
-        browser.handleErrors = False             
-        browser.addHeader('Authorization', 'Basic %s:%s' % (TEST_USER_NAME, TEST_USER_PASSWORD,))
-#         browser.addHeader('Authorization', 'Basic %s:%s' % ('user3', 'secret',))
-
-#         transaction.commit()
-        base = portal['folder']['ormfolder'].absolute_url()
-        import pdb
-        pdb.set_trace()
-        browser.open(base + "/@@yaoxing_listings")
+        suan = Session.query(YaoXing).filter(YaoXing.xing=="温").all()
+        self.assertEqual(len(suan),1)
         
-        self.assertTrue("row table table-striped table-bordered table-condensed listing" in browser.contents)
         
-    def testAdminlogView(self):
         app = self.layer['app']
         portal = self.layer['portal']
 
@@ -84,11 +99,28 @@ class TestView(unittest.TestCase):
 #         browser.addHeader('Authorization', 'Basic %s:%s' % ('user3', 'secret',))
 
         transaction.commit()
-        base = portal.absolute_url()
-        browser.open(base + "/@@admin_logs")
+        base = portal['folder']['ormfolder'].absolute_url()
+
+        browser.open(base + "/@@yaoxing_listings")
         
-        self.assertTrue("row table table-striped table-bordered table-condensed listing" in browser.contents)
- 
+        self.assertTrue(u"温" in browser.contents)
+        
+    def testYaoWeiView(self):
+        app = self.layer['app']
+        portal = self.layer['portal']
+
+        browser = Browser(app)
+        browser.handleErrors = False             
+        browser.addHeader('Authorization', 'Basic %s:%s' % (TEST_USER_NAME, TEST_USER_PASSWORD,))
+
+        transaction.commit()
+        base = portal['folder']['ormfolder'].absolute_url()
+        browser.open(base + "/@@yaowei_listings")
+        import pdb
+        pdb.set_trace()
+        self.assertTrue(u"甘" in browser.contents)
+        suan = Session.query(YaoWei).filter(YaoWei.wei=="甘").all()
+        self.assertEqual(len(suan),1)
 
     def testFashejView(self):
         app = self.layer['app']
@@ -97,7 +129,6 @@ class TestView(unittest.TestCase):
         browser = Browser(app)
         browser.handleErrors = False             
         browser.addHeader('Authorization', 'Basic %s:%s' % (TEST_USER_NAME, TEST_USER_PASSWORD,))
-#         browser.addHeader('Authorization', 'Basic %s:%s' % ('user3', 'secret',))
 
         transaction.commit()
         base = portal['folder']['ormfolder'].absolute_url()

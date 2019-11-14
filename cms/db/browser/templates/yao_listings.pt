@@ -14,7 +14,7 @@
   </head>
 <body>
 	<div metal:fill-slot="main">
-		<metal:block   use-macro="context/@@emc-kb-macros/macros/navbar"/>
+		<metal:block   use-macro="context/@@cms-db-macros/macros/navbar"/>
 		<div id="ajaxsearch" style="display: none" 
 			tal:attributes="data-ajax-target python:context.absolute_url() + '/@@ceshibg_ajaxsearch'"></div>
 		<div class="container-fluid">

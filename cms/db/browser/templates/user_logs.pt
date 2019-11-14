@@ -15,7 +15,7 @@
 <body>
 	<div metal:fill-slot="main">
 		<!--
-		<metal:block   use-macro="context/@@emc-kb-macros/macros/log_navbar"/>
+		<metal:block   use-macro="context/@@cms-db-macros/macros/log_navbar"/>
 		-->
 		<div id="ajaxsearch" style="display: none" 
 			tal:attributes="data-ajax-target python:context.absolute_url() + '/@@user_logs_ajaxsearch';

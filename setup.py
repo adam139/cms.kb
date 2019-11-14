@@ -27,6 +27,7 @@ setup(name='cms.db',
           'setuptools',
           'MySQL-python',
           'SQLAlchemy', 
+          'plone.app.dexterity',
       ],
       extras_require={
     'test': ['plone.app.testing',]

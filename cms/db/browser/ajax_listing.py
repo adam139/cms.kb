@@ -102,6 +102,7 @@ class YaoXingsView(BaseView):
 
         locator = self.get_locator('yaoxing')
         recorders = locator.query(query)
+
         return recorders
 
 
@@ -231,13 +232,13 @@ class YiShengsView(BaseView):
      
 ###### output class
  # ajax multi-condition search relation db
-class YaoXingAjaxsearch(grok.View):
+class YaoXingAjaxsearch(BrowserView):
     """AJAX action for search DB.
     receive front end ajax transform parameters
     """
-    grok.context(Interface)
-    grok.name('dbAjaxsearch')
-    grok.require('zope2.View')
+#     grok.context(Interface)
+#     grok.name('yaoxing_ajaxsearch')
+#     grok.require('zope2.View')
 #     grok.require('emc.project.view_projectsummary')
     def Datecondition(self,key):
         "构造日期搜索条件"
@@ -270,6 +271,7 @@ class YaoXingAjaxsearch(grok.View):
         searchview = self.searchview()
  # datadic receive front ajax post data
         datadic = self.request.form
+
         start = int(datadic['start']) # batch search start position
         size = int(datadic['size'])      # batch search size
         sortcolumn = datadic['sortcolumn']
@@ -294,6 +296,7 @@ class YaoXingAjaxsearch(grok.View):
         totalquery['size'] = 0
         # search all   size = 0 return numbers of recorders
         totalnum = searchview.search_multicondition(totalquery)
+
         resultDicLists = searchview.search_multicondition(origquery)
         del origquery
         del totalquery
@@ -309,6 +312,7 @@ class YaoXingAjaxsearch(grok.View):
         outhtml = ""
         k = 0
         contexturl = self.context.absolute_url()
+
 #         inputable= self.canbeInput()
         for i in resultDicLists:
             out = """<tr class="text-left">
@@ -330,7 +334,7 @@ class YaoXingAjaxsearch(grok.View):
                                 </tr> """% dict(objurl="%s/@@view" % contexturl,
                                             num=str(k + 1),
                                             title=i[0],
-                                            description= i[1],
+                                            description= "",
                                             edit_url="%s/@@update_yaoxing/%s" % (contexturl,i[0]),
                                             delete_url="%s/@@delete_yaoxing/%s" % (contexturl,i[0]))
             outhtml = "%s%s" %(outhtml ,out)
@@ -345,7 +349,7 @@ class YaoWeiAjaxsearch(YaoXingAjaxsearch):
     receive front end ajax transform parameters
     """
 
-    grok.name('yaowei_Ajaxsearch')
+#     grok.name('yaowei_ajaxsearch')
 
     def searchview(self,viewname="yaowei_listings"):
         searchview = getMultiAdapter((self.context, self.request),name=viewname)
@@ -356,20 +360,14 @@ class YaoWeiAjaxsearch(YaoXingAjaxsearch):
         [(u'C7', u'\u4ed6\u7684\u624b\u673a')]"""
         outhtml = ""
         k = 0
-        contexturl = self.context.absolute_url()
+        contexturl = self.context.absolute_url()       
         if self.searchview().canbeInput:
             for i in resultDicLists:
+
                 out = """<tr class="text-left">
-                                <td class="col-md-1 text-center">%(sbdm)s</td>
-                                <td class="col-md-1 text-left"><a href="%(edit_url)s">%(sbmc)s</a></td>
-                                <td class="col-md-1">%(pcdm)s</td>
-                                <td class="col-md-1">%(location)s</td>
-                                <td class="col-md-1">%(freq)s</td>
-                                <td class="col-md-1">%(pd_upper)s</td>
-                                <td class="col-md-1">%(pd_lower)s</td>
-                                <td class="col-md-1">%(num)s</td>
-                                <td class="col-md-1">%(freq_upper)s</td>
-                                <td class="col-md-1">%(freq_lower)s</td>
+                                <td class="col-md-1 text-center">%(num)s</td>
+                                <td class="col-md-2 text-left"><a href="%(edit_url)s">%(title)s</a></td>
+                                <td class="col-md-7">%(description)s</td>
                                 <td class="col-md-1 text-center">
                                 <a href="%(edit_url)s" title="edit">
                                   <span class="glyphicon glyphicon-pencil" aria-hidden="true">
@@ -383,44 +381,25 @@ class YaoWeiAjaxsearch(YaoXingAjaxsearch):
                                 </a>
                                 </td>
                                 </tr> """% dict(objurl="%s/@@view" % contexturl,
-                                            sbdm=i[1],
-                                            sbmc= i[2],
-                                            pcdm= i[3],
-                                            location= i[4],
-                                            freq= i[5],
-                                            pd_upper= i[6],
-                                            pd_lower= i[7],
-                                            num= i[8],
-                                            freq_upper= i[9],
-                                            freq_lower= i[10],
-                                            edit_url="%s/@@update_fashej/%s" % (contexturl,i[0]),
-                                            delete_url="%s/@@delete_fashej/%s" % (contexturl,i[0]))
+                                            num=str(k + 1),
+                                            title=i[0],
+                                            description= "",
+                                            edit_url="%s/@@update_yaowei/%s" % (contexturl,i[0]),
+                                            delete_url="%s/@@delete_yaowei/%s" % (contexturl,i[0]))
                 outhtml = "%s%s" %(outhtml ,out)
                 k = k + 1
         else:
             for i in resultDicLists:
                 out = """<tr class="text-left">
-                                <td class="col-md-2 text-center">%(sbdm)s</td>
-                                <td class="col-md-2 text-left">%(sbmc)s</td>
-                                <td class="col-md-1">%(pcdm)s</td>
-                                <td class="col-md-1">%(location)s</td>
-                                <td class="col-md-1">%(freq)s</td>
-                                <td class="col-md-1">%(pd_upper)s</td>
-                                <td class="col-md-1">%(pd_lower)s</td>
-                                <td class="col-md-1">%(num)s</td>
-                                <td class="col-md-1">%(freq_upper)s</td>
-                                <td class="col-md-1">%(freq_lower)s</td>               
+                                <td class="col-md-1 text-center">%(num)s</td>
+                                <td class="col-md-3 text-left"><a href="%(edit_url)s">%(title)s</a></td>
+                                <td class="col-md-8">%(description)s</td>                                
                                 </tr> """% dict(objurl="%s/@@view" % contexturl,
-                                            sbdm=i[1],
-                                            sbmc= i[2],
-                                            pcdm= i[3],
-                                            location= i[4],
-                                            freq= i[5],
-                                            pd_upper= i[6],
-                                            pd_lower= i[7],
-                                            num= i[8],
-                                            freq_upper= i[9],
-                                            freq_lower= i[10])
+                                            num=str(k + 1),
+                                            title=i[0],
+                                            description= "",
+                                            edit_url="%s/@@update_yaowei/%s" % (contexturl,i[0]),
+                                            delete_url="%s/@@delete_yaowei/%s" % (contexturl,i[0]))
                 outhtml = "%s%s" %(outhtml ,out)
                 k = k + 1                
                 
@@ -433,7 +412,7 @@ class JingLuoAjaxsearch(YaoXingAjaxsearch):
     receive front end ajax transform parameters
     """
 
-    grok.name('jingluo_Ajaxsearch')
+#     grok.name('jingluo_ajaxsearch')
 
     def searchview(self,viewname="jingluo_listings"):
         searchview = getMultiAdapter((self.context, self.request),name=viewname)
@@ -447,17 +426,11 @@ class JingLuoAjaxsearch(YaoXingAjaxsearch):
         contexturl = self.context.absolute_url()
         if self.searchview().canbeInput:        
             for i in resultDicLists:
+                k = k + 1
                 out = """<tr class="text-left">
-                                <td class="col-md-1 text-center">%(sbdm)s</td>
-                                <td class="col-md-1 text-left"><a href="%(edit_url)s">%(sbmc)s</a></td>
-                                <td class="col-md-1">%(pcdm)s</td>
-                                <td class="col-md-1">%(location)s</td>
-                                <td class="col-md-1">%(fb_upper)s</td>
-                                <td class="col-md-1">%(fb_lower)s</td>
-                                <td class="col-md-1">%(freq)s</td>
-                                <td class="col-md-1">%(f_upper)s</td>
-                                <td class="col-md-1">%(f_lower)s</td>
-                                <td class="col-md-1">%(bw_receiver)s</td>
+                                <td class="col-md-1 text-center">%(number)s</td>
+                                <td class="col-md-3 text-left"><a href="%(edit_url)s">%(title)s</a></td>
+                                <td class="col-md-6">%(description)s</td>
                                 <td class="col-md-1 text-center">
                                 <a href="%(edit_url)s" title="edit">
                                   <span class="glyphicon glyphicon-pencil" aria-hidden="true">
@@ -471,16 +444,9 @@ class JingLuoAjaxsearch(YaoXingAjaxsearch):
                                 </a>
                                 </td>
                                 </tr> """% dict(objurl="%s/@@view" % contexturl,
-                                            sbdm=i[1],
-                                            sbmc= i[2],
-                                            pcdm= i[3],
-                                            location= i[4],
-                                            fb_upper= i[5],
-                                            fb_lower= i[6],
-                                            freq= i[7],
-                                            f_upper= i[8],
-                                            f_lower= i[9],
-                                            bw_receiver= i[10],
+                                            number=k,
+                                            title= i[1],
+                                            description= '',
                                             edit_url="%s/@@update_jieshouj/%s" % (contexturl,i[0]),
                                             delete_url="%s/@@delete_jieshouj/%s" % (contexturl,i[0]))
                 outhtml = "%s%s" %(outhtml ,out)
@@ -488,27 +454,14 @@ class JingLuoAjaxsearch(YaoXingAjaxsearch):
         else:
             for i in resultDicLists:
                 out = """<tr class="text-left">
-                                <td class="col-md-2 text-center">%(sbdm)s</td>
-                                <td class="col-md-2 text-left">%(sbmc)s</td>
-                                <td class="col-md-1">%(pcdm)s</td>
-                                <td class="col-md-1">%(location)s</td>
-                                <td class="col-md-1">%(fb_upper)s</td>
-                                <td class="col-md-1">%(fb_lower)s</td>
-                                <td class="col-md-1">%(freq)s</td>
-                                <td class="col-md-1">%(f_upper)s</td>
-                                <td class="col-md-1">%(f_lower)s</td>
-                                <td class="col-md-1">%(bw_receiver)s</td>
+                                <td class="col-md-1 text-center">%(number)s</td>
+                                <td class="col-md-4 text-left">%(title)s</td>
+                                <td class="col-md-7">%(description)s</td>                                
                                 </tr> """% dict(objurl="%s/@@view" % contexturl,
-                                            sbdm=i[1],
-                                            sbmc= i[2],
-                                            pcdm= i[3],
-                                            location= i[4],
-                                            fb_upper= i[5],
-                                            fb_lower= i[6],
-                                            freq= i[7],
-                                            f_upper= i[8],
-                                            f_lower= i[9],
-                                            bw_receiver= i[10])
+                                            number=k,
+                                            title= i[1],
+                                            description= '')
+
                 outhtml = "%s%s" %(outhtml ,out)
                 k = k + 1            
         data = {'searchresult': outhtml,'start':start,'size':size,'total':totalnum}
@@ -519,7 +472,7 @@ class YaoAjaxsearch(YaoXingAjaxsearch):
     receive front end ajax transform parameters
     """
 
-    grok.name('yao_Ajaxsearch')
+    grok.name('yao_ajaxsearch')
 
     def searchview(self,viewname="yao_listings"):
         searchview = getMultiAdapter((self.context, self.request),name=viewname)
@@ -601,7 +554,7 @@ class ChuFangAjaxsearch(YaoXingAjaxsearch):
     """AJAX action for search DB.
     receive front end ajax transform parameters
     """
-    grok.name('chufang_Ajaxsearch')
+    grok.name('chufang_ajaxsearch')
 
     def searchview(self,viewname="chufang_listings"):
         searchview = getMultiAdapter((self.context, self.request),name=viewname)
@@ -684,7 +637,7 @@ class BingRenAjaxsearch(YaoXingAjaxsearch):
     receive front end ajax transform parameters
     """
 
-    grok.name('bingren_Ajaxsearch')
+    grok.name('bingren_ajaxsearch')
 
     def searchview(self,viewname="bingren_listings"):
         searchview = getMultiAdapter((self.context, self.request),name=viewname)
@@ -766,7 +719,7 @@ class DiZhiAjaxsearch(YaoXingAjaxsearch):
     """AJAX action for search DB.
     receive front end ajax transform parameters
     """
-    grok.name('dizhi_Ajaxsearch')
+    grok.name('dizhi_ajaxsearch')
 
     def searchview(self,viewname="dizhi_listings"):
         searchview = getMultiAdapter((self.context, self.request),name=viewname)
@@ -848,7 +801,7 @@ class DanWeiAjaxsearch(YaoXingAjaxsearch):
     """AJAX action for search DB.
     receive front end ajax transform parameters
     """
-    grok.name('danwei_Ajaxsearch')
+    grok.name('danwei_ajaxsearch')
 
     def searchview(self,viewname="danwei_listings"):
         searchview = getMultiAdapter((self.context, self.request),name=viewname)
@@ -933,7 +886,7 @@ class YiShengAjaxsearch(YaoXingAjaxsearch):
     """AJAX action for search DB.
     receive front end ajax transform parameters
     """
-    grok.name('yisheng_Ajaxsearch')
+    grok.name('yisheng_ajaxsearch')
 
     def searchview(self,viewname="yisheng_listings"):
         searchview = getMultiAdapter((self.context, self.request),name=viewname)
