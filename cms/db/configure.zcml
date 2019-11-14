@@ -31,6 +31,11 @@
 	/>
  <utility
 	provides=".interfaces.IDbapi"
+	component=".ORMdbAPI.yao"
+	name="yao"
+	/>	
+ <utility
+	provides=".interfaces.IDbapi"
 	component=".ORMdbAPI.dizhi"
 	name="dizhi"
 	/>			

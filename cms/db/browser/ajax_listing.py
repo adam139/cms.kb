@@ -472,7 +472,7 @@ class YaoAjaxsearch(YaoXingAjaxsearch):
     receive front end ajax transform parameters
     """
 
-    grok.name('yao_ajaxsearch')
+#     grok.name('yao_ajaxsearch')
 
     def searchview(self,viewname="yao_listings"):
         searchview = getMultiAdapter((self.context, self.request),name=viewname)
@@ -487,15 +487,11 @@ class YaoAjaxsearch(YaoXingAjaxsearch):
         if self.searchview().canbeInput:        
             for i in resultDicLists:
                 out = """<tr class="text-left">
-                                <td class="col-md-1 text-center">%(cssbdm)s</td>
-                                <td class="col-md-1 text-left"><a href="%(edit_url)s">%(cssbmc)s</a></td>
-                                <td class="col-md-1">%(pcdm)s</td>
-                                <td class="col-md-1">%(location)s</td>
-                                <td class="col-md-1">%(gain)s</td>
-                                <td class="col-md-1">%(polarization)s</td>
-                                <td class="col-md-1">%(fwbskd)s</td>
-                                <td class="col-md-1">%(fybskd)s</td>
-                                <td class="col-md-1">%(txzxj)s</td>
+                                <td class="col-md-2 text-center">%(name)s</td>
+                                <td class="col-md-1 text-left"><a href="%(edit_url)s">%(yaowei)s</a></td>
+                                <td class="col-md-1">%(yaoxing)s</td>
+                                <td class="col-md-1">%(jingluo)s</td>
+                                <td class="col-md-5">%(zhuzhi)s</td>                                
                                 <td class="col-md-1 text-center">
                                 <a href="%(edit_url)s" title="edit">
                                   <span class="glyphicon glyphicon-pencil" aria-hidden="true">
@@ -509,15 +505,11 @@ class YaoAjaxsearch(YaoXingAjaxsearch):
                                 </a>
                                 </td>
                                 </tr> """% dict(objurl="%s/@@view" % contexturl,
-                                            cssbdm=i[1],
-                                            cssbmc= i[2],
-                                            pcdm= i[3],
-                                            location= i[4],
-                                            gain= i[5],
-                                            polarization= i[6],
-                                            fwbskd= i[7],
-                                            fybskd= i[8],
-                                            txzxj= i[9],
+                                            name=i[3],
+                                            yaowei= "",
+                                            yaoxing= "",
+                                            jingluo= "",
+                                            zhuzhi= i[4],
                                             edit_url="%s/@@update_fashetx/%s" % (contexturl,i[0]),
                                             delete_url="%s/@@delete_fashetx/%s" % (contexturl,i[0]))
                 outhtml = "%s%s" %(outhtml ,out)
@@ -525,25 +517,18 @@ class YaoAjaxsearch(YaoXingAjaxsearch):
         else:
             for i in resultDicLists:
                 out = """<tr class="text-left">
-                                <td class="col-md-2 text-center">%(cssbdm)s</td>
-                                <td class="col-md-2 text-left">%(cssbmc)s</td>
-                                <td class="col-md-1">%(pcdm)s</td>
-                                <td class="col-md-1">%(location)s</td>
-                                <td class="col-md-1">%(gain)s</td>
-                                <td class="col-md-1">%(polarization)s</td>
-                                <td class="col-md-1">%(fwbskd)s</td>
-                                <td class="col-md-1">%(fybskd)s</td>
-                                <td class="col-md-1">%(txzxj)s</td>
+                                <td class="col-md-2 text-center">%(name)s</td>
+                                <td class="col-md-1 text-left"><a href="%(edit_url)s">%(yaowei)s</a></td>
+                                <td class="col-md-1">%(yaoxing)s</td>
+                                <td class="col-md-1">%(jingluo)s</td>
+                                <td class="col-md-5">%(zhuzhi)s</td>  
                                 </tr> """% dict(objurl="%s/@@view" % contexturl,
-                                            cssbdm=i[1],
-                                            cssbmc= i[2],
-                                            pcdm= i[3],
-                                            location= i[4],
-                                            gain= i[5],
-                                            polarization= i[6],
-                                            fwbskd= i[7],
-                                            fybskd= i[8],
-                                            txzxj= i[9])
+                                            name=i[3],
+                                            yaowei= "",
+                                            yaoxing= "",
+                                            jingluo= "",
+                                            zhuzhi= i[4])
+
                 outhtml = "%s%s" %(outhtml ,out)
                 k = k + 1            
         data = {'searchresult': outhtml,'start':start,'size':size,'total':totalnum}

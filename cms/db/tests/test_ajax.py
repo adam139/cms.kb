@@ -15,7 +15,7 @@ from plone.testing.z2 import Browser
 import unittest
 from cms.db import  Session
 from cms.theme.interfaces import IThemeSpecific
-from cms.db.orm import YaoWei,YaoXing,JingLuo
+from cms.db.orm import YaoWei,YaoXing,JingLuo,Yao
 
 class TestView(unittest.TestCase):
     
@@ -42,7 +42,16 @@ class TestView(unittest.TestCase):
         jingluo4 = JingLuo("足厥阴肝经")
         jingluo5 = JingLuo("足少阴肾经")
         jingluo6 = JingLuo("足太阴脾经")
-        Session.add_all([jingluo1,jingluo2,jingluo3,jingluo4,jingluo5,jingluo6])        
+        Session.add_all([jingluo1,jingluo2,jingluo3,jingluo4,jingluo5,jingluo6])
+        yao1 = Yao("白芍")
+        yao1.yaowei = yaowei1
+        yao1.yaoxing = yaoxing1
+        yao1.guijing = [jingluo1]         
+        yao2 = Yao("大枣")
+        yao2.yaowei = yaowei2
+        yao2.yaoxing = yaoxing2
+        yao2.guijing = [jingluo2]
+        Session.add_all([yao1,yao2])                
         Session.commit()        
         portal = self.layer['portal']
 
@@ -57,7 +66,8 @@ class TestView(unittest.TestCase):
         
         items = Session.query(YaoWei).all()
         items.extend(Session.query(YaoXing).all())
-        items.extend(Session.query(JingLuo).all())        
+        items.extend(Session.query(JingLuo).all())
+        items.extend(Session.query(Yao).all())        
         for item in items:
             Session.delete(item)            
         Session.commit()   
@@ -121,7 +131,26 @@ class TestView(unittest.TestCase):
         view = box.restrictedTraverse('@@jingluo_ajaxsearch')
         result = view.render()       
         self.assertEqual(json.loads(result)['total'],6)                
-        
+
+    def test_yao(self):
+        request = self.layer['request']
+        alsoProvides(request, IThemeSpecific)        
+        keyManager = getUtility(IKeyManager)
+        secret = keyManager.secret()
+        auth = hmac.new(secret, TEST_USER_NAME, sha).hexdigest()
+        request.form = {
+                        '_authenticator': auth,
+                        'size': '10',
+                        'start':'0' ,
+                        'sortcolumn':'id',
+                        'sortdirection':'desc',
+                        'searchabletext':''                                                                       
+                        }
+# Look up and invoke the view via traversal
+        box = self.portal['folder']['ormfolder']
+        view = box.restrictedTraverse('@@yao_ajaxsearch')
+        result = view.render()       
+        self.assertEqual(json.loads(result)['total'],2)        
      
 
 

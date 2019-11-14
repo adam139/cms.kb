@@ -29,7 +29,13 @@
         name="jingluo_ajaxsearch"
         for="*"
         permission="zope2.View"
-        class=".ajax_listing.JingLuoAjaxsearch"/>     
+        class=".ajax_listing.JingLuoAjaxsearch"/>
+     <browser:page
+        name="yao_ajaxsearch"
+        for="*"
+        permission="zope2.View"
+        class=".ajax_listing.YaoAjaxsearch"/>
+                     
     <!-- Control panel form -->
     <browser:page 
         name="sys-settings"

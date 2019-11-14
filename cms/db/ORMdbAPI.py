@@ -311,8 +311,8 @@ yaowei = Dbapi(session,'cms.db.orm','yaowei','YaoWei')
 # jingluo table       
 jingluo = Dbapi(session,'cms.db.orm','jingluo','JingLuo')
 dizhi = Dbapi(session,'cms.db.orm','dizhi','DiZhi')
-
-clmns = ['userid','datetime','ip','type','operlevel','description','result']
-search_clmns = ['userid','datetime','ip','operlevel','description']
-yao =  Dbapi(session,'cms.db.orm','yao','Yao',columns=clmns,fullsearch_clmns=search_clmns)
+yao =  Dbapi(session,'cms.db.orm','yao','Yao')
+# clmns = ['userid','datetime','ip','type','operlevel','description','result']
+# search_clmns = ['userid','datetime','ip','operlevel','description']
+# yao =  Dbapi(session,'cms.db.orm','yao','Yao',columns=clmns,fullsearch_clmns=search_clmns)
 
