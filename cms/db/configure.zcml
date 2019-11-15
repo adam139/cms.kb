@@ -33,12 +33,33 @@
 	provides=".interfaces.IDbapi"
 	component=".ORMdbAPI.yao"
 	name="yao"
-	/>	
+	/>
+ <utility
+	provides=".interfaces.IDbapi"
+	component=".ORMdbAPI.chufang"
+	name="chufang"
+	/>
+ <utility
+	provides=".interfaces.IDbapi"
+	component=".ORMdbAPI.bingren"
+	name="bingren"
+	/>
+ <utility
+	provides=".interfaces.IDbapi"
+	component=".ORMdbAPI.yisheng"
+	name="yisheng"
+	/>					
  <utility
 	provides=".interfaces.IDbapi"
 	component=".ORMdbAPI.dizhi"
 	name="dizhi"
-	/>			
+	/>
+ <utility
+	provides=".interfaces.IDbapi"
+	component=".ORMdbAPI.danwei"
+	name="danwei"
+	/>	
+				
   <genericsetup:registerProfile
       name="default"
       title="Chinese medical science system database"

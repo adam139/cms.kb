@@ -35,6 +35,11 @@
         for="*"
         permission="zope2.View"
         class=".ajax_listing.YaoAjaxsearch"/>
+     <browser:page
+        name="chufang_ajaxsearch"
+        for="*"
+        permission="zope2.View"
+        class=".ajax_listing.ChuFangAjaxsearch"/>        
                      
     <!-- Control panel form -->
     <browser:page 

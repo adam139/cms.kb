@@ -30,7 +30,7 @@ from cms.db.orm import IDiZhi,DiZhi
 from cms.db.orm import IDanWei,DanWei
 from cms.db.orm import IYiSheng,YiSheng
 from cms.db.orm import IBingRen,BingRen
-from cms.db.orm import Yao_JingLuo_Asso
+from cms.db.orm import Yao_JingLuo_Asso,ChuFang_BingRen_Asso,Yao_ChuFang_Asso
 
 from cms.db.contents.ormfolder import Iormfolder
 # update data view
@@ -517,8 +517,8 @@ class YaoAjaxsearch(YaoXingAjaxsearch):
                                             yaoxing= yaoxing,
                                             jingluo= guijin,
                                             zhuzhi= i[4],
-                                            edit_url="%s/@@update_fashetx/%s" % (contexturl,i[0]),
-                                            delete_url="%s/@@delete_fashetx/%s" % (contexturl,i[0]))
+                                            edit_url="%s/@@update_yao/%s" % (contexturl,i[0]),
+                                            delete_url="%s/@@delete_yao/%s" % (contexturl,i[0]))
                 outhtml = "%s%s" %(outhtml ,out)
                 k = k + 1
         else:
@@ -546,7 +546,7 @@ class ChuFangAjaxsearch(YaoXingAjaxsearch):
     """AJAX action for search DB.
     receive front end ajax transform parameters
     """
-    grok.name('chufang_ajaxsearch')
+#     grok.name('chufang_ajaxsearch')
 
     def searchview(self,viewname="chufang_listings"):
         searchview = getMultiAdapter((self.context, self.request),name=viewname)
@@ -554,22 +554,23 @@ class ChuFangAjaxsearch(YaoXingAjaxsearch):
 
     def output(self,start,size,totalnum,resultDicLists,api):
         """根据参数total,resultDicLists,返回json 输出,resultDicLists like this:
-        [(u'C7', u'\u4ed6\u7684\u624b\u673a')]"""
+        [(u'C7', u'\u4ed6\u7684\u624b\u673a')]
+        (2L, 2L, u'\u6842\u679d\u6c64', 5L, u'\u52a0\u70ed\u7a00\u7ca5')
+        """
         outhtml = ""
         k = 0
         contexturl = self.context.absolute_url()
         if self.searchview().canbeInput:
             for i in resultDicLists:
+                yaoes = api.pk_ass_obj_title(i[0],ChuFang,Yao_ChuFang_Asso,Yao,'yao_id','mingcheng')
+                yisheng = api.pk_title(i[1],YiSheng,'xingming')
+
                 out = """<tr class="text-left">
                                 <td class="col-md-2 text-center"><a href="%(edit_url)s">%(name)s</a></td>
-                                <td class="col-md-1 text-left">%(bcdm)s</td>
-                                <td class="col-md-1">%(location)s</td>
-                                <td class="col-md-1">%(length)s</td>
-                                <td class="col-md-1">%(width)s</td>
-                                <td class="col-md-1">%(wk)s</td>
-                                <td class="col-md-1">%(ti)s</td>
-                                <td class="col-md-1">%(landform)s</td>
-                                <td class="col-md-1">%(xh)s</td>                               
+                                <td class="col-md-1 text-left">%(yaoes)s</td>
+                                <td class="col-md-1">%(yisheng)s</td>
+                                <td class="col-md-1">%(jiliang)s</td>
+                                <td class="col-md-1">%(yizhu)s</td>                              
                                 <td class="col-md-1 text-center">
                                 <a href="%(edit_url)s" title="edit">
                                   <span class="glyphicon glyphicon-pencil" aria-hidden="true">
@@ -583,41 +584,30 @@ class ChuFangAjaxsearch(YaoXingAjaxsearch):
                                 </a>
                                 </td>
                                 </tr> """% dict(objurl="%s/@@view" % contexturl,
-                                            name=i[1],
-                                            bcdm= i[2],
-                                            location= i[3],
-                                            length= i[4],
-                                            width= i[5],
-                                            wk= i[6],
-                                            ti= i[7],
-                                            landform= i[8],
-                                            xh= i[9],
-                                            edit_url="%s/@@update_bachang/%s" % (contexturl,i[0]),
-                                            delete_url="%s/@@delete_bachang/%s" % (contexturl,i[0]))
+                                            name=i[2],
+                                            jiliang= i[3],
+                                            yizhu= i[4],
+                                            yaoes= yaoes,
+                                            yisheng= yisheng,
+                                            edit_url="%s/@@update_chufang/%s" % (contexturl,i[0]),
+                                            delete_url="%s/@@delete_chufang/%s" % (contexturl,i[0]))
                 outhtml = "%s%s" %(outhtml ,out)
                 k = k + 1
         else:
             for i in resultDicLists:
                 out = """<tr class="text-left">
-                                <td class="col-md-2 text-center">%(name)s</td>
-                                <td class="col-md-1 text-left">%(bcdm)s</td>
-                                <td class="col-md-3">%(location)s</td>
-                                <td class="col-md-1">%(length)s</td>
-                                <td class="col-md-1">%(width)s</td>
-                                <td class="col-md-1">%(wk)s</td>
-                                <td class="col-md-1">%(ti)s</td>
-                                <td class="col-md-1">%(landform)s</td>
-                                <td class="col-md-1">%(xh)s</td>
+                                <td class="col-md-2 text-center"><a href="%(edit_url)s">%(name)s</a></td>
+                                <td class="col-md-1 text-left">%(yaoes)s</td>
+                                <td class="col-md-1">%(yisheng)s</td>
+                                <td class="col-md-1">%(jiliang)s</td>
+                                <td class="col-md-1">%(yizhu)s</td>                              
+                                <td class="col-md-1 text-center">
                                 </tr> """% dict(objurl="%s/@@view" % contexturl,
-                                            name=i[1],
-                                            bcdm= i[2],
-                                            location= i[3],
-                                            length= i[4],
-                                            width= i[5],
-                                            wk= i[6],
-                                            ti= i[7],
-                                            landform= i[8],
-                                            xh= i[9])
+                                            name=i[2],
+                                            jiliang= i[3],
+                                            yizhu= i[4],
+                                            yaoes= yaoes,
+                                            yisheng= yisheng)
                 outhtml = "%s%s" %(outhtml ,out)
                 k = k + 1            
         data = {'searchresult': outhtml,'start':start,'size':size,'total':totalnum}

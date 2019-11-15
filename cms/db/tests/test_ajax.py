@@ -2,6 +2,8 @@
 import json
 import hmac
 from hashlib import sha1 as sha
+from datetime import date
+from datetime import datetime
 from Products.CMFCore.utils import getToolByName
 from cms.db.testing import FUNCTIONAL_TESTING  
 
@@ -15,7 +17,8 @@ from plone.testing.z2 import Browser
 import unittest
 from cms.db import  Session
 from cms.theme.interfaces import IThemeSpecific
-from cms.db.orm import YaoWei,YaoXing,JingLuo,Yao
+from cms.db.orm import YaoWei,YaoXing,JingLuo,Yao,DiZhi,YiSheng,DanWei
+from cms.db.orm import ChuFang,YiSheng,BingRen,Yao_ChuFang_Asso,ChuFang_BingRen_Asso
 
 class TestView(unittest.TestCase):
     
@@ -51,7 +54,21 @@ class TestView(unittest.TestCase):
         yao2.yaowei = yaowei2
         yao2.yaoxing = yaoxing2
         yao2.guijing = [jingluo2]
-        Session.add_all([yao1,yao2])                
+        Session.add_all([yao1,yao2])
+        dizhi = DiZhi("中国","湖南","湘潭市","湘潭县云湖桥镇北岸村道林组83号")
+        bingren = BingRen('张三',1, date(2015, 4, 2),'13673265899')
+        bingren.dizhi = dizhi
+        dizhi2 = DiZhi("中国","湖北","十堰市","茅箭区施洋路83号")
+        danwei = DanWei("任之堂")
+        yisheng = YiSheng('余浩',1, date(2015, 4, 2),'13673265859')
+        danwei.yishengs = [yisheng]
+        danwei.dizhi = dizhi2        
+        chufang = ChuFang("桂枝汤","加热稀粥",5)
+        yao_chufang = Yao_ChuFang_Asso(yao1,chufang,7,"晒干")
+        yao_chufang2 = Yao_ChuFang_Asso(yao2,chufang,10,"掰开")
+        chufang_bingren = ChuFang_BingRen_Asso(bingren,chufang,datetime.now())
+        yisheng.chufangs = [chufang]
+        Session.add_all([dizhi,bingren,danwei,dizhi2,yisheng,chufang,yao_chufang,yao_chufang2,chufang_bingren])                                
         Session.commit()        
         portal = self.layer['portal']
 
@@ -67,7 +84,12 @@ class TestView(unittest.TestCase):
         items = Session.query(YaoWei).all()
         items.extend(Session.query(YaoXing).all())
         items.extend(Session.query(JingLuo).all())
-        items.extend(Session.query(Yao).all())        
+        items.extend(Session.query(Yao).all())
+        items.extend(Session.query(ChuFang).all())
+        items.extend(Session.query(BingRen).all())
+        items.extend(Session.query(YiSheng).all())
+        items.extend(Session.query(DanWei).all())
+        items.extend(Session.query(DiZhi).all())                
         for item in items:
             Session.delete(item)            
         Session.commit()   
@@ -151,7 +173,26 @@ class TestView(unittest.TestCase):
         view = box.restrictedTraverse('@@yao_ajaxsearch')
         result = view.render()       
         self.assertEqual(json.loads(result)['total'],2)        
-     
+
+    def test_chufang(self):
+        request = self.layer['request']
+        alsoProvides(request, IThemeSpecific)        
+        keyManager = getUtility(IKeyManager)
+        secret = keyManager.secret()
+        auth = hmac.new(secret, TEST_USER_NAME, sha).hexdigest()
+        request.form = {
+                        '_authenticator': auth,
+                        'size': '10',
+                        'start':'0' ,
+                        'sortcolumn':'id',
+                        'sortdirection':'desc',
+                        'searchabletext':''                                                                       
+                        }
+# Look up and invoke the view via traversal
+        box = self.portal['folder']['ormfolder']
+        view = box.restrictedTraverse('@@chufang_ajaxsearch')
+        result = view.render()       
+        self.assertEqual(json.loads(result)['total'],1)     
 
 
              

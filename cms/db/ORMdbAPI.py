@@ -59,36 +59,59 @@ class Dbapi(object):
         
     def pk_title(self,pk,factorycls,title):
         "primary key to row recorder 's title"
+        #根据主键提取指定表对象的属性
        
         recorder = session.query(factorycls).filter(factorycls.id==pk).one()
         return getattr(recorder,title,"")
 
     def pk_ass_title(self,pk,factorycls,asso,targetcls,fk,title):
-        "通过主键查关联表,获取多对多的关联对象属性 "
+        "通过主键查关联表,获取多对多的对象属性 "
         #pk本地表主键  integer
         #factorycls 本地表类 
         #asso 关联表类
         #targetcls 目标表类 
         #fk关联表指向目标表外键名称 string
-        #title目标表字段/属性    string
-       
+        #title目标表字段/属性    string       
     
         recorders = session.query(asso).join(factorycls).filter(factorycls.id==pk).all()
 #       recorders:  [(37L, 109L)]
-
-
         def mapf(recorder):
             fkv = set(list(recorder))
             fkv.remove(pk)
-            
-#             fkv =fkv.pop()
-#             fkv = recorder[1]
             target = session.query(targetcls).filter(targetcls.id ==list(fkv)[0]).one()
             return getattr(target,title,"")
         more = map(mapf,recorders)
         out = ",".join(more)
         return out
             
+    def pk_ass_obj_title(self,pk,factorycls,asso,targetcls,fk,title):
+        "通过主键查关联表对象,获取多对多关联对象的属性 "
+        #pk本地表主键  integer
+        #factorycls 本地表类 
+        #asso 关联表类
+        #targetcls 目标表类 
+        #fk关联表指向目标表外键名称 string
+        #title目标表字段/属性    string       
+    
+        recorders = session.query(asso).join(factorycls).filter(factorycls.id==pk).all()
+#       recorders:  [(37L, 109L)]
+        def mapf(recorder):
+
+            yao_id = recorder.yao_id
+            yao = session.query(targetcls).filter(targetcls.id ==yao_id).one()
+            mingcheng = getattr(yao,title,"")
+            yaoliang = u"%s克" % recorder.yaoliang
+            paozhi = recorder.paozhi
+            if bool(paozhi):
+                paozhi = "(%s)" % recorder.paozhi
+                return ",".join([mingcheng,yaoliang,paozhi])
+            else:                
+                return ",".join([mingcheng,yaoliang])
+
+        more = map(mapf,recorders)
+        out = ";".join(more)
+        return out
+
     def get_columns(self):
         "get return columns by query"
         
@@ -344,6 +367,10 @@ yaowei = Dbapi(session,'cms.db.orm','yaowei','YaoWei')
 jingluo = Dbapi(session,'cms.db.orm','jingluo','JingLuo')
 dizhi = Dbapi(session,'cms.db.orm','dizhi','DiZhi')
 yao =  Dbapi(session,'cms.db.orm','yao','Yao')
+chufang = Dbapi(session,'cms.db.orm','chufang','ChuFang')
+bingren = Dbapi(session,'cms.db.orm','bingren','BingRen')
+danwei =  Dbapi(session,'cms.db.orm','danwei','DanWei')
+yisheng =  Dbapi(session,'cms.db.orm','yisheng','YiSheng')
 # clmns = ['userid','datetime','ip','type','operlevel','description','result']
 # search_clmns = ['userid','datetime','ip','operlevel','description']
 # yao =  Dbapi(session,'cms.db.orm','yao','Yao',columns=clmns,fullsearch_clmns=search_clmns)
