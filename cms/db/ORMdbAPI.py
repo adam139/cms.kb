@@ -57,6 +57,38 @@ class Dbapi(object):
                     srt = "%(pre)s OR %(c)s LIKE :x" % dict(c=i,pre=srt)
             return srt        
         
+    def pk_title(self,pk,factorycls,title):
+        "primary key to row recorder 's title"
+       
+        recorder = session.query(factorycls).filter(factorycls.id==pk).one()
+        return getattr(recorder,title,"")
+
+    def pk_ass_title(self,pk,factorycls,asso,targetcls,fk,title):
+        "通过主键查关联表,获取多对多的关联对象属性 "
+        #pk本地表主键  integer
+        #factorycls 本地表类 
+        #asso 关联表类
+        #targetcls 目标表类 
+        #fk关联表指向目标表外键名称 string
+        #title目标表字段/属性    string
+       
+    
+        recorders = session.query(asso).join(factorycls).filter(factorycls.id==pk).all()
+#       recorders:  [(37L, 109L)]
+
+
+        def mapf(recorder):
+            fkv = set(list(recorder))
+            fkv.remove(pk)
+            
+#             fkv =fkv.pop()
+#             fkv = recorder[1]
+            target = session.query(targetcls).filter(targetcls.id ==list(fkv)[0]).one()
+            return getattr(target,title,"")
+        more = map(mapf,recorders)
+        out = ",".join(more)
+        return out
+            
     def get_columns(self):
         "get return columns by query"
         

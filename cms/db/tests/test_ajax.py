@@ -92,7 +92,7 @@ class TestView(unittest.TestCase):
         result = view.render()       
         self.assertEqual(json.loads(result)['total'],6)
 
-    def test_yaoxing(self):
+    def test_yaowei(self):
         request = self.layer['request']
         alsoProvides(request, IThemeSpecific)        
         keyManager = getUtility(IKeyManager)
@@ -132,7 +132,7 @@ class TestView(unittest.TestCase):
         result = view.render()       
         self.assertEqual(json.loads(result)['total'],6)                
 
-    def test_yao(self):
+    def test_yaoes(self):
         request = self.layer['request']
         alsoProvides(request, IThemeSpecific)        
         keyManager = getUtility(IKeyManager)

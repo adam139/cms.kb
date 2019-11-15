@@ -30,6 +30,7 @@ from cms.db.orm import IDiZhi,DiZhi
 from cms.db.orm import IDanWei,DanWei
 from cms.db.orm import IYiSheng,YiSheng
 from cms.db.orm import IBingRen,BingRen
+from cms.db.orm import Yao_JingLuo_Asso
 
 from cms.db.contents.ormfolder import Iormfolder
 # update data view
@@ -96,7 +97,8 @@ class YaoXingsView(BaseView):
     该参数，查询数据库，并返回结果。
     view name:admin_logs
     """
-
+      
+        
     def search_multicondition(self,query):
         "query is dic,like :{'start':0,'size':10,'':}"
 
@@ -298,16 +300,18 @@ class YaoXingAjaxsearch(BrowserView):
         totalnum = searchview.search_multicondition(totalquery)
 
         resultDicLists = searchview.search_multicondition(origquery)
+        api = searchview.get_locator("yaoxing")
         del origquery
         del totalquery
 #call output function
 # resultDicLists like this:[(u'C7', u'\u4ed6\u7684\u624b\u673a')]
-        data = self.output(start,size,totalnum, resultDicLists)
+        data = self.output(start,size,totalnum, resultDicLists,api)
         self.request.response.setHeader('Content-Type', 'application/json')
         return json.dumps(data)
 
-    def output(self,start,size,totalnum,resultDicLists):
+    def output(self,start,size,totalnum,resultDicLists,api):
         """根据参数total,resultDicLists,返回json 输出,resultDicLists like this:
+        跨表访问时需要api
         [(u'C7', u'\u4ed6\u7684\u624b\u673a')]"""
         outhtml = ""
         k = 0
@@ -355,7 +359,7 @@ class YaoWeiAjaxsearch(YaoXingAjaxsearch):
         searchview = getMultiAdapter((self.context, self.request),name=viewname)
         return searchview
 
-    def output(self,start,size,totalnum,resultDicLists):
+    def output(self,start,size,totalnum,resultDicLists,api):
         """根据参数total,resultDicLists,返回json 输出,resultDicLists like this:
         [(u'C7', u'\u4ed6\u7684\u624b\u673a')]"""
         outhtml = ""
@@ -418,7 +422,7 @@ class JingLuoAjaxsearch(YaoXingAjaxsearch):
         searchview = getMultiAdapter((self.context, self.request),name=viewname)
         return searchview
 
-    def output(self,start,size,totalnum,resultDicLists):
+    def output(self,start,size,totalnum,resultDicLists,api):
         """根据参数total,resultDicLists,返回json 输出,resultDicLists like this:
         [(u'C7', u'\u4ed6\u7684\u624b\u673a')]"""
         outhtml = ""
@@ -478,7 +482,7 @@ class YaoAjaxsearch(YaoXingAjaxsearch):
         searchview = getMultiAdapter((self.context, self.request),name=viewname)
         return searchview
 
-    def output(self,start,size,totalnum,resultDicLists):
+    def output(self,start,size,totalnum,resultDicLists,api):
         """根据参数total,resultDicLists,返回json 输出,resultDicLists like this:
         [(u'C7', u'\u4ed6\u7684\u624b\u673a')]"""
         outhtml = ""
@@ -486,6 +490,9 @@ class YaoAjaxsearch(YaoXingAjaxsearch):
         contexturl = self.context.absolute_url()
         if self.searchview().canbeInput:        
             for i in resultDicLists:
+                yaowei = api.pk_title(i[1],YaoWei,'wei')
+                yaoxing = api.pk_title(i[2],YaoXing,'xing')
+                guijin = api.pk_ass_title(i[0],Yao,Yao_JingLuo_Asso,JingLuo,'jingluo_id','mingcheng')
                 out = """<tr class="text-left">
                                 <td class="col-md-2 text-center">%(name)s</td>
                                 <td class="col-md-1 text-left"><a href="%(edit_url)s">%(yaowei)s</a></td>
@@ -506,9 +513,9 @@ class YaoAjaxsearch(YaoXingAjaxsearch):
                                 </td>
                                 </tr> """% dict(objurl="%s/@@view" % contexturl,
                                             name=i[3],
-                                            yaowei= "",
-                                            yaoxing= "",
-                                            jingluo= "",
+                                            yaowei= yaowei,
+                                            yaoxing= yaoxing,
+                                            jingluo= guijin,
                                             zhuzhi= i[4],
                                             edit_url="%s/@@update_fashetx/%s" % (contexturl,i[0]),
                                             delete_url="%s/@@delete_fashetx/%s" % (contexturl,i[0]))
@@ -545,7 +552,7 @@ class ChuFangAjaxsearch(YaoXingAjaxsearch):
         searchview = getMultiAdapter((self.context, self.request),name=viewname)
         return searchview
 
-    def output(self,start,size,totalnum,resultDicLists):
+    def output(self,start,size,totalnum,resultDicLists,api):
         """根据参数total,resultDicLists,返回json 输出,resultDicLists like this:
         [(u'C7', u'\u4ed6\u7684\u624b\u673a')]"""
         outhtml = ""
@@ -628,7 +635,7 @@ class BingRenAjaxsearch(YaoXingAjaxsearch):
         searchview = getMultiAdapter((self.context, self.request),name=viewname)
         return searchview
 
-    def output(self,start,size,totalnum,resultDicLists):
+    def output(self,start,size,totalnum,resultDicLists,api):
         """根据参数total,resultDicLists,返回json 输出,resultDicLists like this:
         [(u'C7', u'\u4ed6\u7684\u624b\u673a')]"""
         outhtml = ""
@@ -710,7 +717,7 @@ class DiZhiAjaxsearch(YaoXingAjaxsearch):
         searchview = getMultiAdapter((self.context, self.request),name=viewname)
         return searchview
 
-    def output(self,start,size,totalnum,resultDicLists):
+    def output(self,start,size,totalnum,resultDicLists,api):
         """根据参数total,resultDicLists,返回json 输出,resultDicLists like this:
         [(u'C7', u'\u4ed6\u7684\u624b\u673a')]"""
         outhtml = ""
@@ -792,7 +799,7 @@ class DanWeiAjaxsearch(YaoXingAjaxsearch):
         searchview = getMultiAdapter((self.context, self.request),name=viewname)
         return searchview
 
-    def output(self,start,size,totalnum,resultDicLists):
+    def output(self,start,size,totalnum,resultDicLists,api):
         """根据参数total,resultDicLists,返回json 输出,resultDicLists like this:
         [(u'C7', u'\u4ed6\u7684\u624b\u673a')]"""
         outhtml = ""
@@ -877,7 +884,7 @@ class YiShengAjaxsearch(YaoXingAjaxsearch):
         searchview = getMultiAdapter((self.context, self.request),name=viewname)
         return searchview
 
-    def output(self,start,size,totalnum,resultDicLists):
+    def output(self,start,size,totalnum,resultDicLists,api):
         """根据参数total,resultDicLists,返回json 输出,resultDicLists like this:
         [(u'C7', u'\u4ed6\u7684\u624b\u673a')]"""
         outhtml = ""
