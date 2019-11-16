@@ -35,7 +35,7 @@ class YaoWei(Base):
     id = Column(Integer, primary_key=True)
     wei = Column(String(8))    
 
-    def __init__(self, wei):
+    def __init__(self, wei=None):
         self.wei = wei
 
 
@@ -60,7 +60,7 @@ class YaoXing(Base):
     id = Column(Integer, primary_key=True)
     xing = Column(String((8)))    
 
-    def __init__(self, xing):
+    def __init__(self, xing=None):
         self.xing = xing
  
         
@@ -91,7 +91,7 @@ class JingLuo(Base):
     mingcheng = Column(String(14))
 #     yaoes = relationship("Yao", secondary=Yao_JingLuo_Asso)    
 
-    def __init__(self, mingcheng):
+    def __init__(self, mingcheng=None):
         self.mingcheng = mingcheng
 
        
@@ -151,7 +151,7 @@ class Yao(Base):
     yaoxing = relationship("YaoXing", backref="yaoes")
     guijing = relationship("JingLuo", secondary=Yao_JingLuo_Asso)    
 
-    def __init__(self, mingcheng,zhuzhi=None):
+    def __init__(self, mingcheng=None,zhuzhi=None):
         self.mingcheng = mingcheng
         self.zhuzhi = zhuzhi
 

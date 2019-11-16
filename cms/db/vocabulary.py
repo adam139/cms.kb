@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
-from plone import api
 from zope.interface import provider
+from zope.component import queryUtility
 from zope.schema.interfaces import IVocabularyFactory
 from zope.schema.vocabulary import SimpleTerm
 from zope.schema.vocabulary import SimpleVocabulary
-from zope.component import getUtility
+
 from cms.db import _
 
 
@@ -19,9 +19,30 @@ def xingbie(context):
 @provider(IVocabularyFactory)
 def yao_wei(context):
   
-    locator = getUtility(IDonateLocator)
-#     values = locator.query(start=0,size=100,multi=1,did=18,sortchildid=3)
-    values = locator.query(start=0,size=100,multi=1)
+    locator = queryUtility(IDbapi, name='yaowei')
+
+    values = locator.query({'start':0,'size':0,'SearchableText':'','sort_order':'reverse'})
     return SimpleVocabulary(
         [SimpleTerm(value=int(i.id), token=str(i.id), title=i.wei) for i in values],
     )
+
+@provider(IVocabularyFactory)
+def yao_xing(context):
+  
+    locator = queryUtility(IDbapi, name='yaoxing')
+
+    values = locator.query({'start':0,'size':0,'SearchableText':'','sort_order':'reverse'})
+    return SimpleVocabulary(
+        [SimpleTerm(value=int(i.id), token=str(i.id), title=i.xing) for i in values],
+    )
+    
+@provider(IVocabularyFactory)
+def jingluo_mingcheng(context):
+  
+    locator = queryUtility(IDbapi, name='jingluo')
+
+    values = locator.query({'start':0,'size':0,'SearchableText':'','sort_order':'reverse'})
+    return SimpleVocabulary(
+        [SimpleTerm(value=int(i.id), token=str(i.id), title=i.mingcheng) for i in values],
+    )    
+        

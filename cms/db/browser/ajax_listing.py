@@ -1018,22 +1018,15 @@ class InputYaoXing(form.Form):
     """input db yao xing table data
     """
 
-    grok.context(Iormfolder)
-    grok.name('input_yaoxing')
-    grok.require('cms.db.input_db')
+#     grok.context(Iormfolder)
+#     grok.name('input_yaoxing')
+#     grok.require('cms.db.input_db')
     label = _(u"Input yao xing data")
     fields = field.Fields(IYaoXing).omit('id')
     ignoreContext = True
 
     def update(self):
         self.request.set('disable_border', True)
-
-        # Get the model table query funcations
-#         locator = getUtility(IModelLocator)
-        # to do
-        # fetch first record as sample data
-#         self.screening = locator.screeningById(self.screeningId)
-
         # Let z3c.form do its magic
         super(InputYaoXing, self).update()
 
@@ -1046,6 +1039,7 @@ class InputYaoXing(form.Form):
             self.status = self.formErrorsMessage
             return
         funcations = queryUtility(IDbapi, name='yaoxing')
+
         try:
             funcations.add(data)
         except InputError, e:
@@ -1096,13 +1090,6 @@ class UpdateYaoXing(form.Form):
 
     def update(self):
         self.request.set('disable_border', True)
-
-        # Get the model table query funcations
-#         locator = getUtility(IModelLocator)
-        # to do
-        # fetch first record as sample data
-#         self.screening = locator.screeningById(self.screeningId)
-
         # Let z3c.form do its magic
         super(UpdateYaoXing, self).update()
 
@@ -1193,13 +1180,6 @@ class InputYaoWei(InputYaoXing):
 
     def update(self):
         self.request.set('disable_border', True)
-
-        # Get the model table query funcations
-#         locator = getUtility(IModelLocator)
-        # to do
-        # fetch first record as sample data
-#         self.screening = locator.screeningById(self.screeningId)
-
         # Let z3c.form do its magic
         super(InputFashej, self).update()
 
@@ -1280,6 +1260,142 @@ class UpdateYaoWei(UpdateYaoXing):
 
 ##end发射机 数据库操作
 
+##yao table 数据库操作
+class DeleteYao(DeleteYaoXing):
+    "delete the specify yao recorder"
+
+    grok.name('delete_yao')
+    label = _(u"delete yao data")
+    fields = field.Fields(IYaoUI).omit('id')
+
+    def getContent(self):
+        # Get the model table query funcations
+        locator = queryUtility(IDbapi, name='yao')
+
+        return locator.getByCode(self.id)
+
+    def update(self):
+        self.request.set('disable_border', True)
+
+        #Let z3c.form do its magic
+        super(DeleteYao, self).update()
+
+
+    @button.buttonAndHandler(_(u"Delete"))
+    def submit(self, action):
+        """Delete yao recorder
+        """
+
+        data, errors = self.extractData()        
+        if errors:
+            self.status = self.formErrorsMessage
+            return
+        funcations = queryUtility(IDbapi, name='yao')
+        try:
+            funcations.DeleteByCode(self.id)
+        except InputError, e:
+            IStatusMessage(self.request).add(str(e), type='error')
+            self.request.response.redirect(self.context.absolute_url() + '/@@yao_listings')
+        confirm = _(u"Your data  has been deleted.")
+        IStatusMessage(self.request).add(confirm, type='info')
+        self.request.response.redirect(self.context.absolute_url() + '/@@yao_listings')
+
+    @button.buttonAndHandler(_(u"Cancel"))
+    def cancel(self, action):
+        """Cancel the data delete
+        """
+        confirm = _(u"Delete cancelled.")
+        IStatusMessage(self.request).add(confirm, type='info')
+        self.request.response.redirect(self.context.absolute_url() + '/@@yao_listings')
+
+class InputJingLuo(InputYaoXing):
+    """input db yao table data
+    """
+
+    grok.name('input_yao')
+
+    label = _(u"Input yao data")
+    fields = field.Fields(IYaoUI).omit('id')
+
+    def update(self):
+        self.request.set('disable_border', True)
+        # Let z3c.form do its magic
+        super(InputYao, self).update()
+
+    @button.buttonAndHandler(_(u"Submit"))
+    def submit(self, action):
+        """Submit yao recorder
+        """
+        data, errors = self.extractData()
+        if errors:
+            self.status = self.formErrorsMessage
+            return
+        funcations = queryUtility(IDbapi, name='yao')
+        try:
+            funcations.add(data)
+        except InputError, e:
+            IStatusMessage(self.request).add(str(e), type='error')
+            self.request.response.redirect(self.context.absolute_url() + '/@@yao_listings')
+
+        confirm = _(u"Thank you! Your data  will be update in back end DB.")
+        IStatusMessage(self.request).add(confirm, type='info')
+        self.request.response.redirect(self.context.absolute_url() + '/@@yao_listings')
+
+    @button.buttonAndHandler(_(u"Cancel"))
+    def cancel(self, action):
+        """Cancel the data input
+        """
+        confirm = _(u"Input cancelled.")
+        IStatusMessage(self.request).add(confirm, type='info')
+        self.request.response.redirect(self.context.absolute_url() + '/@@yao_listings')
+
+class UpdateYao(UpdateYaoXing):
+    """update yao table row data
+    """
+    grok.name('update_yao')
+    label = _(u"update yao data")
+    fields = field.Fields(IYaoUI).omit('id')
+
+    def getContent(self):
+        # Get the model table query funcations
+        locator = queryUtility(IDbapi, name='yao')
+        # to do
+        # fetch first record as sample data
+        return locator.getByCode(self.id)
+
+    def update(self):
+        self.request.set('disable_border', True)
+        # Let z3c.form do its magic
+        super(UpdateYao, self).update()
+
+    @button.buttonAndHandler(_(u"Submit"))
+    def submit(self, action):
+        """Update yao recorder
+        """
+
+        data, errors = self.extractData()
+        data['id'] = self.id
+        if errors:
+            self.status = self.formErrorsMessage
+            return
+        funcations = queryUtility(IDbapi, name='yao')
+        try:
+            funcations.updateByCode(data)
+        except InputError, e:
+            IStatusMessage(self.request).add(str(e), type='error')
+            self.request.response.redirect(self.context.absolute_url() + '/@@yao_listings')
+        confirm = _(u"Thank you! Your data  will be update in back end DB.")
+        IStatusMessage(self.request).add(confirm, type='info')
+        self.request.response.redirect(self.context.absolute_url() + '/@@yao_listings')
+
+    @button.buttonAndHandler(_(u"Cancel"))
+    def cancel(self, action):
+        """Cancel the data input
+        """
+        confirm = _(u"Input cancelled.")
+        IStatusMessage(self.request).add(confirm, type='info')
+        self.request.response.redirect(self.context.absolute_url() + '/@@yao_listings')
+
 ##接收机 数据库操作
 class DeleteJingLuo(DeleteYaoXing):
     "delete the specify jingluo recorder"
@@ -1340,13 +1456,6 @@ class InputJingLuo(InputYaoXing):
 
     def update(self):
         self.request.set('disable_border', True)
-
-        # Get the model table query funcations
-#         locator = getUtility(IModelLocator)
-        # to do
-        # fetch first record as sample data
-#         self.screening = locator.screeningById(self.screeningId)
-
         # Let z3c.form do its magic
         super(InputJingLuo, self).update()
 
@@ -1485,13 +1594,6 @@ class InputChuFang(InputYaoXing):
     def update(self):
         self.request.set('disable_border', True)
 
-        # Get the model table query funcations
-#         locator = getUtility(IModelLocator)
-        # to do
-        # fetch first record as sample data
-#         self.screening = locator.screeningById(self.screeningId)
-
-        # Let z3c.form do its magic
         super(InputChuFang, self).update()
 
     @button.buttonAndHandler(_(u"Submit"))

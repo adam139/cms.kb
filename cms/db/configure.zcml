@@ -59,7 +59,20 @@
 	component=".ORMdbAPI.danwei"
 	name="danwei"
 	/>	
-				
+
+ <utility
+    name="cms.db.yaowei"
+    component="cms.db.vocabulary.yao_wei"
+    />
+ <utility
+    name="cms.db.yaoxing"
+    component="cms.db.vocabulary.yao_xing"
+    />
+ <utility
+    name="cms.db.jingluo"
+    component="cms.db.vocabulary.jingluo_mingcheng"
+    />    
+    				
   <genericsetup:registerProfile
       name="default"
       title="Chinese medical science system database"
@@ -67,5 +80,6 @@
       description='Profile for cms.db'
       provides="Products.GenericSetup.interfaces.EXTENSION"
       />
+
 
 </configure>

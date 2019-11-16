@@ -40,6 +40,12 @@
         for="*"
         permission="zope2.View"
         class=".ajax_listing.ChuFangAjaxsearch"/>        
+ 
+     <browser:page
+        name="input_yaoxing"
+        for="*"
+        permission="zope2.View"
+        class=".ajax_listing.InputYaoXing"/> 
                      
     <!-- Control panel form -->
     <browser:page 

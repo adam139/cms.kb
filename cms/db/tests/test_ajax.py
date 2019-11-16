@@ -93,6 +93,7 @@ class TestView(unittest.TestCase):
         for item in items:
             Session.delete(item)            
         Session.commit()   
+
         
     def test_yaoxing(self):
         request = self.layer['request']

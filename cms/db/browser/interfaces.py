@@ -1,6 +1,9 @@
 #-*- coding: UTF-8 -*-
 from zope.interface import Interface
 from zope import schema
+from plone.autoform import directives as form
+
+from z3c.form.browser.checkbox import CheckBoxFieldWidget
 from cms.db.orm import IYao
 from cms.db.orm import IYaoXing
 from cms.db.orm import IJingLuo
@@ -18,18 +21,19 @@ class IYaoUI (IYao):
     """yao table ui """
 
     yaowei = schema.Choice(
-            title=_(u"gui jing"),
-            vocabulary='cms.db.vocabulary.yao_wei',
+            title=_(u"yao wei"),
+            vocabulary='cms.db.yaowei',
             required=True,
         )
     yaoxing = schema.Choice(
-            title=_(u"gui jing"),
-            vocabulary='cms.db.vocabulary.yao_xing',
+            title=_(u"yao xing"),
+            vocabulary='cms.db.yaoxing',
             required=True,
         )        
-    guijing = schema.Choice(
-            title=_(u"gui jing"),
-            vocabulary='cms.db.vocabulary.jingluo_mingcheng',
-            required=True,
-        )
-        
+
+    form.widget(guijing=CheckBoxFieldWidget)
+    guijing = schema.List(title=_(u"gui jing"),
+                               description=_(u"gui jing"),
+                               required=True,
+                               value_type=schema.Choice(vocabulary='cms.db.jingluo'),
+                               )        

@@ -122,7 +122,7 @@ class TestView(unittest.TestCase):
         suan = Session.query(YaoWei).filter(YaoWei.wei=="甘").all()
         self.assertEqual(len(suan),1)
 
-    def testFashejView(self):
+    def testInputYaoXingForm(self):
         app = self.layer['app']
         portal = self.layer['portal']
 
@@ -132,9 +132,21 @@ class TestView(unittest.TestCase):
 
         transaction.commit()
         base = portal['folder']['ormfolder'].absolute_url()
-        browser.open(base + "/fashej_listings")
+
+        # Open form
+        browser.open("%s/@@input_yaoxing" % base)
         
-        self.assertTrue("row table table-striped table-bordered table-condensed listing" in browser.contents)
+        # Fill in the form 
+
+#         browser.getControl(name=u"form.widgets.id").value = 1
+        browser.getControl(name=u"form.widgets.xing").value = u"微寒"
+        
+        # Submit
+        browser.getControl(u"Submit").click()
+        suan = Session.query(YaoXing).filter(YaoXing.xing==u"微寒").all()
+        self.assertEqual(len(suan),1)
+#         self.assertTrue(u"Invalid email address" in browser.contents)        
+#         self.assertTrue("row table table-striped table-bordered table-condensed listing" in browser.contents)
         
 
     def testJieshoujView(self):
