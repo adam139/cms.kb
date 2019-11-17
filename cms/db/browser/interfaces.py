@@ -31,7 +31,7 @@ class IYaoUI (IYao):
             required=True,
         )        
 
-    form.widget(guijing=CheckBoxFieldWidget)
+#     form.widget(guijing=CheckBoxFieldWidget)
     guijing = schema.List(title=_(u"gui jing"),
                                description=_(u"gui jing"),
                                required=True,

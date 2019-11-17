@@ -10,8 +10,6 @@ from Products.CMFCore import permissions
 from Products.CMFCore.interfaces import ISiteRoot
 from plone.memoize.instance import memoize
 from Products.Five.browser import BrowserView
-# from collective.gtags.source import TagsSourceBinder
-from zope.component import getUtility
 # input data view
 from plone.directives import form
 from z3c.form import field, button
@@ -1048,7 +1046,7 @@ class InputYaoXing(form.Form):
 
         confirm = _(u"Thank you! Your data  will be update in back end DB.")
         IStatusMessage(self.request).add(confirm, type='info')
-        self.request.response.redirect(self.context.absolute_url() + '/@@yaoxing_listings')
+#         self.request.response.redirect(self.context.absolute_url() + '/@@yaoxing_listings')
 
     @button.buttonAndHandler(_(u"Cancel"))
     def cancel(self, action):
@@ -1308,11 +1306,11 @@ class DeleteYao(DeleteYaoXing):
         IStatusMessage(self.request).add(confirm, type='info')
         self.request.response.redirect(self.context.absolute_url() + '/@@yao_listings')
 
-class InputJingLuo(InputYaoXing):
+class InputYao(InputYaoXing):
     """input db yao table data
     """
 
-    grok.name('input_yao')
+#     grok.name('input_yao')
 
     label = _(u"Input yao data")
     fields = field.Fields(IYaoUI).omit('id')
@@ -1327,19 +1325,45 @@ class InputJingLuo(InputYaoXing):
         """Submit yao recorder
         """
         data, errors = self.extractData()
+
         if errors:
             self.status = self.formErrorsMessage
             return
         funcations = queryUtility(IDbapi, name='yao')
+        from sqlalchemy.inspection import inspect
+        table = inspect(Yao)
+        columns = [column.name for column in table.c]
+        #过滤主键,外键
+        columns = filter(lambda elem: not elem.endswith("id"),columns)        
+        #过滤非本表的字段
+        yao_data = dict()
+        for i in columns:
+            yao_data[i] = data[i]
+#         yao_data = dict(filter(lambda elem: elem in columns,data.items()))       
+
+# add_multi_tables(self,kwargs,fk_tables,asso_tables):
+#         "添加表记录的同时,并关联其他表记录"
+        #外键关联表 fk_tables: [(pk,map_cls,attr),...]
+        # 多对多关联表 asso_tables:[([pk1,pk2,...],map_cls,attr),...]                   
+        yaowei_id = data['yaowei_id']
+        yaoxing_id = data['yaoxing_id']
+        guijing = data['guijing']
+        fk_tables = [(yaowei_id,'YaoWei','yaowei'),(yaoxing_id,'YaoXing','yaoxing')]
+        import pdb
+        pdb.set_trace()
+        if bool(guijing):
+            asso_tables = [(guijing,'JingLuo','guijing')]            
+        else:
+            asso_tables = []
         try:
-            funcations.add(data)
+            funcations.add_multi_tables(yao_data,fk_tables,asso_tables)
         except InputError, e:
             IStatusMessage(self.request).add(str(e), type='error')
-            self.request.response.redirect(self.context.absolute_url() + '/@@yao_listings')
+#             self.request.response.redirect(self.context.absolute_url() + '/@@yao_listings')
 
         confirm = _(u"Thank you! Your data  will be update in back end DB.")
         IStatusMessage(self.request).add(confirm, type='info')
-        self.request.response.redirect(self.context.absolute_url() + '/@@yao_listings')
+#         self.request.response.redirect(self.context.absolute_url() + '/@@yao_listings')
 
     @button.buttonAndHandler(_(u"Cancel"))
     def cancel(self, action):

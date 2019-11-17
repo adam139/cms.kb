@@ -138,7 +138,33 @@ class Dbapi(object):
             session.commit()
         except:
             session.rollback()
-            
+
+    def add_multi_tables(self,kwargs,fk_tables,asso_tables):
+        "添加表记录的同时,并关联其他表记录"
+        #外键关联表 fk_tables: [(pk,map_cls,attr),...]
+        # 多对多关联表 asso_tables:[([pk1,pk2,...],map_cls,attr),...]
+        import_str = "from %(p)s import %(t)s as tablecls" % dict(p=self.package,t=self.factorycls) 
+        exec import_str in globals(), locals()
+        recorder = tablecls()
+
+        for kw in kwargs.keys():
+            setattr(recorder,kw,kwargs[kw])
+        for i in fk_tables:
+            import_str2 = "from %(p)s import %(t)s as mapcls" % dict(p=self.package,t=i[1])
+            exec import_str2 in globals(), locals()
+            linkobj = session.query(mapcls).filter(mapcls.id ==i[0]).one()
+            setattr(recorder,i[2],linkobj)
+        for i in asso_tables:
+            import_str3 = "from %(p)s import %(t)s as mapcls" % dict(p=self.package,t=i[1])
+            exec import_str3 in globals(), locals()
+            #主键到map对象(表记录) 的map function 
+            objs = map(lambda pk:session.query(mapcls).filter(mapcls.id ==pk).one(),i[0])                
+            setattr(recorder,i[2],objs)        
+        session.add(recorder)
+        try:
+            session.commit()
+        except:
+            session.rollback()            
 
     def query(self,kwargs):
         """分页查询

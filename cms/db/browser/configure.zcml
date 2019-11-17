@@ -46,6 +46,12 @@
         for="*"
         permission="zope2.View"
         class=".ajax_listing.InputYaoXing"/> 
+     <browser:page
+        name="input_yao"
+        for="*"
+        permission="zope2.View"
+        class=".ajax_listing.InputYao"/>
+
                      
     <!-- Control panel form -->
     <browser:page 

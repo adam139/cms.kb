@@ -5,6 +5,7 @@ from zope.schema.interfaces import IVocabularyFactory
 from zope.schema.vocabulary import SimpleTerm
 from zope.schema.vocabulary import SimpleVocabulary
 
+from cms.db.interfaces import IDbapi
 from cms.db import _
 
 
@@ -21,9 +22,10 @@ def yao_wei(context):
   
     locator = queryUtility(IDbapi, name='yaowei')
 
-    values = locator.query({'start':0,'size':0,'SearchableText':'','sort_order':'reverse'})
+    values = locator.query({'start':0,'size':5,'SearchableText':'','sort_order':'reverse'})
+
     return SimpleVocabulary(
-        [SimpleTerm(value=int(i.id), token=str(i.id), title=i.wei) for i in values],
+        [SimpleTerm(value=int(i[0]), token=str(i[0]), title=i[1]) for i in values],
     )
 
 @provider(IVocabularyFactory)
@@ -31,9 +33,9 @@ def yao_xing(context):
   
     locator = queryUtility(IDbapi, name='yaoxing')
 
-    values = locator.query({'start':0,'size':0,'SearchableText':'','sort_order':'reverse'})
+    values = locator.query({'start':0,'size':10,'SearchableText':'','sort_order':'reverse'})
     return SimpleVocabulary(
-        [SimpleTerm(value=int(i.id), token=str(i.id), title=i.xing) for i in values],
+        [SimpleTerm(value=int(i[0]), token=str(i[0]), title=i[1]) for i in values],
     )
     
 @provider(IVocabularyFactory)
@@ -41,8 +43,8 @@ def jingluo_mingcheng(context):
   
     locator = queryUtility(IDbapi, name='jingluo')
 
-    values = locator.query({'start':0,'size':0,'SearchableText':'','sort_order':'reverse'})
+    values = locator.query({'start':0,'size':12,'SearchableText':'','sort_order':'reverse'})
     return SimpleVocabulary(
-        [SimpleTerm(value=int(i.id), token=str(i.id), title=i.mingcheng) for i in values],
+        [SimpleTerm(value=int(i[0]), token=str(i[0]), title=i[1]) for i in values],
     )    
         
