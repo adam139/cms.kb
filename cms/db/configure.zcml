@@ -59,7 +59,8 @@
 	component=".ORMdbAPI.danwei"
 	name="danwei"
 	/>	
-
+ 
+ <!-- vocabulary utility -->
  <utility
     name="cms.db.yaowei"
     component="cms.db.vocabulary.yao_wei"
@@ -72,7 +73,18 @@
     name="cms.db.jingluo"
     component="cms.db.vocabulary.jingluo_mingcheng"
     />    
-    				
+ <utility
+    name="cms.db.dizhi"
+    component="cms.db.vocabulary.dizhi"
+    />
+  <utility
+    name="cms.db.danwei"
+    component="cms.db.vocabulary.danwei"
+    />   
+  <utility
+    name="cms.db.xingbie"
+    component="cms.db.vocabulary.xingbie"
+    />        				
   <genericsetup:registerProfile
       name="default"
       title="Chinese medical science system database"

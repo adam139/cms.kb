@@ -40,7 +40,7 @@
         for="*"
         permission="zope2.View"
         class=".ajax_listing.ChuFangAjaxsearch"/>        
- 
+     <!-- input form views define--> 
      <browser:page
         name="input_yaoxing"
         for="*"
@@ -51,8 +51,45 @@
         for="*"
         permission="zope2.View"
         class=".ajax_listing.InputYao"/>
-
-                     
+     <browser:page
+        name="input_yaowei"
+        for="*"
+        permission="zope2.View"
+        class=".ajax_listing.InputYaoWei"/>
+      <browser:page
+        name="input_jingluo"
+        for="*"
+        permission="zope2.View"
+        class=".ajax_listing.InputJingLuo"/>
+      <browser:page
+        name="input_chufang"
+        for="*"
+        permission="zope2.View"
+        class=".ajax_listing.InputChuFang"/>
+      <browser:page
+        name="input_bingren"
+        for="*"
+        permission="zope2.View"
+        class=".ajax_listing.InputBingRen"/>
+      <browser:page
+        name="input_dizhi"
+        for="*"
+        permission="zope2.View"
+        class=".ajax_listing.InputDiZhi"/>
+      <browser:page
+        name="input_yisheng"
+        for="*"
+        permission="zope2.View"
+        class=".ajax_listing.InputYiSheng"/>
+      <browser:page
+        name="input_danwei"
+        for="*"
+        permission="zope2.View"
+        class=".ajax_listing.InputDanWei"/>
+        
+    <!-- delete form view -->
+    
+                                                                    
     <!-- Control panel form -->
     <browser:page 
         name="sys-settings"

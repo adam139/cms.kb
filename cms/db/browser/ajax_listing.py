@@ -21,7 +21,10 @@ from cms.db.interfaces import IDbapi
 from cms.db.orm import IYaoWei,YaoWei
 from cms.db.orm import IYaoXing,YaoXing
 from cms.db.orm import IJingLuo,JingLuo
+# 有外键的表必须调用定制UI接口
 from cms.db.browser.interfaces import IYaoUI
+from cms.db.browser.interfaces import IDanWeiUI
+from cms.db.browser.interfaces import IYiShengUI
 from cms.db.orm import Yao
 from cms.db.orm import IChuFang,ChuFang
 from cms.db.orm import IDiZhi,DiZhi
@@ -1179,7 +1182,7 @@ class InputYaoWei(InputYaoXing):
     def update(self):
         self.request.set('disable_border', True)
         # Let z3c.form do its magic
-        super(InputFashej, self).update()
+        super(InputYaoWei, self).update()
 
     @button.buttonAndHandler(_(u"Submit"))
     def submit(self, action):
@@ -1198,7 +1201,7 @@ class InputYaoWei(InputYaoXing):
 
         confirm = _(u"Thank you! Your data  will be update in back end DB.")
         IStatusMessage(self.request).add(confirm, type='info')
-        self.request.response.redirect(self.context.absolute_url() + '/@@yaowei_listings')
+#         self.request.response.redirect(self.context.absolute_url() + '/@@yaowei_listings')
 
     @button.buttonAndHandler(_(u"Cancel"))
     def cancel(self, action):
@@ -1473,7 +1476,7 @@ class InputJingLuo(InputYaoXing):
     """input db jingluo table data
     """
 
-    grok.name('input_jingluo')
+#     grok.name('input_jingluo')
 
     label = _(u"Input jing luo data")
     fields = field.Fields(IJingLuo).omit('id')
@@ -1500,7 +1503,7 @@ class InputJingLuo(InputYaoXing):
 
         confirm = _(u"Thank you! Your data  will be update in back end DB.")
         IStatusMessage(self.request).add(confirm, type='info')
-        self.request.response.redirect(self.context.absolute_url() + '/@@jingluo_listings')
+#         self.request.response.redirect(self.context.absolute_url() + '/@@jingluo_listings')
 
     @button.buttonAndHandler(_(u"Cancel"))
     def cancel(self, action):
@@ -1878,7 +1881,7 @@ class DeleteDiZhi(DeleteYaoXing):
 class InputDiZhi(InputYaoXing):
     """input db dizhi table data
     """
-    grok.name('input_dizhi')
+#     grok.name('input_dizhi')
     label = _(u"Input dizhi data")
     fields = field.Fields(IDiZhi).omit('id')
 
@@ -1904,7 +1907,7 @@ class InputDiZhi(InputYaoXing):
             self.request.response.redirect(self.context.absolute_url() + '/@@dizhi_listings')
         confirm = _(u"Thank you! Your data  will be update in back end DB.")
         IStatusMessage(self.request).add(confirm, type='info')
-        self.request.response.redirect(self.context.absolute_url() + '/@@dizhi_listings')
+#         self.request.response.redirect(self.context.absolute_url() + '/@@dizhi_listings')
 
     @button.buttonAndHandler(_(u"Cancel"))
     def cancel(self, action):
@@ -2001,9 +2004,9 @@ class DeleteDanWei(DeleteYaoXing):
 class InputDanWei(InputYaoXing):
     """input dan wei table data
     """
-    grok.name('input_danwei')
+#     grok.name('input_danwei')
     label = _(u"Input dan wei data")
-    fields = field.Fields(IDanWei).omit('id')
+    fields = field.Fields(IDanWeiUI).omit('id')
 
     @button.buttonAndHandler(_(u"Submit"))
     def submit(self, action):
@@ -2014,14 +2017,27 @@ class InputDanWei(InputYaoXing):
             self.status = self.formErrorsMessage
             return
         funcations = queryUtility(IDbapi, name='danwei')
+        from sqlalchemy.inspection import inspect
+        table = inspect(DanWei)
+        columns = [column.name for column in table.c]
+        #过滤主键,外键
+        columns = filter(lambda elem: not elem.endswith("id"),columns)        
+        #过滤非本表的字段
+        danwei_data = dict()
+        for i in columns:
+            danwei_data[i] = data[i]
+                 
+        dizhi_id = data['dizhi_id']
+        fk_tables = [(dizhi_id,'DiZhi','dizhi')]
+        asso_tables = []
         try:
-            funcations.add(data)
+            funcations.add_multi_tables(danwei_data,fk_tables,asso_tables)
         except InputError, e:
             IStatusMessage(self.request).add(str(e), type='error')
             self.request.response.redirect(self.context.absolute_url() + '/@@danwei_listings')
         confirm = _(u"Thank you! Your data  will be update in back end DB.")
         IStatusMessage(self.request).add(confirm, type='info')
-        self.request.response.redirect(self.context.absolute_url() + '/@@danwei_listings')
+#         self.request.response.redirect(self.context.absolute_url() + '/@@danwei_listings')
 
     @button.buttonAndHandler(_(u"Cancel"))
     def cancel(self, action):
@@ -2114,9 +2130,9 @@ class DeleteYiSheng(DeleteYaoXing):
 class InputYiSheng(InputYaoXing):
     """input db yisheng table data
     """
-    grok.name('input_yisheng')
+#     grok.name('input_yisheng')
     label = _(u"Input tian xian ziku data")
-    fields = field.Fields(IYiSheng).omit('id')
+    fields = field.Fields(IYiShengUI).omit('id')
 
     @button.buttonAndHandler(_(u"Submit"))
     def submit(self, action):
@@ -2127,14 +2143,27 @@ class InputYiSheng(InputYaoXing):
             self.status = self.formErrorsMessage
             return
         funcations = queryUtility(IDbapi, name='yisheng')
+        from sqlalchemy.inspection import inspect
+        table = inspect(YiSheng)
+        columns = [column.name for column in table.c]
+        #过滤主键,外键
+        columns = filter(lambda elem: not elem.endswith("id"),columns)        
+        #过滤非本表的字段
+        _data = dict()
+        for i in columns:
+            _data[i] = data[i]
+                 
+        _id = data['danwei_id']
+        fk_tables = [(_id,'DanWei','danwei')]
+        asso_tables = []
         try:
-            funcations.add(data)
+            funcations.add_multi_tables(_data,fk_tables,asso_tables)
         except InputError, e:
             IStatusMessage(self.request).add(str(e), type='error')
             self.request.response.redirect(self.context.absolute_url() + '/@@yisheng_listings')
         confirm = _(u"Thank you! Your data  will be update in back end DB.")
         IStatusMessage(self.request).add(confirm, type='info')
-        self.request.response.redirect(self.context.absolute_url() + '/@@yisheng_listings')
+#         self.request.response.redirect(self.context.absolute_url() + '/@@yisheng_listings')
 
     @button.buttonAndHandler(_(u"Cancel"))
     def cancel(self, action):

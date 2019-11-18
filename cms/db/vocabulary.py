@@ -16,6 +16,28 @@ def xingbie(context):
     return SimpleVocabulary(
         [SimpleTerm(value=int(i), token=str(i), title=values[i]) for i in values.keys()],
     )
+
+@provider(IVocabularyFactory)
+def danwei(context):
+  
+    locator = queryUtility(IDbapi, name='danwei')
+
+    values = locator.query({'start':0,'size':100,'SearchableText':'','sort_order':'reverse'})
+
+    return SimpleVocabulary(
+        [SimpleTerm(value=int(i[0]), token=str(i[0]), title=i[2]) for i in values],
+    )
+
+@provider(IVocabularyFactory)
+def dizhi(context):
+  
+    locator = queryUtility(IDbapi, name='dizhi')
+
+    values = locator.query({'start':0,'size':100,'SearchableText':'','sort_order':'reverse'})
+
+    return SimpleVocabulary(
+        [SimpleTerm(value=int(i[0]), token=str(i[0]), title=i[3]+i[4]) for i in values],
+    )
     
 @provider(IVocabularyFactory)
 def yao_wei(context):

@@ -207,7 +207,7 @@ class ChuFang(Base):
     # to "xingming" attribute of YiSheng CLASS's object
     yishengxm = association_proxy('yisheng', 'xingming')
        
-    def __init__(self, mingcheng,yizhu=None,jiliang=5):
+    def __init__(self, mingcheng=None,yizhu=None,jiliang=5):
         self.mingcheng = mingcheng
         self.jiliang = jiliang
         self.yizhu = yizhu
@@ -261,7 +261,7 @@ class IDiZhi(Interface):
             title=_(u"shi (city)"),
             required=True,             
         )        
-    jiadao = schema.TextLine(
+    jiedao = schema.TextLine(
             title=_(u"jie dao"),
         )
     
@@ -293,7 +293,7 @@ class IDanWei(Interface):
             title=_(u"table primary key"),
         )    
     dizhi_id = schema.Int(
-            title=_(u"foreagn key link to wei"),
+            title=_(u"foreagn key link to dizhi"),
         ) 
     mingcheng = schema.TextLine(
             title=_(u"ming cheng"),
@@ -338,7 +338,7 @@ class IYiSheng(Interface):
         )
     xingbie = schema.Choice(
             title=_(u"xing bie"),
-            vocabulary='cms.db.vocabulary.xiebie',
+            vocabulary='cms.db.xingbie',
             required=True,            
         )    
     shengri = schema.Date(

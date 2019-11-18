@@ -5,11 +5,11 @@ from plone.autoform import directives as form
 
 from z3c.form.browser.checkbox import CheckBoxFieldWidget
 from cms.db.orm import IYao
+from cms.db.orm import IDanWei
+from cms.db.orm import IYiSheng
 from cms.db.orm import IYaoXing
 from cms.db.orm import IJingLuo
 from cms.db import _
-
- 
          
 
 class InputError(Exception):
@@ -17,6 +17,25 @@ class InputError(Exception):
     """
 
 # db table add,modify interfaces
+class IYiShengUI (IYiSheng):
+    """yisheng table editing ui """
+
+    danwei = schema.Choice(
+            title=_(u"dan wei"),
+            vocabulary='cms.db.danwei',
+            required=True,
+        )
+    
+    
+class IDanWeiUI (IDanWei):
+    """danwei table editing ui """
+
+    dizhi = schema.Choice(
+            title=_(u"di zhi"),
+            vocabulary='cms.db.dizhi',
+            required=True,
+        )
+    
 class IYaoUI (IYao):
     """yao table ui """
 
