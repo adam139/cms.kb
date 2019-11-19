@@ -214,6 +214,23 @@ class ChuFang(Base):
         
 
  ###药和处方关联表
+class IYao_ChuFang_Asso(Interface):
+    """
+    """
+    yao_id = schema.Int(
+            title=_(u"foreagn key link to yao"),
+        )    
+    chufang_id = schema.Int(
+            title=_(u"foreagn key link to chufang"),
+        )
+    yaoliang = schema.Int(
+            title=_(u"foreagn key link to yisheng"),
+        )    
+    paozhi = schema.TextLine(
+            title=_(u"ming cheng"),
+        )
+    
+         
 class Yao_ChuFang_Asso(Base):
     __tablename__ = 'yao_chufang'
     

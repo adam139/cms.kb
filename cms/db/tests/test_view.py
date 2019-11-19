@@ -376,7 +376,8 @@ class TestView(unittest.TestCase):
         base = portal['folder']['ormfolder'].absolute_url()
         # Open form
         browser.open("%s/@@input_chufang" % base)
-
+        import pdb
+        pdb.set_trace()
         yisheng_id = Session.query(YiSheng).filter(YiSheng.xingming=="余浩").first().id      
         # Fill in the form        
         browser.getControl(name=u"form.widgets.yisheng_id").value = str(yisheng_id)               

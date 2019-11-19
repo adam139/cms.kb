@@ -143,6 +143,8 @@ class Dbapi(object):
         "添加表记录的同时,并关联其他表记录"
         #外键关联表 fk_tables: [(pk,map_cls,attr),...]
         # 多对多关联表 asso_tables:[([pk1,pk2,...],map_cls,attr),...]
+        # 多对多关联表(asso table has itself properties) 
+        # asso_obj_tables:[(pk,targetcls,attr,[property1,property2,...]),...]
         import_str = "from %(p)s import %(t)s as tablecls" % dict(p=self.package,t=self.factorycls) 
         exec import_str in globals(), locals()
         recorder = tablecls()

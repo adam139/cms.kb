@@ -28,6 +28,8 @@ setup(name='cms.db',
           'MySQL-python',
           'SQLAlchemy', 
           'plone.app.dexterity',
+          'plone.directives.form',
+          'collective.z3cform.datagridfield',
       ],
       extras_require={
     'test': ['plone.app.testing',]

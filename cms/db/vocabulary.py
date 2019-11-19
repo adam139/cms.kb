@@ -18,6 +18,17 @@ def xingbie(context):
     )
 
 @provider(IVocabularyFactory)
+def yao(context):
+  
+    locator = queryUtility(IDbapi, name='yao')
+
+    values = locator.query({'start':0,'size':300,'SearchableText':'','sort_order':'reverse'})
+
+    return SimpleVocabulary(
+        [SimpleTerm(value=int(i[0]), token=str(i[0]), title=i[3]) for i in values],
+    )
+
+@provider(IVocabularyFactory)
 def danwei(context):
   
     locator = queryUtility(IDbapi, name='danwei')

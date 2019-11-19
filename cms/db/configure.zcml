@@ -89,7 +89,11 @@
     name="cms.db.yisheng"
     component="cms.db.vocabulary.yisheng"
     />
-                				
+  <utility
+    name="cms.db.yao"
+    component="cms.db.vocabulary.yao"
+    />
+                    				
   <genericsetup:registerProfile
       name="default"
       title="Chinese medical science system database"

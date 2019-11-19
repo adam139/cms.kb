@@ -1650,9 +1650,9 @@ class InputChuFang(InputYaoXing):
         #外键关联表 fk_tables: [(pk,map_cls,attr),...]
         # 多对多关联表 asso_tables:[([pk1,pk2,...],map_cls,attr),...]                   
         _id = data['yisheng']
-
         fk_tables = [(_id,'YiSheng','yisheng')]
-
+        import pdb
+        pdb.set_trace()
         asso_tables = []
         try:
             funcations.add_multi_tables(_data,fk_tables,asso_tables)
