@@ -84,7 +84,12 @@
   <utility
     name="cms.db.xingbie"
     component="cms.db.vocabulary.xingbie"
-    />        				
+    />
+  <utility
+    name="cms.db.yisheng"
+    component="cms.db.vocabulary.yisheng"
+    />
+                				
   <genericsetup:registerProfile
       name="default"
       title="Chinese medical science system database"

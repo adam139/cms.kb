@@ -7,8 +7,10 @@ from z3c.form.browser.checkbox import CheckBoxFieldWidget
 from cms.db.orm import IYao
 from cms.db.orm import IDanWei
 from cms.db.orm import IYiSheng
+from cms.db.orm import IBingRen
 from cms.db.orm import IYaoXing
 from cms.db.orm import IJingLuo
+from cms.db.orm import IChuFang
 from cms.db import _
          
 
@@ -17,6 +19,27 @@ class InputError(Exception):
     """
 
 # db table add,modify interfaces
+
+class IChuFangUI (IChuFang):
+    """chufang table editing ui """
+
+    yisheng = schema.Choice(
+            title=_(u"yi sheng"),
+            vocabulary='cms.db.yisheng',
+            required=True,
+        )
+
+
+class IBingRenUI (IBingRen):
+    """yisheng table editing ui """
+
+    dizhi = schema.Choice(
+            title=_(u"di zhi"),
+            vocabulary='cms.db.dizhi',
+            required=True,
+        )
+    
+    
 class IYiShengUI (IYiSheng):
     """yisheng table editing ui """
 

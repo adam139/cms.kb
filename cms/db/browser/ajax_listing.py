@@ -25,6 +25,8 @@ from cms.db.orm import IJingLuo,JingLuo
 from cms.db.browser.interfaces import IYaoUI
 from cms.db.browser.interfaces import IDanWeiUI
 from cms.db.browser.interfaces import IYiShengUI
+from cms.db.browser.interfaces import IBingRenUI
+from cms.db.browser.interfaces import IChuFangUI
 from cms.db.orm import Yao
 from cms.db.orm import IChuFang,ChuFang
 from cms.db.orm import IDiZhi,DiZhi
@@ -1613,10 +1615,10 @@ class InputChuFang(InputYaoXing):
     """input db chufang table data
     """
 
-    grok.name('input_chufang')
+#     grok.name('input_chufang')
 
     label = _(u"Input chu fang data")
-    fields = field.Fields(IChuFang).omit('id')
+    fields = field.Fields(IChuFangUI).omit('id')
 
     def update(self):
         self.request.set('disable_border', True)
@@ -1632,8 +1634,28 @@ class InputChuFang(InputYaoXing):
             self.status = self.formErrorsMessage
             return
         funcations = queryUtility(IDbapi, name='chufang')
+        from sqlalchemy.inspection import inspect
+        table = inspect(ChuFang)
+        columns = [column.name for column in table.c]
+        #过滤主键,外键
+        columns = filter(lambda elem: not elem.endswith("id"),columns)        
+        #过滤非本表的字段
+        _data = dict()
+        for i in columns:
+            _data[i] = data[i]
+#         yao_data = dict(filter(lambda elem: elem in columns,data.items()))       
+
+# add_multi_tables(self,kwargs,fk_tables,asso_tables):
+#         "添加表记录的同时,并关联其他表记录"
+        #外键关联表 fk_tables: [(pk,map_cls,attr),...]
+        # 多对多关联表 asso_tables:[([pk1,pk2,...],map_cls,attr),...]                   
+        _id = data['yisheng']
+
+        fk_tables = [(_id,'YiSheng','yisheng')]
+
+        asso_tables = []
         try:
-            funcations.add(data)
+            funcations.add_multi_tables(_data,fk_tables,asso_tables)
         except InputError, e:
             IStatusMessage(self.request).add(str(e), type='error')
             self.request.response.redirect(self.context.absolute_url() + '/@@chufang_listings')
@@ -1750,9 +1772,9 @@ class InputBingRen(InputYaoXing):
     """input db bingren table data
     """
 
-    grok.name('input_bingren')
+#     grok.name('input_bingren')
     label = _(u"Input bing ren data")
-    fields = field.Fields(IBingRen).omit('id')
+    fields = field.Fields(IBingRenUI).omit('id')
 
     def update(self):
         self.request.set('disable_border', True)
@@ -1769,8 +1791,21 @@ class InputBingRen(InputYaoXing):
             self.status = self.formErrorsMessage
             return
         funcations = queryUtility(IDbapi, name='bingren')
+        from sqlalchemy.inspection import inspect
+        table = inspect(BingRen)
+        columns = [column.name for column in table.c]
+        #过滤主键,外键
+        columns = filter(lambda elem: not elem.endswith("id"),columns)        
+        #过滤非本表的字段
+        _data = dict()
+        for i in columns:
+            _data[i] = data[i]
+                 
+        _id = data['dizhi_id']
+        fk_tables = [(_id,'DiZhi','dizhi')]
+        asso_tables = []
         try:
-            funcations.add(data)
+            funcations.add_multi_tables(_data,fk_tables,asso_tables)
         except InputError, e:
             IStatusMessage(self.request).add(str(e), type='error')
             self.request.response.redirect(self.context.absolute_url() + '/@@bingren_listings')

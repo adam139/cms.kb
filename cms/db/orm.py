@@ -393,7 +393,7 @@ class IBingRen(Interface):
         )
     xingbie = schema.Choice(
             title=_(u"xing bie"),
-            vocabulary='cms.db.vocabulary.xiebie',
+            vocabulary='cms.db.xingbie',
             required=True,            
         )    
     shengri = schema.Date(
@@ -407,10 +407,10 @@ class IBingRen(Interface):
             schema=IDiZhi,
         )
 # all chufangs of bingren
-    chufangs = schema.Object(
-            title=_(u"chu fang"),
-            schema=IChuFang,
-        )    
+#     chufangs = schema.Object(
+#             title=_(u"chu fang"),
+#             schema=IChuFang,
+#         )    
     
 
 class BingRen(Base):

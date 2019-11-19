@@ -13,6 +13,8 @@ from plone.app.testing import setRoles,login,logout
 from cms.db.contents.folder import Ifolder
 from cms.db.contents.ormfolder import Iormfolder
 
+from sqlalchemy import and_
+
 from cms.db import  Session
 from cms.db.orm import YaoWei,YaoXing,JingLuo,Yao
 from cms.db.orm import ChuFang,BingRen,DiZhi,DanWei,YiSheng
@@ -327,8 +329,7 @@ class TestView(unittest.TestCase):
         base = portal['folder']['ormfolder'].absolute_url()
         # Open form
         browser.open("%s/@@input_yisheng" % base)
-        import pdb
-        pdb.set_trace()
+
         danwei_id = Session.query(DanWei).filter(DanWei.mingcheng=="任之堂").first().id      
         # Fill in the form        
         browser.getControl(name=u"form.widgets.danwei_id").value = str(danwei_id)               
@@ -338,6 +339,54 @@ class TestView(unittest.TestCase):
         browser.getControl(name=u"form.widgets.dianhua").value = "13673265859"                        
         # Submit
         browser.getControl(u"Submit").click()
-        suan = Session.query(YiSheng).join(DanWei).filter(DanWei.mingcheng=="任之堂").all()
-        self.assertEqual(len(suan),2)
+        suan = Session.query(YiSheng).join(DanWei).filter(and_(DanWei.mingcheng=="任之堂",YiSheng.xingming=="余dong")).all()
+        self.assertEqual(len(suan),1)
         self.assertTrue(u"Thank you! Your data  will be update in back end DB." in browser.contents)
+
+    def testInputBingRenForm(self):
+        app = self.layer['app']
+        portal = self.layer['portal']
+        browser = Browser(app)
+        browser.handleErrors = False             
+        browser.addHeader('Authorization', 'Basic %s:%s' % (TEST_USER_NAME, TEST_USER_PASSWORD,))
+        transaction.commit()
+        base = portal['folder']['ormfolder'].absolute_url()
+        # Open form
+        browser.open("%s/@@input_bingren" % base)
+        dizhi_id = Session.query(DiZhi).filter(DiZhi.jiedao=="茅箭区施洋路83号").first().id      
+        # Fill in the form        
+        browser.getControl(name=u"form.widgets.dizhi_id").value = str(dizhi_id)               
+        browser.getControl(name=u"form.widgets.xingming").value = "张dong"
+        browser.getControl(name=u"form.widgets.xingbie:list").value = ['1']
+        browser.getControl(name=u"form.widgets.shengri").value =  "2015-09-12"
+        browser.getControl(name=u"form.widgets.dianhua").value = "13873265859"                        
+        # Submit
+        browser.getControl(u"Submit").click()
+        suan = Session.query(BingRen).join(DiZhi).filter(and_(DiZhi.jiedao=="茅箭区施洋路83号",BingRen.xingming=="张dong")).all()
+        self.assertEqual(len(suan),1)
+        self.assertTrue(u"Thank you! Your data  will be update in back end DB." in browser.contents)
+        
+    def testInputChuFangForm(self):
+        app = self.layer['app']
+        portal = self.layer['portal']
+        browser = Browser(app)
+        browser.handleErrors = False             
+        browser.addHeader('Authorization', 'Basic %s:%s' % (TEST_USER_NAME, TEST_USER_PASSWORD,))
+        transaction.commit()
+        base = portal['folder']['ormfolder'].absolute_url()
+        # Open form
+        browser.open("%s/@@input_chufang" % base)
+
+        yisheng_id = Session.query(YiSheng).filter(YiSheng.xingming=="余浩").first().id      
+        # Fill in the form        
+        browser.getControl(name=u"form.widgets.yisheng_id").value = str(yisheng_id)               
+        browser.getControl(name=u"form.widgets.mingcheng").value = "麻黄汤"
+        browser.getControl(name=u"form.widgets.yizhu").value = "热稀粥"
+        browser.getControl(name=u"form.widgets.jiliang").value =  "5"
+        browser.getControl(name=u"form.widgets.yisheng:list").value = [str(yisheng_id)]
+                                
+        # Submit
+        browser.getControl(u"Submit").click()
+        suan = Session.query(ChuFang).join(YiSheng).filter(and_(YiSheng.xingming=="余浩",ChuFang.mingcheng=="麻黄汤")).all()
+        self.assertEqual(len(suan),1)
+        self.assertTrue(u"Thank you! Your data  will be update in back end DB." in browser.contents)        
