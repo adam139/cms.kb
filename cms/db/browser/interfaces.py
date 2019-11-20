@@ -17,6 +17,7 @@ from cms.db.orm import IYao_ChuFang_Asso
 from cms.db import _
          
 
+
 class InputError(Exception):
     """Exception raised if there is an error making a data input
     """

@@ -152,16 +152,19 @@ class Dbapi(object):
         for kw in kwargs.keys():
             setattr(recorder,kw,kwargs[kw])
         for i in fk_tables:
-            import_str2 = "from %(p)s import %(t)s as mapcls" % dict(p=self.package,t=i[1])
-            exec import_str2 in globals(), locals()
+            import_str = "from %(p)s import %(t)s as mapcls" % dict(p=self.package,t=i[1])
+            exec import_str in globals(), locals()
             linkobj = session.query(mapcls).filter(mapcls.id ==i[0]).one()
             setattr(recorder,i[2],linkobj)
         for i in asso_tables:
-            import_str3 = "from %(p)s import %(t)s as mapcls" % dict(p=self.package,t=i[1])
-            exec import_str3 in globals(), locals()
+            import_str = "from %(p)s import %(t)s as mapcls" % dict(p=self.package,t=i[1])
+            exec import_str in globals(), locals()
             #主键到map对象(表记录) 的map function 
-            objs = map(lambda pk:session.query(mapcls).filter(mapcls.id ==pk).one(),i[0])                
-            setattr(recorder,i[2],objs)        
+            objs = []
+
+            for j in i[0]:
+                objs = objs.append(session.query(mapcls).filter(mapcls.id ==j).one())                
+            if bool(objs):setattr(recorder,i[2],objs)        
         session.add(recorder)
         try:
             session.commit()

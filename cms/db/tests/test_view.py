@@ -309,9 +309,10 @@ class TestView(unittest.TestCase):
         browser.open("%s/@@input_danwei" % base)
         dizhi_id = Session.query(DiZhi).filter(DiZhi.shi==u"湘潭市").first().id      
         # Fill in the form        
-        browser.getControl(name=u"form.widgets.dizhi_id").value = str(dizhi_id)                
+#         browser.getControl(name=u"form.widgets.dizhi_id").value = str(dizhi_id)                
         # Fill in the form 
-        browser.getControl(name=u"form.widgets.mingcheng").value = u"泽生堂"                        
+        browser.getControl(name=u"form.widgets.mingcheng").value = u"泽生堂"
+        browser.getControl(name=u"form.widgets.dizhi:list").value =[str(dizhi_id)]                         
         # Submit
         browser.getControl(u"Submit").click()
         suan = Session.query(DanWei).join(DiZhi).filter(DiZhi.shi==u"湘潭市").all()
@@ -366,7 +367,8 @@ class TestView(unittest.TestCase):
         self.assertEqual(len(suan),1)
         self.assertTrue(u"Thank you! Your data  will be update in back end DB." in browser.contents)
         
-    def testInputChuFangForm(self):
+    def testInputChuFangForm(self):        
+       
         app = self.layer['app']
         portal = self.layer['portal']
         browser = Browser(app)
@@ -376,15 +378,22 @@ class TestView(unittest.TestCase):
         base = portal['folder']['ormfolder'].absolute_url()
         # Open form
         browser.open("%s/@@input_chufang" % base)
+
+        browser.getControl(name=u"form.widgets.yaoes.buttons.add").click()
         import pdb
-        pdb.set_trace()
-        yisheng_id = Session.query(YiSheng).filter(YiSheng.xingming=="余浩").first().id      
+        pdb.set_trace()        
+        yisheng_id = Session.query(YiSheng).filter(YiSheng.xingming=="余浩").first().id
+        yao_id = Session.query(Yao).filter(Yao.mingcheng=="白芍").first().id      
         # Fill in the form        
         browser.getControl(name=u"form.widgets.yisheng_id").value = str(yisheng_id)               
         browser.getControl(name=u"form.widgets.mingcheng").value = "麻黄汤"
         browser.getControl(name=u"form.widgets.yizhu").value = "热稀粥"
         browser.getControl(name=u"form.widgets.jiliang").value =  "5"
         browser.getControl(name=u"form.widgets.yisheng:list").value = [str(yisheng_id)]
+        #fil subform
+        browser.getControl(name=u"form.widgets.yaoes.0.widgets.yao_id:list").value = [str(yao_id)]
+        browser.getControl(name=u"form.widgets.yaoes.0.widgets.yaoliang").value = '15'
+        browser.getControl(name=u"form.widgets.yaoes.0.widgets.paozhi").value = 'pao zhi'
                                 
         # Submit
         browser.getControl(u"Submit").click()

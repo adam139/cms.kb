@@ -271,7 +271,7 @@ class YaoXingAjaxsearch(BrowserView):
         searchview = getMultiAdapter((self.context, self.request),name=viewname)
         return searchview
 
-    def render(self):
+    def __call__(self):
 #        self.portal_state = getMultiAdapter((self.context, self.request), name=u"plone_portal_state")
         searchview = self.searchview()
  # datadic receive front ajax post data
@@ -1318,7 +1318,7 @@ class InputYao(InputYaoXing):
 #     grok.name('input_yao')
 
     label = _(u"Input yao data")
-    fields = field.Fields(IYaoUI).omit('id')
+    fields = field.Fields(IYaoUI).omit('id','yaowei_id','yaoxing_id')
 
     def update(self):
         self.request.set('disable_border', True)
@@ -1350,12 +1350,11 @@ class InputYao(InputYaoXing):
 #         "添加表记录的同时,并关联其他表记录"
         #外键关联表 fk_tables: [(pk,map_cls,attr),...]
         # 多对多关联表 asso_tables:[([pk1,pk2,...],map_cls,attr),...]                   
-        yaowei_id = data['yaowei_id']
-        yaoxing_id = data['yaoxing_id']
+        yaowei_id = data['yaowei']
+        yaoxing_id = data['yaoxing']
         guijing = data['guijing']
         fk_tables = [(yaowei_id,'YaoWei','yaowei'),(yaoxing_id,'YaoXing','yaoxing')]
-        import pdb
-        pdb.set_trace()
+
         if bool(guijing):
             asso_tables = [(guijing,'JingLuo','guijing')]            
         else:
@@ -1618,7 +1617,7 @@ class InputChuFang(InputYaoXing):
 #     grok.name('input_chufang')
 
     label = _(u"Input chu fang data")
-    fields = field.Fields(IChuFangUI).omit('id')
+    fields = field.Fields(IChuFangUI).omit('id','yisheng_id')
 
     def update(self):
         self.request.set('disable_border', True)
@@ -1630,6 +1629,8 @@ class InputChuFang(InputYaoXing):
         """Submit chufang recorder
         """
         data, errors = self.extractData()
+        import pdb
+        pdb.set_trace()
         if errors:
             self.status = self.formErrorsMessage
             return
@@ -2041,7 +2042,7 @@ class InputDanWei(InputYaoXing):
     """
 #     grok.name('input_danwei')
     label = _(u"Input dan wei data")
-    fields = field.Fields(IDanWeiUI).omit('id')
+    fields = field.Fields(IDanWeiUI).omit('id','dizhi_id')
 
     @button.buttonAndHandler(_(u"Submit"))
     def submit(self, action):
@@ -2062,7 +2063,9 @@ class InputDanWei(InputYaoXing):
         for i in columns:
             danwei_data[i] = data[i]
                  
-        dizhi_id = data['dizhi_id']
+        dizhi_id = data['dizhi']
+#         import pdb
+#         pdb.set_trace()
         fk_tables = [(dizhi_id,'DiZhi','dizhi')]
         asso_tables = []
         try:
@@ -2166,8 +2169,8 @@ class InputYiSheng(InputYaoXing):
     """input db yisheng table data
     """
 #     grok.name('input_yisheng')
-    label = _(u"Input tian xian ziku data")
-    fields = field.Fields(IYiShengUI).omit('id')
+    label = _(u"Input yi sheng data")
+    fields = field.Fields(IYiShengUI).omit('id','danwei_id')
 
     @button.buttonAndHandler(_(u"Submit"))
     def submit(self, action):
@@ -2188,7 +2191,7 @@ class InputYiSheng(InputYaoXing):
         for i in columns:
             _data[i] = data[i]
                  
-        _id = data['danwei_id']
+        _id = data['danwei']
         fk_tables = [(_id,'DanWei','danwei')]
         asso_tables = []
         try:

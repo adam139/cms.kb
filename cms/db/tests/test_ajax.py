@@ -112,7 +112,7 @@ class TestView(unittest.TestCase):
 # Look up and invoke the view via traversal
         box = self.portal['folder']['ormfolder']
         view = box.restrictedTraverse('@@yaoxing_ajaxsearch')
-        result = view.render()       
+        result = view()       
         self.assertEqual(json.loads(result)['total'],6)
 
     def test_yaowei(self):
@@ -132,7 +132,7 @@ class TestView(unittest.TestCase):
 # Look up and invoke the view via traversal
         box = self.portal['folder']['ormfolder']
         view = box.restrictedTraverse('@@yaowei_ajaxsearch')
-        result = view.render()       
+        result = view()       
         self.assertEqual(json.loads(result)['total'],5)
 
     def test_jingluo(self):
@@ -152,7 +152,7 @@ class TestView(unittest.TestCase):
 # Look up and invoke the view via traversal
         box = self.portal['folder']['ormfolder']
         view = box.restrictedTraverse('@@jingluo_ajaxsearch')
-        result = view.render()       
+        result = view()       
         self.assertEqual(json.loads(result)['total'],6)                
 
     def test_yaoes(self):
@@ -172,7 +172,7 @@ class TestView(unittest.TestCase):
 # Look up and invoke the view via traversal
         box = self.portal['folder']['ormfolder']
         view = box.restrictedTraverse('@@yao_ajaxsearch')
-        result = view.render()       
+        result = view()       
         self.assertEqual(json.loads(result)['total'],2)        
 
     def test_chufang(self):
@@ -192,8 +192,10 @@ class TestView(unittest.TestCase):
 # Look up and invoke the view via traversal
         box = self.portal['folder']['ormfolder']
         view = box.restrictedTraverse('@@chufang_ajaxsearch')
-        result = view.render()       
-        self.assertEqual(json.loads(result)['total'],1)     
+        result = view()       
+        self.assertEqual(json.loads(result)['total'],1)
+        
+ 
 
 
              
