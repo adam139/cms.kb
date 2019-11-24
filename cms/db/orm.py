@@ -254,8 +254,6 @@ class Yao_ChuFang_Asso(Base):
         self.yaoliang = yaoliang
         self.paozhi = paozhi
 
-
-
         
 ###联系地址
 class IDiZhi(Interface):

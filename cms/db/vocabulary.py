@@ -17,6 +17,18 @@ def xingbie(context):
         [SimpleTerm(value=int(i), token=str(i), title=values[i]) for i in values.keys()],
     )
 
+
+@provider(IVocabularyFactory)
+def bingren(context):
+  
+    locator = queryUtility(IDbapi, name='bingren')
+
+    values = locator.query({'start':0,'size':1000,'SearchableText':'','sort_order':'reverse'})
+
+    return SimpleVocabulary(
+        [SimpleTerm(value=int(i[0]), token=str(i[0]), title=i[2]+i[5]) for i in values],
+    )
+
 @provider(IVocabularyFactory)
 def yao(context):
   

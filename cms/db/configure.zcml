@@ -93,6 +93,10 @@
     name="cms.db.yao"
     component="cms.db.vocabulary.yao"
     />
+  <utility
+    name="cms.db.bingren"
+    component="cms.db.vocabulary.bingren"
+    />
                     				
   <genericsetup:registerProfile
       name="default"

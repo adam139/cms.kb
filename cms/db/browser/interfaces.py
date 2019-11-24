@@ -25,6 +25,28 @@ class InputError(Exception):
     """
 
 # db table add,modify interfaces
+class IChuFang_BingRen_AssoUI (Interface):
+    """chufang_bingren association table editing ui """
+
+    bingren_id = schema.Choice(
+            title=_(u"yao"),
+            vocabulary='cms.db.bingren',
+            required=True,
+        )          
+    shijian = schema.Datetime(
+            title=_(u"yao liang"),
+        )    
+
+
+@zope.interface.implementer(IChuFang_BingRen_AssoUI)
+class ChuFang_BingRen_AssoUI(object):
+#     implementer(IYao_ChuFang_AssoUI)
+
+    bingren_id = FieldProperty(IChuFang_BingRen_AssoUI['bingren_id'])
+    shijian = FieldProperty(IChuFang_BingRen_AssoUI['shijian'])
+
+
+
 class IYao_ChuFang_AssoUI (Interface):
     """yao chufang association table editing ui """
 
@@ -67,6 +89,12 @@ class IChuFangUI (IChuFang):
 #         value_type=DictRow(title=_(u"yao qingdan data row"), schema=IYao_ChuFang_AssoUI),
 #         required=False,
 #         )
+
+    bingrens = schema.List(title=_(u"bing ren"),
+        value_type=schema.Object(title=_(u"bing ren qing dan"), schema=IChuFang_BingRen_AssoUI),
+        required=False,
+        )
+
 
 class IBingRenUI (IBingRen):
     """yisheng table editing ui """

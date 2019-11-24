@@ -380,8 +380,10 @@ class TestView(unittest.TestCase):
         browser.open("%s/@@input_chufang" % base)
 
         browser.getControl(name=u"form.widgets.yaoes.buttons.add").click()
-        
+        browser.getControl(name=u"form.widgets.bingrens.buttons.add").click()
         yisheng_id = Session.query(YiSheng).filter(YiSheng.xingming=="余浩").first().id
+        bingren_id = Session.query(BingRen).filter(BingRen.xingming=="张三").first().id
+        
         yao_id = Session.query(Yao).filter(Yao.mingcheng=="白芍").first().id      
         # Fill in the form        
 #         browser.getControl(name=u"form.widgets.yisheng_id").value = str(yisheng_id)               
@@ -393,6 +395,10 @@ class TestView(unittest.TestCase):
         browser.getControl(name=u"form.widgets.yaoes.0.widgets.yao_id:list").value = [str(yao_id)]
         browser.getControl(name=u"form.widgets.yaoes.0.widgets.yaoliang").value = '15'
         browser.getControl(name=u"form.widgets.yaoes.0.widgets.paozhi").value = 'pao zhi'
+
+        browser.getControl(name=u"form.widgets.bingrens.0.widgets.bingren_id:list").value = [str(bingren_id)]
+        browser.getControl(name=u"form.widgets.bingrens.0.widgets.shijian").value = "2015-09-12 12:00"
+        
                                 
         # Submit
         browser.getControl(u"Submit").click()

@@ -1614,8 +1614,10 @@ class DeleteChuFang(DeleteYaoXing):
 #register multiwidget for IYao_ChuFang_AssoUI
 # from z3c.form.widget import FieldWidget
 from cms.db.browser.interfaces import Yao_ChuFang_AssoUI,IYao_ChuFang_AssoUI
+from cms.db.browser.interfaces import ChuFang_BingRen_AssoUI,IChuFang_BingRen_AssoUI
 from z3c.form.object import registerFactoryAdapter
 registerFactoryAdapter(IYao_ChuFang_AssoUI, Yao_ChuFang_AssoUI)
+registerFactoryAdapter(IChuFang_BingRen_AssoUI, ChuFang_BingRen_AssoUI)
 
 class InputChuFang(InputYaoXing):
     """input db chufang table data
@@ -1674,7 +1676,11 @@ class InputChuFang(InputYaoXing):
         #[<cms.db.browser.interfaces.Yao_ChuFang_AssoUI object at 0x7fb156e389d0>]
         #Yao_ChuFang_Asso(yao1,chufang,7,"晒干")
         # asso_obj_tables:[(pk,targetcls,attr,[property1,property2,...]),...]
-        yaoes = data['yaoes']
+#         import pdb
+#         pdb.set_trace()
+        bingrens = data['bingrens']        
+        bingren_asso_columns = filter_cln(ChuFang_BingRen_Asso)        
+        yaoes = data['yaoes']        
         asso_columns = filter_cln(Yao_ChuFang_Asso)
         asso_obj_tables = []
         for i in yaoes:
@@ -1685,9 +1691,17 @@ class InputChuFang(InputYaoXing):
             asso_attr = 'chufang'
             vls = [getattr(i,k,'') for k in asso_columns ]
             ppt = dict(zip(asso_columns,vls))
-            getattr(i,'yao_id',1)
             asso_obj_tables.append((pk,pk_cls,pk_attr,asso_cls,asso_attr,ppt))                    
-
+        for i in bingrens:
+            pk = getattr(i,'bingren_id',1)
+            pk_cls = 'BingRen'
+            pk_attr = 'bingren'            
+            asso_cls = ChuFang_BingRen_Asso
+            asso_attr = 'chufang'
+            vls = [getattr(i,k,'') for k in bingren_asso_columns ]
+            ppt = dict(zip(bingren_asso_columns,vls))
+            asso_obj_tables.append((pk,pk_cls,pk_attr,asso_cls,asso_attr,ppt))
+        
         asso_tables = []
         try:
             funcations.add_multi_tables(_data,fk_tables,asso_tables,asso_obj_tables)

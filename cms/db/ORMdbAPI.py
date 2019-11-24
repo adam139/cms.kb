@@ -184,6 +184,7 @@ class Dbapi(object):
             for kw in setvalues.keys():
                 setattr(link_obj,kw,setvalues[kw])
             #submit to db
+
             session.add(link_obj)                    
 
         try:
