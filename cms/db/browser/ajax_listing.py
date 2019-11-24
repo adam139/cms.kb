@@ -1610,6 +1610,13 @@ class DeleteChuFang(DeleteYaoXing):
         IStatusMessage(self.request).add(confirm, type='info')
         self.request.response.redirect(self.context.absolute_url() + '/@@chufang_listings')
 
+
+#register multiwidget for IYao_ChuFang_AssoUI
+# from z3c.form.widget import FieldWidget
+from cms.db.browser.interfaces import Yao_ChuFang_AssoUI,IYao_ChuFang_AssoUI
+from z3c.form.object import registerFactoryAdapter
+registerFactoryAdapter(IYao_ChuFang_AssoUI, Yao_ChuFang_AssoUI)
+
 class InputChuFang(InputYaoXing):
     """input db chufang table data
     """
@@ -1628,18 +1635,30 @@ class InputChuFang(InputYaoXing):
     def submit(self, action):
         """Submit chufang recorder
         """
+        #todo z3c.form.converter add adapter
+        # Collection Sequence Data Converter
+        #https://z3cform.readthedocs.io/en/latest/informative/converter.html        
         data, errors = self.extractData()
-        import pdb
-        pdb.set_trace()
+
         if errors:
             self.status = self.formErrorsMessage
             return
         funcations = queryUtility(IDbapi, name='chufang')
-        from sqlalchemy.inspection import inspect
-        table = inspect(ChuFang)
-        columns = [column.name for column in table.c]
-        #过滤主键,外键
-        columns = filter(lambda elem: not elem.endswith("id"),columns)        
+        def filter_cln(cls):
+            "过滤指定表类的列,只保留基本属性列"
+            
+            from sqlalchemy.inspection import inspect
+            table = inspect(cls)
+            columns = [column.name for column in table.c]
+            #过滤主键,外键
+            columns = filter(lambda elem: not elem.endswith("id"),columns)
+            return columns             
+#         from sqlalchemy.inspection import inspect
+#         table = inspect(ChuFang)
+#         columns = [column.name for column in table.c]
+#         #过滤主键,外键
+#         columns = filter(lambda elem: not elem.endswith("id"),columns)
+        columns = filter_cln(ChuFang)        
         #过滤非本表的字段
         _data = dict()
         for i in columns:
@@ -1652,11 +1671,26 @@ class InputChuFang(InputYaoXing):
         # 多对多关联表 asso_tables:[([pk1,pk2,...],map_cls,attr),...]                   
         _id = data['yisheng']
         fk_tables = [(_id,'YiSheng','yisheng')]
-        import pdb
-        pdb.set_trace()
+        #[<cms.db.browser.interfaces.Yao_ChuFang_AssoUI object at 0x7fb156e389d0>]
+        #Yao_ChuFang_Asso(yao1,chufang,7,"晒干")
+        # asso_obj_tables:[(pk,targetcls,attr,[property1,property2,...]),...]
+        yaoes = data['yaoes']
+        asso_columns = filter_cln(Yao_ChuFang_Asso)
+        asso_obj_tables = []
+        for i in yaoes:
+            pk = getattr(i,'yao_id',1)
+            pk_cls = 'Yao'
+            pk_attr = 'yao'            
+            asso_cls = Yao_ChuFang_Asso
+            asso_attr = 'chufang'
+            vls = [getattr(i,k,'') for k in asso_columns ]
+            ppt = dict(zip(asso_columns,vls))
+            getattr(i,'yao_id',1)
+            asso_obj_tables.append((pk,pk_cls,pk_attr,asso_cls,asso_attr,ppt))                    
+
         asso_tables = []
         try:
-            funcations.add_multi_tables(_data,fk_tables,asso_tables)
+            funcations.add_multi_tables(_data,fk_tables,asso_tables,asso_obj_tables)
         except InputError, e:
             IStatusMessage(self.request).add(str(e), type='error')
             self.request.response.redirect(self.context.absolute_url() + '/@@chufang_listings')

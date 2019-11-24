@@ -1,5 +1,7 @@
 #-*- coding: UTF-8 -*-
-from zope.interface import Interface
+from zope.interface import Interface,implementer
+import zope.interface
+from zope.schema.fieldproperty import FieldProperty
 from zope import schema
 from plone.directives import form
 # from plone.autoform import directives as form
@@ -38,6 +40,14 @@ class IYao_ChuFang_AssoUI (Interface):
             title=_(u"pao zhi"),
         )
 
+@zope.interface.implementer(IYao_ChuFang_AssoUI)
+class Yao_ChuFang_AssoUI(object):
+#     implementer(IYao_ChuFang_AssoUI)
+
+    yao_id = FieldProperty(IYao_ChuFang_AssoUI['yao_id'])
+    yaoliang = FieldProperty(IYao_ChuFang_AssoUI['yaoliang'])
+    paozhi = FieldProperty(IYao_ChuFang_AssoUI['paozhi'])    
+
 
 class IChuFangUI (IChuFang):
     """chufang table editing ui """
@@ -47,11 +57,16 @@ class IChuFangUI (IChuFang):
             vocabulary='cms.db.yisheng',
             required=True,
         )
-    form.widget(yaoes=DataGridFieldFactory)
+#     form.widget(yaoes=DataGridFieldFactory)
     yaoes = schema.List(title=_(u"yao qingdan"),
-        value_type=DictRow(title=_(u"yao qingdan data row"), schema=IYao_ChuFang_AssoUI),
+        value_type=schema.Object(title=_(u"yao qingdan data row"), schema=IYao_ChuFang_AssoUI),
         required=False,
-        )
+        )    
+#     form.widget(yaoes=DataGridFieldFactory)
+#     yaoes = schema.List(title=_(u"yao qingdan"),
+#         value_type=DictRow(title=_(u"yao qingdan data row"), schema=IYao_ChuFang_AssoUI),
+#         required=False,
+#         )
 
 class IBingRenUI (IBingRen):
     """yisheng table editing ui """

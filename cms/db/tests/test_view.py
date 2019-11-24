@@ -380,12 +380,11 @@ class TestView(unittest.TestCase):
         browser.open("%s/@@input_chufang" % base)
 
         browser.getControl(name=u"form.widgets.yaoes.buttons.add").click()
-        import pdb
-        pdb.set_trace()        
+        
         yisheng_id = Session.query(YiSheng).filter(YiSheng.xingming=="余浩").first().id
         yao_id = Session.query(Yao).filter(Yao.mingcheng=="白芍").first().id      
         # Fill in the form        
-        browser.getControl(name=u"form.widgets.yisheng_id").value = str(yisheng_id)               
+#         browser.getControl(name=u"form.widgets.yisheng_id").value = str(yisheng_id)               
         browser.getControl(name=u"form.widgets.mingcheng").value = "麻黄汤"
         browser.getControl(name=u"form.widgets.yizhu").value = "热稀粥"
         browser.getControl(name=u"form.widgets.jiliang").value =  "5"
