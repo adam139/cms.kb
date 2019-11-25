@@ -34,7 +34,7 @@ class IChuFang_BingRen_AssoUI (Interface):
             required=True,
         )          
     shijian = schema.Datetime(
-            title=_(u"yao liang"),
+            title=_(u"chu fang shi jian"),
         )    
 
 

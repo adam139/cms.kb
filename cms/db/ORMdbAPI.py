@@ -1,5 +1,4 @@
 #-*- coding: UTF-8 -*-
-from five import grok
 from datetime import datetime
 from zope import schema
 from zope.interface import implements
@@ -33,11 +32,9 @@ class Dbapi(object):
         self.table = table
         self.factorycls = factorycls
         self.columns = columns
-        self.fullsearch_clmns = fullsearch_clmns
-        
+        self.fullsearch_clmns = fullsearch_clmns        
         import os
-        os.environ['NLS_LANG'] = '.AL32UTF8'        
-
+        os.environ['NLS_LANG'] = '.AL32UTF8'      
 
     def search_clmns2sqltxt(self,clmns):
         """get columns that will been used keyword full text search
@@ -138,6 +135,9 @@ class Dbapi(object):
             session.commit()
         except:
             session.rollback()
+            raise
+        finally:
+            session.close()
 
     def add_multi_tables(self,kwargs,fk_tables,asso_tables,asso_obj_tables=[]):
         "添加表记录的同时,并关联其他表记录"
@@ -184,13 +184,14 @@ class Dbapi(object):
             for kw in setvalues.keys():
                 setattr(link_obj,kw,setvalues[kw])
             #submit to db
-
-            session.add(link_obj)                    
-
+            session.add(link_obj)                   
         try:
             session.commit()
         except:
-            session.rollback()            
+            session.rollback()
+            raise
+        finally:
+            session.close()                        
 
     def query(self,kwargs):
         """分页查询
@@ -287,9 +288,13 @@ class Dbapi(object):
             nums = len(recorders)
             return nums
         try:
-            return recorders
+            session.commit()            
         except:
-            return []    
+            session.rollback()
+            recorders = []
+        finally:
+            session.close()
+            return recorders    
     
     def init_table(self):
         "import table class"
@@ -309,10 +314,13 @@ class Dbapi(object):
                 params(id=id).one()
                 session.delete(recorder)
                 session.commit()
-                return True
+                rt = True
             except:
                 session.rollback()
-                return False
+                rt = False
+            finally:
+                session.close()
+                return rt
         else:
             return None
 
@@ -339,7 +347,9 @@ text("SELECT * FROM users WHERE name=:name")).params(name='ed').all()
                 session.commit()
             except:
                 session.rollback()
-                pass
+            finally:
+                session.close()
+                
         else:
             return None
 
@@ -354,7 +364,7 @@ text("SELECT * FROM users WHERE name=:name")).params(name='ed').all()
                 params(id=id).one()
                 return recorder
             except:
-
+                session.rollback()
                 return None
         else:
             return None
@@ -368,6 +378,7 @@ text("SELECT * FROM users WHERE name=:name")).params(name='ed').all()
             num = self.session.query(func.count(tablecls.id)).scalar()         
             return num
         except:
+            self.session.rollback()
             return 0            
 
     def fetch_oldest(self):
@@ -389,6 +400,7 @@ text("SELECT * FROM users WHERE name=:name")).params(name='ed').all()
                 return datetime.datetime.now()
 #             s.commit()
         except:
+            s.rollback()
             return datetime.datetime.now()
     
     def bulk_delete(self,size):
@@ -410,6 +422,8 @@ text("SELECT * FROM users WHERE name=:name")).params(name='ed').all()
             s.commit()
         except:
             s.rollback()
+        finally:
+            s.close()
 
 # yaoxing table       
 yaoxing = Dbapi(session,'cms.db.orm','yaoxing','YaoXing')

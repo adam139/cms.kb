@@ -404,4 +404,46 @@ class TestView(unittest.TestCase):
         browser.getControl(u"Submit").click()
         suan = Session.query(ChuFang).join(YiSheng).filter(and_(YiSheng.xingming=="余浩",ChuFang.mingcheng=="麻黄汤")).all()
         self.assertEqual(len(suan),1)
-        self.assertTrue(u"Thank you! Your data  will be update in back end DB." in browser.contents)        
+        self.assertTrue(u"Thank you! Your data  will be update in back end DB." in browser.contents)
+        
+# edit forms
+    def testUpdateYaoXingForm(self):
+        app = self.layer['app']
+        portal = self.layer['portal']
+        browser = Browser(app)
+        browser.handleErrors = False             
+        browser.addHeader('Authorization', 'Basic %s:%s' % (TEST_USER_NAME, TEST_USER_PASSWORD,))
+        transaction.commit()
+        base = portal['folder']['ormfolder'].absolute_url()
+        yaoxing_id = Session.query(YaoXing).filter(YaoXing.xing==u"寒").first().id
+        # Open form
+        browser.open("%s/@@update_yaoxing/%s" % (base,yaoxing_id))        
+        # Fill in the form 
+#         browser.getControl(name=u"form.widgets.id").value = str(yaoxing_id)
+        browser.getControl(name=u"form.widgets.xing").value = u"微寒"        
+        # Submit
+        browser.getControl(u"Submit").click()
+        suan = Session.query(YaoXing).filter(YaoXing.xing==u"微寒").all()
+        self.assertEqual(len(suan),1)
+        self.assertTrue(u"Thank you! Your data  will be update in back end DB." in browser.contents)
+        
+        
+    def testUpdateYaoForm(self):
+        app = self.layer['app']
+        portal = self.layer['portal']
+        browser = Browser(app)
+        browser.handleErrors = False             
+        browser.addHeader('Authorization', 'Basic %s:%s' % (TEST_USER_NAME, TEST_USER_PASSWORD,))
+        transaction.commit()
+        base = portal['folder']['ormfolder'].absolute_url()
+        yao_id = Session.query(Yao).filter(Yao.mingcheng=="大枣").first().id
+        # Open form
+        browser.open("%s/@@update_yao/%s" % (base,yao_id))        
+        # Fill in the form 
+#         browser.getControl(name=u"form.widgets.id").value = str(yaoxing_id)
+        browser.getControl(name=u"form.widgets.zhuzhi").value = u"主脾胃"        
+        # Submit
+        browser.getControl(u"Submit").click()
+        suan = Session.query(Yao).filter(Yao.zhuzhi==u"主脾胃").all()
+        self.assertEqual(len(suan),1)
+        self.assertTrue(u"Thank you! Your data  will be update in back end DB." in browser.contents)                         

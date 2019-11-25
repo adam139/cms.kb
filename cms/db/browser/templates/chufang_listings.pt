@@ -70,42 +70,25 @@
             <table class="row table table-striped table-bordered table-condensed listing">
             	<thead>
             		<tr data-toggle="tooltip" title="点击排序" tal:condition="python:view.canbeInput">
-            			<th class="col-md-1 text-center">从属设备代码</th>
-            			<th class="col-md-1 text-left">发射天线名称</th>
-            			<th class="col-md-1 text-left">状态批次代码</th>
-            			<th class="col-md-1 text-left">位置</th>
-                  		<th class="col-md-1 text-left">增益</th>
-            			<th class="col-md-1 text-left">极化</th>
-            			<th class="col-md-1 text-left">方位波束带宽</th>
-            			<th class="col-md-1 text-left">俯仰波束带宽</th>
-            			<th class="col-md-1 text-left">天线指向角</th>
+            			<th class="col-md-2 text-center">名称</th>
+            			<th class="col-md-5 text-left">药物构成</th>
+            			<th class="col-md-1 text-left">医生</th>
+            			<th class="col-md-1 text-left">剂量</th>
+                  		<th class="col-md-1 text-left">医嘱</th>
             			<th class="col-md-1 text-center">编辑</th>
             			<th class="col-md-1 text-center">删除</th>
             		</tr>
             		<tr data-toggle="tooltip" title="点击排序" tal:condition="python:not view.canbeInput">
-            			<th class="col-md-2 text-center">从属设备代码</th>
-            			<th class="col-md-2 text-left">发射天线名称</th>
-            			<th class="col-md-1 text-left">状态批次代码</th>
-            			<th class="col-md-1 text-left">位置</th>
-                  		<th class="col-md-1 text-left">增益</th>
-            			<th class="col-md-1 text-left">极化</th>
-            			<th class="col-md-1 text-left">方位波束带宽</th>
-            			<th class="col-md-1 text-left">俯仰波束带宽</th>
-            			<th class="col-md-1 text-left">天线指向角</th>
+            			<th class="col-md-2 text-center">名称</th>
+            			<th class="col-md-5 text-left">药物构成</th>
+            			<th class="col-md-1 text-left">医生</th>
+            			<th class="col-md-1 text-left">剂量</th>
+                  		<th class="col-md-3 text-left">医嘱</th>
             		</tr>            		
             	</thead>
             	<tbody id="searchResultDiv">
             		<tr>
-            			<td class="col-md-1 text-center">丛属设备代码</td>
-            			<td class="col-md-1 text-left">发射天线名称</td>
-            			<td class="col-md-1 text-left">状态批次代码</td>
-            			<td class="col-md-1 text-center">位置</td>
-            			<td class="col-md-1 text-left">极化</td>
-            			<td class="col-md-1 text-left">方位波速带宽</td>
-            			<td class="col-md-1 text-left">俯仰波速带宽</td>
-            			<td class="col-md-1 text-left">天线指向角</td>
-            			<td class="col-md-1 text-center">编辑</td>
-            			<td class="col-md-1 text-center">删除</td>
+
             		</tr>
             	</tbody>
             </table>

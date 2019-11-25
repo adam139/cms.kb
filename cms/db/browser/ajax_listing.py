@@ -570,7 +570,7 @@ class ChuFangAjaxsearch(YaoXingAjaxsearch):
 
                 out = """<tr class="text-left">
                                 <td class="col-md-2 text-center"><a href="%(edit_url)s">%(name)s</a></td>
-                                <td class="col-md-1 text-left">%(yaoes)s</td>
+                                <td class="col-md-5 text-left">%(yaoes)s</td>
                                 <td class="col-md-1">%(yisheng)s</td>
                                 <td class="col-md-1">%(jiliang)s</td>
                                 <td class="col-md-1">%(yizhu)s</td>                              
@@ -600,11 +600,10 @@ class ChuFangAjaxsearch(YaoXingAjaxsearch):
             for i in resultDicLists:
                 out = """<tr class="text-left">
                                 <td class="col-md-2 text-center"><a href="%(edit_url)s">%(name)s</a></td>
-                                <td class="col-md-1 text-left">%(yaoes)s</td>
+                                <td class="col-md-5 text-left">%(yaoes)s</td>
                                 <td class="col-md-1">%(yisheng)s</td>
                                 <td class="col-md-1">%(jiliang)s</td>
-                                <td class="col-md-1">%(yizhu)s</td>                              
-                                <td class="col-md-1 text-center">
+                                <td class="col-md-3">%(yizhu)s</td>
                                 </tr> """% dict(objurl="%s/@@view" % contexturl,
                                             name=i[2],
                                             jiliang= i[3],
@@ -1066,9 +1065,9 @@ class UpdateYaoXing(form.Form):
     """
 
     implements(IPublishTraverse)
-    grok.context(Iormfolder)
-    grok.name('update_yaoxing')
-    grok.require('cms.db.input_db')
+#     grok.context(Iormfolder)
+#     grok.name('update_yaoxing')
+#     grok.require('cms.db.input_db')
 
     label = _(u"update yao xing data")
     fields = field.Fields(IYaoXing).omit('id')
@@ -1080,7 +1079,6 @@ class UpdateYaoXing(form.Form):
         # Get the model table query funcations
         locator = queryUtility(IDbapi, name='yaoxing')
         # to do
-        # fetch first record as sample data
         return locator.getByCode(self.id)
 
 
@@ -1106,6 +1104,8 @@ class UpdateYaoXing(form.Form):
             self.status = self.formErrorsMessage
             return
         funcations = queryUtility(IDbapi, name='yaoxing')
+        if not ('id' in data.keys()):
+            data['id'] = self.id
         try:
             funcations.updateByCode(data)
         except InputError, e:
@@ -1217,7 +1217,7 @@ class InputYaoWei(InputYaoXing):
 class UpdateYaoWei(UpdateYaoXing):
     """update yaowei table row data
     """
-    grok.name('update_yaowei')
+#     grok.name('update_yaowei')
     label = _(u"update yao wei data")
     fields = field.Fields(IYaoWei).omit('id')
 
@@ -1380,7 +1380,7 @@ class InputYao(InputYaoXing):
 class UpdateYao(UpdateYaoXing):
     """update yao table row data
     """
-    grok.name('update_yao')
+#     grok.name('update_yao')
     label = _(u"update yao data")
     fields = field.Fields(IYaoUI).omit('id')
 
@@ -1678,9 +1678,11 @@ class InputChuFang(InputYaoXing):
         # asso_obj_tables:[(pk,targetcls,attr,[property1,property2,...]),...]
 #         import pdb
 #         pdb.set_trace()
-        bingrens = data['bingrens']        
+        bingrens = data['bingrens']
+        if not bool(bingrens):bingrens = []        
         bingren_asso_columns = filter_cln(ChuFang_BingRen_Asso)        
-        yaoes = data['yaoes']        
+        yaoes = data['yaoes']
+        if not bool(yaoes):yaoes = []        
         asso_columns = filter_cln(Yao_ChuFang_Asso)
         asso_obj_tables = []
         for i in yaoes:

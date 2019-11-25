@@ -86,6 +86,53 @@
         for="*"
         permission="zope2.View"
         class=".ajax_listing.InputDanWei"/>
+
+     <!-- update form views define--> 
+     <browser:page
+        name="update_yaoxing"
+        for="*"
+        permission="zope2.View"
+        class=".ajax_listing.UpdateYaoXing"/> 
+     <browser:page
+        name="update_yao"
+        for="*"
+        permission="zope2.View"
+        class=".ajax_listing.UpdateYao"/>
+     <browser:page
+        name="update_yaowei"
+        for="*"
+        permission="zope2.View"
+        class=".ajax_listing.UpdateYaoWei"/>
+      <browser:page
+        name="update_jingluo"
+        for="*"
+        permission="zope2.View"
+        class=".ajax_listing.UpdateJingLuo"/>
+      <browser:page
+        name="update_chufang"
+        for="*"
+        permission="zope2.View"
+        class=".ajax_listing.UpdateChuFang"/>
+      <browser:page
+        name="update_bingren"
+        for="*"
+        permission="zope2.View"
+        class=".ajax_listing.UpdateBingRen"/>
+      <browser:page
+        name="update_dizhi"
+        for="*"
+        permission="zope2.View"
+        class=".ajax_listing.UpdateDiZhi"/>
+      <browser:page
+        name="update_yisheng"
+        for="*"
+        permission="zope2.View"
+        class=".ajax_listing.UpdateYiSheng"/>
+      <browser:page
+        name="update_danwei"
+        for="*"
+        permission="zope2.View"
+        class=".ajax_listing.UpdateDanWei"/>
         
     <!-- delete form view -->
     
