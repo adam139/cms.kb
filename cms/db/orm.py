@@ -122,6 +122,7 @@ class IYao(Interface):
         )
     zhuzhi = schema.TextLine(
             title=_(u"zhu zhi"),
+            required = False,
         )
     yaowei = schema.Object(
             title=_(u"gui jing"),

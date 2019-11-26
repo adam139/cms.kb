@@ -78,7 +78,7 @@ def yao_wei(context):
   
     locator = queryUtility(IDbapi, name='yaowei')
 
-    values = locator.query({'start':0,'size':5,'SearchableText':'','sort_order':'reverse'})
+    values = locator.query({'start':0,'size':10,'SearchableText':'','sort_order':'reverse'})
 
     return SimpleVocabulary(
         [SimpleTerm(value=int(i[0]), token=str(i[0]), title=i[1]) for i in values],
@@ -89,7 +89,7 @@ def yao_xing(context):
   
     locator = queryUtility(IDbapi, name='yaoxing')
 
-    values = locator.query({'start':0,'size':10,'SearchableText':'','sort_order':'reverse'})
+    values = locator.query({'start':0,'size':15,'SearchableText':'','sort_order':'reverse'})
     return SimpleVocabulary(
         [SimpleTerm(value=int(i[0]), token=str(i[0]), title=i[1]) for i in values],
     )

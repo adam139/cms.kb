@@ -26,55 +26,54 @@ class TestView(unittest.TestCase):
     layer = FUNCTIONAL_TESTING
     def setUp(self):
 
-        yaowei1 = YaoWei("酸")
-        yaowei2 = YaoWei("苦")
-        yaowei3 = YaoWei("甘")
-        yaowei4 = YaoWei("辛")
-        yaowei5 = YaoWei("咸")
-        Session.add_all([yaowei1,yaowei2,yaowei3,yaowei4,yaowei5])
-        yaoxing1 = YaoXing("大热")
-        yaoxing2 = YaoXing("热")
-        yaoxing3 = YaoXing("温")
-        yaoxing4 = YaoXing("凉")
-        yaoxing5 = YaoXing("寒")
-        yaoxing6 = YaoXing("大寒")
-        Session.add_all([yaoxing1,yaoxing2,yaoxing3,yaoxing4,yaoxing5,yaoxing6])
-        jingluo1 = JingLuo("足太阳膀胱经")
-        jingluo2 = JingLuo("足阳明胃经")
-        jingluo3 = JingLuo("足少阳胆经")
-        jingluo4 = JingLuo("足厥阴肝经")
-        jingluo5 = JingLuo("足少阴肾经")
-        jingluo6 = JingLuo("足太阴脾经")
-        Session.add_all([jingluo1,jingluo2,jingluo3,jingluo4,jingluo5,jingluo6])
-        yao1 = Yao("白芍")
-        yao1.yaowei = yaowei1
-        yao1.yaoxing = yaoxing1
-        yao1.guijing = [jingluo1]         
-        yao2 = Yao("大枣")
-        yao2.yaowei = yaowei2
-        yao2.yaoxing = yaoxing2
-        yao2.guijing = [jingluo2]
-        Session.add_all([yao1,yao2])        
-        dizhi = DiZhi("中国","湖南","湘潭市","湘潭县云湖桥镇北岸村道林组83号")
-        bingren = BingRen('张三',1, date(2015, 4, 2),'13673265899')
-        bingren.dizhi = dizhi
-        dizhi2 = DiZhi("中国","湖北","十堰市","茅箭区施洋路83号")
-        danwei = DanWei("任之堂")
-        yisheng = YiSheng('余浩',1, date(2015, 4, 2),'13673265859')
-        danwei.yishengs = [yisheng]
-        danwei.dizhi = dizhi2
-        chufang = ChuFang("桂枝汤","加热稀粥",5)
-        yao_chufang = Yao_ChuFang_Asso(yao1,chufang,7,"晒干")
-        yao_chufang2 = Yao_ChuFang_Asso(yao2,chufang,10,"掰开")
-        chufang_bingren = ChuFang_BingRen_Asso(bingren,chufang,datetime.now())
-        yisheng.chufangs = [chufang]
-        Session.add_all([dizhi,bingren,danwei,dizhi2,yisheng,chufang,yao_chufang,yao_chufang2,chufang_bingren])                         
-        Session.commit()        
+#         yaowei1 = YaoWei("酸")
+#         yaowei2 = YaoWei("苦")
+#         yaowei3 = YaoWei("甘")
+#         yaowei4 = YaoWei("辛")
+#         yaowei5 = YaoWei("咸")
+#         Session.add_all([yaowei1,yaowei2,yaowei3,yaowei4,yaowei5])
+#         yaoxing1 = YaoXing("大热")
+#         yaoxing2 = YaoXing("热")
+#         yaoxing3 = YaoXing("温")
+#         yaoxing4 = YaoXing("凉")
+#         yaoxing5 = YaoXing("寒")
+#         yaoxing6 = YaoXing("大寒")
+#         Session.add_all([yaoxing1,yaoxing2,yaoxing3,yaoxing4,yaoxing5,yaoxing6])
+#         jingluo1 = JingLuo("足太阳膀胱经")
+#         jingluo2 = JingLuo("足阳明胃经")
+#         jingluo3 = JingLuo("足少阳胆经")
+#         jingluo4 = JingLuo("足厥阴肝经")
+#         jingluo5 = JingLuo("足少阴肾经")
+#         jingluo6 = JingLuo("足太阴脾经")
+#         Session.add_all([jingluo1,jingluo2,jingluo3,jingluo4,jingluo5,jingluo6])
+#         yao1 = Yao("白芍")
+#         yao1.yaowei = yaowei1
+#         yao1.yaoxing = yaoxing1
+#         yao1.guijing = [jingluo1]         
+#         yao2 = Yao("大枣")
+#         yao2.yaowei = yaowei2
+#         yao2.yaoxing = yaoxing2
+#         yao2.guijing = [jingluo2]
+#         Session.add_all([yao1,yao2])        
+#         dizhi = DiZhi("中国","湖南","湘潭市","湘潭县云湖桥镇北岸村道林组83号")
+#         bingren = BingRen('张三',1, date(2015, 4, 2),'13673265899')
+#         bingren.dizhi = dizhi
+#         dizhi2 = DiZhi("中国","湖北","十堰市","茅箭区施洋路83号")
+#         danwei = DanWei("任之堂")
+#         yisheng = YiSheng('余浩',1, date(2015, 4, 2),'13673265859')
+#         danwei.yishengs = [yisheng]
+#         danwei.dizhi = dizhi2
+#         chufang = ChuFang("桂枝汤","加热稀粥",5)
+#         yao_chufang = Yao_ChuFang_Asso(yao1,chufang,7,"晒干")
+#         yao_chufang2 = Yao_ChuFang_Asso(yao2,chufang,10,"掰开")
+#         chufang_bingren = ChuFang_BingRen_Asso(bingren,chufang,datetime.now())
+#         yisheng.chufangs = [chufang]
+#         Session.add_all([dizhi,bingren,danwei,dizhi2,yisheng,chufang,yao_chufang,yao_chufang2,chufang_bingren])                         
+#         Session.commit()
+#         import pdb
+#         pdb.set_trace()      
         portal = self.layer['portal']
-
         setRoles(portal, TEST_USER_ID, ('Manager',))
-
-
         portal.invokeFactory('cms.db.folder', 'folder')
         portal['folder'].invokeFactory('cms.db.ormfolder', 'ormfolder')       
         self.portal = portal
@@ -89,72 +88,54 @@ class TestView(unittest.TestCase):
         items.extend(Session.query(BingRen).all())
         items.extend(Session.query(YiSheng).all())
         items.extend(Session.query(DanWei).all())
-        items.extend(Session.query(DiZhi).all())                
+        items.extend(Session.query(DiZhi).all())
+               
         for item in items:
             Session.delete(item)            
-        Session.commit()
-                
+        Session.commit()                
         
     def testfolderView(self):
 
         app = self.layer['app']
         portal = self.layer['portal']
-
         browser = Browser(app)
         browser.handleErrors = False             
         browser.addHeader('Authorization', 'Basic %s:%s' % (TEST_USER_NAME, TEST_USER_PASSWORD,))
-
         transaction.commit()
-
-        browser.open(portal['folder'].absolute_url())
-        
+        browser.open(portal['folder'].absolute_url())        
         self.assertTrue('class="pat-structure"' in browser.contents)
-
    
     def testormfolderView(self):
         app = self.layer['app']
         portal = self.layer['portal']
-
         browser = Browser(app)
         browser.handleErrors = False             
         browser.addHeader('Authorization', 'Basic %s:%s' % (TEST_USER_NAME, TEST_USER_PASSWORD,))
-#         browser.addHeader('Authorization', 'Basic %s:%s' % ('user3', 'secret',))
-
         transaction.commit()
-        browser.open(portal['folder']['ormfolder'].absolute_url())
-        
+        browser.open(portal['folder']['ormfolder'].absolute_url())        
         self.assertTrue('class="pat-structure"' in browser.contents)
     
     def testYaoXingView(self):
         # add data to yaoxing table
 
         suan = Session.query(YaoXing).filter(YaoXing.xing=="温").all()
-        self.assertEqual(len(suan),1)
-        
-        
+        self.assertEqual(len(suan),1)               
         app = self.layer['app']
         portal = self.layer['portal']
-
         browser = Browser(app)
         browser.handleErrors = False             
         browser.addHeader('Authorization', 'Basic %s:%s' % (TEST_USER_NAME, TEST_USER_PASSWORD,))
-#         browser.addHeader('Authorization', 'Basic %s:%s' % ('user3', 'secret',))
-
         transaction.commit()
         base = portal['folder']['ormfolder'].absolute_url()
-
-        browser.open(base + "/@@yaoxing_listings")
-        
+        browser.open(base + "/@@yaoxing_listings")        
         self.assertTrue(u"温" in browser.contents)
         
     def testYaoWeiView(self):
         app = self.layer['app']
         portal = self.layer['portal']
-
         browser = Browser(app)
         browser.handleErrors = False             
         browser.addHeader('Authorization', 'Basic %s:%s' % (TEST_USER_NAME, TEST_USER_PASSWORD,))
-
         transaction.commit()
         base = portal['folder']['ormfolder'].absolute_url()
         browser.open(base + "/@@yaowei_listings")
@@ -261,8 +242,12 @@ class TestView(unittest.TestCase):
         jingluo_id2 = Session.query(JingLuo).filter(JingLuo.mingcheng=="足厥阴肝经").first().id
        
         # Fill in the form 
-        browser.getControl(name=u"form.widgets.yaowei_id").value = str(yaowei_id)
-        browser.getControl(name=u"form.widgets.yaoxing_id").value = str(yaoxing_id)
+
+#         browser.getControl(name=u"form.widgets.yaowei_id").value = str(yaowei_id)
+#         browser.getControl(name=u"form.widgets.yaoxing_id").value = str(yaoxing_id)
+        browser.getControl(name=u"form.widgets.yaowei:list").value = [str(yaowei_id)]
+        browser.getControl(name=u"form.widgets.yaoxing:list").value = [str(yaoxing_id)]
+
         browser.getControl(name=u"form.widgets.mingcheng").value = u"牛膝"
          
 #         browser.getControl(name=u"form.widgets.guijing.to").value = [jingluo_id,jingluo_id2] 
@@ -437,13 +422,20 @@ class TestView(unittest.TestCase):
         transaction.commit()
         base = portal['folder']['ormfolder'].absolute_url()
         yao_id = Session.query(Yao).filter(Yao.mingcheng=="大枣").first().id
+        yaowei_id = Session.query(YaoWei).filter(YaoWei.wei=="甘").first().id
         # Open form
-        browser.open("%s/@@update_yao/%s" % (base,yao_id))        
+        browser.open("%s/@@update_yao/%s" % (base,yao_id))
+#         import pdb
+#         pdb.set_trace()                 
         # Fill in the form 
-#         browser.getControl(name=u"form.widgets.id").value = str(yaoxing_id)
+#         browser.getControl(name=u"from2toButton").value = str(yaoxing_id)
+#         browser.getControl(name=u"from2toButton").click()
+        browser.getControl(name=u"form.widgets.yaowei:list").value = [str(yaowei_id)]
         browser.getControl(name=u"form.widgets.zhuzhi").value = u"主脾胃"        
+#         import pdb
+#         pdb.set_trace()        
         # Submit
-        browser.getControl(u"Submit").click()
+        browser.getControl(u"Submit").click()        
         suan = Session.query(Yao).filter(Yao.zhuzhi==u"主脾胃").all()
         self.assertEqual(len(suan),1)
         self.assertTrue(u"Thank you! Your data  will be update in back end DB." in browser.contents)                         

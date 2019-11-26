@@ -1,5 +1,6 @@
 #-*- coding: UTF-8 -*-
 from zope.interface import Interface
+from zope.schema import getFieldsInOrder
 from zope.component import getMultiAdapter
 from five import grok
 import json
@@ -27,6 +28,7 @@ from cms.db.browser.interfaces import IDanWeiUI
 from cms.db.browser.interfaces import IYiShengUI
 from cms.db.browser.interfaces import IBingRenUI
 from cms.db.browser.interfaces import IChuFangUI
+from cms.db.browser.utility import filter_cln
 from cms.db.orm import Yao
 from cms.db.orm import IChuFang,ChuFang
 from cms.db.orm import IDiZhi,DiZhi
@@ -1377,19 +1379,35 @@ class InputYao(InputYaoXing):
         IStatusMessage(self.request).add(confirm, type='info')
         self.request.response.redirect(self.context.absolute_url() + '/@@yao_listings')
 
+from cms.db.browser.intermediate_objs import YaoUI
 class UpdateYao(UpdateYaoXing):
     """update yao table row data
     """
 #     grok.name('update_yao')
     label = _(u"update yao data")
-    fields = field.Fields(IYaoUI).omit('id')
+    fields = field.Fields(IYaoUI).omit('id','yaowei_id','yaoxing_id')
 
     def getContent(self):
-        # Get the model table query funcations
+        # create a temp obj that provided IYaoUI
+        #assemble the obj from those association tables fetch data
         locator = queryUtility(IDbapi, name='yao')
-        # to do
-        # fetch first record as sample data
-        return locator.getByCode(self.id)
+        yao_obj = locator.getByCode(self.id)
+        # ignore fields list
+        ignore = ['id','yaoxing_id','yaowei_id']
+        # obj fields list
+        objfd = ['yaowei','yaoxing']
+        listobjfd = ['guijing']
+        data = dict()
+        for name, f in getFieldsInOrder(IYaoUI):            
+            p = getattr(yao_obj, name, '')
+            if name in ignore:continue
+            elif name in objfd:
+                data[name] = getattr(p,'id',1)
+            elif name in listobjfd:
+                data[name] = [getattr(j,'id',1) for j in p]
+            else:
+                data[name] = p                         
+        return YaoUI(**data)
 
     def update(self):
         self.request.set('disable_border', True)
@@ -1402,13 +1420,28 @@ class UpdateYao(UpdateYaoXing):
         """
 
         data, errors = self.extractData()
-        data['id'] = self.id
+        yao_clmns = filter_cln(Yao)        
         if errors:
             self.status = self.formErrorsMessage
             return
         funcations = queryUtility(IDbapi, name='yao')
+        #过滤非本表的字段
+        yao_data = dict()
+        for i in yao_clmns:
+            yao_data[i] = data[i]
+                               
+        yao_data['id'] = self.id
+        yaowei_id = data['yaowei']
+        yaoxing_id = data['yaoxing']
+        guijing = data['guijing']
+        fk_tables = [(yaowei_id,'YaoWei','yaowei'),(yaoxing_id,'YaoXing','yaoxing')]
+
+        if bool(guijing):
+            asso_tables = [(guijing,'JingLuo','guijing')]            
+        else:
+            asso_tables = []
         try:
-            funcations.updateByCode(data)
+            funcations.update_multi_tables(yao_data,fk_tables,asso_tables)
         except InputError, e:
             IStatusMessage(self.request).add(str(e), type='error')
             self.request.response.redirect(self.context.absolute_url() + '/@@yao_listings')
