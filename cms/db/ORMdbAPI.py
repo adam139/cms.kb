@@ -170,8 +170,7 @@ class Dbapi(object):
         for i in asso_obj_tables:
             import_str = "from %(p)s import %(t)s as mapcls" % dict(p=self.package,t=i[1])
             exec import_str in globals(), locals()
-            #主键到map对象(表记录) 的map function 
-
+            #主键到map对象(表记录) 的map function
             obj1 = session.query(mapcls).filter(mapcls.id ==i[0]).one()
             obj2 = recorder
             setvalues = i[5]
@@ -192,7 +191,68 @@ class Dbapi(object):
             raise
         finally:
             session.close()                        
-
+    
+    def update_multi_tables(self,kwargs,fk_tables=[],asso_tables=[],asso_obj_tables=[]):
+        "更新本表的同时,兼顾处理外键表,关联表,关联对象表"
+        "fk_tables:[(pk,map_cls,attr),...]"
+        "asso_tables:[([pk1,pk2,...],map_cls,attr),...]"
+        "asso_obj_tables:[(pk,targetcls,attr,[property1,property2,...]),...]"
+        
+        id = kwargs['id']
+        if bool(id):
+            tablecls = self.init_table()
+            sqltext = "SELECT * FROM %s WHERE id=:id" % self.table
+            try:
+                recorder = session.query(tablecls).\
+                from_statement(text(sqltext)).\
+                params(id=id).one()
+                updatedattrs = [kw for kw in kwargs.keys() if kw != 'id']
+                for kw in updatedattrs:
+                    setattr(recorder,kw,kwargs[kw])
+                for i in fk_tables:
+                    import_str = "from %(p)s import %(t)s as mapcls" % dict(p=self.package,t=i[1])
+                    exec import_str in globals(), locals()
+                    linkobj = session.query(mapcls).filter(mapcls.id ==i[0]).one()
+                    setattr(recorder,i[2],linkobj)
+#                 import pdb
+#                 pdb.set_trace()
+                for i in asso_tables:
+                    import_str = "from %(p)s import %(t)s as mapcls" % dict(p=self.package,t=i[1])
+                    exec import_str in globals(), locals()
+                    objs = []
+                    for j in i[0]:
+                        objs = objs.append(session.query(mapcls).filter(mapcls.id ==j).one())                
+                    if bool(objs):setattr(recorder,i[2],objs)
+                session.add(recorder)
+        
+                for i in asso_obj_tables:
+                    import_str = "from %(p)s import %(t)s as mapcls" % dict(p=self.package,t=i[1])
+                    exec import_str in globals(), locals()
+            #主键到map对象(表记录) 的map function
+                    obj1 = session.query(mapcls).filter(mapcls.id ==i[0]).one()
+                    obj2 = recorder
+                    setvalues = i[5]
+                    #add source obj
+                    setvalues[i[2]] = obj1
+            # add target obj
+                    setvalues[i[4]]= obj2
+            # instance association obj
+                    link_obj = i[3]()
+                    for kw in setvalues.keys():
+                        setattr(link_obj,kw,setvalues[kw])
+            #submit to db
+                    session.add(link_obj) 
+                session.commit()
+            except:
+                session.rollback()
+            finally:
+                session.close()
+                
+        else:
+            pass
+                   
+    
+    
     def query(self,kwargs):
         """分页查询
         columns = request.args.getlist('columns')
@@ -326,12 +386,6 @@ class Dbapi(object):
 
     def updateByCode(self,kwargs):
         "update the speicy table recorder"
-        """
-        session.query(User).from_statement(text("SELECT * FROM users WHERE name=:name")).\
-params(name='ed').all()
-session.query(User).from_statement(
-text("SELECT * FROM users WHERE name=:name")).params(name='ed').all()
-        """
 
         id = kwargs['id']
         if id != "":
