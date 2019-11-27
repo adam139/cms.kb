@@ -59,6 +59,16 @@
 	component=".ORMdbAPI.danwei"
 	name="danwei"
 	/>	
+ <utility
+	provides=".interfaces.IDbapi"
+	component=".ORMdbAPI.chufang_bingren"
+	name="chufang_bingren"
+	/>
+ <utility
+	provides=".interfaces.IDbapi"
+	component=".ORMdbAPI.yao_chufang"
+	name="yao_chufang"
+	/>
  
  <!-- vocabulary utility -->
  <utility

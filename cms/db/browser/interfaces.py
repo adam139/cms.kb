@@ -38,15 +38,6 @@ class IChuFang_BingRen_AssoUI (Interface):
         )    
 
 
-@zope.interface.implementer(IChuFang_BingRen_AssoUI)
-class ChuFang_BingRen_AssoUI(object):
-#     implementer(IYao_ChuFang_AssoUI)
-
-    bingren_id = FieldProperty(IChuFang_BingRen_AssoUI['bingren_id'])
-    shijian = FieldProperty(IChuFang_BingRen_AssoUI['shijian'])
-
-
-
 class IYao_ChuFang_AssoUI (Interface):
     """yao chufang association table editing ui """
 
@@ -61,15 +52,7 @@ class IYao_ChuFang_AssoUI (Interface):
     paozhi = schema.TextLine(
             title=_(u"pao zhi"),
         )
-
-@zope.interface.implementer(IYao_ChuFang_AssoUI)
-class Yao_ChuFang_AssoUI(object):
-#     implementer(IYao_ChuFang_AssoUI)
-
-    yao_id = FieldProperty(IYao_ChuFang_AssoUI['yao_id'])
-    yaoliang = FieldProperty(IYao_ChuFang_AssoUI['yaoliang'])
-    paozhi = FieldProperty(IYao_ChuFang_AssoUI['paozhi'])    
-
+ 
 
 class IChuFangUI (IChuFang):
     """chufang table editing ui """

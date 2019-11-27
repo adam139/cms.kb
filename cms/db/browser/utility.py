@@ -1,6 +1,12 @@
 # -*- coding: utf-8 -*-
 
 
+
+def map_field2cls(fieldname):
+    "为编辑表单的getcontent()提供字段名到中间对象class name映射"
+    dt = {'yaoes':"Yao_ChuFang_AssoUI",'bingrens':"ChuFang_BingRen_AssoUI"}
+    return dt[fieldname]
+
 def filter_cln(cls):
     "过滤指定表类的列,只保留基本属性列"            
 

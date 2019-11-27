@@ -241,13 +241,14 @@ class Yao_ChuFang_Asso(Base):
     paozhi = Column(String(64))
      
     # bidirectional attribute/collection of "chufang"/"yao_chufang"
-    chufang = relationship(ChuFang,
-                backref=backref("yao_chufang",
+    chufang = relationship(ChuFang,lazy='subquery',
+                backref=backref("yao_chufang",lazy='subquery',
                                 cascade="all, delete-orphan")
             )
 
     # reference to the "Yao" object
-    yao = relationship("Yao")
+    yao = relationship("Yao",lazy='subquery')
+#     yao = relationship("Yao")
 
     def __init__(self, yao=None, chufang=None, yaoliang=None, paozhi=None):
         self.yao = yao
@@ -463,13 +464,13 @@ class ChuFang_BingRen_Asso(Base):
     shijian = Column(DateTime, default=func.now())
      
     # bidirectional attribute/collection of "bingren"/"chufang_bingren"
-    bingren = relationship(BingRen,
-                backref=backref("chufangs_bingren",
+    bingren = relationship(BingRen,lazy='subquery',
+                backref=backref("chufangs_bingren",lazy='subquery',
                                 cascade="all, delete-orphan")
             )
     # bidirectional attribute/collection of "chufang"/"chufang_bingren"
-    chufang = relationship(ChuFang,
-                backref=backref("chufang_bingrens",
+    chufang = relationship(ChuFang,lazy='subquery',
+                backref=backref("chufang_bingrens",lazy='subquery',
                                 cascade="all, delete-orphan")
             )    
 #     # reference to the "ChuFang" object

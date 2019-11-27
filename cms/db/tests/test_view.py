@@ -438,4 +438,50 @@ class TestView(unittest.TestCase):
         browser.getControl(u"Submit").click()        
         suan = Session.query(Yao).filter(Yao.zhuzhi==u"主脾胃").all()
         self.assertEqual(len(suan),1)
-        self.assertTrue(u"Thank you! Your data  will be update in back end DB." in browser.contents)                         
+        self.assertTrue(u"Thank you! Your data  will be update in back end DB." in browser.contents)
+        
+        
+    def testUpdateChuFangForm(self):
+        app = self.layer['app']
+        portal = self.layer['portal']
+        browser = Browser(app)
+        browser.handleErrors = False             
+        browser.addHeader('Authorization', 'Basic %s:%s' % (TEST_USER_NAME, TEST_USER_PASSWORD,))
+        transaction.commit()
+        base = portal['folder']['ormfolder'].absolute_url()
+        chufang_id = Session.query(ChuFang).filter(ChuFang.mingcheng=="桂枝汤").first().id
+        yisheng_id = Session.query(YiSheng).filter(YiSheng.xingming=="余浩").first().id
+        bingren_id = Session.query(BingRen).filter(BingRen.xingming=="张三").first().id
+        
+        yao_id = Session.query(Yao).filter(Yao.mingcheng=="麻黄").first().id
+        yao_id2 = Session.query(Yao).filter(Yao.mingcheng=="桂枝").first().id       
+
+        # Open form
+        browser.open("%s/@@update_chufang/%s" % (base,chufang_id))
+        import pdb
+        pdb.set_trace()                 
+        # Fill in the form              
+        browser.getControl(name=u"form.widgets.mingcheng").value = "麻黄汤"
+        browser.getControl(name=u"form.widgets.yizhu").value = "主脾胃"
+        browser.getControl(name=u"form.widgets.jiliang").value =  "3"
+        browser.getControl(name=u"form.widgets.yisheng:list").value = [str(yisheng_id)]
+        #fil subform
+        browser.getControl(name=u"form.widgets.yaoes.0.widgets.yao_id:list").value = [str(yao_id)]
+        browser.getControl(name=u"form.widgets.yaoes.0.widgets.yaoliang").value = '15'
+        browser.getControl(name=u"form.widgets.yaoes.0.widgets.paozhi").value = 'pao zhi'
+        browser.getControl(name=u"form.widgets.yaoes.1.widgets.yao_id:list").value = [str(yao_id2)]        
+        browser.getControl(name=u"form.widgets.yaoes.1.widgets.yaoliang").value = '20'
+        browser.getControl(name=u"form.widgets.yaoes.1.widgets.paozhi").value = '晒干'        
+
+        browser.getControl(name=u"form.widgets.bingrens.0.widgets.bingren_id:list").value = [str(bingren_id)]
+        browser.getControl(name=u"form.widgets.bingrens.0.widgets.shijian").value = "2015-09-12 12:00"
+                
+
+        browser.getControl(u"Submit").click()
+        import pdb
+        pdb.set_trace()        
+        suan = Session.query(ChuFang).filter(ChuFang.yizhu==u"主脾胃").all()
+        self.assertEqual(len(suan),1)
+        self.assertTrue(u"Thank you! Your data  will be update in back end DB." in browser.contents)      
+        
+                                 

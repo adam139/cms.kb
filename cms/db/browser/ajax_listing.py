@@ -29,6 +29,7 @@ from cms.db.browser.interfaces import IYiShengUI
 from cms.db.browser.interfaces import IBingRenUI
 from cms.db.browser.interfaces import IChuFangUI
 from cms.db.browser.utility import filter_cln
+from cms.db.browser.utility import map_field2cls
 from cms.db.orm import Yao
 from cms.db.orm import IChuFang,ChuFang
 from cms.db.orm import IDiZhi,DiZhi
@@ -1337,11 +1338,7 @@ class InputYao(InputYaoXing):
             self.status = self.formErrorsMessage
             return
         funcations = queryUtility(IDbapi, name='yao')
-        from sqlalchemy.inspection import inspect
-        table = inspect(Yao)
-        columns = [column.name for column in table.c]
-        #过滤主键,外键
-        columns = filter(lambda elem: not elem.endswith("id"),columns)        
+        columns = filter_cln(Yao)        
         #过滤非本表的字段
         yao_data = dict()
         for i in columns:
@@ -1646,8 +1643,12 @@ class DeleteChuFang(DeleteYaoXing):
 
 #register multiwidget for IYao_ChuFang_AssoUI
 # from z3c.form.widget import FieldWidget
-from cms.db.browser.interfaces import Yao_ChuFang_AssoUI,IYao_ChuFang_AssoUI
-from cms.db.browser.interfaces import ChuFang_BingRen_AssoUI,IChuFang_BingRen_AssoUI
+from cms.db.browser.interfaces import IYao_ChuFang_AssoUI
+from cms.db.browser.interfaces import IChuFang_BingRen_AssoUI
+from cms.db.browser.intermediate_objs import ChuFang_BingRen_AssoUI
+from cms.db.browser.intermediate_objs import Yao_ChuFang_AssoUI
+from cms.db.browser.intermediate_objs import EditChuFang_BingRen_AssoUI
+from cms.db.browser.intermediate_objs import EditYao_ChuFang_AssoUI
 from z3c.form.object import registerFactoryAdapter
 registerFactoryAdapter(IYao_ChuFang_AssoUI, Yao_ChuFang_AssoUI)
 registerFactoryAdapter(IChuFang_BingRen_AssoUI, ChuFang_BingRen_AssoUI)
@@ -1656,14 +1657,11 @@ class InputChuFang(InputYaoXing):
     """input db chufang table data
     """
 
-#     grok.name('input_chufang')
-
     label = _(u"Input chu fang data")
     fields = field.Fields(IChuFangUI).omit('id','yisheng_id')
 
     def update(self):
         self.request.set('disable_border', True)
-
         super(InputChuFang, self).update()
 
     @button.buttonAndHandler(_(u"Submit"))
@@ -1674,20 +1672,10 @@ class InputChuFang(InputYaoXing):
         # Collection Sequence Data Converter
         #https://z3cform.readthedocs.io/en/latest/informative/converter.html        
         data, errors = self.extractData()
-
         if errors:
             self.status = self.formErrorsMessage
             return
-        funcations = queryUtility(IDbapi, name='chufang')
-        def filter_cln(cls):
-            "过滤指定表类的列,只保留基本属性列"
-            
-            from sqlalchemy.inspection import inspect
-            table = inspect(cls)
-            columns = [column.name for column in table.c]
-            #过滤主键,外键
-            columns = filter(lambda elem: not elem.endswith("id"),columns)
-            return columns             
+        funcations = queryUtility(IDbapi, name='chufang')             
 #         from sqlalchemy.inspection import inspect
 #         table = inspect(ChuFang)
 #         columns = [column.name for column in table.c]
@@ -1756,19 +1744,81 @@ class InputChuFang(InputYaoXing):
         IStatusMessage(self.request).add(confirm, type='info')
         self.request.response.redirect(self.context.absolute_url() + '/@@chufang_listings')
 
+
+from cms.db.browser.intermediate_objs import ChuFangUI
 class UpdateChuFang(UpdateYaoXing):
     """update chufang table row data
     """
-    grok.name('update_chufang')
+#     grok.name('update_chufang')
     label = _(u"update chu fang data")
-    fields = field.Fields(IChuFang).omit('id')
+    fields = field.Fields(IChuFangUI).omit('id','yisheng_id')
 
     def getContent(self):
-        # Get the model table query funcations
+        # create a temp obj that provided IYaoUI
+        #assemble the obj from those association tables fetch data
         locator = queryUtility(IDbapi, name='chufang')
-        # to do
-        # fetch first record as sample data
-        return locator.getByCode(self.id)
+        _obj = locator.getByCode(self.id)
+        # ignore fields list
+        ignore = ['id','yisheng_id']
+        # obj fields list
+        objfd = ['yisheng']
+#         asso_proxy_fd = ['yaoes','bingrens']
+#         listobjfd = ['guijing']
+        data = dict()
+        bingrenlist = getattr(_obj, 'bingrens', [])
+        yaolist = getattr(_obj, 'yaoes', [])
+        for name, f in getFieldsInOrder(IChuFangUI):          
+            try:
+                p = getattr(_obj, name, '')
+            except:
+                if name=="bingrens":
+                    p = bingrenlist
+                elif name == "yaoes":
+                    p = yaolist
+                else:
+                    raise                                                                                                                              
+            if name in ignore:continue
+            elif name in objfd:
+                data[name] = getattr(p,'id',1)
+                continue
+            elif name == 'yaoes':
+#                 objcls = map_field2cls(name)
+                objs = []
+                fields = ['yao_id','yaoliang','paozhi']                
+                for i in p:
+                    id = i.id
+                    chufangid = self.id
+                    qdt = {'yao_id':id,'chufang_id':chufangid} 
+                    # query Yao_ChuFang_Asso obj
+                    asso_obj = queryUtility(IDbapi, name='yao_chufang').\
+                    get_asso_obj(qdt)
+                    vls = [getattr(asso_obj,j,"") for j in fields]                        
+                    value = dict(zip(fields,vls))
+                    obj = EditYao_ChuFang_AssoUI(**value)
+                    objs.append(obj)                                                         
+                data[name] = objs
+                continue
+            elif name == 'bingrens':
+#                 objcls = map_field2cls(name)
+                objs = []
+                fields = ['bingren_id','shijian']                
+                for i in p:
+                    id = i.id
+                    chufangid = self.id
+                    qdt = {'bingren_id':id,'chufang_id':chufangid} 
+                    # query ChuFang_BingRen_Asso obj
+                    asso_obj = queryUtility(IDbapi, name='chufang_bingren').\
+                    get_asso_obj(qdt)
+                    vls = [getattr(asso_obj,j,"") for j in fields]                        
+                    value = dict(zip(fields,vls))
+                    obj = EditChuFang_BingRen_AssoUI(**value)
+                    objs.append(obj)                                                          
+                data[name] = objs
+                continue
+            else:
+                data[name] = p
+                continue                        
+        return ChuFangUI(**data)
 
     def update(self):
         self.request.set('disable_border', True)
@@ -1781,13 +1831,52 @@ class UpdateChuFang(UpdateYaoXing):
         """
 
         data, errors = self.extractData()
-        data['id'] = self.id
+        _clmns = filter_cln(ChuFang)
+        import pdb
+        pdb.set_trace()        
         if errors:
             self.status = self.formErrorsMessage
             return
         funcations = queryUtility(IDbapi, name='chufang')
+        #过滤非本表的字段
+        _data = dict()
+        for i in _clmns:
+            _data[i] = data[i]                               
+        _data['id'] = self.id
+        yisheng_id = data['yisheng']
+        yaoes = data['yaoes']
+        bingrens = data['bingrens']        
+        fk_tables = [(yisheng_id,'YiSheng','yisheng')]
+        if not bool(bingrens):bingrens = []        
+        bingren_asso_columns = filter_cln(ChuFang_BingRen_Asso)        
+        yaoes = data['yaoes']
+        if not bool(yaoes):yaoes = []        
+        asso_columns = filter_cln(Yao_ChuFang_Asso)
+        asso_obj_tables = []
+        import pdb
+        pdb.set_trace()
+        for i in yaoes:
+            pk = getattr(i,'yao_id',1)
+            pk_cls = 'Yao'
+            pk_attr = 'yao'            
+            asso_cls = Yao_ChuFang_Asso
+            asso_attr = 'chufang'
+            vls = [getattr(i,k,'') for k in asso_columns ]
+            ppt = dict(zip(asso_columns,vls))
+            asso_obj_tables.append((pk,pk_cls,pk_attr,asso_cls,asso_attr,ppt))                    
+        for i in bingrens:
+            pk = getattr(i,'bingren_id',1)
+            pk_cls = 'BingRen'
+            pk_attr = 'bingren'            
+            asso_cls = ChuFang_BingRen_Asso
+            asso_attr = 'chufang'
+            vls = [getattr(i,k,'') for k in bingren_asso_columns ]
+            ppt = dict(zip(bingren_asso_columns,vls))
+            asso_obj_tables.append((pk,pk_cls,pk_attr,asso_cls,asso_attr,ppt))
+        
+        asso_tables = []
         try:
-            funcations.updateByCode(data)
+            funcations.update_multi_tables(_data,fk_tables,asso_tables,[])
         except InputError, e:
             IStatusMessage(self.request).add(str(e), type='error')
             self.request.response.redirect(self.context.absolute_url() + '/@@chufang_listings')

@@ -5,6 +5,7 @@ from zope.interface import implements
 #sqlarchemy
 from sqlalchemy import text
 from sqlalchemy import func
+from sqlalchemy import and_
 from cms.db import Session as session
 from cms.db.interfaces import IDbapi
 import datetime
@@ -109,6 +110,24 @@ class Dbapi(object):
         out = ";".join(more)
         return out
 
+    def get_asso_obj(self,cns):
+        "query association object table "
+        "cns:{'column1':'value1',...}"
+        
+        import_str = "from %(p)s import %(t)s as tablecls" % \
+        dict(p=self.package,t=self.factorycls) 
+        exec import_str
+        conds = []
+ 
+        for i in cns.keys():
+            cn = "%s=%s" % (i,cns[i])
+            conds.append(cn)
+        conds = " AND ".join(conds)
+        rt = self.session.query(tablecls).filter(text(conds)).first()
+        return rt
+                    
+        
+        
     def get_columns(self):
         "get return columns by query"
         
@@ -491,6 +510,8 @@ chufang = Dbapi(session,'cms.db.orm','chufang','ChuFang')
 bingren = Dbapi(session,'cms.db.orm','bingren','BingRen')
 danwei =  Dbapi(session,'cms.db.orm','danwei','DanWei')
 yisheng =  Dbapi(session,'cms.db.orm','yisheng','YiSheng')
+chufang_bingren =  Dbapi(session,'cms.db.orm','chufang_bingren','ChuFang_BingRen_Asso')
+yao_chufang =  Dbapi(session,'cms.db.orm','yao_chufang','Yao_ChuFang_Asso')
 # clmns = ['userid','datetime','ip','type','operlevel','description','result']
 # search_clmns = ['userid','datetime','ip','operlevel','description']
 # yao =  Dbapi(session,'cms.db.orm','yao','Yao',columns=clmns,fullsearch_clmns=search_clmns)
