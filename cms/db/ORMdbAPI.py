@@ -110,15 +110,17 @@ class Dbapi(object):
         out = ";".join(more)
         return out
 
-    def get_asso_obj(self,cns):
+    def get_asso_obj(self,cns,cls=None):
         "query association object table "
         "cns:{'column1':'value1',...}"
         
-        import_str = "from %(p)s import %(t)s as tablecls" % \
-        dict(p=self.package,t=self.factorycls) 
-        exec import_str
-        conds = []
- 
+        if bool(cls):
+            tablecls = cls
+        else:
+            import_str = "from %(p)s import %(t)s as tablecls" % \
+            dict(p=self.package,t=self.factorycls) 
+            exec import_str
+        conds = [] 
         for i in cns.keys():
             cn = "%s=%s" % (i,cns[i])
             conds.append(cn)
@@ -171,13 +173,11 @@ class Dbapi(object):
         for kw in kwargs.keys():
             setattr(recorder,kw,kwargs[kw])
         for i in fk_tables:
-            import_str = "from %(p)s import %(t)s as mapcls" % dict(p=self.package,t=i[1])
-            exec import_str in globals(), locals()
+            mapcls = i[1]
             linkobj = session.query(mapcls).filter(mapcls.id ==i[0]).one()
             setattr(recorder,i[2],linkobj)
         for i in asso_tables:
-            import_str = "from %(p)s import %(t)s as mapcls" % dict(p=self.package,t=i[1])
-            exec import_str in globals(), locals()
+            mapcls = i[1]
             #主键到map对象(表记录) 的map function 
             objs = []
 
@@ -187,8 +187,7 @@ class Dbapi(object):
         session.add(recorder)
         
         for i in asso_obj_tables:
-            import_str = "from %(p)s import %(t)s as mapcls" % dict(p=self.package,t=i[1])
-            exec import_str in globals(), locals()
+            mapcls = i[1]
             #主键到map对象(表记录) 的map function
             obj1 = session.query(mapcls).filter(mapcls.id ==i[0]).one()
             obj2 = recorder
@@ -215,7 +214,9 @@ class Dbapi(object):
         "更新本表的同时,兼顾处理外键表,关联表,关联对象表"
         "fk_tables:[(pk,map_cls,attr),...]"
         "asso_tables:[([pk1,pk2,...],map_cls,attr),...]"
-        "asso_obj_tables:[(pk,targetcls,attr,[property1,property2,...]),...]"
+        """asso_obj_tables:{"asso_proxy_property1":[(pk,pk_cls,pk_attr,asso_cls,asso_attr,[property1,property2,...]),...],
+                            "asso_proxy_property2":[(pk,pk_cls,pk_attr,asso_cls,asso_attr,[property1,property2,...]]
+                            ,...}"""
         
         id = kwargs['id']
         if bool(id):
@@ -229,44 +230,60 @@ class Dbapi(object):
                 for kw in updatedattrs:
                     setattr(recorder,kw,kwargs[kw])
                 for i in fk_tables:
-                    import_str = "from %(p)s import %(t)s as mapcls" % dict(p=self.package,t=i[1])
-                    exec import_str in globals(), locals()
+                    mapcls = i[1]
                     linkobj = session.query(mapcls).filter(mapcls.id ==i[0]).one()
                     setattr(recorder,i[2],linkobj)
-#                 import pdb
-#                 pdb.set_trace()
-                for i in asso_tables:
-                    import_str = "from %(p)s import %(t)s as mapcls" % dict(p=self.package,t=i[1])
-                    exec import_str in globals(), locals()
+                for i in asso_tables:                    
+                    mapcls = i[1]
                     objs = []
                     for j in i[0]:
                         objs = objs.append(session.query(mapcls).filter(mapcls.id ==j).one())                
                     if bool(objs):setattr(recorder,i[2],objs)
                 session.add(recorder)
         
-                for i in asso_obj_tables:
-                    import_str = "from %(p)s import %(t)s as mapcls" % dict(p=self.package,t=i[1])
-                    exec import_str in globals(), locals()
-            #主键到map对象(表记录) 的map function
-                    obj1 = session.query(mapcls).filter(mapcls.id ==i[0]).one()
-                    obj2 = recorder
-                    setvalues = i[5]
-                    #add source obj
-                    setvalues[i[2]] = obj1
+                if bool(asso_obj_tables):
+                    keys = asso_obj_tables.keys()
+                else:
+                    keys = []  
+                for kw in keys:
+                    link_objs = []
+                    for i in asso_obj_tables[kw]:
+                    # i like as:(pk,pk_cls,pk_attr,asso_cls,asso_attr,ppt)
+                    # many to many association object table,update recorder
+                    #first locate the recorder by two FK
+                        src_id = "%s_id" % i[2]
+                        self_id = "%s_id" % i[4]
+                        kwargs = i[5]                    
+                        cns = {src_id:i[0],self_id:recorder.id}                 
+                        pkobj = session.query(i[1]).filter(i[1].id ==i[0]).one()
+                        # check if the association recorder is existed
+                        asso_obj = self.get_asso_obj(cns,i[3])
+                        if bool(asso_obj):
+                        # this is old recorder,just update it
+#                         updatedattrs = [kw for kw in kwargs.keys() if kw != self_id]
+                            for kw in kwargs.keys():
+                                setattr(asso_obj,kw,kwargs[kw])                        
+                        else:
+                        # this is new association recorder,we will create it
+                            setvalues = i[5]
+            #add source obj
+                            setvalues[i[2]] = pkobj
             # add target obj
-                    setvalues[i[4]]= obj2
+                            setvalues[i[4]]= recorder
             # instance association obj
-                    link_obj = i[3]()
-                    for kw in setvalues.keys():
-                        setattr(link_obj,kw,setvalues[kw])
-            #submit to db
-                    session.add(link_obj) 
+                            asso_obj = i[3]()
+                            for kw in setvalues.keys():
+                                setattr(asso_obj,kw,setvalues[kw])                      
+                        session.add(asso_obj)
+                        link_objs.append(pkobj)
+                    # update association proxy property
+                    setattr(recorder,kw,link_objs)
+#                     session.add(recorder) 
                 session.commit()
             except:
                 session.rollback()
             finally:
-                session.close()
-                
+                session.close()                
         else:
             pass
                    

@@ -1333,7 +1333,6 @@ class InputYao(InputYaoXing):
         """Submit yao recorder
         """
         data, errors = self.extractData()
-
         if errors:
             self.status = self.formErrorsMessage
             return
@@ -1352,10 +1351,10 @@ class InputYao(InputYaoXing):
         yaowei_id = data['yaowei']
         yaoxing_id = data['yaoxing']
         guijing = data['guijing']
-        fk_tables = [(yaowei_id,'YaoWei','yaowei'),(yaoxing_id,'YaoXing','yaoxing')]
+        fk_tables = [(yaowei_id,YaoWei,'yaowei'),(yaoxing_id,YaoXing,'yaoxing')]
 
         if bool(guijing):
-            asso_tables = [(guijing,'JingLuo','guijing')]            
+            asso_tables = [(guijing,JingLuo,'guijing')]            
         else:
             asso_tables = []
         try:
@@ -1431,10 +1430,10 @@ class UpdateYao(UpdateYaoXing):
         yaowei_id = data['yaowei']
         yaoxing_id = data['yaoxing']
         guijing = data['guijing']
-        fk_tables = [(yaowei_id,'YaoWei','yaowei'),(yaoxing_id,'YaoXing','yaoxing')]
+        fk_tables = [(yaowei_id,YaoWei,'yaowei'),(yaoxing_id,YaoXing,'yaoxing')]
 
         if bool(guijing):
-            asso_tables = [(guijing,'JingLuo','guijing')]            
+            asso_tables = [(guijing,JingLuo,'guijing')]            
         else:
             asso_tables = []
         try:
@@ -1693,7 +1692,7 @@ class InputChuFang(InputYaoXing):
         #外键关联表 fk_tables: [(pk,map_cls,attr),...]
         # 多对多关联表 asso_tables:[([pk1,pk2,...],map_cls,attr),...]                   
         _id = data['yisheng']
-        fk_tables = [(_id,'YiSheng','yisheng')]
+        fk_tables = [(_id,YiSheng,'yisheng')]
         #[<cms.db.browser.interfaces.Yao_ChuFang_AssoUI object at 0x7fb156e389d0>]
         #Yao_ChuFang_Asso(yao1,chufang,7,"晒干")
         # asso_obj_tables:[(pk,targetcls,attr,[property1,property2,...]),...]
@@ -1708,7 +1707,7 @@ class InputChuFang(InputYaoXing):
         asso_obj_tables = []
         for i in yaoes:
             pk = getattr(i,'yao_id',1)
-            pk_cls = 'Yao'
+            pk_cls = Yao
             pk_attr = 'yao'            
             asso_cls = Yao_ChuFang_Asso
             asso_attr = 'chufang'
@@ -1717,7 +1716,7 @@ class InputChuFang(InputYaoXing):
             asso_obj_tables.append((pk,pk_cls,pk_attr,asso_cls,asso_attr,ppt))                    
         for i in bingrens:
             pk = getattr(i,'bingren_id',1)
-            pk_cls = 'BingRen'
+            pk_cls = BingRen
             pk_attr = 'bingren'            
             asso_cls = ChuFang_BingRen_Asso
             asso_attr = 'chufang'
@@ -1832,8 +1831,8 @@ class UpdateChuFang(UpdateYaoXing):
 
         data, errors = self.extractData()
         _clmns = filter_cln(ChuFang)
-        import pdb
-        pdb.set_trace()        
+#         import pdb
+#         pdb.set_trace()
         if errors:
             self.status = self.formErrorsMessage
             return
@@ -1846,37 +1845,39 @@ class UpdateChuFang(UpdateYaoXing):
         yisheng_id = data['yisheng']
         yaoes = data['yaoes']
         bingrens = data['bingrens']        
-        fk_tables = [(yisheng_id,'YiSheng','yisheng')]
+        fk_tables = [(yisheng_id,YiSheng,'yisheng')]
         if not bool(bingrens):bingrens = []        
         bingren_asso_columns = filter_cln(ChuFang_BingRen_Asso)        
         yaoes = data['yaoes']
         if not bool(yaoes):yaoes = []        
         asso_columns = filter_cln(Yao_ChuFang_Asso)
-        asso_obj_tables = []
-        import pdb
-        pdb.set_trace()
+        asso_obj_tables = {}
+        tlist = []
         for i in yaoes:
             pk = getattr(i,'yao_id',1)
-            pk_cls = 'Yao'
+            pk_cls = Yao
             pk_attr = 'yao'            
             asso_cls = Yao_ChuFang_Asso
             asso_attr = 'chufang'
             vls = [getattr(i,k,'') for k in asso_columns ]
             ppt = dict(zip(asso_columns,vls))
-            asso_obj_tables.append((pk,pk_cls,pk_attr,asso_cls,asso_attr,ppt))                    
+            tlist.append((pk,pk_cls,pk_attr,asso_cls,asso_attr,ppt)) 
+        asso_obj_tables['yaoes']= tlist                   
+        tlist = []
         for i in bingrens:
             pk = getattr(i,'bingren_id',1)
-            pk_cls = 'BingRen'
+            pk_cls = BingRen
             pk_attr = 'bingren'            
             asso_cls = ChuFang_BingRen_Asso
             asso_attr = 'chufang'
             vls = [getattr(i,k,'') for k in bingren_asso_columns ]
             ppt = dict(zip(bingren_asso_columns,vls))
-            asso_obj_tables.append((pk,pk_cls,pk_attr,asso_cls,asso_attr,ppt))
+            tlist.append((pk,pk_cls,pk_attr,asso_cls,asso_attr,ppt))
+        asso_obj_tables['bingrens']= tlist
         
         asso_tables = []
         try:
-            funcations.update_multi_tables(_data,fk_tables,asso_tables,[])
+            funcations.update_multi_tables(_data,fk_tables,asso_tables,asso_obj_tables)
         except InputError, e:
             IStatusMessage(self.request).add(str(e), type='error')
             self.request.response.redirect(self.context.absolute_url() + '/@@chufang_listings')

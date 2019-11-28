@@ -472,16 +472,40 @@ class TestView(unittest.TestCase):
         browser.getControl(name=u"form.widgets.yaoes.1.widgets.yao_id:list").value = [str(yao_id2)]        
         browser.getControl(name=u"form.widgets.yaoes.1.widgets.yaoliang").value = '20'
         browser.getControl(name=u"form.widgets.yaoes.1.widgets.paozhi").value = '晒干'        
-
-        browser.getControl(name=u"form.widgets.bingrens.0.widgets.bingren_id:list").value = [str(bingren_id)]
-        browser.getControl(name=u"form.widgets.bingrens.0.widgets.shijian").value = "2015-09-12 12:00"
-                
-
-        browser.getControl(u"Submit").click()
-        import pdb
-        pdb.set_trace()        
+        browser.getControl(u"Submit").click()        
         suan = Session.query(ChuFang).filter(ChuFang.yizhu==u"主脾胃").all()
         self.assertEqual(len(suan),1)
-        self.assertTrue(u"Thank you! Your data  will be update in back end DB." in browser.contents)      
+        self.assertTrue(u"Thank you! Your data  will be update in back end DB." in browser.contents)
+
+
+    def test_asso_proxyChuFang(self):
+        app = self.layer['app']
+        portal = self.layer['portal']
+        browser = Browser(app)
+        browser.handleErrors = False             
+        browser.addHeader('Authorization', 'Basic %s:%s' % (TEST_USER_NAME, TEST_USER_PASSWORD,))
+        transaction.commit()
+        base = portal['folder']['ormfolder'].absolute_url()
+        chufang = Session.query(ChuFang).filter(ChuFang.mingcheng=="桂枝汤").first()
+        self.assertEqual(len(chufang.yaoes),2)
+        chufang_id = chufang.id
+        jingluo = JingLuo("手太阳小肠经")
+        yaoxing = YaoXing("平")
+        yaowei = YaoWei("淡")
+        yao1 = Yao("杏仁")
+        yao1.yaowei = yaowei
+        yao1.yaoxing = yaoxing
+        yao1.guijing = [jingluo]
+        yao_chufang = Yao_ChuFang_Asso(yao1,chufang,9,"炒")        
+        Session.add_all([jingluo,yaoxing,yaowei,yao1,yao_chufang])
+        Session.commit()
+        self.assertEqual(len(chufang.yaoes),3)
+        yao = Session.query(Yao).filter(Yao.mingcheng=="杏仁").first()
+        chufang.yaoes = [yao]
+        Session.add(chufang)
+        Session.commit()
+        self.assertEqual(len(chufang.yaoes),1)
+        
+  
         
                                  
