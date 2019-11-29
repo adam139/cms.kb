@@ -160,7 +160,7 @@ class Dbapi(object):
         finally:
             session.close()
 
-    def add_multi_tables(self,kwargs,fk_tables,asso_tables,asso_obj_tables=[]):
+    def add_multi_tables(self,kwargs,fk_tables,asso_tables=[],asso_obj_tables=[]):
         "添加表记录的同时,并关联其他表记录"
         #外键关联表 fk_tables: [(pk,map_cls,attr),...]
         # 多对多关联表 asso_tables:[([pk1,pk2,...],map_cls,attr),...]

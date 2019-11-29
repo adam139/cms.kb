@@ -27,6 +27,7 @@ from cms.db.browser.interfaces import IBingRenUI
 from cms.db.browser.interfaces import IChuFangUI
 # association object table need a intermediate object for edit form 
 from cms.db.browser.intermediate_objs import ChuFangUI
+from cms.db.browser.intermediate_objs import BingRenUI
 from cms.db.browser.intermediate_objs import YaoUI
 from cms.db.browser.intermediate_objs import YiShengUI
 from cms.db.browser.intermediate_objs import DanWeiUI
@@ -1752,8 +1753,6 @@ class UpdateChuFang(UpdateYaoXing):
 
         data, errors = self.extractData()
         _clmns = filter_cln(ChuFang)
-#         import pdb
-#         pdb.set_trace()
         if errors:
             self.status = self.formErrorsMessage
             return
@@ -1813,8 +1812,8 @@ class UpdateChuFang(UpdateYaoXing):
         confirm = _(u"Input cancelled.")
         IStatusMessage(self.request).add(confirm, type='info')
         self.request.response.redirect(self.context.absolute_url() + '/@@chufang_listings')
-# end 发射天线 数据库操作
-## 接收天线 数据库操作
+
+
 class DeleteBingRen(DeleteYaoXing):
     "delete the specify bing ren recorder"
 
@@ -1886,18 +1885,14 @@ class InputBingRen(InputYaoXing):
             self.status = self.formErrorsMessage
             return
         funcations = queryUtility(IDbapi, name='bingren')
-        from sqlalchemy.inspection import inspect
-        table = inspect(BingRen)
-        columns = [column.name for column in table.c]
-        #过滤主键,外键
-        columns = filter(lambda elem: not elem.endswith("id"),columns)        
+        _clmns = filter_cln(BingRen)        
         #过滤非本表的字段
         _data = dict()
-        for i in columns:
+        for i in _clmns:
             _data[i] = data[i]
                  
         _id = data['dizhi_id']
-        fk_tables = [(_id,'DiZhi','dizhi')]
+        fk_tables = [(_id,DiZhi,'dizhi')]
         asso_tables = []
         try:
             funcations.add_multi_tables(_data,fk_tables,asso_tables)
@@ -1922,14 +1917,25 @@ class UpdateBingRen(UpdateYaoXing):
     """
 
     label = _(u"update bing ren data")
-    fields = field.Fields(IBingRen).omit('id')
+    fields = field.Fields(IBingRenUI).omit('id','dizhi_id')
 
     def getContent(self):
         # Get the model table query funcations
         locator = queryUtility(IDbapi, name='bingren')
-        # to do
-        # fetch first record as sample data
-        return locator.getByCode(self.id)
+        _obj = locator.getByCode(self.id)
+        # ignore fields list
+        ignore = ['id','dizhi_id']
+        # obj fields list
+        objfd = ['dizhi']
+        data = dict()
+        for name, f in getFieldsInOrder(IBingRenUI):            
+            p = getattr(_obj, name, '')
+            if name in ignore:continue
+            elif name in objfd:
+                data[name] = getattr(p,'id',1)
+            else:
+                data[name] = p                        
+        return BingRenUI(**data)
 
     def update(self):
         self.request.set('disable_border', True)
@@ -1938,17 +1944,24 @@ class UpdateBingRen(UpdateYaoXing):
 
     @button.buttonAndHandler(_(u"Submit"))
     def submit(self, action):
-        """Update model recorder
+        """Update bing ren recorder
         """
 
         data, errors = self.extractData()
-        data['id'] =self.id
+        _clmns = filter_cln(BingRen)       
         if errors:
             self.status = self.formErrorsMessage
             return
         funcations = queryUtility(IDbapi, name='bingren')
+        #过滤非本表的字段
+        _data = dict()
+        for i in _clmns:
+            _data[i] = data[i]                               
+        _data['id'] = self.id
+        _id = data['dizhi']
+        fk_tables = [(_id,DiZhi,'dizhi')]
         try:
-            funcations.updateByCode(data)
+            funcations.update_multi_tables(_data,fk_tables)
         except InputError, e:
             IStatusMessage(self.request).add(str(e), type='error')
             self.request.response.redirect(self.context.absolute_url() + '/@@bingren_listings')
@@ -2147,20 +2160,16 @@ class InputDanWei(InputYaoXing):
             self.status = self.formErrorsMessage
             return
         funcations = queryUtility(IDbapi, name='danwei')
-        from sqlalchemy.inspection import inspect
-        table = inspect(DanWei)
-        columns = [column.name for column in table.c]
-        #过滤主键,外键
-        columns = filter(lambda elem: not elem.endswith("id"),columns)        
+        _clmns = filter_cln(DanWei)        
         #过滤非本表的字段
         danwei_data = dict()
-        for i in columns:
+        for i in _clmns:
             danwei_data[i] = data[i]
                  
         dizhi_id = data['dizhi']
 #         import pdb
 #         pdb.set_trace()
-        fk_tables = [(dizhi_id,'DiZhi','dizhi')]
+        fk_tables = [(dizhi_id,DiZhi,'dizhi')]
         asso_tables = []
         try:
             funcations.add_multi_tables(danwei_data,fk_tables,asso_tables)
@@ -2294,27 +2303,22 @@ class InputYiSheng(InputYaoXing):
             self.status = self.formErrorsMessage
             return
         funcations = queryUtility(IDbapi, name='yisheng')
-        from sqlalchemy.inspection import inspect
-        table = inspect(YiSheng)
-        columns = [column.name for column in table.c]
-        #过滤主键,外键
-        columns = filter(lambda elem: not elem.endswith("id"),columns)        
+        _clmns = filter_cln(YiSheng)       
         #过滤非本表的字段
         _data = dict()
-        for i in columns:
+        for i in _clmns:
             _data[i] = data[i]
                  
         _id = data['danwei']
-        fk_tables = [(_id,'DanWei','danwei')]
-        asso_tables = []
+        fk_tables = [(_id,DanWei,'danwei')]
         try:
-            funcations.add_multi_tables(_data,fk_tables,asso_tables)
+            funcations.add_multi_tables(_data,fk_tables)
         except InputError, e:
             IStatusMessage(self.request).add(str(e), type='error')
             self.request.response.redirect(self.context.absolute_url() + '/@@yisheng_listings')
         confirm = _(u"Thank you! Your data  will be update in back end DB.")
         IStatusMessage(self.request).add(confirm, type='info')
-#         self.request.response.redirect(self.context.absolute_url() + '/@@yisheng_listings')
+        self.request.response.redirect(self.context.absolute_url() + '/@@yisheng_listings')
 
     @button.buttonAndHandler(_(u"Cancel"))
     def cancel(self, action):
@@ -2382,5 +2386,5 @@ class UpdateYiSheng(UpdateYaoXing):
         confirm = _(u"Input cancelled.")
         IStatusMessage(self.request).add(confirm, type='info')
         self.request.response.redirect(self.context.absolute_url() + '/@@yisheng_listings')
-# end 典型天线增益子库 数据库操作
+
 

@@ -21,10 +21,27 @@ from zope.schema.fieldproperty import FieldProperty
 from cms.db.browser.interfaces import IYaoUI
 from cms.db.browser.interfaces import IDanWeiUI
 from cms.db.browser.interfaces import IChuFangUI
+from cms.db.browser.interfaces import IBingRenUI
 from cms.db.browser.interfaces import IYiShengUI
 from cms.db.browser.interfaces import IChuFang_BingRen_AssoUI
 from cms.db.browser.interfaces import IYao_ChuFang_AssoUI
 
+@implementer(IBingRenUI)
+class BingRenUI(object):
+    xingming = FieldProperty(IBingRenUI['xingming'])
+    xingbie = FieldProperty(IBingRenUI['xingbie'])
+    shengri = FieldProperty(IBingRenUI['shengri'])
+    dianhua = FieldProperty(IBingRenUI['dianhua']) 
+    dizhi = FieldProperty(IBingRenUI['dizhi'])                
+    # allow getSource to proceed
+    _Modify_portal_content_Permission = ('Anonymous', )
+
+    def __init__(self, xingming=None, xingbie=None, shengri=None, dianhua=None, dizhi=None):
+        self.xingming = xingming
+        self.xingbie = xingbie
+        self.shengri = shengri
+        self.dianhua = dianhua
+        self.dizhi = dizhi
 
 @implementer(IYiShengUI)
 class YiShengUI(object):
