@@ -154,14 +154,13 @@ class TestView(unittest.TestCase):
         # Open form
         browser.open("%s/@@input_yaoxing" % base)        
         # Fill in the form 
-#         browser.getControl(name=u"form.widgets.id").value = 1
         browser.getControl(name=u"form.widgets.xing").value = u"微寒"        
         # Submit
         browser.getControl(u"Submit").click()
         suan = Session.query(YaoXing).filter(YaoXing.xing==u"微寒").all()
         self.assertEqual(len(suan),1)
         self.assertTrue(u"Thank you! Your data  will be update in back end DB." in browser.contents)        
-#         self.assertTrue("row table table-striped table-bordered table-condensed listing" in browser.contents)
+
 
     def testInputYaoWeiForm(self):
         app = self.layer['app']
@@ -174,7 +173,7 @@ class TestView(unittest.TestCase):
         # Open form
         browser.open("%s/@@input_yaowei" % base)        
         # Fill in the form 
-#         browser.getControl(name=u"form.widgets.id").value = 1
+
         browser.getControl(name=u"form.widgets.wei").value = u"淡"        
         # Submit
         browser.getControl(u"Submit").click()
@@ -194,7 +193,7 @@ class TestView(unittest.TestCase):
         # Open form
         browser.open("%s/@@input_jingluo" % base)        
         # Fill in the form 
-#         browser.getControl(name=u"form.widgets.id").value = 1
+
         browser.getControl(name=u"form.widgets.mingcheng").value = u"手太阳小肠经"        
         # Submit
         browser.getControl(u"Submit").click()
@@ -216,7 +215,7 @@ class TestView(unittest.TestCase):
         # Open form
         browser.open("%s/@@delete_yaowei/%s" % (base,id))        
         # Fill in the form 
-#         browser.getControl(name=u"form.widgets.id").value = 1
+
         browser.getControl(name=u"form.widgets.wei").value = u"甘"        
         # Submit
         browser.getControl(u"Submit").click()
@@ -242,14 +241,9 @@ class TestView(unittest.TestCase):
         jingluo_id2 = Session.query(JingLuo).filter(JingLuo.mingcheng=="足厥阴肝经").first().id
        
         # Fill in the form 
-
-#         browser.getControl(name=u"form.widgets.yaowei_id").value = str(yaowei_id)
-#         browser.getControl(name=u"form.widgets.yaoxing_id").value = str(yaoxing_id)
         browser.getControl(name=u"form.widgets.yaowei:list").value = [str(yaowei_id)]
         browser.getControl(name=u"form.widgets.yaoxing:list").value = [str(yaoxing_id)]
-
-        browser.getControl(name=u"form.widgets.mingcheng").value = u"牛膝"
-         
+        browser.getControl(name=u"form.widgets.mingcheng").value = u"牛膝"         
 #         browser.getControl(name=u"form.widgets.guijing.to").value = [jingluo_id,jingluo_id2] 
         browser.getControl(name=u"form.widgets.zhuzhi").value = u"引气血下行"        
         # Submit
@@ -261,7 +255,6 @@ class TestView(unittest.TestCase):
     def testInputDiZhiForm(self):
         app = self.layer['app']
         portal = self.layer['portal']
-
         browser = Browser(app)
         browser.handleErrors = False             
         browser.addHeader('Authorization', 'Basic %s:%s' % (TEST_USER_NAME, TEST_USER_PASSWORD,))
@@ -280,11 +273,9 @@ class TestView(unittest.TestCase):
         self.assertEqual(len(suan),1)
         self.assertTrue(u"Thank you! Your data  will be update in back end DB." in browser.contents)
 
-
     def testInputDanWeiForm(self):
         app = self.layer['app']
         portal = self.layer['portal']
-
         browser = Browser(app)
         browser.handleErrors = False             
         browser.addHeader('Authorization', 'Basic %s:%s' % (TEST_USER_NAME, TEST_USER_PASSWORD,))
@@ -293,8 +284,6 @@ class TestView(unittest.TestCase):
         # Open form
         browser.open("%s/@@input_danwei" % base)
         dizhi_id = Session.query(DiZhi).filter(DiZhi.shi==u"湘潭市").first().id      
-        # Fill in the form        
-#         browser.getControl(name=u"form.widgets.dizhi_id").value = str(dizhi_id)                
         # Fill in the form 
         browser.getControl(name=u"form.widgets.mingcheng").value = u"泽生堂"
         browser.getControl(name=u"form.widgets.dizhi:list").value =[str(dizhi_id)]                         
@@ -425,22 +414,13 @@ class TestView(unittest.TestCase):
         yaowei_id = Session.query(YaoWei).filter(YaoWei.wei=="甘").first().id
         # Open form
         browser.open("%s/@@update_yao/%s" % (base,yao_id))
-#         import pdb
-#         pdb.set_trace()                 
-        # Fill in the form 
-#         browser.getControl(name=u"from2toButton").value = str(yaoxing_id)
-#         browser.getControl(name=u"from2toButton").click()
         browser.getControl(name=u"form.widgets.yaowei:list").value = [str(yaowei_id)]
         browser.getControl(name=u"form.widgets.zhuzhi").value = u"主脾胃"        
-#         import pdb
-#         pdb.set_trace()        
-        # Submit
         browser.getControl(u"Submit").click()        
         suan = Session.query(Yao).filter(Yao.zhuzhi==u"主脾胃").all()
         self.assertEqual(len(suan),1)
         self.assertTrue(u"Thank you! Your data  will be update in back end DB." in browser.contents)
-        
-        
+       
     def testUpdateChuFangForm(self):
         app = self.layer['app']
         portal = self.layer['portal']
@@ -458,8 +438,7 @@ class TestView(unittest.TestCase):
 
         # Open form
         browser.open("%s/@@update_chufang/%s" % (base,chufang_id))
-        import pdb
-        pdb.set_trace()                 
+      
         # Fill in the form              
         browser.getControl(name=u"form.widgets.mingcheng").value = "麻黄汤"
         browser.getControl(name=u"form.widgets.yizhu").value = "主脾胃"
@@ -477,8 +456,7 @@ class TestView(unittest.TestCase):
         self.assertEqual(len(suan),1)
         self.assertTrue(u"Thank you! Your data  will be update in back end DB." in browser.contents)
 
-
-    def test_asso_proxyChuFang(self):
+    def testUpdateDiZhiForm(self):
         app = self.layer['app']
         portal = self.layer['portal']
         browser = Browser(app)
@@ -486,6 +464,37 @@ class TestView(unittest.TestCase):
         browser.addHeader('Authorization', 'Basic %s:%s' % (TEST_USER_NAME, TEST_USER_PASSWORD,))
         transaction.commit()
         base = portal['folder']['ormfolder'].absolute_url()
+        dizhi_id = Session.query(DiZhi).filter(DiZhi.jiedao=="茅箭区施洋路83号").first().id
+        # Open form
+        browser.open("%s/@@update_dizhi/%s" % (base,dizhi_id))
+        browser.getControl(name=u"form.widgets.jiedao").value = "茅箭区施洋路85号"       
+        browser.getControl(u"Submit").click()        
+        suan = Session.query(DiZhi).filter(DiZhi.jiedao=="茅箭区施洋路85号").all()
+        self.assertEqual(len(suan),1)
+        self.assertTrue(u"Thank you! Your data  will be update in back end DB." in browser.contents)
+
+    def testUpdateDanWeiForm(self):
+        app = self.layer['app']
+        portal = self.layer['portal']
+        browser = Browser(app)
+        browser.handleErrors = False             
+        browser.addHeader('Authorization', 'Basic %s:%s' % (TEST_USER_NAME, TEST_USER_PASSWORD,))
+        transaction.commit()
+        base = portal['folder']['ormfolder'].absolute_url()
+        danwei_id = Session.query(DanWei).filter(DanWei.mingcheng=="任之堂").first().id
+        dizhi_id = Session.query(DiZhi).filter(DiZhi.jiedao=="湘潭县云湖桥镇北岸村道林组83号").first().id
+        # Open form
+        browser.open("%s/@@update_danwei/%s" % (base,danwei_id))
+        browser.getControl(name=u"form.widgets.dizhi:list").value = [str(dizhi_id)]
+        browser.getControl(name=u"form.widgets.mingcheng").value = "润生堂"       
+        browser.getControl(u"Submit").click()        
+        suan = Session.query(DanWei).join(DiZhi).filter(DiZhi.jiedao=="湘潭县云湖桥镇北岸村道林组83号").all()
+        self.assertEqual(len(suan),1)
+        self.assertTrue(u"Thank you! Your data  will be update in back end DB." in browser.contents)
+
+
+    def test_asso_proxyChuFang(self):
+
         chufang = Session.query(ChuFang).filter(ChuFang.mingcheng=="桂枝汤").first()
         self.assertEqual(len(chufang.yaoes),2)
         chufang_id = chufang.id

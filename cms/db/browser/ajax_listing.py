@@ -2,7 +2,6 @@
 from zope.interface import Interface
 from zope.schema import getFieldsInOrder
 from zope.component import getMultiAdapter
-from five import grok
 import json
 import datetime
 from Acquisition import aq_inner
@@ -11,14 +10,12 @@ from Products.CMFCore import permissions
 from Products.CMFCore.interfaces import ISiteRoot
 from plone.memoize.instance import memoize
 from Products.Five.browser import BrowserView
-# input data view
 from plone.directives import form
 from z3c.form import field, button
 from Products.statusmessages.interfaces import IStatusMessage
 from cms.db.interfaces import InputError
 from zope.component import queryUtility
 from cms.db.interfaces import IDbapi
-# from cms.db.interfaces import IModelLocator,IFashejLocator,IJingLuoLocator,IChuFangLocator,IBingRenLocator
 from cms.db.orm import IYaoWei,YaoWei
 from cms.db.orm import IYaoXing,YaoXing
 from cms.db.orm import IJingLuo,JingLuo
@@ -28,6 +25,21 @@ from cms.db.browser.interfaces import IDanWeiUI
 from cms.db.browser.interfaces import IYiShengUI
 from cms.db.browser.interfaces import IBingRenUI
 from cms.db.browser.interfaces import IChuFangUI
+# association object table need a intermediate object for edit form 
+from cms.db.browser.intermediate_objs import ChuFangUI
+from cms.db.browser.intermediate_objs import YaoUI
+from cms.db.browser.intermediate_objs import DanWeiUI
+from cms.db.browser.intermediate_objs import EditChuFang_BingRen_AssoUI
+from cms.db.browser.intermediate_objs import EditYao_ChuFang_AssoUI
+#register multiwidget for association object interfaces
+from cms.db.browser.interfaces import IYao_ChuFang_AssoUI
+from cms.db.browser.interfaces import IChuFang_BingRen_AssoUI
+from cms.db.browser.intermediate_objs import ChuFang_BingRen_AssoUI
+from cms.db.browser.intermediate_objs import Yao_ChuFang_AssoUI
+from z3c.form.object import registerFactoryAdapter
+registerFactoryAdapter(IYao_ChuFang_AssoUI, Yao_ChuFang_AssoUI)
+registerFactoryAdapter(IChuFang_BingRen_AssoUI, ChuFang_BingRen_AssoUI)
+
 from cms.db.browser.utility import filter_cln
 from cms.db.browser.utility import map_field2cls
 from cms.db.orm import Yao
@@ -39,14 +51,12 @@ from cms.db.orm import IBingRen,BingRen
 from cms.db.orm import Yao_JingLuo_Asso,ChuFang_BingRen_Asso,Yao_ChuFang_Asso
 
 from cms.db.contents.ormfolder import Iormfolder
-# update data view
 from zope.interface import implements
 from zope.publisher.interfaces import IPublishTraverse
 from zExceptions import NotFound
 from cms.db import InputDb
 from cms.db import _
 
-grok.templatedir('templates')
 
 class BaseView(BrowserView):
     """
@@ -94,8 +104,8 @@ class BaseView(BrowserView):
         locator = self.get_locator('model')
         recorders = locator.query(query)
         return recorders
-### log lib start
-#yaoxing table
+
+
 class YaoXingsView(BaseView):
     """
     DB AJAX 查询，返回分页结果,这个class 调用数据库表 功能集 utility,
@@ -103,18 +113,15 @@ class YaoXingsView(BaseView):
     该参数，查询数据库，并返回结果。
     view name:admin_logs
     """
-      
-        
+           
     def search_multicondition(self,query):
         "query is dic,like :{'start':0,'size':10,'':}"
 
         locator = self.get_locator('yaoxing')
         recorders = locator.query(query)
-
         return recorders
 
 
-#user_logs table
 class YaoWeiesView(BaseView):
     """
     DB AJAX 查询，返回分页结果,这个class 调用数据库表 功能集 utility,
@@ -128,10 +135,8 @@ class YaoWeiesView(BaseView):
         locator = self.get_locator('yaowei')
         recorders = locator.query(query)
         return recorders
-### log lib end
 
-### parameters lib start
-# fashej table
+
 class JingLuoesView(BaseView):
     """
     DB AJAX 查询，返回分页结果,这个class 调用数据库表 功能集 utility,
@@ -176,7 +181,7 @@ class ChuFangsView(BaseView):
         recorders = locator.query(query)
         return recorders
     
-# fashetx table
+
 class BingRensView(BaseView):
     """
     DB AJAX 查询，返回分页结果,这个class 调用数据库表 功能集 utility,
@@ -191,7 +196,7 @@ class BingRensView(BaseView):
         recorders = locator.query(query)
         return recorders
 
-# bingren table
+
 class DiZhiesView(BaseView):
     """
     DB AJAX 查询，返回分页结果,这个class 调用数据库表 功能集 utility,
@@ -244,10 +249,7 @@ class YaoXingAjaxsearch(BrowserView):
     """AJAX action for search DB.
     receive front end ajax transform parameters
     """
-#     grok.context(Interface)
-#     grok.name('yaoxing_ajaxsearch')
-#     grok.require('zope2.View')
-#     grok.require('emc.project.view_projectsummary')
+
     def Datecondition(self,key):
         "构造日期搜索条件"
         end = datetime.datetime.today()
@@ -353,13 +355,10 @@ class YaoXingAjaxsearch(BrowserView):
         return data
 
 
-### parameters lib output class
 class YaoWeiAjaxsearch(YaoXingAjaxsearch):
     """AJAX action for search DB.
     receive front end ajax transform parameters
     """
-
-#     grok.name('yaowei_ajaxsearch')
 
     def searchview(self,viewname="yaowei_listings"):
         searchview = getMultiAdapter((self.context, self.request),name=viewname)
@@ -422,8 +421,6 @@ class JingLuoAjaxsearch(YaoXingAjaxsearch):
     receive front end ajax transform parameters
     """
 
-#     grok.name('jingluo_ajaxsearch')
-
     def searchview(self,viewname="jingluo_listings"):
         searchview = getMultiAdapter((self.context, self.request),name=viewname)
         return searchview
@@ -481,8 +478,6 @@ class YaoAjaxsearch(YaoXingAjaxsearch):
     """AJAX action for search DB.
     receive front end ajax transform parameters
     """
-
-#     grok.name('yao_ajaxsearch')
 
     def searchview(self,viewname="yao_listings"):
         searchview = getMultiAdapter((self.context, self.request),name=viewname)
@@ -552,7 +547,6 @@ class ChuFangAjaxsearch(YaoXingAjaxsearch):
     """AJAX action for search DB.
     receive front end ajax transform parameters
     """
-#     grok.name('chufang_ajaxsearch')
 
     def searchview(self,viewname="chufang_listings"):
         searchview = getMultiAdapter((self.context, self.request),name=viewname)
@@ -623,8 +617,6 @@ class BingRenAjaxsearch(YaoXingAjaxsearch):
     """AJAX action for search DB.
     receive front end ajax transform parameters
     """
-
-    grok.name('bingren_ajaxsearch')
 
     def searchview(self,viewname="bingren_listings"):
         searchview = getMultiAdapter((self.context, self.request),name=viewname)
@@ -701,12 +693,11 @@ class BingRenAjaxsearch(YaoXingAjaxsearch):
         data = {'searchresult': outhtml,'start':start,'size':size,'total':totalnum}
         return data
 
-### enviroment lib output class
+
 class DiZhiAjaxsearch(YaoXingAjaxsearch):
     """AJAX action for search DB.
     receive front end ajax transform parameters
     """
-    grok.name('dizhi_ajaxsearch')
 
     def searchview(self,viewname="dizhi_listings"):
         searchview = getMultiAdapter((self.context, self.request),name=viewname)
@@ -788,7 +779,6 @@ class DanWeiAjaxsearch(YaoXingAjaxsearch):
     """AJAX action for search DB.
     receive front end ajax transform parameters
     """
-    grok.name('danwei_ajaxsearch')
 
     def searchview(self,viewname="danwei_listings"):
         searchview = getMultiAdapter((self.context, self.request),name=viewname)
@@ -873,7 +863,6 @@ class YiShengAjaxsearch(YaoXingAjaxsearch):
     """AJAX action for search DB.
     receive front end ajax transform parameters
     """
-    grok.name('yisheng_ajaxsearch')
 
     def searchview(self,viewname="yisheng_listings"):
         searchview = getMultiAdapter((self.context, self.request),name=viewname)
@@ -962,9 +951,6 @@ class DeleteYaoXing(form.Form):
     "delete the specify yao xing recorder"
     
     implements(IPublishTraverse)
-    grok.context(Iormfolder)
-    grok.name('delete_yaoxing')
-    grok.require('cms.db.input_db')
 
     label = _(u"delete yao xing data")
     fields = field.Fields(IYaoXing).omit('id')
@@ -980,17 +966,13 @@ class DeleteYaoXing(form.Form):
             raise NotFound()
 
     def getContent(self):
-        # Get the model table query funcations
         locator = queryUtility(IDbapi, name='yaoxing')
-        #to do
-        #fetch the pending deleting  record
         return locator.getByCode(self.id)
 
     def update(self):
         self.request.set('disable_border', True)
         #Let z3c.form do its magic
         super(DeleteYaoXing, self).update()
-
 
     @button.buttonAndHandler(_(u"Delete"))
     def submit(self, action):
@@ -1022,10 +1004,6 @@ class DeleteYaoXing(form.Form):
 class InputYaoXing(form.Form):
     """input db yao xing table data
     """
-
-#     grok.context(Iormfolder)
-#     grok.name('input_yaoxing')
-#     grok.require('cms.db.input_db')
     label = _(u"Input yao xing data")
     fields = field.Fields(IYaoXing).omit('id')
     ignoreContext = True
@@ -1068,9 +1046,6 @@ class UpdateYaoXing(form.Form):
     """
 
     implements(IPublishTraverse)
-#     grok.context(Iormfolder)
-#     grok.name('update_yaoxing')
-#     grok.require('cms.db.input_db')
 
     label = _(u"update yao xing data")
     fields = field.Fields(IYaoXing).omit('id')
@@ -1079,11 +1054,8 @@ class UpdateYaoXing(form.Form):
     #receive url parameters
     # reset content
     def getContent(self):
-        # Get the model table query funcations
         locator = queryUtility(IDbapi, name='yaoxing')
-        # to do
         return locator.getByCode(self.id)
-
 
     def publishTraverse(self, request, name):
         if self.id is None:
@@ -1126,24 +1098,19 @@ class UpdateYaoXing(form.Form):
         IStatusMessage(self.request).add(confirm, type='info')
         self.request.response.redirect(self.context.absolute_url() + '/@@yaoxing_listings')
 
-##发射机数据库操作
+
 class DeleteYaoWei(DeleteYaoXing):
     "delete the specify yaowei recorder"
 
-    grok.name('delete_yaowei')
     label = _(u"delete yao wei data")
     fields = field.Fields(IYaoWei).omit('id')
 
     def getContent(self):
-        # Get the model table query funcations
         locator = queryUtility(IDbapi, name='yaowei')
-        # to do
-        # fetch first record as sample data
         return locator.getByCode(self.id)
 
     def update(self):
         self.request.set('disable_border', True)
-
         #Let z3c.form do its magic
         super(DeleteYaoWei, self).update()
 
@@ -1178,8 +1145,6 @@ class DeleteYaoWei(DeleteYaoXing):
 class InputYaoWei(InputYaoXing):
     """input db yaowei table data
     """
-
-    grok.name('input_fashej')
 
     label = _(u"Input yao wei data")
     fields = field.Fields(IYaoWei).omit('id')
@@ -1220,15 +1185,11 @@ class InputYaoWei(InputYaoXing):
 class UpdateYaoWei(UpdateYaoXing):
     """update yaowei table row data
     """
-#     grok.name('update_yaowei')
     label = _(u"update yao wei data")
     fields = field.Fields(IYaoWei).omit('id')
 
     def getContent(self):
-        # Get the model table query funcations
         locator = queryUtility(IDbapi, name='yaowei')
-        # to do
-        # fetch first record as sample data
         return locator.getByCode(self.id)
 
     def update(self):
@@ -1264,13 +1225,10 @@ class UpdateYaoWei(UpdateYaoXing):
         IStatusMessage(self.request).add(confirm, type='info')
         self.request.response.redirect(self.context.absolute_url() + '/@@yaowei_listings')
 
-##end发射机 数据库操作
 
-##yao table 数据库操作
 class DeleteYao(DeleteYaoXing):
     "delete the specify yao recorder"
 
-    grok.name('delete_yao')
     label = _(u"delete yao data")
     fields = field.Fields(IYaoUI).omit('id')
 
@@ -1317,8 +1275,6 @@ class DeleteYao(DeleteYaoXing):
 class InputYao(InputYaoXing):
     """input db yao table data
     """
-
-#     grok.name('input_yao')
 
     label = _(u"Input yao data")
     fields = field.Fields(IYaoUI).omit('id','yaowei_id','yaoxing_id')
@@ -1375,11 +1331,11 @@ class InputYao(InputYaoXing):
         IStatusMessage(self.request).add(confirm, type='info')
         self.request.response.redirect(self.context.absolute_url() + '/@@yao_listings')
 
-from cms.db.browser.intermediate_objs import YaoUI
+
 class UpdateYao(UpdateYaoXing):
     """update yao table row data
     """
-#     grok.name('update_yao')
+
     label = _(u"update yao data")
     fields = field.Fields(IYaoUI).omit('id','yaowei_id','yaoxing_id')
 
@@ -1424,8 +1380,7 @@ class UpdateYao(UpdateYaoXing):
         #过滤非本表的字段
         yao_data = dict()
         for i in yao_clmns:
-            yao_data[i] = data[i]
-                               
+            yao_data[i] = data[i]                               
         yao_data['id'] = self.id
         yaowei_id = data['yaowei']
         yaoxing_id = data['yaoxing']
@@ -1457,20 +1412,15 @@ class UpdateYao(UpdateYaoXing):
 class DeleteJingLuo(DeleteYaoXing):
     "delete the specify jingluo recorder"
 
-    grok.name('delete_jieshouj')
     label = _(u"delete jing luo data")
     fields = field.Fields(IJingLuo).omit('id')
 
     def getContent(self):
-        # Get the model table query funcations
         locator = queryUtility(IDbapi, name='jingluo')
-        # to do
-        # fetch first record as sample data
         return locator.getByCode(self.id)
 
     def update(self):
         self.request.set('disable_border', True)
-
         #Let z3c.form do its magic
         super(DeleteJingLuo, self).update()
 
@@ -1506,8 +1456,6 @@ class InputJingLuo(InputYaoXing):
     """input db jingluo table data
     """
 
-#     grok.name('input_jingluo')
-
     label = _(u"Input jing luo data")
     fields = field.Fields(IJingLuo).omit('id')
 
@@ -1533,7 +1481,7 @@ class InputJingLuo(InputYaoXing):
 
         confirm = _(u"Thank you! Your data  will be update in back end DB.")
         IStatusMessage(self.request).add(confirm, type='info')
-#         self.request.response.redirect(self.context.absolute_url() + '/@@jingluo_listings')
+        self.request.response.redirect(self.context.absolute_url() + '/@@jingluo_listings')
 
     @button.buttonAndHandler(_(u"Cancel"))
     def cancel(self, action):
@@ -1546,15 +1494,12 @@ class InputJingLuo(InputYaoXing):
 class UpdateJingLuo(UpdateYaoXing):
     """update jingluo table row data
     """
-    grok.name('update_jingluo')
     label = _(u"update jingluo data")
     fields = field.Fields(IJingLuo).omit('id')
 
     def getContent(self):
         # Get the model table query funcations
         locator = queryUtility(IDbapi, name='jingluo')
-        # to do
-        # fetch first record as sample data
         return locator.getByCode(self.id)
 
     def update(self):
@@ -1566,7 +1511,6 @@ class UpdateJingLuo(UpdateYaoXing):
     def submit(self, action):
         """Update jingluo recorder
         """
-
         data, errors = self.extractData()
         data['id'] = self.id
         if errors:
@@ -1589,21 +1533,17 @@ class UpdateJingLuo(UpdateYaoXing):
         confirm = _(u"Input cancelled.")
         IStatusMessage(self.request).add(confirm, type='info')
         self.request.response.redirect(self.context.absolute_url() + '/@@jingluo_listings')
-# end 接收机 数据库操作
 
-## 发射天线 数据库操作
+
 class DeleteChuFang(DeleteYaoXing):
     "delete the specify chu fang recorder"
 
-    grok.name('delete_chufang')
     label = _(u"delete chu fang data")
     fields = field.Fields(IChuFang).omit('id')
 
     def getContent(self):
         # Get the model table query funcations
         locator = queryUtility(IDbapi, name='chufang')
-        # to do
-        # fetch first record as sample data
         return locator.getByCode(self.id)
 
     def update(self):
@@ -1611,7 +1551,6 @@ class DeleteChuFang(DeleteYaoXing):
 
         #Let z3c.form do its magic
         super(DeleteChuFang, self).update()
-
 
     @button.buttonAndHandler(_(u"Delete"))
     def submit(self, action):
@@ -1640,18 +1579,6 @@ class DeleteChuFang(DeleteYaoXing):
         self.request.response.redirect(self.context.absolute_url() + '/@@chufang_listings')
 
 
-#register multiwidget for IYao_ChuFang_AssoUI
-# from z3c.form.widget import FieldWidget
-from cms.db.browser.interfaces import IYao_ChuFang_AssoUI
-from cms.db.browser.interfaces import IChuFang_BingRen_AssoUI
-from cms.db.browser.intermediate_objs import ChuFang_BingRen_AssoUI
-from cms.db.browser.intermediate_objs import Yao_ChuFang_AssoUI
-from cms.db.browser.intermediate_objs import EditChuFang_BingRen_AssoUI
-from cms.db.browser.intermediate_objs import EditYao_ChuFang_AssoUI
-from z3c.form.object import registerFactoryAdapter
-registerFactoryAdapter(IYao_ChuFang_AssoUI, Yao_ChuFang_AssoUI)
-registerFactoryAdapter(IChuFang_BingRen_AssoUI, ChuFang_BingRen_AssoUI)
-
 class InputChuFang(InputYaoXing):
     """input db chufang table data
     """
@@ -1675,11 +1602,6 @@ class InputChuFang(InputYaoXing):
             self.status = self.formErrorsMessage
             return
         funcations = queryUtility(IDbapi, name='chufang')             
-#         from sqlalchemy.inspection import inspect
-#         table = inspect(ChuFang)
-#         columns = [column.name for column in table.c]
-#         #过滤主键,外键
-#         columns = filter(lambda elem: not elem.endswith("id"),columns)
         columns = filter_cln(ChuFang)        
         #过滤非本表的字段
         _data = dict()
@@ -1696,8 +1618,6 @@ class InputChuFang(InputYaoXing):
         #[<cms.db.browser.interfaces.Yao_ChuFang_AssoUI object at 0x7fb156e389d0>]
         #Yao_ChuFang_Asso(yao1,chufang,7,"晒干")
         # asso_obj_tables:[(pk,targetcls,attr,[property1,property2,...]),...]
-#         import pdb
-#         pdb.set_trace()
         bingrens = data['bingrens']
         if not bool(bingrens):bingrens = []        
         bingren_asso_columns = filter_cln(ChuFang_BingRen_Asso)        
@@ -1744,11 +1664,11 @@ class InputChuFang(InputYaoXing):
         self.request.response.redirect(self.context.absolute_url() + '/@@chufang_listings')
 
 
-from cms.db.browser.intermediate_objs import ChuFangUI
+
 class UpdateChuFang(UpdateYaoXing):
     """update chufang table row data
     """
-#     grok.name('update_chufang')
+
     label = _(u"update chu fang data")
     fields = field.Fields(IChuFangUI).omit('id','yisheng_id')
 
@@ -1897,7 +1817,7 @@ class UpdateChuFang(UpdateYaoXing):
 class DeleteBingRen(DeleteYaoXing):
     "delete the specify bing ren recorder"
 
-    grok.name('delete_bingren')
+
     label = _(u"delete bing ren data")
     fields = field.Fields(IBingRen).omit('id')
 
@@ -1946,7 +1866,7 @@ class InputBingRen(InputYaoXing):
     """input db bingren table data
     """
 
-#     grok.name('input_bingren')
+
     label = _(u"Input bing ren data")
     fields = field.Fields(IBingRenUI).omit('id')
 
@@ -1999,7 +1919,7 @@ class InputBingRen(InputYaoXing):
 class UpdateBingRen(UpdateYaoXing):
     """update bingren table row data
     """
-    grok.name('update_bingren')
+
     label = _(u"update bing ren data")
     fields = field.Fields(IBingRen).omit('id')
 
@@ -2048,7 +1968,7 @@ class UpdateBingRen(UpdateYaoXing):
 class DeleteDiZhi(DeleteYaoXing):
     "delete the specify di zhi recorder"
 
-    grok.name('delete_dizhi')
+
     label = _(u"delete di zhi data")
     fields = field.Fields(IDiZhi).omit('id')
 
@@ -2090,7 +2010,7 @@ class DeleteDiZhi(DeleteYaoXing):
 class InputDiZhi(InputYaoXing):
     """input db dizhi table data
     """
-#     grok.name('input_dizhi')
+
     label = _(u"Input dizhi data")
     fields = field.Fields(IDiZhi).omit('id')
 
@@ -2129,7 +2049,7 @@ class InputDiZhi(InputYaoXing):
 class UpdateDiZhi(UpdateYaoXing):
     """update dizhi table row data
     """
-    grok.name('update_dizhi')
+
     label = _(u"update di zhi data")
     fields = field.Fields(IDiZhi).omit('id')
 
@@ -2141,7 +2061,7 @@ class UpdateDiZhi(UpdateYaoXing):
     def update(self):
         self.request.set('disable_border', True)
         # Let z3c.form do its magic
-        super(UpdateBingRen, self).update()
+        super(UpdateDiZhi, self).update()
 
     @button.buttonAndHandler(_(u"Submit"))
     def submit(self, action):
@@ -2175,7 +2095,7 @@ class UpdateDiZhi(UpdateYaoXing):
 class DeleteDanWei(DeleteYaoXing):
     "delete the specify dan wei recorder"
 
-    grok.name('delete_danwei')
+
     label = _(u"delete dan wei data")
     fields = field.Fields(IDanWei).omit('id')
 
@@ -2213,7 +2133,7 @@ class DeleteDanWei(DeleteYaoXing):
 class InputDanWei(InputYaoXing):
     """input dan wei table data
     """
-#     grok.name('input_danwei')
+
     label = _(u"Input dan wei data")
     fields = field.Fields(IDanWeiUI).omit('id','dizhi_id')
 
@@ -2261,14 +2181,27 @@ class InputDanWei(InputYaoXing):
 class UpdateDanWei(UpdateYaoXing):
     """update dan wei table row data
     """
-    grok.name('update_dizhi')
+
     label = _(u"update dan wei data")
-    fields = field.Fields(IDanWei).omit('id')
+    fields = field.Fields(IDanWeiUI).omit('id','dizhi_id')
 
     def getContent(self):
         # Get the model table query funcations
         locator = queryUtility(IDbapi, name='danwei')
-        return locator.getByCode(self.id)
+        _obj = locator.getByCode(self.id)
+        # ignore fields list
+        ignore = ['id','dizhi_id']
+        # obj fields list
+        objfd = ['dizhi']
+        data = dict()
+        for name, f in getFieldsInOrder(IDanWeiUI):            
+            p = getattr(_obj, name, '')
+            if name in ignore:continue
+            elif name in objfd:
+                data[name] = getattr(p,'id',1)
+            else:
+                data[name] = p                         
+        return DanWeiUI(**data)
 
 
     @button.buttonAndHandler(_(u"Submit"))
@@ -2276,13 +2209,20 @@ class UpdateDanWei(UpdateYaoXing):
         """Update model recorder
         """
         data, errors = self.extractData()
-        data['id'] =self.id
+        _clmns = filter_cln(DanWei)       
         if errors:
             self.status = self.formErrorsMessage
             return
         funcations = queryUtility(IDbapi, name='danwei')
+        #过滤非本表的字段
+        _data = dict()
+        for i in _clmns:
+            _data[i] = data[i]                               
+        _data['id'] = self.id
+        _id = data['dizhi']
+        fk_tables = [(_id,DiZhi,'dizhi')]
         try:
-            funcations.updateByCode(data)
+            funcations.update_multi_tables(_data,fk_tables)
         except InputError, e:
             IStatusMessage(self.request).add(str(e), type='error')
             self.request.response.redirect(self.context.absolute_url() + '/@@danwei_listings')
@@ -2297,13 +2237,12 @@ class UpdateDanWei(UpdateYaoXing):
         confirm = _(u"Input cancelled.")
         IStatusMessage(self.request).add(confirm, type='info')
         self.request.response.redirect(self.context.absolute_url() + '/@@danwei_listings')
-# end 典型天线增益子库 数据库操作
 
-## 天线子库 数据库操作
+
 class DeleteYiSheng(DeleteYaoXing):
     "delete the specify yi sheng recorder"
 
-    grok.name('delete_yisheng')
+
     label = _(u"delete yi sheng data")
     fields = field.Fields(IYiSheng).omit('id')
 
@@ -2341,7 +2280,7 @@ class DeleteYiSheng(DeleteYaoXing):
 class InputYiSheng(InputYaoXing):
     """input db yisheng table data
     """
-#     grok.name('input_yisheng')
+
     label = _(u"Input yi sheng data")
     fields = field.Fields(IYiShengUI).omit('id','danwei_id')
 
@@ -2387,7 +2326,7 @@ class InputYiSheng(InputYaoXing):
 class UpdateYiSheng(UpdateYaoXing):
     """update yisheng table row data
     """
-    grok.name('update_yisheng')
+
     label = _(u"update yi sheng data")
     fields = field.Fields(IYiSheng).omit('id')
 

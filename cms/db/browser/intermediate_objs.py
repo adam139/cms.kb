@@ -19,9 +19,22 @@ from zope.schema import getFieldsInOrder
 from zope.schema.fieldproperty import FieldProperty
 
 from cms.db.browser.interfaces import IYaoUI
+from cms.db.browser.interfaces import IDanWeiUI
 from cms.db.browser.interfaces import IChuFangUI
 from cms.db.browser.interfaces import IChuFang_BingRen_AssoUI
 from cms.db.browser.interfaces import IYao_ChuFang_AssoUI
+
+
+@implementer(IDanWeiUI)
+class DanWeiUI(object):
+    mingcheng = FieldProperty(IDanWeiUI['mingcheng'])
+    dizhi = FieldProperty(IDanWeiUI['dizhi'])        
+    # allow getSource to proceed
+    _Modify_portal_content_Permission = ('Anonymous', )
+
+    def __init__(self, mingcheng=None, dizhi=None):
+        self.mingcheng = mingcheng
+        self.dizhi = dizhi
 
 
 @implementer(IYaoUI)

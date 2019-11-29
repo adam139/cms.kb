@@ -1,7 +1,6 @@
 <configure
     xmlns="http://namespaces.zope.org/zope"
     xmlns:browser="http://namespaces.zope.org/browser"
-    xmlns:grok="http://namespaces.zope.org/grok"
     xmlns:plone="http://namespaces.plone.org/plone"
     i18n_domain="cms.db">
 
@@ -135,7 +134,52 @@
         class=".ajax_listing.UpdateDanWei"/>
         
     <!-- delete form view -->
-    
+     <browser:page
+        name="delete_yaoxing"
+        for="*"
+        permission="zope2.View"
+        class=".ajax_listing.DeleteYaoXing"/> 
+     <browser:page
+        name="delete_yao"
+        for="*"
+        permission="zope2.View"
+        class=".ajax_listing.DeleteYao"/>
+     <browser:page
+        name="delete_yaowei"
+        for="*"
+        permission="zope2.View"
+        class=".ajax_listing.DeleteYaoWei"/>
+      <browser:page
+        name="delete_jingluo"
+        for="*"
+        permission="zope2.View"
+        class=".ajax_listing.DeleteJingLuo"/>
+      <browser:page
+        name="delete_chufang"
+        for="*"
+        permission="zope2.View"
+        class=".ajax_listing.DeleteChuFang"/>
+      <browser:page
+        name="delete_bingren"
+        for="*"
+        permission="zope2.View"
+        class=".ajax_listing.DeleteBingRen"/>
+      <browser:page
+        name="delete_dizhi"
+        for="*"
+        permission="zope2.View"
+        class=".ajax_listing.DeleteDiZhi"/>
+      <browser:page
+        name="delete_yisheng"
+        for="*"
+        permission="zope2.View"
+        class=".ajax_listing.DeleteYiSheng"/>
+      <browser:page
+        name="delete_danwei"
+        for="*"
+        permission="zope2.View"
+        class=".ajax_listing.DeleteDanWei"/>
+            
                                                                     
     <!-- Control panel form -->
     <browser:page 
