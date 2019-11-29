@@ -492,6 +492,25 @@ class TestView(unittest.TestCase):
         self.assertEqual(len(suan),1)
         self.assertTrue(u"Thank you! Your data  will be update in back end DB." in browser.contents)
 
+    def testUpdateYiShengForm(self):
+        app = self.layer['app']
+        portal = self.layer['portal']
+        browser = Browser(app)
+        browser.handleErrors = False             
+        browser.addHeader('Authorization', 'Basic %s:%s' % (TEST_USER_NAME, TEST_USER_PASSWORD,))
+        transaction.commit()
+        base = portal['folder']['ormfolder'].absolute_url()
+        yisheng_id = Session.query(YiSheng).filter(YiSheng.xingming=="余浩").first().id
+        danwei_id = Session.query(DanWei).filter(DanWei.mingcheng=="润生堂").first().id
+        # Open form
+        browser.open("%s/@@update_yisheng/%s" % (base,yisheng_id))
+        browser.getControl(name=u"form.widgets.danwei:list").value = [str(danwei_id)]
+        browser.getControl(name=u"form.widgets.shengri").value = "2013-09-12"       
+        browser.getControl(u"Submit").click()        
+        suan = Session.query(YiSheng).join(DanWei).filter(DanWei.mingcheng=="润生堂").all()
+        self.assertEqual(len(suan),1)
+        self.assertTrue(u"Thank you! Your data  will be update in back end DB." in browser.contents)
+
 
     def test_asso_proxyChuFang(self):
 

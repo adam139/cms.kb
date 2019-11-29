@@ -28,6 +28,7 @@ from cms.db.browser.interfaces import IChuFangUI
 # association object table need a intermediate object for edit form 
 from cms.db.browser.intermediate_objs import ChuFangUI
 from cms.db.browser.intermediate_objs import YaoUI
+from cms.db.browser.intermediate_objs import YiShengUI
 from cms.db.browser.intermediate_objs import DanWeiUI
 from cms.db.browser.intermediate_objs import EditChuFang_BingRen_AssoUI
 from cms.db.browser.intermediate_objs import EditYao_ChuFang_AssoUI
@@ -2328,26 +2329,45 @@ class UpdateYiSheng(UpdateYaoXing):
     """
 
     label = _(u"update yi sheng data")
-    fields = field.Fields(IYiSheng).omit('id')
+    fields = field.Fields(IYiShengUI).omit('id','danwei_id')
 
     def getContent(self):
         # Get the model table query funcations
         locator = queryUtility(IDbapi, name='yisheng')
-        return locator.getByCode(self.id)
-
+        _obj = locator.getByCode(self.id)
+        # ignore fields list
+        ignore = ['id','danwei_id']
+        # obj fields list
+        objfd = ['danwei']
+        data = dict()
+        for name, f in getFieldsInOrder(IYiShengUI):            
+            p = getattr(_obj, name, '')
+            if name in ignore:continue
+            elif name in objfd:
+                data[name] = getattr(p,'id',1)
+            else:
+                data[name] = p                        
+        return YiShengUI(**data)
 
     @button.buttonAndHandler(_(u"Submit"))
     def submit(self, action):
-        """Update model recorder
+        """Update yisheng recorder
         """
         data, errors = self.extractData()
-        data['id'] =self.id
+        _clmns = filter_cln(YiSheng)       
         if errors:
             self.status = self.formErrorsMessage
             return
         funcations = queryUtility(IDbapi, name='yisheng')
+        #过滤非本表的字段
+        _data = dict()
+        for i in _clmns:
+            _data[i] = data[i]                               
+        _data['id'] = self.id
+        _id = data['danwei']
+        fk_tables = [(_id,DanWei,'danwei')]
         try:
-            funcations.updateByCode(data)
+            funcations.update_multi_tables(_data,fk_tables)
         except InputError, e:
             IStatusMessage(self.request).add(str(e), type='error')
             self.request.response.redirect(self.context.absolute_url() + '/@@yisheng_listings')
