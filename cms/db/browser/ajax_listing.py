@@ -1432,7 +1432,7 @@ class DeleteJingLuo(DeleteYaoXing):
         """Delete jingluo recorder
         """
 
-        data, errors = self.extractData()        
+        data, errors = self.extractData()     
         if errors:
             self.status = self.formErrorsMessage
             return
@@ -1976,9 +1976,8 @@ class UpdateBingRen(UpdateYaoXing):
         confirm = _(u"Input cancelled.")
         IStatusMessage(self.request).add(confirm, type='info')
         self.request.response.redirect(self.context.absolute_url() + '/@@bingren_listings')
-# end 接收天线 数据库操作
 
-## 滤波器 数据库操作
+
 class DeleteDiZhi(DeleteYaoXing):
     "delete the specify di zhi recorder"
 

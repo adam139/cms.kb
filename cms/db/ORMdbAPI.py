@@ -403,7 +403,7 @@ class Dbapi(object):
 
         tablecls = self.init_table()
         if id != "":
-            text = "SELECT * FROM %(tbl)s WHERE id=:id" % dict(tbl=self.table) 
+            sqltext = "SELECT * FROM %(tbl)s WHERE id=:id" % dict(tbl=self.table) 
             try:
                 recorder = session.query(tablecls).\
                 from_statement(text(sqltext)).\

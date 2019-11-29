@@ -521,18 +521,57 @@ class TestView(unittest.TestCase):
 
         transaction.commit()
         base = portal['folder']['ormfolder'].absolute_url()
-        id = Session.query(YaoWei).filter(YaoWei.wei==u"甘").one().id
+        id = Session.query(YaoWei).filter(YaoWei.wei=="甘").one().id
         # Open form
         browser.open("%s/@@delete_yaowei/%s" % (base,id))        
         # Fill in the form 
-
-        browser.getControl(name=u"form.widgets.wei").value = u"甘"        
+        browser.getControl(name=u"form.widgets.wei").value = "甘"        
         # Submit
-        browser.getControl(u"Submit").click()
-        suan = Session.query(YaoWei).filter(YaoWei.wei==u"甘").all()
+        browser.getControl(u"Delete").click()
+        suan = Session.query(YaoWei).filter(YaoWei.wei=="甘").all()
         self.assertEqual(len(suan),0)
         self.assertTrue(u"Your data  has been deleted." in browser.contents)
 
+    def testDeleteYaoXingForm(self):
+        app = self.layer['app']
+        portal = self.layer['portal']
+        browser = Browser(app)
+        browser.handleErrors = False             
+        browser.addHeader('Authorization', 'Basic %s:%s' % (TEST_USER_NAME, TEST_USER_PASSWORD,))
+        transaction.commit()
+        base = portal['folder']['ormfolder'].absolute_url()
+        id = Session.query(YaoXing).filter(YaoXing.xing=="温").one().id
+        # Open form
+        browser.open("%s/@@delete_yaoxing/%s" % (base,id))             
+        # Submit
+        browser.getControl(u"Delete").click()
+        suan = Session.query(YaoXing).filter(YaoXing.xing=="温").all()
+        self.assertEqual(len(suan),0)
+        self.assertTrue(u"Your data  has been deleted." in browser.contents)
+
+    def testDeleteJingLuoForm(self):
+        app = self.layer['app']
+        portal = self.layer['portal']
+        browser = Browser(app)
+        browser.handleErrors = False             
+        browser.addHeader('Authorization', 'Basic %s:%s' % (TEST_USER_NAME, TEST_USER_PASSWORD,))
+        transaction.commit()
+        base = portal['folder']['ormfolder'].absolute_url()
+        id = Session.query(JingLuo).filter(JingLuo.mingcheng=="足阳明胃经").one().id
+        # Open form
+        browser.open("%s/@@delete_jingluo/%s" % (base,id))             
+        # Submit
+        browser.getControl(u"Delete").click()
+        suan = Session.query(JingLuo).filter(JingLuo.mingcheng=="足阳明胃经").all()
+        self.assertEqual(len(suan),1)
+        id = Session.query(JingLuo).filter(JingLuo.mingcheng=="足太阴脾经").one().id
+        # Open form
+        browser.open("%s/@@delete_jingluo/%s" % (base,id))             
+        # Submit
+        browser.getControl(u"Delete").click()
+        suan = Session.query(JingLuo).filter(JingLuo.mingcheng=="足太阴脾经").all()
+        self.assertEqual(len(suan),0)        
+        self.assertTrue(u"Your data  has been deleted." in browser.contents)
 
     def test_asso_proxyChuFang(self):
 
