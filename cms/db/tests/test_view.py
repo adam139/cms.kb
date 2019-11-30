@@ -216,12 +216,13 @@ class TestView(unittest.TestCase):
         yaoxing_id = Session.query(YaoXing).filter(YaoXing.xing=="凉").first().id
         jingluo_id = Session.query(JingLuo).filter(JingLuo.mingcheng=="足少阳胆经").first().id
         jingluo_id2 = Session.query(JingLuo).filter(JingLuo.mingcheng=="足厥阴肝经").first().id
-       
+        import pdb
+        pdb.set_trace()
         # Fill in the form 
         browser.getControl(name=u"form.widgets.yaowei:list").value = [str(yaowei_id)]
         browser.getControl(name=u"form.widgets.yaoxing:list").value = [str(yaoxing_id)]
         browser.getControl(name=u"form.widgets.mingcheng").value = u"牛膝"         
-#         browser.getControl(name=u"form.widgets.guijing.to").value = [jingluo_id,jingluo_id2] 
+#         browser.getControl(name=u"form.widgets.guijing.to").value = [str(jingluo_id)] 
         browser.getControl(name=u"form.widgets.zhuzhi").value = u"引气血下行"        
         # Submit
         browser.getControl(u"Submit").click()        
@@ -391,6 +392,8 @@ class TestView(unittest.TestCase):
         yaowei_id = Session.query(YaoWei).filter(YaoWei.wei=="甘").first().id
         # Open form
         browser.open("%s/@@update_yao/%s" % (base,yao_id))
+        import pdb
+        pdb.set_trace()
         browser.getControl(name=u"form.widgets.yaowei:list").value = [str(yaowei_id)]
         browser.getControl(name=u"form.widgets.zhuzhi").value = u"主脾胃"        
         browser.getControl(u"Submit").click()        

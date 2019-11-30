@@ -44,10 +44,6 @@ from z3c.form.object import registerFactoryAdapter
 registerFactoryAdapter(IYao_ChuFang_AssoUI, Yao_ChuFang_AssoUI)
 registerFactoryAdapter(IChuFang_BingRen_AssoUI, ChuFang_BingRen_AssoUI)
 
-from z3c.form import term
-provideAdapter(term.CollectionTerms)
-provideAdapter(term.CollectionTermsVocabulary)
-
 from cms.db.browser.utility import filter_cln
 from cms.db.browser.utility import map_field2cls
 from cms.db.orm import Yao
@@ -1366,7 +1362,7 @@ class UpdateYao(UpdateYaoXing):
         """Update yao recorder
         """
 
-        data, errors = self.extractData()
+        data, errors = self.extractData()       
         yao_clmns = filter_cln(Yao)        
         if errors:
             self.status = self.formErrorsMessage

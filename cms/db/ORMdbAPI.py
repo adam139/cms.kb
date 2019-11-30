@@ -180,9 +180,8 @@ class Dbapi(object):
             mapcls = i[1]
             #主键到map对象(表记录) 的map function 
             objs = []
-
             for j in i[0]:
-                objs = objs.append(session.query(mapcls).filter(mapcls.id ==j).one())                
+                objs.append(session.query(mapcls).filter(mapcls.id ==j).one())                
             if bool(objs):setattr(recorder,i[2],objs)
         session.add(recorder)
         
@@ -237,7 +236,7 @@ class Dbapi(object):
                     mapcls = i[1]
                     objs = []
                     for j in i[0]:
-                        objs = objs.append(session.query(mapcls).filter(mapcls.id ==j).one())                
+                        objs.append(session.query(mapcls).filter(mapcls.id ==j).one())                
                     if bool(objs):setattr(recorder,i[2],objs)
                 session.add(recorder)
         

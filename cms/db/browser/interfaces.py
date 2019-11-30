@@ -7,7 +7,7 @@ from plone.directives import form
 # from plone.autoform import directives as form
 
 from z3c.form.browser.checkbox import CheckBoxFieldWidget
-from collective.z3cform.datagridfield import DataGridFieldFactory, DictRow
+# from collective.z3cform.datagridfield import DataGridFieldFactory, DictRow
 from cms.db.orm import IYao
 from cms.db.orm import IDanWei
 from cms.db.orm import IYiSheng
@@ -122,7 +122,7 @@ class IYaoUI (IYao):
             required=True,
         )        
 
-#     form.widget(guijing=CheckBoxFieldWidget)
+    form.widget(guijing=CheckBoxFieldWidget)
     guijing = schema.List(title=_(u"gui jing"),
                                description=_(u"gui jing"),
                                required=False,
