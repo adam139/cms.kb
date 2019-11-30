@@ -15,10 +15,12 @@ from z3c.form import field, button
 from Products.statusmessages.interfaces import IStatusMessage
 from cms.db.interfaces import InputError
 from zope.component import queryUtility
+from zope.component import provideAdapter
 from cms.db.interfaces import IDbapi
 from cms.db.orm import IYaoWei,YaoWei
 from cms.db.orm import IYaoXing,YaoXing
 from cms.db.orm import IJingLuo,JingLuo
+from cms.db.orm import IYao
 # 有外键的表必须调用定制UI接口
 from cms.db.browser.interfaces import IYaoUI
 from cms.db.browser.interfaces import IDanWeiUI
@@ -41,6 +43,10 @@ from cms.db.browser.intermediate_objs import Yao_ChuFang_AssoUI
 from z3c.form.object import registerFactoryAdapter
 registerFactoryAdapter(IYao_ChuFang_AssoUI, Yao_ChuFang_AssoUI)
 registerFactoryAdapter(IChuFang_BingRen_AssoUI, ChuFang_BingRen_AssoUI)
+
+from z3c.form import term
+provideAdapter(term.CollectionTerms)
+provideAdapter(term.CollectionTermsVocabulary)
 
 from cms.db.browser.utility import filter_cln
 from cms.db.browser.utility import map_field2cls
@@ -953,11 +959,9 @@ class DeleteYaoXing(form.Form):
     "delete the specify yao xing recorder"
     
     implements(IPublishTraverse)
-
     label = _(u"delete yao xing data")
     fields = field.Fields(IYaoXing).omit('id')
     ignoreContext = False
-
     id = None
     #receive url parameters
     def publishTraverse(self, request, name):
@@ -1024,16 +1028,14 @@ class InputYaoXing(form.Form):
             self.status = self.formErrorsMessage
             return
         funcations = queryUtility(IDbapi, name='yaoxing')
-
         try:
             funcations.add(data)
         except InputError, e:
             IStatusMessage(self.request).add(str(e), type='error')
             self.request.response.redirect(self.context.absolute_url() + '/@@yaoxing_listings')
-
         confirm = _(u"Thank you! Your data  will be update in back end DB.")
         IStatusMessage(self.request).add(confirm, type='info')
-#         self.request.response.redirect(self.context.absolute_url() + '/@@yaoxing_listings')
+        self.request.response.redirect(self.context.absolute_url() + '/@@yaoxing_listings')
 
     @button.buttonAndHandler(_(u"Cancel"))
     def cancel(self, action):
@@ -1173,7 +1175,7 @@ class InputYaoWei(InputYaoXing):
 
         confirm = _(u"Thank you! Your data  will be update in back end DB.")
         IStatusMessage(self.request).add(confirm, type='info')
-#         self.request.response.redirect(self.context.absolute_url() + '/@@yaowei_listings')
+        self.request.response.redirect(self.context.absolute_url() + '/@@yaowei_listings')
 
     @button.buttonAndHandler(_(u"Cancel"))
     def cancel(self, action):
@@ -1232,12 +1234,10 @@ class DeleteYao(DeleteYaoXing):
     "delete the specify yao recorder"
 
     label = _(u"delete yao data")
-    fields = field.Fields(IYaoUI).omit('id')
+    fields = field.Fields(IYao).omit('id','yaowei_id','yaoxing_id','guijing')
 
     def getContent(self):
-        # Get the model table query funcations
         locator = queryUtility(IDbapi, name='yao')
-
         return locator.getByCode(self.id)
 
     def update(self):
@@ -1299,18 +1299,11 @@ class InputYao(InputYaoXing):
         #过滤非本表的字段
         yao_data = dict()
         for i in columns:
-            yao_data[i] = data[i]
-#         yao_data = dict(filter(lambda elem: elem in columns,data.items()))       
-
-# add_multi_tables(self,kwargs,fk_tables,asso_tables):
-#         "添加表记录的同时,并关联其他表记录"
-        #外键关联表 fk_tables: [(pk,map_cls,attr),...]
-        # 多对多关联表 asso_tables:[([pk1,pk2,...],map_cls,attr),...]                   
+            yao_data[i] = data[i]                  
         yaowei_id = data['yaowei']
         yaoxing_id = data['yaoxing']
         guijing = data['guijing']
         fk_tables = [(yaowei_id,YaoWei,'yaowei'),(yaoxing_id,YaoXing,'yaoxing')]
-
         if bool(guijing):
             asso_tables = [(guijing,JingLuo,'guijing')]            
         else:
@@ -1319,11 +1312,11 @@ class InputYao(InputYaoXing):
             funcations.add_multi_tables(yao_data,fk_tables,asso_tables)
         except InputError, e:
             IStatusMessage(self.request).add(str(e), type='error')
-#             self.request.response.redirect(self.context.absolute_url() + '/@@yao_listings')
+            self.request.response.redirect(self.context.absolute_url() + '/@@yao_listings')
 
         confirm = _(u"Thank you! Your data  will be update in back end DB.")
         IStatusMessage(self.request).add(confirm, type='info')
-#         self.request.response.redirect(self.context.absolute_url() + '/@@yao_listings')
+        self.request.response.redirect(self.context.absolute_url() + '/@@yao_listings')
 
     @button.buttonAndHandler(_(u"Cancel"))
     def cancel(self, action):
@@ -1410,7 +1403,7 @@ class UpdateYao(UpdateYaoXing):
         IStatusMessage(self.request).add(confirm, type='info')
         self.request.response.redirect(self.context.absolute_url() + '/@@yao_listings')
 
-##接收机 数据库操作
+
 class DeleteJingLuo(DeleteYaoXing):
     "delete the specify jingluo recorder"
 
@@ -1500,7 +1493,7 @@ class UpdateJingLuo(UpdateYaoXing):
     fields = field.Fields(IJingLuo).omit('id')
 
     def getContent(self):
-        # Get the model table query funcations
+
         locator = queryUtility(IDbapi, name='jingluo')
         return locator.getByCode(self.id)
 
@@ -1544,7 +1537,7 @@ class DeleteChuFang(DeleteYaoXing):
     fields = field.Fields(IChuFang).omit('id')
 
     def getContent(self):
-        # Get the model table query funcations
+
         locator = queryUtility(IDbapi, name='chufang')
         return locator.getByCode(self.id)
 
@@ -1608,13 +1601,7 @@ class InputChuFang(InputYaoXing):
         #过滤非本表的字段
         _data = dict()
         for i in columns:
-            _data[i] = data[i]
-#         yao_data = dict(filter(lambda elem: elem in columns,data.items()))       
-
-# add_multi_tables(self,kwargs,fk_tables,asso_tables):
-#         "添加表记录的同时,并关联其他表记录"
-        #外键关联表 fk_tables: [(pk,map_cls,attr),...]
-        # 多对多关联表 asso_tables:[([pk1,pk2,...],map_cls,attr),...]                   
+            _data[i] = data[i]                  
         _id = data['yisheng']
         fk_tables = [(_id,YiSheng,'yisheng')]
         #[<cms.db.browser.interfaces.Yao_ChuFang_AssoUI object at 0x7fb156e389d0>]
@@ -1644,8 +1631,7 @@ class InputChuFang(InputYaoXing):
             asso_attr = 'chufang'
             vls = [getattr(i,k,'') for k in bingren_asso_columns ]
             ppt = dict(zip(bingren_asso_columns,vls))
-            asso_obj_tables.append((pk,pk_cls,pk_attr,asso_cls,asso_attr,ppt))
-        
+            asso_obj_tables.append((pk,pk_cls,pk_attr,asso_cls,asso_attr,ppt))        
         asso_tables = []
         try:
             funcations.add_multi_tables(_data,fk_tables,asso_tables,asso_obj_tables)
@@ -1683,8 +1669,6 @@ class UpdateChuFang(UpdateYaoXing):
         ignore = ['id','yisheng_id']
         # obj fields list
         objfd = ['yisheng']
-#         asso_proxy_fd = ['yaoes','bingrens']
-#         listobjfd = ['guijing']
         data = dict()
         bingrenlist = getattr(_obj, 'bingrens', [])
         yaolist = getattr(_obj, 'yaoes', [])
@@ -1703,7 +1687,6 @@ class UpdateChuFang(UpdateYaoXing):
                 data[name] = getattr(p,'id',1)
                 continue
             elif name == 'yaoes':
-#                 objcls = map_field2cls(name)
                 objs = []
                 fields = ['yao_id','yaoliang','paozhi']                
                 for i in p:
@@ -1720,7 +1703,6 @@ class UpdateChuFang(UpdateYaoXing):
                 data[name] = objs
                 continue
             elif name == 'bingrens':
-#                 objcls = map_field2cls(name)
                 objs = []
                 fields = ['bingren_id','shijian']                
                 for i in p:
@@ -1822,10 +1804,7 @@ class DeleteBingRen(DeleteYaoXing):
     fields = field.Fields(IBingRen).omit('id')
 
     def getContent(self):
-        # Get the model table query funcations
         locator = queryUtility(IDbapi, name='bingren')
-        # to do
-        # fetch first record as sample data
         return locator.getByCode(self.id)
 
     def update(self):
@@ -1866,7 +1845,6 @@ class InputBingRen(InputYaoXing):
     """input db bingren table data
     """
 
-
     label = _(u"Input bing ren data")
     fields = field.Fields(IBingRenUI).omit('id')
 
@@ -1889,8 +1867,7 @@ class InputBingRen(InputYaoXing):
         #过滤非本表的字段
         _data = dict()
         for i in _clmns:
-            _data[i] = data[i]
-                 
+            _data[i] = data[i]                 
         _id = data['dizhi_id']
         fk_tables = [(_id,DiZhi,'dizhi')]
         asso_tables = []
@@ -1920,7 +1897,7 @@ class UpdateBingRen(UpdateYaoXing):
     fields = field.Fields(IBingRenUI).omit('id','dizhi_id')
 
     def getContent(self):
-        # Get the model table query funcations
+
         locator = queryUtility(IDbapi, name='bingren')
         _obj = locator.getByCode(self.id)
         # ignore fields list
@@ -1981,12 +1958,11 @@ class UpdateBingRen(UpdateYaoXing):
 class DeleteDiZhi(DeleteYaoXing):
     "delete the specify di zhi recorder"
 
-
     label = _(u"delete di zhi data")
     fields = field.Fields(IDiZhi).omit('id')
 
     def getContent(self):
-        # Get the model table query funcations
+
         locator = queryUtility(IDbapi, name='dizhi')
         return locator.getByCode(self.id)
 
@@ -2049,7 +2025,7 @@ class InputDiZhi(InputYaoXing):
             self.request.response.redirect(self.context.absolute_url() + '/@@dizhi_listings')
         confirm = _(u"Thank you! Your data  will be update in back end DB.")
         IStatusMessage(self.request).add(confirm, type='info')
-#         self.request.response.redirect(self.context.absolute_url() + '/@@dizhi_listings')
+        self.request.response.redirect(self.context.absolute_url() + '/@@dizhi_listings')
 
     @button.buttonAndHandler(_(u"Cancel"))
     def cancel(self, action):
@@ -2067,7 +2043,7 @@ class UpdateDiZhi(UpdateYaoXing):
     fields = field.Fields(IDiZhi).omit('id')
 
     def getContent(self):
-        # Get the model table query funcations
+
         locator = queryUtility(IDbapi, name='dizhi')
         return locator.getByCode(self.id)
 
@@ -2102,18 +2078,16 @@ class UpdateDiZhi(UpdateYaoXing):
         confirm = _(u"Input cancelled.")
         IStatusMessage(self.request).add(confirm, type='info')
         self.request.response.redirect(self.context.absolute_url() + '/@@dizhi_listings')
-# end 滤波器 数据库操作
 
-## 典型天线增益子库 数据库操作
+
 class DeleteDanWei(DeleteYaoXing):
     "delete the specify dan wei recorder"
-
 
     label = _(u"delete dan wei data")
     fields = field.Fields(IDanWei).omit('id')
 
     def getContent(self):
-        # Get the model table query funcations
+
         locator = queryUtility(IDbapi, name='danwei')
         return locator.getByCode(self.id)
 
@@ -2163,11 +2137,8 @@ class InputDanWei(InputYaoXing):
         #过滤非本表的字段
         danwei_data = dict()
         for i in _clmns:
-            danwei_data[i] = data[i]
-                 
+            danwei_data[i] = data[i]                 
         dizhi_id = data['dizhi']
-#         import pdb
-#         pdb.set_trace()
         fk_tables = [(dizhi_id,DiZhi,'dizhi')]
         asso_tables = []
         try:
@@ -2177,7 +2148,7 @@ class InputDanWei(InputYaoXing):
             self.request.response.redirect(self.context.absolute_url() + '/@@danwei_listings')
         confirm = _(u"Thank you! Your data  will be update in back end DB.")
         IStatusMessage(self.request).add(confirm, type='info')
-#         self.request.response.redirect(self.context.absolute_url() + '/@@danwei_listings')
+        self.request.response.redirect(self.context.absolute_url() + '/@@danwei_listings')
 
     @button.buttonAndHandler(_(u"Cancel"))
     def cancel(self, action):
@@ -2195,7 +2166,7 @@ class UpdateDanWei(UpdateYaoXing):
     fields = field.Fields(IDanWeiUI).omit('id','dizhi_id')
 
     def getContent(self):
-        # Get the model table query funcations
+
         locator = queryUtility(IDbapi, name='danwei')
         _obj = locator.getByCode(self.id)
         # ignore fields list
@@ -2256,7 +2227,7 @@ class DeleteYiSheng(DeleteYaoXing):
     fields = field.Fields(IYiSheng).omit('id')
 
     def getContent(self):
-        # Get the model table query funcations
+
         locator = queryUtility(IDbapi, name='yisheng')
         return locator.getByCode(self.id)
 
@@ -2335,7 +2306,7 @@ class UpdateYiSheng(UpdateYaoXing):
     fields = field.Fields(IYiShengUI).omit('id','danwei_id')
 
     def getContent(self):
-        # Get the model table query funcations
+
         locator = queryUtility(IDbapi, name='yisheng')
         _obj = locator.getByCode(self.id)
         # ignore fields list

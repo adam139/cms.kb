@@ -514,11 +514,9 @@ class TestView(unittest.TestCase):
     def testDeleteYaoWeiForm(self):
         app = self.layer['app']
         portal = self.layer['portal']
-
         browser = Browser(app)
         browser.handleErrors = False             
         browser.addHeader('Authorization', 'Basic %s:%s' % (TEST_USER_NAME, TEST_USER_PASSWORD,))
-
         transaction.commit()
         base = portal['folder']['ormfolder'].absolute_url()
         id = Session.query(YaoWei).filter(YaoWei.wei=="甘").one().id
@@ -570,6 +568,30 @@ class TestView(unittest.TestCase):
         # Submit
         browser.getControl(u"Delete").click()
         suan = Session.query(JingLuo).filter(JingLuo.mingcheng=="足太阴脾经").all()
+        self.assertEqual(len(suan),0)        
+        self.assertTrue(u"Your data  has been deleted." in browser.contents)
+
+    def testDeleteYaoForm(self):
+        app = self.layer['app']
+        portal = self.layer['portal']
+        browser = Browser(app)
+        browser.handleErrors = False             
+        browser.addHeader('Authorization', 'Basic %s:%s' % (TEST_USER_NAME, TEST_USER_PASSWORD,))
+        transaction.commit()
+        base = portal['folder']['ormfolder'].absolute_url()
+        id = Session.query(Yao).filter(Yao.mingcheng=="白芍").one().id
+        # Open form
+        browser.open("%s/@@delete_yao/%s" % (base,id))             
+        # Submit
+        browser.getControl(u"Delete").click()
+        suan = Session.query(Yao).filter(Yao.mingcheng=="白芍").all()
+        self.assertEqual(len(suan),1)
+        id = Session.query(Yao).filter(Yao.mingcheng=="麻黄").one().id
+        # Open form
+        browser.open("%s/@@delete_yao/%s" % (base,id))             
+        # Submit
+        browser.getControl(u"Delete").click()
+        suan = Session.query(Yao).filter(Yao.mingcheng=="麻黄").all()
         self.assertEqual(len(suan),0)        
         self.assertTrue(u"Your data  has been deleted." in browser.contents)
 

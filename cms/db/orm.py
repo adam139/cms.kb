@@ -125,16 +125,16 @@ class IYao(Interface):
             required = False,
         )
     yaowei = schema.Object(
-            title=_(u"gui jing"),
-            schema=IJingLuo,
+            title=_(u"yao wei"),
+            schema=IYaoWei,
         )
     yaoxing = schema.Object(
-            title=_(u"gui jing"),
-            schema=IJingLuo,
+            title=_(u"yao xing"),
+            schema=IYaoXing,
         )        
-    guijing = schema.Object(
+    guijing = schema.List(
             title=_(u"gui jing"),
-            schema=IJingLuo,
+            value_type=schema.Choice(vocabulary='cms.db.jingluo'),
         )
         
         
@@ -150,7 +150,9 @@ class Yao(Base):
     zhuzhi = Column(String(64))
     yaowei = relationship("YaoWei", backref="yaoes")
     yaoxing = relationship("YaoXing", backref="yaoes")
-    guijing = relationship("JingLuo", secondary=Yao_JingLuo_Asso)    
+    guijing = relationship("JingLuo",secondary=Yao_JingLuo_Asso)    
+#     guijing = relationship("JingLuo",lazy='subquery', secondary=Yao_JingLuo_Asso,
+#                            backref=backref("yaoes",lazy='subquery'))    
 
     def __init__(self, mingcheng=None,zhuzhi=None):
         self.mingcheng = mingcheng
