@@ -19,7 +19,7 @@ from cms.db import  Session
 from cms.theme.interfaces import IThemeSpecific
 from cms.db.orm import YaoWei,YaoXing,JingLuo,Yao,DiZhi,YiSheng,DanWei
 from cms.db.orm import ChuFang,YiSheng,BingRen,Yao_ChuFang_Asso,ChuFang_BingRen_Asso
-from cms.db.tests.base import inputvalues
+from cms.db.tests.base import inputvalues,cleardb
 
 class TestView(unittest.TestCase):
     
@@ -36,21 +36,8 @@ class TestView(unittest.TestCase):
         self.portal = portal
 
     def tearDown(self):
-        
-        items = Session.query(YaoWei).all()
-        items.extend(Session.query(YaoXing).all())
-        items.extend(Session.query(JingLuo).all())
-        items.extend(Session.query(Yao).all())
-        items.extend(Session.query(ChuFang).all())
-        items.extend(Session.query(BingRen).all())
-        items.extend(Session.query(YiSheng).all())
-        items.extend(Session.query(DanWei).all())
-        items.extend(Session.query(DiZhi).all())                
-        for item in items:
-            Session.delete(item)            
-        Session.commit()   
+        cleardb()
 
-        
     def test_yaoxing(self):
         request = self.layer['request']
         alsoProvides(request, IThemeSpecific)        

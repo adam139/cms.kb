@@ -44,7 +44,7 @@ from z3c.form.object import registerFactoryAdapter
 registerFactoryAdapter(IYao_ChuFang_AssoUI, Yao_ChuFang_AssoUI)
 registerFactoryAdapter(IChuFang_BingRen_AssoUI, ChuFang_BingRen_AssoUI)
 
-from cms.db.browser.utility import filter_cln
+from cms.db.browser.utility import filter_cln,to_utf_8
 from cms.db.browser.utility import map_field2cls
 from cms.db.orm import Yao
 from cms.db.orm import IChuFang,ChuFang
@@ -1349,6 +1349,8 @@ class UpdateYao(UpdateYaoXing):
             elif name in listobjfd:
                 data[name] = [getattr(j,'id',1) for j in p]
             else:
+                if isinstance(p,str):
+                    p = p.decode('utf-8')
                 data[name] = p                         
         return YaoUI(**data)
 
@@ -1692,7 +1694,8 @@ class UpdateChuFang(UpdateYaoXing):
                     # query Yao_ChuFang_Asso obj
                     asso_obj = queryUtility(IDbapi, name='yao_chufang').\
                     get_asso_obj(qdt)
-                    vls = [getattr(asso_obj,j,"") for j in fields]                        
+                    vls = [getattr(asso_obj,j,"") for j in fields]                   
+                    vls = to_utf_8(vls)                        
                     value = dict(zip(fields,vls))
                     obj = EditYao_ChuFang_AssoUI(**value)
                     objs.append(obj)                                                         
@@ -1708,13 +1711,16 @@ class UpdateChuFang(UpdateYaoXing):
                     # query ChuFang_BingRen_Asso obj
                     asso_obj = queryUtility(IDbapi, name='chufang_bingren').\
                     get_asso_obj(qdt)
-                    vls = [getattr(asso_obj,j,"") for j in fields]                        
+                    vls = [getattr(asso_obj,j,"") for j in fields]
+                    vls = to_utf_8(vls)                        
                     value = dict(zip(fields,vls))
                     obj = EditChuFang_BingRen_AssoUI(**value)
                     objs.append(obj)                                                          
                 data[name] = objs
                 continue
             else:
+                if isinstance(p,str):
+                    p = p.decode('utf-8')
                 data[name] = p
                 continue                        
         return ChuFangUI(**data)
@@ -1907,6 +1913,8 @@ class UpdateBingRen(UpdateYaoXing):
             elif name in objfd:
                 data[name] = getattr(p,'id',1)
             else:
+                if isinstance(p,str):
+                    p = p.decode('utf-8')
                 data[name] = p                        
         return BingRenUI(**data)
 
@@ -2176,6 +2184,8 @@ class UpdateDanWei(UpdateYaoXing):
             elif name in objfd:
                 data[name] = getattr(p,'id',1)
             else:
+                if isinstance(p,str):
+                    p = p.decode('utf-8')                
                 data[name] = p                         
         return DanWeiUI(**data)
 
@@ -2316,6 +2326,8 @@ class UpdateYiSheng(UpdateYaoXing):
             elif name in objfd:
                 data[name] = getattr(p,'id',1)
             else:
+                if isinstance(p,str):
+                    p = p.decode('utf-8')
                 data[name] = p                        
         return YiShengUI(**data)
 

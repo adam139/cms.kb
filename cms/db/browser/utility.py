@@ -1,6 +1,16 @@
 # -*- coding: utf-8 -*-
 
-
+def to_utf_8(lts):
+    rt = []
+    for i in lts:
+        if isinstance(i,str):            
+            rt.append(i.decode('utf-8'))
+            continue
+        else:
+            rt.append(i)
+    return rt
+            
+        
 
 def map_field2cls(fieldname):
     "为编辑表单的getcontent()提供字段名到中间对象class name映射"

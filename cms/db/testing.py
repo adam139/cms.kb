@@ -30,7 +30,7 @@ class Base(PloneSandboxLayer):
 #        os.unlink(self.dbFileName)
         
     def setUpPloneSite(self, portal):
-        applyProfile(portal, 'cms.policy:default')
+#         applyProfile(portal, 'cms.policy:default')
         applyProfile(portal, 'cms.theme:default')
         applyProfile(portal, 'cms.db:default')
 
