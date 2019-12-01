@@ -24,7 +24,7 @@
  <property name="add_permission">cms.policy.add_yao</property>
  <property name="behaviors">
      <element value="plone.app.content.interfaces.INameFromTitle" />
-     <element value="collective.gtags.behaviors.ITags"/>             
+<!--    <element value="collective.gtags.behaviors.ITags"/>   -->           
      <element value="plone.app.contenttypes.behaviors.richtext.IRichText"/>               
      <element value="cms.db.behaviors.richtext.IRichText"/>
      <element value="plone.app.versioningbehavior.behaviors.IVersionable" />
