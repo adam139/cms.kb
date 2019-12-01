@@ -7,12 +7,13 @@
   <property name="title" i18n:translate="">CMSAI</property>
   <property name="description"
     i18n:translate="">Chinese medical science root folder</property>
-  <property name="content_icon">++resource++emc.project/folder.png</property>
+  <property name="content_icon">++resource++cms.theme/folder.png</property>
   <property name="factory">cms.db.folder</property>
   <property name="global_allow">True</property>
   <property name="filter_content_types">True</property>  
   <property name="allowed_content_types">	
-       <element value="cms.db.ormfolder" />            
+       <element value="cms.db.ormfolder" />
+       <element value="cms.db.yaofolder" />                   
   </property>
   <property name="allow_discussion">False</property>
 

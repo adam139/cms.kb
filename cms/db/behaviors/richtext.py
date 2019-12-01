@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from emc.project import _
+from cms.db import _
 from plone.app.textfield import RichText as RichTextField
 from plone.autoform.interfaces import IFormFieldProvider
 from plone.autoform.view import WidgetsView
