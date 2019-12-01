@@ -14,6 +14,14 @@
         for="*"
         permission="zope2.View"
         class=".macros.Macros"/>
+    <!-- Control panel form -->
+    <browser:page 
+        name="types-settings"
+        for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+        class=".controlpanel.TypesSettingsControlPanel"
+        permission="cms.policy.set_system"
+        /> 
+                
     <browser:page
         name="yaoxing_ajaxsearch"
         for="*"
@@ -181,14 +189,7 @@
         permission="cms.db.input_db"
         class=".ajax_listing.DeleteDanWei"/>
             
-                                                                    
-    <!-- Control panel form -->
-    <browser:page 
-        name="sys-settings"
-        for="Products.CMFPlone.interfaces.IPloneSiteRoot"
-        class=".controlpanel.SettingsControlPanel"
-        permission="cms.db.set_log"
-        />    
+   
     <browser:page
         name="yaoxing_listings"
         template="templates/yaoxing_listings.pt"

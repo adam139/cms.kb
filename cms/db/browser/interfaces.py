@@ -127,4 +127,18 @@ class IYaoUI (IYao):
                                description=_(u"gui jing"),
                                required=False,
                                value_type=schema.Choice(vocabulary='cms.db.jingluo'),
-                               )        
+                               ) 
+    
+    
+class IAutomaticTypesSettings(Interface):
+    """A utility used to set CMSAI system 's automatic create content types list
+    """
+    
+    types = schema.List(
+            title=_(u"types"),
+            description=_(u"automatic create content types list"),
+            value_type=schema.Choice(vocabulary='plone.app.vocabularies.UserFriendlyTypes'),
+            required=False,
+        )
+
+            
