@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<rolemap>
+	
+  <permissions>
+    <!-- Map the "add" permissions for the various content types. Note that
+         we let the "Contributor" role (in a folder) be allowed to add content
+         when the "Owner" is, so that we can effectively delegate control
+         over a folder. Some content types, such as project folders  are considered to be 
+         so "structural" that only administrators
+         can add them.
+      -->
+    
+	<permission name="cms.policy:Set system" acquire="True">
+		<role name="Manager"/>	
+    </permission>       
+	<permission name="cms.policy:Add Yao" acquire="True">
+		<role name="Manager"/>		
+    </permission>
+	<permission name="cms.policy:Modify yao" acquire="True">
+		<role name="Manager"/>		
+    </permission>
+	<permission name="cms.db:Input db" acquire="True">
+		<role name="Manager"/>		
+    </permission>
+	<permission name="cms.db:Input db" acquire="True">
+		<role name="Manager"/>		
+    </permission>
+    
+  </permissions>		
+</rolemap>
