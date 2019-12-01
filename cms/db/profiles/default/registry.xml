@@ -1,0 +1,6 @@
+<registry>
+  <records interface="cms.db.browser.interfaces.IAutomaticTypesSettings" prefix="cms.db.browser.interfaces.IAutomaticTypesSettings"
+           condition="installed cms.db">
+    <value key="types">[]</value>
+  </records>
+</registry>
