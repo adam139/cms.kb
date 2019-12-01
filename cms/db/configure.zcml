@@ -107,14 +107,18 @@
     name="cms.db.bingren"
     component="cms.db.vocabulary.bingren"
     />
-                    				
+    
+   <subscriber
+    	for="cms.db.interfaces.IRecorderCreated"
+    	handler=".handlers.recorder_created_handler"
+    />
+                        				
   <genericsetup:registerProfile
       name="default"
-      title="Chinese medical science system database"
+      title="Chinese medical science system"
       directory="profiles/default"
       description='Profile for cms.db'
       provides="Products.GenericSetup.interfaces.EXTENSION"
       />
-
 
 </configure>

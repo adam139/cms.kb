@@ -30,7 +30,8 @@ class TestView(unittest.TestCase):
         portal = self.layer['portal']
         setRoles(portal, TEST_USER_ID, ('Manager',))
         portal.invokeFactory('cms.db.folder', 'folder')
-        portal['folder'].invokeFactory('cms.db.ormfolder', 'ormfolder')       
+        portal['folder'].invokeFactory('cms.db.ormfolder', 'ormfolder')
+        portal['folder'].invokeFactory('cms.db.yaofolder', 'yaofolder')       
         self.portal = portal
 
     def tearDown(self):

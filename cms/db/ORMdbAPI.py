@@ -1,6 +1,8 @@
 #-*- coding: UTF-8 -*-
 from datetime import datetime
 from zope import schema
+from cms.db.events import RecorderCreated
+from zope import event
 from zope.interface import implements
 #sqlarchemy
 from sqlalchemy import text
@@ -203,11 +205,17 @@ class Dbapi(object):
             session.add(link_obj)                   
         try:
             session.commit()
+            self.fire_event(RecorderCreated,recorder)
         except:
             session.rollback()
             raise
         finally:
             session.close()                        
+
+    def fire_event(self,eventcls,recorder):
+            cls = "cms.db.%s" % self.table
+            event.notify(eventcls(id=recorder.id,cls=cls))        
+        
     
     def update_multi_tables(self,kwargs,fk_tables=[],asso_tables=[],asso_obj_tables=[]):
         "更新本表的同时,兼顾处理外键表,关联表,关联对象表"
