@@ -5,6 +5,7 @@ from zope.site.hooks import getSite
 from AccessControl import ClassSecurityInfo, getSecurityManager
 from AccessControl.SecurityManagement import newSecurityManager, setSecurityManager
 from Products.CMFCore.utils import getToolByName
+from Products.CMFPlone.utils import safe_unicode
 from cms.policy import fmt
 from cms.db.browser.utility import get_container_by_type
 from cms.db.browser.utility import chown
@@ -18,6 +19,7 @@ def recorder_created_handler(event):
                    
     id = str(event.id)
     cls = event.cls
+    title = safe_unicode(event.ttl)
     import pdb
     pdb.set_trace()
     #find parent container through cls
@@ -38,7 +40,7 @@ def recorder_created_handler(event):
         tmp_user = UnrestrictedUser(old_sm.getUser().getId(),'', ['Manager'],'')        
         tmp_user = tmp_user.__of__(portal.acl_users)
         newSecurityManager(None, tmp_user)        
-        item = api.content.create(type=cls,id=id,container=container)
+        item = api.content.create(type=cls,id=id,title=title,container=container)
 #         chown(item,userid)
         # recover old sm
         setSecurityManager(old_sm)
