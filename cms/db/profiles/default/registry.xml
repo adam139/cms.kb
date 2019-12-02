@@ -1,6 +1,18 @@
 <registry>
   <records interface="cms.db.browser.interfaces.IAutomaticTypesSettings" prefix="cms.db.browser.interfaces.IAutomaticTypesSettings"
            condition="installed cms.db">
-    <value key="types">[]</value>
+    <record name="cms.db.browser.interfaces.IAutomaticTypesSettings.types"
+    	interface="cms.db.browser.interfaces.IAutomaticTypesSettings" field="types">
+    	    <field type="plone.registry.field.List">
+    	    	<title>types</title>    	    	
+    	    	<description>automatic create content types list</description>
+    	    	<value_type type="plone.registry.field.Choice">
+    	    	  <vocabulary>plone.app.vocabularies.UserFriendlyTypes</vocabulary>	
+    	    	</value_type>>
+    	    </field>
+    	    <value>
+    	    	<element>cms.db.yao</element>
+    	    </value>
+    </record>   	
   </records>
 </registry>
