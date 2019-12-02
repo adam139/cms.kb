@@ -1,0 +1,66 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
+    xmlns:five="http://namespaces.zope.org/five"
+    xmlns:i18n="http://namespaces.zope.org/i18n"
+    i18n_domain="cms.db">
+
+ <!-- db named utility -->
+  <utility
+	provides=".interfaces.IDbapi"
+	component=".ORMdbAPI.yaoxing"
+	name="yaoxing"
+	/>
+ <utility
+	provides=".interfaces.IDbapi"
+	component=".ORMdbAPI.yaowei"
+	name="yaowei"
+	/>
+ <utility
+	provides=".interfaces.IDbapi"
+	component=".ORMdbAPI.jingluo"
+	name="jingluo"
+	/>
+ <utility
+	provides=".interfaces.IDbapi"
+	component=".ORMdbAPI.yao"
+	name="yao"
+	/>
+ <utility
+	provides=".interfaces.IDbapi"
+	component=".ORMdbAPI.chufang"
+	name="chufang"
+	/>
+ <utility
+	provides=".interfaces.IDbapi"
+	component=".ORMdbAPI.bingren"
+	name="bingren"
+	/>
+ <utility
+	provides=".interfaces.IDbapi"
+	component=".ORMdbAPI.yisheng"
+	name="yisheng"
+	/>					
+ <utility
+	provides=".interfaces.IDbapi"
+	component=".ORMdbAPI.dizhi"
+	name="dizhi"
+	/>
+ <utility
+	provides=".interfaces.IDbapi"
+	component=".ORMdbAPI.danwei"
+	name="danwei"
+	/>	
+ <utility
+	provides=".interfaces.IDbapi"
+	component=".ORMdbAPI.chufang_bingren"
+	name="chufang_bingren"
+	/>
+ <utility
+	provides=".interfaces.IDbapi"
+	component=".ORMdbAPI.yao_chufang"
+	name="yao_chufang"
+	/>
+
+    
+</configure>    

@@ -1,0 +1,46 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
+    xmlns:five="http://namespaces.zope.org/five"
+    xmlns:i18n="http://namespaces.zope.org/i18n"
+    i18n_domain="cms.db">
+
+ <!-- vocabulary utility -->
+ <utility
+    name="cms.db.yaowei"
+    component="cms.db.vocabulary.yao_wei"
+    />
+ <utility
+    name="cms.db.yaoxing"
+    component="cms.db.vocabulary.yao_xing"
+    />
+ <utility
+    name="cms.db.jingluo"
+    component="cms.db.vocabulary.jingluo_mingcheng"
+    />    
+ <utility
+    name="cms.db.dizhi"
+    component="cms.db.vocabulary.dizhi"
+    />
+  <utility
+    name="cms.db.danwei"
+    component="cms.db.vocabulary.danwei"
+    />   
+  <utility
+    name="cms.db.xingbie"
+    component="cms.db.vocabulary.xingbie"
+    />
+  <utility
+    name="cms.db.yisheng"
+    component="cms.db.vocabulary.yisheng"
+    />
+  <utility
+    name="cms.db.yao"
+    component="cms.db.vocabulary.yao"
+    />
+  <utility
+    name="cms.db.bingren"
+    component="cms.db.vocabulary.bingren"
+    />
+    
+</configure>    

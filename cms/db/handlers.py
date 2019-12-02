@@ -20,8 +20,8 @@ def recorder_created_handler(event):
     id = str(event.id)
     cls = event.cls
     title = safe_unicode(event.ttl)
-    import pdb
-    pdb.set_trace()
+#     import pdb
+#     pdb.set_trace()
     #find parent container through cls
     container = get_container_by_type(cls)
     if bool(container):
