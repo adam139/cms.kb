@@ -2,19 +2,19 @@
 <object
     name="portal_controlpanel"
     xmlns:i18n="http://xml.zope.org/namespaces/i18n"
-    i18n:domain="Chinese.medical.science"
+    i18n:domain="cms.db"
     purge="False">
     
     <configlet
-        title="Log settings"
-        action_id="Chinese.medical.science.logsettings"
-        appId="Chinese.medical.science" 
+        title="System settings"
+        action_id="cms.db.sys_settings"
+        appId="cms.db" 
         category="Products"
         condition_expr=""
-        url_expr="string:${portal_url}/@@log-settings"
+        url_expr="string:${portal_url}/@@types-settings"
         visible="True"
         i18n:attributes="title">
-            <permission>Chinese.medical.science:Set log</permission>
+            <permission>cms.policy:Set system</permission>
     </configlet>
 
 </object>
