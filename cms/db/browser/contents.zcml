@@ -1,0 +1,16 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    xmlns:plone="http://namespaces.plone.org/plone"
+    i18n_domain="cms.db">
+
+
+     <!-- content types views define--> 
+     <browser:page
+        name="base_view"
+        for="cms.db.contents.yao.IYao"
+        template="templates/yao_view.pt"
+        permission="zope2.View"
+        class=".contents_view.Yao"/> 
+               
+</configure>

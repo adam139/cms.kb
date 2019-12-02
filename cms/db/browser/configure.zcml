@@ -14,6 +14,9 @@
         for="*"
         permission="zope2.View"
         class=".macros.Macros"/>
+    
+    <include file="contents.zcml"/>
+        
     <!-- Control panel form -->
     <browser:page 
         name="types-settings"
