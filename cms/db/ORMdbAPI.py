@@ -214,7 +214,9 @@ class Dbapi(object):
 
     def fire_event(self,eventcls,recorder):
             cls = "cms.db.%s" % self.table
-            event.notify(eventcls(id=recorder.id,cls=cls))        
+            ttl = recorder.mingcheng or recorder.xingming or u""
+            eventobj = eventcls(id=recorder.id,cls=cls,ttl=ttl) 
+            if eventobj.available():event.notify(eventobj)        
         
     
     def update_multi_tables(self,kwargs,fk_tables=[],asso_tables=[],asso_obj_tables=[]):
