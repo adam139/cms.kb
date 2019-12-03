@@ -70,7 +70,15 @@ class Yao(BaseView):
     
     def update(self):
         # Hide the editable-object border
-        self.request.set('disable_border', True)    
+        self.request.set('disable_border', True)
+        
+    
+    @memoize
+    def get_chufang(self,yaoid):
+        "search this some chufangs that contained the yao"
+        "return chufangs list"
+        
+        return "chufang1"    
     
 
         

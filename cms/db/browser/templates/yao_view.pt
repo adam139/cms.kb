@@ -6,16 +6,45 @@
     metal:use-macro="context/main_template/macros/master"
     i18n:domain="cms.db">
 <body>
-
-<metal:content-core fill-slot="content-core">
-<metal:content-core define-macro="content-core"
-                    tal:define="toc context/table_of_contents|nothing;">
-  <div id="parent-fieldname-text"
-      tal:condition="context/text"
-      tal:content="structure python:context.text"
-      tal:attributes="class python: toc and 'pat-autotoc' or ''" />
-</metal:content-core>
-</metal:content-core>
-
+<metal:main fill-slot="main">
+    <tal:main-macro metal:define-macro="main">
+    <div id="workspace" class="container-fluid"
+    	tal:define="p python:context.absolute_url();
+    			    toc python:False;">      	
+     <div class="row row-1">         
+       <div class="col-xs-12 col-md-12">
+       	<h3 class="title text-center">context.title</h3>
+       	<p class="description">context.description</p>
+       </div>
+     </div>
+     <div class="row row-2 details">         
+       <div class="col-xs-12 col-md-12">
+         <div id="parent-fieldname-text"
+          tal:condition="context/text"
+          tal:content="structure python:context.text.output_relative_to(view.context)"
+          tal:attributes="class python:  'pat-autotoc' or ''">
+        </div>
+     </div>
+     <div class="row row-3 report">         
+       <div class="col-xs-12 col-md-12">
+         <div id="parent-fieldname-report"
+          tal:condition="context/report"
+          tal:content="structure python:context.report.output_relative_to(view.context)"
+          tal:attributes="class python:  'pat-autotoc' or ''">
+        </div>      	
+      </div>
+     </div>          
+     <div class="row row-4 relative-object">         
+       <div class="col-xs-12 col-md-12">
+         <div id="chufang"
+          tal:condition="context/report"
+          tal:content="structure python:view.get_chufang(context.id)"
+          tal:attributes="class python:  'pat-autotoc' or ''">
+        </div>      	
+      </div>
+     </div>
+   </div>            
+ </tal:main-macro>
+</metal:main>
 </body>
 </html>
