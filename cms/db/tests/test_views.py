@@ -10,8 +10,8 @@ from cms.db.testing import FUNCTIONAL_TESTING
 from plone.app.testing import TEST_USER_ID,TEST_USER_NAME, TEST_USER_PASSWORD
 from plone.app.testing import setRoles,login,logout
 from plone.app.textfield.value import RichTextValue
-from cms.db.contents.folder import Ifolder
-from cms.db.contents.ormfolder import Iormfolder
+from cms.db.contents.folder import IFolder
+from cms.db.contents.ormfolder import IOrmfolder
 from cms.db.contents.yaofolder import IYaofolder
 from cms.db.contents.yao import IYao
 
@@ -27,14 +27,16 @@ class TestView(unittest.TestCase):
     
     layer = FUNCTIONAL_TESTING
     def setUp(self):
-#         inputvalues()
+        inputvalues()
    
         portal = self.layer['portal']
         setRoles(portal, TEST_USER_ID, ('Manager',))
         portal.invokeFactory('cms.db.folder', 'folder')
         portal['folder'].invokeFactory('cms.db.ormfolder', 'ormfolder')
         portal['folder'].invokeFactory('cms.db.yaofolder', 'yaofolder')
-        portal['folder']['yaofolder'].invokeFactory('cms.db.yao', 'yao',
+        portal['folder'].invokeFactory('cms.db.chufangfolder', 'chufangfolder')
+        id = str(Session.query(Yao).filter(Yao.mingcheng=="白芍").one().id)
+        portal['folder']['yaofolder'].invokeFactory('cms.db.yao', id,
                                                     title=u"here is title",
                                                     description=u"here is description",
                                                     text=RichTextValue(
@@ -51,10 +53,11 @@ class TestView(unittest.TestCase):
 
                                                                      
         self.portal = portal
+        self.id = id
 
     def tearDown(self):
         pass
-#         cleardb()                 
+        cleardb()                 
         
 
    
@@ -76,7 +79,7 @@ class TestView(unittest.TestCase):
         browser.handleErrors = False             
         browser.addHeader('Authorization', 'Basic %s:%s' % (TEST_USER_NAME, TEST_USER_PASSWORD,))
         transaction.commit()
-        browser.open(portal['folder']['yaofolder']['yao'].absolute_url() + "/@@base_view")
+        browser.open(portal['folder']['yaofolder'][self.id].absolute_url() + "/@@base_view")
         self.assertTrue("here is title" in browser.contents)
         self.assertTrue(u"here is description" in browser.contents)        
         self.assertTrue("here is rich text" in browser.contents)        

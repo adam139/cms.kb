@@ -17,8 +17,10 @@ from plone.memoize.instance import memoize
 from Products.CMFPlone.resources import add_bundle_on_request
 from Products.CMFPlone.resources import add_resource_on_request
 from cms.db.contents.yaofolder import IYaofolder
-from cms.db.contents.ormfolder import Iormfolder
+from cms.db.contents.ormfolder import IOrmfolder
 from cms.db.contents.yao import IYao
+from cms.db.orm import ChuFang
+from cms.db import  Session
 
 from cms.theme.interfaces import IThemeSpecific
 
@@ -50,6 +52,13 @@ class BaseView(BrowserView):
     def isEditable(self):
         return self.pm().checkPermission(permissions.ManagePortal,self.context)
        
+    def getobj_url(self,type):
+        catalog = api.portal.get_tool('portal_catalog')
+        brains = catalog(portal_type=type)
+        if bool(brains):
+            return brains[0].getURL()
+        else:
+            return ''
     
     def tranVoc(self,value):
         """ translate vocabulary value to title"""
@@ -75,8 +84,21 @@ class Yao(BaseView):
     
     @memoize
     def get_chufang(self,yaoid):
-        "search this some chufangs that contained the yao"
+        "search this some chufangs that contained the yao,"
         "return chufangs list"
+        
+        yaoid = long(yaoid)
+        chufangs = Session.query(ChuFang).filter(ChuFang.yaoes.any(id = yaoid)).all()
+        rt =[]
+        import pdb
+        pdb.set_trace()
+        if bool(chufangs):
+            base = self.getobj_url("cms.db.chufangfolder")
+            for j in chufangs:
+                url = "%s/%s" % (base,str(j.id))
+                item = "<li><a href=%s>%s</a></li>" % (url,j.mingcheng)
+                rt.append(item)
+            return ''.join(rt) 
         
         return "chufang1"    
     
