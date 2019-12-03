@@ -15,7 +15,9 @@ class Allcontents(unittest.TestCase):
 
         portal['folder'].invokeFactory('cms.db.ormfolder', 'ormfolder')
         portal['folder'].invokeFactory('cms.db.yaofolder', 'yaofolder')
-        portal['folder']['yaofolder'].invokeFactory('cms.db.yao', 'yao')          
+        portal['folder'].invokeFactory('cms.db.chufangfolder', 'chufangfolder')
+        portal['folder']['yaofolder'].invokeFactory('cms.db.yao', 'yao')
+        portal['folder']['chufangfolder'].invokeFactory('cms.db.chufang', 'chufang')          
 
         self.portal = portal
     
@@ -26,7 +28,9 @@ class Allcontents(unittest.TestCase):
              
         self.assertEqual(self.portal['folder']['ormfolder'].id,'ormfolder')
         self.assertEqual(self.portal['folder']['yaofolder'].id,'yaofolder')
-        self.assertEqual(self.portal['folder']['yaofolder']['yao'].id,'yao') 
+        self.assertEqual(self.portal['folder']['chufangfolder'].id,'chufangfolder')
+        self.assertEqual(self.portal['folder']['yaofolder']['yao'].id,'yao')
+        self.assertEqual(self.portal['folder']['chufangfolder']['chufang'].id,'chufang') 
 
                                      
                   
