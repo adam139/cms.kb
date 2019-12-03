@@ -17,10 +17,6 @@ from cms.db.interfaces import InputError
 from zope.component import queryUtility
 from zope.component import provideAdapter
 from cms.db.interfaces import IDbapi
-from cms.db.orm import IYaoWei,YaoWei
-from cms.db.orm import IYaoXing,YaoXing
-from cms.db.orm import IJingLuo,JingLuo
-from cms.db.orm import IYao
 # 有外键的表必须调用定制UI接口
 from cms.db.browser.interfaces import IYaoUI
 from cms.db.browser.interfaces import IDanWeiUI
@@ -46,6 +42,10 @@ registerFactoryAdapter(IChuFang_BingRen_AssoUI, ChuFang_BingRen_AssoUI)
 
 from cms.db.browser.utility import filter_cln,to_utf_8
 from cms.db.browser.utility import map_field2cls
+from cms.db.orm import IYaoWei,YaoWei
+from cms.db.orm import IYaoXing,YaoXing
+from cms.db.orm import IJingLuo,JingLuo
+from cms.db.orm import IYao
 from cms.db.orm import Yao
 from cms.db.orm import IChuFang,ChuFang
 from cms.db.orm import IDiZhi,DiZhi
@@ -54,7 +54,7 @@ from cms.db.orm import IYiSheng,YiSheng
 from cms.db.orm import IBingRen,BingRen
 from cms.db.orm import Yao_JingLuo_Asso,ChuFang_BingRen_Asso,Yao_ChuFang_Asso
 
-from cms.db.contents.ormfolder import Iormfolder
+
 from zope.interface import implements
 from zope.publisher.interfaces import IPublishTraverse
 from zExceptions import NotFound

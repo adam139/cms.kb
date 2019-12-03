@@ -9,6 +9,8 @@
 <object name="portal_types" meta_type="Plone Types Tool">
   <object name="cms.db.folder" meta_type="Dexterity FTI" />
   <object name="cms.db.ormfolder" meta_type="Dexterity FTI" />
-  <object name="cms.db.yaofolder" meta_type="Dexterity FTI" /> 
-  <object name="cms.db.yao" meta_type="Dexterity FTI" />      
+  <object name="cms.db.yaofolder" meta_type="Dexterity FTI" />
+  <object name="cms.db.chufangfolder" meta_type="Dexterity FTI" />   
+  <object name="cms.db.yao" meta_type="Dexterity FTI" />
+  <object name="cms.db.chufang" meta_type="Dexterity FTI" />        
 </object>

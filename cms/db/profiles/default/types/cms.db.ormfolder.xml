@@ -17,7 +17,7 @@
   <property name="allow_discussion">False</property>
 
   <!-- schema and class used for content items -->
-  <property name="schema">cms.db.contents.ormfolder.Iormfolder</property> 
+  <property name="schema">cms.db.contents.ormfolder.IOrmfolder</property> 
   <property name="klass">plone.dexterity.content.Container</property>
 
   <property name="behaviors">

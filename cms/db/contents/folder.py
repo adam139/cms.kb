@@ -4,7 +4,7 @@ from plone.directives import form
 
 # Interface class; used to define content-type schema.
 
-class Ifolder(form.Schema):
+class IFolder(form.Schema):
     """
     Chinese.medical.science base folder
     """
