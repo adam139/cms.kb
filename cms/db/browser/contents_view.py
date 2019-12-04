@@ -8,6 +8,7 @@ from Acquisition import aq_parent
 from zope.interface import Interface
 from Products.Five.browser import BrowserView 
 from zope.component import getMultiAdapter
+from zope.component import queryUtility
 from Products.CMFCore.utils import getToolByName
 from plone.app.layout.navigation.interfaces import INavigationRoot
 from plone.memoize.instance import memoize
@@ -16,10 +17,13 @@ from zope.interface import Interface
 from plone.memoize.instance import memoize
 from Products.CMFPlone.resources import add_bundle_on_request
 from Products.CMFPlone.resources import add_resource_on_request
+from cms.db.interfaces import IDbapi
 from cms.db.contents.yaofolder import IYaofolder
 from cms.db.contents.ormfolder import IOrmfolder
 from cms.db.contents.yao import IYao
 from cms.db.orm import ChuFang
+from cms.db.orm import YaoWei,YaoXing,JingLuo,Yao_JingLuo_Asso
+from cms.db.orm import Yao as DbYao
 from cms.db import  Session
 
 from cms.theme.interfaces import IThemeSpecific
@@ -90,8 +94,7 @@ class Yao(BaseView):
         yaoid = long(yaoid)
         chufangs = Session.query(ChuFang).filter(ChuFang.yaoes.any(id = yaoid)).all()
         rt =[]
-        import pdb
-        pdb.set_trace()
+
         if bool(chufangs):
             base = self.getobj_url("cms.db.chufangfolder")
             for j in chufangs:
@@ -100,7 +103,33 @@ class Yao(BaseView):
                 rt.append(item)
             return ''.join(rt) 
         
-        return "chufang1"    
+        return "<li>None</li>"    
     
-
+    @memoize
+    def get_yaowei(self,yaoid):
+        "search this some chufangs that contained the yao,"
+        "return chufangs list"
+        
+        yaoid = long(yaoid)
+        locator = queryUtility(IDbapi, name='yao')
+        wei =locator.pk_obj_property(yaoid,'yaowei','wei')
+        return wei
+    
+    @memoize
+    def get_yaoxing(self,yaoid):
+        "search this some chufangs that contained the yao,"
+        "return chufangs list"
+        
+        yaoid = long(yaoid)
+        locator = queryUtility(IDbapi, name='yao')   
+        xing =locator.pk_obj_property(yaoid,'yaoxing','xing')        
+        return xing
+    
+    @memoize    
+    def get_guijing(self,yaoid):
+        
+        yaoid = long(yaoid)
+        locator = queryUtility(IDbapi, name='yao')        
+        out = locator.pk_ass_title(yaoid,DbYao,Yao_JingLuo_Asso,JingLuo,'jingluo_id','mingcheng')
+        return out
         

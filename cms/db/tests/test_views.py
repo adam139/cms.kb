@@ -61,7 +61,7 @@ class TestView(unittest.TestCase):
         
 
    
-    def testormfolderView(self):
+    def ormfolderView(self):
         app = self.layer['app']
         portal = self.layer['portal']
         browser = Browser(app)
@@ -83,7 +83,10 @@ class TestView(unittest.TestCase):
         self.assertTrue("here is title" in browser.contents)
         self.assertTrue(u"here is description" in browser.contents)        
         self.assertTrue("here is rich text" in browser.contents)        
-        self.assertTrue("here is report" in browser.contents)        
+        self.assertTrue("here is report" in browser.contents)
+        self.assertTrue( "酸" in browser.contents)
+        self.assertTrue( "足太阳膀胱经" in browser.contents)
+        self.assertTrue( "桂枝汤" in browser.contents)        
   
         
                                  

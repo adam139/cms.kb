@@ -59,25 +59,40 @@ class Dbapi(object):
         
     def pk_title(self,pk,factorycls,title):
         "primary key to row recorder 's title"
-        #根据主键提取指定表对象的属性
+        "根据主键提取指定表对象的属性"
        
         recorder = session.query(factorycls).filter(factorycls.id==pk).one()
         return getattr(recorder,title,"")
 
+    def pk_obj_property(self,pk,rpt,title):
+        """primary key to row recorder 's title
+        根据主键查本表的关系属性,提取该关系属性指向的对象的指定属性
+        parameters:
+        pk:primary key:Long
+        rpt:relative property:string
+        title:target object's property:string
+        """
+       
+        import_str = "from %(p)s import %(t)s as tablecls" % dict(p=self.package,t=self.factorycls) 
+        exec import_str
+        recorder = session.query(tablecls).filter(tablecls.id==pk).one()
+        robj = getattr(recorder,rpt,"")
+        return getattr(robj,title,"")
+
     def pk_ass_title(self,pk,factorycls,asso,targetcls,fk,title):
         "通过主键查关联表,获取多对多的对象属性 "
         #pk本地表主键  integer
-        #factorycls 本地表类 
-        #asso 关联表类
-        #targetcls 目标表类 
+        #factorycls 本地表类 cls
+        #asso 关联表类  cls
+        #targetcls 目标表类 cls 
         #fk关联表指向目标表外键名称 string
         #title目标表字段/属性    string       
-    
+ 
         recorders = session.query(asso).join(factorycls).filter(factorycls.id==pk).all()
 #       recorders:  [(37L, 109L)]
         def mapf(recorder):
             fkv = set(list(recorder))
-            fkv.remove(pk)
+            if len(fkv) > 1:fkv.remove(pk)
             target = session.query(targetcls).filter(targetcls.id ==list(fkv)[0]).one()
             return getattr(target,title,"")
         more = map(mapf,recorders)
@@ -87,9 +102,9 @@ class Dbapi(object):
     def pk_ass_obj_title(self,pk,factorycls,asso,targetcls,fk,title):
         "通过主键查关联表对象,获取多对多关联对象的属性 "
         #pk本地表主键  integer
-        #factorycls 本地表类 
-        #asso 关联表类
-        #targetcls 目标表类 
+        #factorycls 本地表类 cls
+        #asso 关联表类   cls
+        #targetcls 目标表类  cls
         #fk关联表指向目标表外键名称 string
         #title目标表字段/属性    string       
     
@@ -164,7 +179,7 @@ class Dbapi(object):
 
     def add_multi_tables(self,kwargs,fk_tables,asso_tables=[],asso_obj_tables=[]):
         "添加表记录的同时,并关联其他表记录"
-        #外键关联表 fk_tables: [(pk,map_cls,attr),...]
+        # 外键关联表 fk_tables: [(pk,map_cls,attr),...]
         # 多对多关联表 asso_tables:[([pk1,pk2,...],map_cls,attr),...]
         # 多对多关联表(asso table has itself properties) 
         # asso_obj_tables:[(pk,targetcls,attr,[property1,property2,...]),...]
