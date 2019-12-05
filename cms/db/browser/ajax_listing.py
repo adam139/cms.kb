@@ -747,8 +747,8 @@ class DiZhiAjaxsearch(YaoXingAjaxsearch):
                                             ti= i[7],
                                             landform= i[8],
                                             xh= i[9],
-                                            edit_url="%s/@@update_bachang/%s" % (contexturl,i[0]),
-                                            delete_url="%s/@@delete_bachang/%s" % (contexturl,i[0]))
+                                            edit_url="%s/@@update_dizhi/%s" % (contexturl,i[0]),
+                                            delete_url="%s/@@delete_dizhi/%s" % (contexturl,i[0]))
                 outhtml = "%s%s" %(outhtml ,out)
                 k = k + 1
         else:
@@ -830,8 +830,8 @@ class DanWeiAjaxsearch(YaoXingAjaxsearch):
                                             rt_x= i[8],
                                             rt_y= i[9],
                                             rt_z= i[10],
-                                            edit_url="%s/@@update_bachangzhdw/%s" % (contexturl,i[0]),
-                                            delete_url="%s/@@delete_bachangzhdw/%s" % (contexturl,i[0]))
+                                            edit_url="%s/@@update_danwei/%s" % (contexturl,i[0]),
+                                            delete_url="%s/@@delete_danwei/%s" % (contexturl,i[0]))
                 outhtml = "%s%s" %(outhtml ,out)
                 k = k + 1
         else:
@@ -914,8 +914,8 @@ class YiShengAjaxsearch(YaoXingAjaxsearch):
                                             num= i[8],
                                             fu= i[9],
                                             fl= i[10],
-                                            edit_url="%s/@@update_bachangfshj/%s" % (contexturl,i[0]),
-                                            delete_url="%s/@@delete_bachangfshj/%s" % (contexturl,i[0]))
+                                            edit_url="%s/@@update_yisheng/%s" % (contexturl,i[0]),
+                                            delete_url="%s/@@delete_yisheng/%s" % (contexturl,i[0]))
                 outhtml = "%s%s" %(outhtml ,out)
                 k = k + 1
         else:
