@@ -26,6 +26,7 @@ class Dbapi(object):
         :package the package where table class in here. for example:'cms.db.orm',
         :table the table name that will be query, 'admin_logs',
         :factorycls the class name that will be create table object instance,'AdminLog',
+         or the class itself,AdminLog.
         :columns will return table columns,
         :fullsearch_clmns the columns that will been used keyword full text search
         """
@@ -405,9 +406,12 @@ class Dbapi(object):
     
     def init_table(self):
         "import table class"
-        import_str = "from %(p)s import %(t)s as tablecls" % dict(p=self.package,t=self.factorycls) 
-        exec import_str
-        return tablecls           
+        if isinstance(self.factorycls,str):
+            import_str = "from %(p)s import %(t)s as tablecls" % dict(p=self.package,t=self.factorycls) 
+            exec import_str
+            return tablecls
+        else:
+            return self.factorycls          
     
     def DeleteByCode(self,id):
         "delete the specify id recorder"
