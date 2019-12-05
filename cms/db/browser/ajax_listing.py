@@ -42,6 +42,7 @@ registerFactoryAdapter(IChuFang_BingRen_AssoUI, ChuFang_BingRen_AssoUI)
 
 from cms.db.browser.utility import filter_cln,to_utf_8
 from cms.db.browser.utility import map_field2cls
+from cms.db.dbutility import map_yao_chufang_list as mapf
 from cms.db.orm import IYaoWei,YaoWei
 from cms.db.orm import IYaoXing,YaoXing
 from cms.db.orm import IJingLuo,JingLuo
@@ -566,7 +567,7 @@ class ChuFangAjaxsearch(YaoXingAjaxsearch):
         contexturl = self.context.absolute_url()
         if self.searchview().canbeInput:
             for i in resultDicLists:
-                yaoes = api.pk_ass_obj_title(i[0],ChuFang,Yao_ChuFang_Asso,Yao,'yao_id','mingcheng')
+                yaoes = api.pk_ass_obj_title(i[0],ChuFang,Yao_ChuFang_Asso,Yao,'yao_id','mingcheng',mapf)
                 yisheng = api.pk_title(i[1],YiSheng,'xingming')
 
                 out = """<tr class="text-left">

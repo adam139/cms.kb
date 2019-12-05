@@ -23,8 +23,11 @@ from cms.db.contents.ormfolder import IOrmfolder
 from cms.db.contents.yao import IYao
 from cms.db.orm import ChuFang
 from cms.db.orm import YaoWei,YaoXing,JingLuo,Yao_JingLuo_Asso
-from cms.db.orm import Yao
+from cms.db.orm import Yao,Yao_ChuFang_Asso,ChuFang
+from cms.db.orm import ChuFang_BingRen_Asso, BingRen
 from cms.db import  Session
+from cms.db.dbutility import map_yao_chufang_table as mapf
+from cms.db.dbutility import map_chufang_bingren_table as mapcb
 
 from cms.theme.interfaces import IThemeSpecific
 
@@ -167,4 +170,35 @@ class BingRenView(BaseView):
         else:
             return (False,[])
        
-                
+
+class ChuFangView(BaseView):
+    "content type:chufang view"
+
+    
+    def update(self):
+        # Hide the editable-object border
+        self.request.set('disable_border', True)
+        
+    @memoize
+    def chufang_structure(self,id):
+        ""
+        
+        _id = long(id)
+        locator = queryUtility(IDbapi, name='chufang')        
+        out = locator.pk_ass_obj_title(_id,ChuFang,Yao_ChuFang_Asso,Yao,'yao_id','mingcheng',mapf)
+        out = out.replace(";","</tr><tr>")
+        out = "<tr>%s</tr>" % out       
+        return out
+
+    
+    def bingrens_table(self,id):
+        "output bingren list"
+        
+        _id = long(id)
+        locator = queryUtility(IDbapi, name='chufang')        
+        out = locator.pk_ass_obj_title(_id,ChuFang,ChuFang_BingRen_Asso,BingRen,'bingren_id','xingming',mapcb)
+
+        out = out.replace(";","</tr><tr>")
+        out = "<tr>%s</tr>" % out       
+        return out            
+                        

@@ -1,0 +1,76 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+    xmlns:tal="http://xml.zope.org/namespaces/tal"
+    xmlns:metal="http://xml.zope.org/namespaces/metal"
+    xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+    lang="en"
+    metal:use-macro="context/main_template/macros/master"
+    i18n:domain="cms.db">
+<body>
+<metal:main fill-slot="main">
+    <tal:main-macro metal:define-macro="main">
+    <div id="workspace" class="container-fluid"
+    	tal:define="p python:context.absolute_url();
+    			    toc python:False;">      	
+     <div class="row row-1">         
+       <div class="col-xs-12 col-md-12">
+       	<h3 class="title text-center">context.title</h3>
+       	<p class="description">context.description</p>
+       </div>
+     </div>
+     <div class="row row-2 structure">         
+       <div class="col-xs-12 col-md-12 table-responsive">
+         <table class="table table-striped table-bordered">
+         	<thead>
+         		<tr>
+         			<th>名称</th>
+         			<th>数量</th>
+         			<th>炮制</th>
+         		</tr>
+         	</thead>
+         	<tbody id="chufang-structure"         		
+                tal:content="structure python:view.chufang_structure(context.id)"
+                tal:attributes="class python:  'pat-autotoc' or ''">
+         		<tr>
+         			<td>name</td>
+         			<td>number</td>
+         			<td>note</td>
+         		</tr>
+         	</tbody>          
+        </table>
+     </div>
+     <div class="row row-3 report">         
+       <div class="col-xs-12 col-md-12">
+         <div id="parent-fieldname-report"
+          tal:condition="context/report"
+          tal:content="structure python:context.report.output_relative_to(view.context)"
+          tal:attributes="class python:  'pat-autotoc' or ''">
+        </div>      	
+      </div>
+     </div>          
+     <div class="row row-4 relative-bingren">         
+       <div class="col-xs-12 col-md-12 table-responsive">
+         <table class="table table-striped table-bordered">
+         	<thead>
+         		<tr>
+         			<th>姓名</th>
+         			<th>电话</th>
+         			<th>就诊时间</th>
+         		</tr>
+         	</thead>
+         	<tbody id="bingren-structure"         		
+                tal:content="structure python:view.bingrens_table(context.id)"
+                tal:attributes="class python:  'pat-autotoc' or ''">
+         		<tr>
+         			<td>name</td>
+         			<td>number</td>
+         			<td>note</td>
+         		</tr>
+         	</tbody>          
+        </table>      	
+      </div>
+     </div>
+   </div>            
+ </tal:main-macro>
+</metal:main>
+</body>
+</html>

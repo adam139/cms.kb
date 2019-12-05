@@ -38,6 +38,7 @@ class TestView(unittest.TestCase):
         portal['folder'].invokeFactory('cms.db.bingrenfolder', 'bingrenfolder')
         yao_id = str(Session.query(Yao).filter(Yao.mingcheng=="白芍").one().id)
         bingren_id = str(Session.query(BingRen).filter(BingRen.xingming=="张三").one().id)
+        chufang_id = str(Session.query(ChuFang).filter(ChuFang.mingcheng=="桂枝汤").one().id)
         portal['folder']['yaofolder'].invokeFactory('cms.db.yao', yao_id,
                                                     title=u"here is title",
                                                     description=u"here is description",
@@ -66,11 +67,25 @@ class TestView(unittest.TestCase):
                                                                        'text/html'
                                                                        )
                                                     )                                                    
-
+        portal['folder']['chufangfolder'].invokeFactory('cms.db.chufang', chufang_id,
+                                                    title=u"here is title",
+                                                    description=u"here is description",
+                                                    text=RichTextValue(
+                                                                       u"here is rich text",
+                                                                       'text/plain',
+                                                                       'text/html'
+                                                                       ),
+                                                    report=RichTextValue(
+                                                                       u"here is report",
+                                                                       'text/plain',
+                                                                       'text/html'
+                                                                       )
+                                                    )
                                                                      
         self.portal = portal
         self.yao_id = yao_id
         self.bingren_id = bingren_id
+        self.chufang_id = chufang_id
 
     def tearDown(self):
         pass
@@ -118,5 +133,19 @@ class TestView(unittest.TestCase):
         self.assertTrue("here is rich text" in browser.contents)        
         self.assertTrue("here is report" in browser.contents)
         self.assertTrue( "桂枝汤" in browser.contents)
-       
+
+    def testchufangView(self):
+        app = self.layer['app']
+        portal = self.layer['portal']
+        browser = Browser(app)
+        browser.handleErrors = False             
+        browser.addHeader('Authorization', 'Basic %s:%s' % (TEST_USER_NAME, TEST_USER_PASSWORD,))
+        transaction.commit()
+        browser.open(portal['folder']['chufangfolder'][self.chufang_id].absolute_url() + "/@@base_view")
+        self.assertTrue("here is title" in browser.contents)
+        self.assertTrue(u"here is description" in browser.contents)               
+        self.assertTrue("here is report" in browser.contents)
+#         self.assertTrue( "桂枝汤" in browser.contents)
+        self.assertTrue( "白芍" in browser.contents)
+        self.assertTrue( "张三" in browser.contents)       
                                  

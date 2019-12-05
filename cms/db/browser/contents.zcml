@@ -18,4 +18,10 @@
         template="templates/bingren_view.pt"
         permission="zope2.View"
         class=".contents_view.BingRenView"/>                
+     <browser:page
+        name="base_view"
+        for="cms.db.contents.chufang.IChufang"
+        template="templates/chufang_view.pt"
+        permission="zope2.View"
+        class=".contents_view.ChuFangView"/>
 </configure>
