@@ -49,7 +49,27 @@
         name="chufang_ajaxsearch"
         for="*"
         permission="zope2.View"
-        class=".ajax_listing.ChuFangAjaxsearch"/>        
+        class=".ajax_listing.ChuFangAjaxsearch"/>
+     <browser:page
+        name="dizhi_ajaxsearch"
+        for="*"
+        permission="zope2.View"
+        class=".ajax_listing.DiZhiAjaxsearch"/>
+     <browser:page
+        name="yisheng_ajaxsearch"
+        for="*"
+        permission="zope2.View"
+        class=".ajax_listing.YiShengAjaxsearch"/>
+     <browser:page
+        name="danwei_ajaxsearch"
+        for="*"
+        permission="zope2.View"
+        class=".ajax_listing.DanWeiAjaxsearch"/>
+     <browser:page
+        name="bingren_ajaxsearch"
+        for="*"
+        permission="zope2.View"
+        class=".ajax_listing.BingRenAjaxsearch"/>                                        
      
      <!-- input form views define--> 
      <browser:page
