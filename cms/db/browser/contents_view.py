@@ -23,7 +23,7 @@ from cms.db.contents.ormfolder import IOrmfolder
 from cms.db.contents.yao import IYao
 from cms.db.orm import ChuFang
 from cms.db.orm import YaoWei,YaoXing,JingLuo,Yao_JingLuo_Asso
-from cms.db.orm import Yao as DbYao
+from cms.db.orm import Yao
 from cms.db import  Session
 
 from cms.theme.interfaces import IThemeSpecific
@@ -77,7 +77,7 @@ class BaseView(BrowserView):
                                                   default='')
         return title     
     
-class Yao(BaseView):
+class YaoView(BaseView):
     "content type:yao view"
 
     
@@ -130,6 +130,41 @@ class Yao(BaseView):
         
         yaoid = long(yaoid)
         locator = queryUtility(IDbapi, name='yao')        
-        out = locator.pk_ass_title(yaoid,DbYao,Yao_JingLuo_Asso,JingLuo,'jingluo_id','mingcheng')
+        out = locator.pk_ass_title(yaoid,Yao,Yao_JingLuo_Asso,JingLuo,'jingluo_id','mingcheng')
         return out
+
+
+class BingRenView(BaseView):
+    "content type:yao view"
+
+    
+    def update(self):
+        # Hide the editable-object border
+        self.request.set('disable_border', True)
         
+    @memoize
+    def relative_chufang(self,id):
+        ""
+        cnlist = self.get_chufang(id)
+        if cnlist[0]:
+            rt =[]        
+            base = self.getobj_url("cms.db.bingrenfolder")
+            for j in cnlist[1]:
+                url = "%s/%s" % (base,str(j.id))
+                item = "<li><a href=%s>%s</a></li>" % (url,j.mingcheng)
+                rt.append(item)
+            return ''.join(rt)             
+        return False
+        
+    
+    
+    def get_chufang(self,id):
+        "get all chufang by bingren id"
+        id = long(id)
+        chufangs = Session.query(ChuFang).filter(ChuFang.bingrens.any(id = id)).all()
+        if bool(chufangs):
+            return (True,chufangs)
+        else:
+            return (False,[])
+       
+                

@@ -11,6 +11,11 @@
         for="cms.db.contents.yao.IYao"
         template="templates/yao_view.pt"
         permission="zope2.View"
-        class=".contents_view.Yao"/> 
-               
+        class=".contents_view.YaoView"/> 
+     <browser:page
+        name="base_view"
+        for="cms.db.contents.bingren.IBingren"
+        template="templates/bingren_view.pt"
+        permission="zope2.View"
+        class=".contents_view.BingRenView"/>                
 </configure>
