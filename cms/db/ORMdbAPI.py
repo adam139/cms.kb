@@ -99,29 +99,30 @@ class Dbapi(object):
         out = ",".join(more)
         return out
             
-    def pk_ass_obj_title(self,pk,factorycls,asso,targetcls,fk,title):
+    def pk_ass_obj_title(self,pk,factorycls,asso,targetcls,fk,title,mapf):
         "通过主键查关联表对象,获取多对多关联对象的属性 "
         #pk本地表主键  integer
         #factorycls 本地表类 cls
         #asso 关联表类   cls
         #targetcls 目标表类  cls
         #fk关联表指向目标表外键名称 string
-        #title目标表字段/属性    string       
+        #title目标表字段/属性    string
+        #mapf 映射函数  function       
     
         recorders = session.query(asso).join(factorycls).filter(factorycls.id==pk).all()
 #       recorders:  [(37L, 109L)]
-        def mapf(recorder):
-
-            yao_id = recorder.yao_id
-            yao = session.query(targetcls).filter(targetcls.id ==yao_id).one()
-            mingcheng = getattr(yao,title,"")
-            yaoliang = u"%s克" % recorder.yaoliang
-            paozhi = recorder.paozhi
-            if bool(paozhi):
-                paozhi = "(%s)" % recorder.paozhi
-                return ",".join([mingcheng,yaoliang,paozhi])
-            else:                
-                return ",".join([mingcheng,yaoliang])
+#         def mapf(recorder):
+#  
+#             yao_id = recorder.yao_id
+#             yao = session.query(targetcls).filter(targetcls.id ==yao_id).one()
+#             mingcheng = getattr(yao,title,"")
+#             yaoliang = u"%s克" % recorder.yaoliang
+#             paozhi = recorder.paozhi
+#             if bool(paozhi):
+#                 paozhi = "(%s)" % recorder.paozhi
+#                 return ",".join([mingcheng,yaoliang,paozhi])
+#             else:                
+#                 return ",".join([mingcheng,yaoliang])
 
         more = map(mapf,recorders)
         out = ";".join(more)
