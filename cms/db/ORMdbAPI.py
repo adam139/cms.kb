@@ -73,8 +73,7 @@ class Dbapi(object):
         title:target object's property:string
         """
        
-        import_str = "from %(p)s import %(t)s as tablecls" % dict(p=self.package,t=self.factorycls) 
-        exec import_str
+        tablecls = self.init_table()
         recorder = session.query(tablecls).filter(tablecls.id==pk).one()
         robj = getattr(recorder,rpt,"")
         return getattr(robj,title,"")
@@ -134,9 +133,7 @@ class Dbapi(object):
         if bool(cls):
             tablecls = cls
         else:
-            import_str = "from %(p)s import %(t)s as tablecls" % \
-            dict(p=self.package,t=self.factorycls) 
-            exec import_str
+            tablecls = self.init_table()
         conds = [] 
         for i in cns.keys():
             cn = "%s=%s" % (i,cns[i])
@@ -151,9 +148,7 @@ class Dbapi(object):
         "get return columns by query"
         
         if self.columns == None:
-            import_str = "from %(p)s import %(t)s as tablecls" % \
-            dict(p=self.package,t=self.factorycls) 
-            exec import_str
+            tablecls = self.init_table()
             from sqlalchemy.inspection import inspect
             table = inspect(tablecls)
             columns = [column.name for column in table.c]
@@ -163,8 +158,7 @@ class Dbapi(object):
             
     def add(self,kwargs):
         
-        import_str = "from %(p)s import %(t)s as tablecls" % dict(p=self.package,t=self.factorycls) 
-        exec import_str
+        tablecls = self.init_table()
         recorder = tablecls()
         for kw in kwargs.keys():
             setattr(recorder,kw,kwargs[kw])
@@ -183,10 +177,8 @@ class Dbapi(object):
         # 多对多关联表 asso_tables:[([pk1,pk2,...],map_cls,attr),...]
         # 多对多关联表(asso table has itself properties) 
         # asso_obj_tables:[(pk,targetcls,attr,[property1,property2,...]),...]
-        import_str = "from %(p)s import %(t)s as tablecls" % dict(p=self.package,t=self.factorycls) 
-        exec import_str in globals(), locals()
+        tablecls = self.init_table() 
         recorder = tablecls()
-
         for kw in kwargs.keys():
             setattr(recorder,kw,kwargs[kw])
         for i in fk_tables:
@@ -229,10 +221,9 @@ class Dbapi(object):
 
     def fire_event(self,eventcls,recorder):
             cls = "cms.db.%s" % self.table
-            ttl = recorder.mingcheng or recorder.xingming or u""
+            ttl = getattr(recorder,'mingcheng',u'') or getattr(recorder,'xingming',u'') or u""
             eventobj = eventcls(id=recorder.id,cls=cls,ttl=ttl) 
-            if eventobj.available():event.notify(eventobj)        
-        
+            if eventobj.available():event.notify(eventobj)               
     
     def update_multi_tables(self,kwargs,fk_tables=[],asso_tables=[],asso_obj_tables=[]):
         "更新本表的同时,兼顾处理外键表,关联表,关联对象表"
@@ -263,8 +254,7 @@ class Dbapi(object):
                     for j in i[0]:
                         objs.append(session.query(mapcls).filter(mapcls.id ==j).one())                
                     if bool(objs):setattr(recorder,i[2],objs)
-                session.add(recorder)
-        
+                session.add(recorder)        
                 if bool(asso_obj_tables):
                     keys = asso_obj_tables.keys()
                 else:
@@ -309,9 +299,7 @@ class Dbapi(object):
             finally:
                 session.close()                
         else:
-            pass
-                   
-    
+            pass    
     
     def query(self,kwargs):
         """分页查询
@@ -323,8 +311,7 @@ class Dbapi(object):
     session.query.with_entities(SomeModel.col1)
         """
         
-        import_str = "from %(p)s import %(t)s as tablecls" % dict(p=self.package,t=self.factorycls) 
-        exec import_str        
+        tablecls = self.init_table()        
         start = int(kwargs['start']) 
         size = int(kwargs['size'])
         max = size + start + 1
@@ -462,14 +449,13 @@ class Dbapi(object):
             except:
                 session.rollback()
             finally:
-                session.close()
-                
+                session.close()                
         else:
             return None
 
     def getByCode(self,id):
-        import_str = "from %(p)s import %(t)s as tablecls" % dict(p=self.package,t=self.factorycls) 
-        exec import_str        
+        
+        tablecls = self.init_table()        
         if id != "":
             sqltext = "SELECT * FROM %(tbl)s WHERE id=:id" % dict(tbl=self.table)            
             try:
@@ -486,8 +472,7 @@ class Dbapi(object):
     def get_rownumber(self):
         "fetch table's rownumber"
 #         query = "SELECT COUNT(*) FROM %(table)s;" % dict(table=self.table)
-        import_str = "from %(p)s import %(t)s as tablecls" % dict(p=self.package,t=self.factorycls) 
-        exec import_str
+        tablecls = self.init_table()
         try:
             num = self.session.query(func.count(tablecls.id)).scalar()         
             return num
