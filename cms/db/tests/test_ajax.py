@@ -116,7 +116,7 @@ class TestView(unittest.TestCase):
         box = self.portal['folder']['ormfolder']
         view = box.restrictedTraverse('@@yao_ajaxsearch')
         result = view()       
-        self.assertEqual(json.loads(result)['total'],2)        
+        self.assertEqual(json.loads(result)['total'],6)        
 
     def test_chufang(self):
         request = self.layer['request']
