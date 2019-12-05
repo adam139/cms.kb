@@ -1,22 +1,22 @@
 <?xml version="1.0"?>
-<object name="cms.db.yaofolder"
+<object name="cms.db.danweifolder"
    meta_type="Dexterity FTI"
    i18n:domain="cms.db" xmlns:i18n="http://xml.zope.org/namespaces/i18n">
 
   <!-- Basic metadata -->
-  <property name="title" i18n:translate="">yao folder</property>
+  <property name="title" i18n:translate="">danwei folder</property>
   <property name="description"
-    i18n:translate="">yao folder</property>
+    i18n:translate="">danwei folder</property>
   <property name="content_icon">++resource++cms.theme/folder.png</property>
   <property name="global_allow">False</property>
   <property name="filter_content_types">True</property>  
   <property name="allowed_content_types">	
-       <element value="cms.db.yao" />                 
+       <element value="cms.db.danwei" />             
   </property>
   <property name="allow_discussion">False</property>
 
   <!-- schema and class used for content items -->
-  <property name="schema">cms.db.contents.yaofolder.IYaofolder</property> 
+  <property name="schema">cms.db.contents.danweifolder.IDanweifolder</property> 
   <property name="klass">plone.dexterity.content.Container</property>
 
   <property name="behaviors">
@@ -27,10 +27,10 @@
   <!-- View information -->
   <property name="link_target"></property>
   <property name="immediate_view">view</property>
-  <property name="default_view">yao_listings</property>
+  <property name="default_view">danwei_listings</property>
   <property name="view_methods">
    <element value="view"/>
-   <element value="yao_listings"/>   
+   <element value="danwei_listings"/>   
   </property>
   <property name="default_view_fallback">False</property>
   <property name="add_permission">cmf.AddPortalContent</property>

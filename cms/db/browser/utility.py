@@ -5,7 +5,12 @@ from AccessControl.SecurityManagement import newSecurityManager, setSecurityMana
 from AccessControl.User import nobody
 from AccessControl.User import UnrestrictedUser as BaseUnrestrictedUser 
 # define content type child to parent mapping
-CONTAINER2TYPES = {'cms.db.yao':"cms.db.yaofolder",'cms.db.chufang':"cms.db.chufangfolder"}
+CONTAINER2TYPES = {'cms.db.yao':"cms.db.yaofolder",
+                   'cms.db.chufang':"cms.db.chufangfolder",
+                   'cms.db.bingren':"cms.db.bingrenfolder",
+                   'cms.db.yisheng':"cms.db.yishengfolder",
+                   'cms.db.danwei':"cms.db.danweifolder",                                      
+                   }
 
 
 class UnrestrictedUser(BaseUnrestrictedUser):
