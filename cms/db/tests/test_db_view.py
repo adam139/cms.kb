@@ -10,8 +10,8 @@ from cms.db.testing import FUNCTIONAL_TESTING
 from plone.app.testing import TEST_USER_ID,TEST_USER_NAME, TEST_USER_PASSWORD
 from plone.app.testing import setRoles,login,logout
 
-from cms.db.contents.folder import Ifolder
-from cms.db.contents.ormfolder import Iormfolder
+from cms.db.contents.folder import IFolder
+from cms.db.contents.ormfolder import IOrmfolder
 
 from sqlalchemy import and_
 
