@@ -8,57 +8,57 @@
  <!-- db named utility -->
   <utility
 	provides=".interfaces.IDbapi"
-	component=".ORMdbAPI.yaoxing"
+	component=".dbutility.yaoxing"
 	name="yaoxing"
 	/>
  <utility
 	provides=".interfaces.IDbapi"
-	component=".ORMdbAPI.yaowei"
+	component=".dbutility.yaowei"
 	name="yaowei"
 	/>
  <utility
 	provides=".interfaces.IDbapi"
-	component=".ORMdbAPI.jingluo"
+	component=".dbutility.jingluo"
 	name="jingluo"
 	/>
  <utility
 	provides=".interfaces.IDbapi"
-	component=".ORMdbAPI.yao"
+	component=".dbutility.yao"
 	name="yao"
 	/>
  <utility
 	provides=".interfaces.IDbapi"
-	component=".ORMdbAPI.chufang"
+	component=".dbutility.chufang"
 	name="chufang"
 	/>
  <utility
 	provides=".interfaces.IDbapi"
-	component=".ORMdbAPI.bingren"
+	component=".dbutility.bingren"
 	name="bingren"
 	/>
  <utility
 	provides=".interfaces.IDbapi"
-	component=".ORMdbAPI.yisheng"
+	component=".dbutility.yisheng"
 	name="yisheng"
 	/>					
  <utility
 	provides=".interfaces.IDbapi"
-	component=".ORMdbAPI.dizhi"
+	component=".dbutility.dizhi"
 	name="dizhi"
 	/>
  <utility
 	provides=".interfaces.IDbapi"
-	component=".ORMdbAPI.danwei"
+	component=".dbutility.danwei"
 	name="danwei"
 	/>	
  <utility
 	provides=".interfaces.IDbapi"
-	component=".ORMdbAPI.chufang_bingren"
+	component=".dbutility.chufang_bingren"
 	name="chufang_bingren"
 	/>
  <utility
 	provides=".interfaces.IDbapi"
-	component=".ORMdbAPI.yao_chufang"
+	component=".dbutility.yao_chufang"
 	name="yao_chufang"
 	/>
 
