@@ -5,7 +5,25 @@
     i18n_domain="cms.db">
 
 
-     <!-- content types views define--> 
+     <!-- content types views define-->
+     <browser:page
+        name="base_view"
+        for="cms.db.contents.yaowei.IYaowei"
+        template="templates/yaowei_view.pt"
+        permission="zope2.View"
+        class=".contents_view.YaoWeiView"/> 
+     <browser:page
+        name="base_view"
+        for="cms.db.contents.yaoxing.IYaoxing"
+        template="templates/yaoxing_view.pt"
+        permission="zope2.View"
+        class=".contents_view.YaoXingView"/> 
+     <browser:page
+        name="base_view"
+        for="cms.db.contents.jingluo.IJingluo"
+        template="templates/jingluo_view.pt"
+        permission="zope2.View"
+        class=".contents_view.JingLuoView"/>                       
      <browser:page
         name="base_view"
         for="cms.db.contents.yao.IYao"

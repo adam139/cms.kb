@@ -201,4 +201,29 @@ class ChuFangView(BaseView):
         out = out.replace(";","</tr><tr>")
         out = "<tr>%s</tr>" % out       
         return out            
-                        
+
+
+class YaoWeiView(BaseView):
+    "content type:yaowei view"
+
+    
+    def update(self):
+        # Hide the editable-object border
+        self.request.set('disable_border', True)
+        
+class YaoXingView(BaseView):
+    "content type:yaoxing view"
+
+    
+    def update(self):
+        # Hide the editable-object border
+        self.request.set('disable_border', True)
+        
+        
+class JingLuoView(BaseView):
+    "content type:jingluo view"
+
+    
+    def update(self):
+        # Hide the editable-object border
+        self.request.set('disable_border', True)                                        
