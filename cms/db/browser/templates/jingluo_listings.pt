@@ -34,7 +34,7 @@
 				</div>
 			</div>
 			<div class="row">
-                <h1 class="documentFirstHeading">电磁兼容型号参数库-接收机子库信息</h1>				
+                <h1 class="documentFirstHeading">经络信息</h1>				
 			</div>			
 			<input type="hidden" value="0" id="dateSearch">
 			<!-- search fashej table ,so index name define as "sbdm" -->
@@ -54,7 +54,7 @@
                 </div>
                 <div class="col-xs-12 col-sm-4">
                 	<a class="btn btn-primary" 
-                		tal:attributes="href python:context.absolute_url() + '/@@input_jingluo'" alt="接收机子库信息">接收机子库信息</a>
+                		tal:attributes="href python:context.absolute_url() + '/@@input_jingluo'" alt="添加经络">添加经络</a>
                 </div>
                 <!--快速翻页-->
                 <div class="col-xs-12 col-sm-8">

@@ -74,24 +74,24 @@
             </div>
             <table class="row table table-striped table-bordered table-condensed listing">
             	<thead>
-            		<tr data-toggle="tooltip" title="点击排序">
+            		<tr data-toggle="tooltip" title="点击排序" tal:condition="python:view.canbeInput">
             			<th class="col-md-1 text-center">序号</th>
             			<th class="col-md-2 text-left">药味</th>
             			<th class="col-md-7 text-left">说明</th>           			            			            			
             			<th class="col-md-1 text-center">编辑</th>
             			<th class="col-md-1 text-center">删除</th>
             		</tr>
+            		<tr data-toggle="tooltip" title="点击排序" tal:condition="python:not view.canbeInput">
+            			<th class="col-md-1 text-center">序号</th>
+            			<th class="col-md-3 text-left">药味</th>
+            			<th class="col-md-8 text-left">说明</th>          			            			            			
+            		</tr>            		
             	</thead>
             	<tbody id="searchResultDiv">
             		<tr>
-            			<td class="col-md-1 text-center">主体</td>
-            			<td class="col-md-1 text-left">客体</td>
-            			<td class="col-md-2 text-left">时间</td>
-            			<td class="col-md-2 text-center">ip</td>
-            			<td class="col-md-1 text-left">类型</td>
-            			<td class="col-md-1 text-left">等级</td>
-            			<td class="col-md-3 text-left">描述</td>
-            			<td class="col-md-1 text-left">结果</td>
+            			<td class="col-md-1 text-center">序号</td>
+            			<td class="col-md-3 text-left">药味</td>
+            			<td class="col-md-8 text-left">说明</td> 
             		</tr>
             	</tbody>
             </table>            

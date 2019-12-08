@@ -23,7 +23,7 @@ def recorder_created_handler(event):
 #     import pdb
 #     pdb.set_trace()
     #find parent container through cls
-    container = get_container_by_type(cls)
+    container = get_container_by_type(cls).getObject()
     if bool(container):
         # check id if is existed
         try:

@@ -6,6 +6,9 @@ from AccessControl.User import nobody
 from AccessControl.User import UnrestrictedUser as BaseUnrestrictedUser 
 # define content type child to parent mapping
 CONTAINER2TYPES = {'cms.db.yao':"cms.db.yaofolder",
+                   'cms.db.yaowei':"cms.db.yaofolder",
+                   'cms.db.yaoxing':"cms.db.yaofolder",
+                   'cms.db.jingluo':"cms.db.yaofolder",
                    'cms.db.chufang':"cms.db.chufangfolder",
                    'cms.db.bingren':"cms.db.bingrenfolder",
                    'cms.db.yisheng':"cms.db.yishengfolder",
@@ -82,7 +85,7 @@ def get_container_by_type(type):
         type = CONTAINER2TYPES[type]
         catalog = api.portal.get_tool('portal_catalog')
         brain = catalog(portal_type=type)
-        return brain[0].getObject()        
+        return brain[0]        
     else:
         return None
 
