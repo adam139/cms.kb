@@ -29,10 +29,14 @@ class TestView(unittest.TestCase):
 
         inputvalues()       
         portal = self.layer['portal']
-
         setRoles(portal, TEST_USER_ID, ('Manager',))
         portal.invokeFactory('cms.db.folder', 'folder')
-        portal['folder'].invokeFactory('cms.db.ormfolder', 'ormfolder')       
+        portal['folder'].invokeFactory('cms.db.ormfolder', 'ormfolder')
+        portal['folder'].invokeFactory('cms.db.yaofolder', 'yaofolder')
+        portal['folder'].invokeFactory('cms.db.chufangfolder', 'chufangfolder')
+        portal['folder'].invokeFactory('cms.db.bingrenfolder', 'bingrenfolder')
+        portal['folder'].invokeFactory('cms.db.yishengfolder', 'yishengfolder')
+        portal['folder'].invokeFactory('cms.db.danweifolder', 'danweifolder')      
         self.portal = portal
 
     def tearDown(self):
@@ -156,8 +160,45 @@ class TestView(unittest.TestCase):
         box = self.portal['folder']['ormfolder']
         view = box.restrictedTraverse('@@dizhi_ajaxsearch')
         result = view()       
-        self.assertEqual(json.loads(result)['total'],2) 
+        self.assertEqual(json.loads(result)['total'],3) 
 
+    def test_danwei(self):
+        request = self.layer['request']
+        alsoProvides(request, IThemeSpecific)        
+        keyManager = getUtility(IKeyManager)
+        secret = keyManager.secret()
+        auth = hmac.new(secret, TEST_USER_NAME, sha).hexdigest()
+        request.form = {
+                        '_authenticator': auth,
+                        'size': '10',
+                        'start':'0' ,
+                        'sortcolumn':'id',
+                        'sortdirection':'desc',
+                        'searchabletext':''                                                                       
+                        }
+# Look up and invoke the view via traversal
+        box = self.portal['folder']['ormfolder']
+        view = box.restrictedTraverse('@@danwei_ajaxsearch')
+        result = view()       
+        self.assertEqual(json.loads(result)['total'],2)
 
-             
+    def test_yisheng(self):
+        request = self.layer['request']
+        alsoProvides(request, IThemeSpecific)        
+        keyManager = getUtility(IKeyManager)
+        secret = keyManager.secret()
+        auth = hmac.new(secret, TEST_USER_NAME, sha).hexdigest()
+        request.form = {
+                        '_authenticator': auth,
+                        'size': '10',
+                        'start':'0' ,
+                        'sortcolumn':'id',
+                        'sortdirection':'desc',
+                        'searchabletext':''                                                                       
+                        }
+# Look up and invoke the view via traversal
+        box = self.portal['folder']['ormfolder']
+        view = box.restrictedTraverse('@@yisheng_ajaxsearch')
+        result = view()       
+        self.assertEqual(json.loads(result)['total'],2)             
 
