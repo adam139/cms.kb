@@ -28,10 +28,10 @@
   <!-- View information -->
   <property name="link_target"></property>
   <property name="immediate_view">view</property>
-  <property name="default_view">chufang_listings</property>
+  <property name="default_view">sysajax_listings</property>
   <property name="view_methods">
    <element value="view"/>
-   <element value="chufang_listings"/>   
+   <element value="sysajax_listings"/>   
   </property>
   <property name="default_view_fallback">False</property>
   <property name="add_permission">cmf.AddPortalContent</property>

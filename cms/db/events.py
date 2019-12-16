@@ -6,6 +6,10 @@ from cms.db.interfaces import IRecorderCreated
 
 # we use this constant just for command line test
 TYPES_LIST = ['cms.db.yao',
+              'cms.db.yaoxing',
+              'cms.db.yaowei',
+              'cms.db.jingluo',
+              'cms.db.bingren',
               'cms.db.danwei',
               'cms.db.yisheng',
               'cms.db.chufang']

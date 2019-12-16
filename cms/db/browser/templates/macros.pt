@@ -92,7 +92,17 @@
                  <a tal:attributes="href string:${kb/absolute_url}/@@bingren_listings">
                      病人
                   </a>
-                  </li>                                    
+                  </li>
+                  <li>
+                 <a tal:attributes="href string:${kb/absolute_url}/@@danwei_listings">
+                     单位
+                  </a>
+                  </li>
+                  <li>
+                 <a tal:attributes="href string:${kb/absolute_url}/@@dizhi_listings">
+                     地址
+                  </a>
+                  </li>                                                                        
           </ul>
         </li>
      

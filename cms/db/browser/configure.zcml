@@ -4,6 +4,8 @@
     xmlns:plone="http://namespaces.plone.org/plone"
     i18n_domain="cms.db">
 
+	<include package="plone.app.contentmenu" />
+
   <!-- Register static resource directory -->
 	<browser:resourceDirectory
   		name="cms.db"
@@ -16,6 +18,32 @@
         class=".macros.Macros"/>
     
     <include file="contents.zcml"/>
+
+    <browser:page
+        name="sysajax_listings"
+        template="templates/sysajax_listings_novocabulary.pt"
+        for="*"
+        permission="zope.Public"
+        layer="cms.theme.interfaces.IThemeSpecific"
+        class=".sysajax_listings.sysAjaxListingView"
+        menu="plone_displayviews"
+        title="System Ajax view"/>
+        
+    <browser:page
+        name="sysloadmore_tags"
+        for="*"
+        permission="zope2.View"
+        layer="cms.theme.interfaces.IThemeSpecific"
+        class=".sysajax_listings.sysloadMore"
+        />
+
+    <browser:page
+        name="ajaxsearch"
+        for="*"
+        permission="zope2.View"
+        layer="cms.theme.interfaces.IThemeSpecific"
+        class=".sysajax_listings.ajaxsearch"
+        />        
         
     <!-- Control panel form -->
     <browser:page 
