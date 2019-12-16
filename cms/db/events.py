@@ -5,7 +5,10 @@ from zope.component import getUtility
 from cms.db.interfaces import IRecorderCreated
 
 # we use this constant just for command line test
-TYPES_LIST = ['cms.db.yao','cms.db.danwei','cms.db.yisheng']
+TYPES_LIST = ['cms.db.yao',
+              'cms.db.danwei',
+              'cms.db.yisheng',
+              'cms.db.chufang']
 
 class EventFilter(object):
     """
@@ -34,7 +37,7 @@ class EventFilter(object):
             else:
                 return False
         #work instance the following will work.
-        return self.cls in TYPES_LISTtypes_list
+        return self.cls in TYPES_LIST
 
         
     def is_normal_user(self):

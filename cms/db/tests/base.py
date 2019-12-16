@@ -1,7 +1,9 @@
 #-*- coding: UTF-8 -*-
+from zope import event
 from datetime import date
 from datetime import datetime
 from cms.db import  Session
+from cms.db.events import RecorderCreated
 from cms.db.orm import YaoWei,YaoXing,JingLuo,Yao,DiZhi,YiSheng,DanWei
 from cms.db.orm import ChuFang,YiSheng,BingRen,Yao_ChuFang_Asso,ChuFang_BingRen_Asso
 
@@ -74,6 +76,53 @@ def inputvalues():
                          yisheng,chufang,yao_chufang,yao_chufang2,chufang_bingren])                         
         Session.commit()
         
+def fire_created_event():
+    "if add recorder to db is successful,fire the event"
+    recorder = Session.query(YaoXing).filter(YaoXing.xing=="温").first()
+    if bool(recorder):
+        cls = "cms.db.yaoxing"
+        id = "yaoxing%s" % recorder.id
+        eventobj = RecorderCreated(id=id,cls=cls,ttl=recorder.xing)
+        if eventobj.available():event.notify(eventobj)
+    recorder = Session.query(YaoWei).filter(YaoWei.wei=="甘").first()
+    if bool(recorder):
+        cls = "cms.db.yaowei"
+        id = "yaowei%s" % recorder.id
+        eventobj = RecorderCreated(id=id,cls=cls,ttl=recorder.wei)
+        if eventobj.available():event.notify(eventobj)        
+    recorder = Session.query(Yao).filter(Yao.mingcheng=="白芍").first()
+    if bool(recorder):
+        cls = "cms.db.yao"
+        eventobj = RecorderCreated(id=recorder.id,cls=cls,ttl=recorder.mingcheng)
+        if eventobj.available():event.notify(eventobj)        
+    recorder = Session.query(JingLuo).filter(JingLuo.mingcheng=="足太阳膀胱经").first()
+    if bool(recorder):
+        cls = "cms.db.jingluo"
+        id = "jingluo%s" % recorder.id
+        eventobj = RecorderCreated(id=id,cls=cls,ttl=recorder.mingcheng)
+        if eventobj.available():event.notify(eventobj)
+    recorder = Session.query(BingRen).filter(BingRen.xingming=="张三").first()
+    if bool(recorder):
+        cls = "cms.db.bingren"
+        eventobj = RecorderCreated(id=recorder.id,cls=cls,ttl=recorder.xingming)
+        if eventobj.available():event.notify(eventobj)
+    recorder = Session.query(YiSheng).filter(YiSheng.xingming=="余浩").first()
+    if bool(recorder):
+        cls = "cms.db.yisheng"
+        eventobj = RecorderCreated(id=recorder.id,cls=cls,ttl=recorder.xingming)
+        if eventobj.available():event.notify(eventobj)
+        
+    recorder = Session.query(ChuFang).filter(ChuFang.mingcheng=="桂枝汤").first()
+    if bool(recorder):
+        cls = "cms.db.chufang"
+        eventobj = RecorderCreated(id=recorder.id,cls=cls,ttl=recorder.mingcheng)
+        if eventobj.available():event.notify(eventobj)
+    recorder = Session.query(DanWei).filter(DanWei.mingcheng=="润生堂").first()
+    if bool(recorder):
+        cls = "cms.db.danwei"
+        eventobj = RecorderCreated(id=recorder.id,cls=cls,ttl=recorder.mingcheng)
+        if eventobj.available():event.notify(eventobj)                
+                        
 def cleardb():
     "remove all recorders from db"
     items = Session.query(YaoWei).all()

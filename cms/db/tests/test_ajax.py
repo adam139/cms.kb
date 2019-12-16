@@ -200,5 +200,5 @@ class TestView(unittest.TestCase):
         box = self.portal['folder']['ormfolder']
         view = box.restrictedTraverse('@@yisheng_ajaxsearch')
         result = view()       
-        self.assertEqual(json.loads(result)['total'],2)             
+        self.assertEqual(json.loads(result)['total'],1)             
 
