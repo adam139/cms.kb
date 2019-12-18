@@ -142,7 +142,7 @@
   <metal:js fill-slot="javascript_bottom_slot">
 	<script type="text/javascript"
 		tal:define="navroot context/@@plone_portal_state/navigation_root_url"
-     tal:attributes="src string:${navroot}/++resource++my315ok.policy/ajaxsearch_notagsreminder.js">		
+     tal:attributes="src string:${navroot}/++resource++cms.db/ajaxsearch_notagsreminder.js">		
 	</script>	
 	</metal:js>
 </body>
