@@ -85,13 +85,15 @@ class BaseView(BrowserView):
         context = self.context
         base = context.aq_parent.absolute_url()
         sts = context.subject
-        label = u"标签".encode('utf-8')
-        items = ['<li class="first">%s:</li>' % label]
+        items = ['<li class="first"><span class="glyphicon glyphicon-tags" aria-hidden="true"></span></li>']
         for j in sts:
             item = """<li>
             <a class="btn btn-default" href='%s/@@sysajax_listings?subject=%s'>%s</a></li>""" % (base,j,j)
             items.append(item)
-        return "".join(items)       
+        if len(items) > 1:
+            return "".join(items)
+        else:
+            return ""       
          
     
 class YaoView(BaseView):
