@@ -42,6 +42,8 @@ class Allcontents(unittest.TestCase):
         self.assertEqual(self.portal['folder']['yishengfolder'].id,'yishengfolder')
         self.assertEqual(self.portal['folder']['danweifolder'].id,'danweifolder')        
         self.assertEqual(self.portal['folder']['yaofolder']['yao'].id,'yao')
+        import pdb
+        pdb.set_trace()
         self.assertEqual(self.portal['folder']['yaofolder']['yaowei'].id,'yaowei')
         self.assertEqual(self.portal['folder']['yaofolder']['yaoxing'].id,'yaoxing')
         self.assertEqual(self.portal['folder']['yaofolder']['jingluo'].id,'jingluo')                        

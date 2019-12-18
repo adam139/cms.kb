@@ -171,7 +171,7 @@ class sysAjaxListingView(BrowserView):
             else:
                 fixgroup = u"未分类".encode('utf-8')
                 fixprefix = """
-                    <ul class="row tagSelectSearch list-inline">                    
+                    <ul class="row tagSelectSearch list-inline" id="no-category">                    
                     <li class="title">%s：</li>
                     <li class="hidden">
                         <input type="hidden" value="0" class="taggroup" data-category="%s-">                            

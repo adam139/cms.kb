@@ -42,4 +42,10 @@
         template="templates/chufang_view.pt"
         permission="zope2.View"
         class=".contents_view.ChuFangView"/>
+     <browser:page
+        name="base_view"
+        for="cms.db.contents.yisheng.IYisheng"
+        template="templates/chufang_view.pt"
+        permission="zope2.View"
+        class=".contents_view.YiShengView"/>        
 </configure>

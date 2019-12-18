@@ -86,9 +86,12 @@ class TestView(unittest.TestCase):
         self.yao_id = yao_id
         self.bingren_id = bingren_id
         self.chufang_id = chufang_id
+        sts = (u"数据库".encode("utf-8"),"plone")
+        
+        portal['folder']['yaofolder'][yao_id].setSubject(sts)
 
     def tearDown(self):
-        pass
+#         pass
         cleardb()                 
         
 
@@ -116,6 +119,7 @@ class TestView(unittest.TestCase):
         self.assertTrue(u"here is description" in browser.contents)        
         self.assertTrue("here is rich text" in browser.contents)        
         self.assertTrue("here is report" in browser.contents)
+
         self.assertTrue( "酸" in browser.contents)
         self.assertTrue( "足太阳膀胱经" in browser.contents)
         self.assertTrue( "桂枝汤" in browser.contents)        

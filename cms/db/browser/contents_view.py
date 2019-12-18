@@ -78,7 +78,21 @@ class BaseView(BrowserView):
                                                   target_language='zh_CN',
                                                   context=self.context,
                                                   default='')
-        return title     
+        return title
+    
+    def getags(self):
+        "get context's subject and output"
+        context = self.context
+        base = context.aq_parent.absolute_url()
+        sts = context.subject
+        label = u"标签".encode('utf-8')
+        items = ['<li class="first">%s:</li>' % label]
+        for j in sts:
+            item = """<li>
+            <a class="btn btn-default" href='%s/@@sysajax_listings?subject=%s'>%s</a></li>""" % (base,j,j)
+            items.append(item)
+        return "".join(items)       
+         
     
 class YaoView(BaseView):
     "content type:yao view"
@@ -226,4 +240,12 @@ class JingLuoView(BaseView):
     
     def update(self):
         # Hide the editable-object border
-        self.request.set('disable_border', True)                                        
+        self.request.set('disable_border', True) 
+        
+class YiShengView(BaseView):
+    "content type:jingluo view"
+
+    
+    def update(self):
+        # Hide the editable-object border
+        self.request.set('disable_border', True)                                               
