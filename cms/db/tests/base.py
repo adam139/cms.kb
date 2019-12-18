@@ -4,9 +4,14 @@ from datetime import date
 from datetime import datetime
 from cms.db import  Session
 from cms.db.events import RecorderCreated
-from cms.db.orm import YaoWei,YaoXing,JingLuo,Yao,DiZhi,YiSheng,DanWei
-from cms.db.orm import ChuFang,YiSheng,BingRen,Yao_ChuFang_Asso,ChuFang_BingRen_Asso
 
+TABLES = ['YaoWei','YaoXing','JingLuo','Yao_JingLuo_Asso','Yao','Yao_ChuFang_Asso',
+        'ChuFang_BingRen_Asso','ChuFang','YiSheng','DanWei','DiZhi', 
+        'DanWeiDiZhi', 'GeRenDiZhi', 'BingRen']
+
+for tb in TABLES:
+    import_str = "from %(p)s import %(t)s" % dict(p='cms.db.orm',t=tb) 
+    exec import_str
 
 def inputvalues():
         "input init data to db"
@@ -56,11 +61,11 @@ def inputvalues():
         yao6.yaoxing = yaoxing2
         yao6.guijing = [jingluo2]                                
         Session.add_all([yao1,yao2,yao3,yao4,yao5,yao6])        
-        dizhi = DiZhi("中国","湖南","湘潭市","湘潭县云湖桥镇北岸村道林组83号")
+        dizhi = GeRenDiZhi(guojia="中国",sheng="湖南",shi="湘潭市",jiedao="湘潭县云湖桥镇北岸村道林组83号")
         bingren = BingRen('张三',1, date(2015, 4, 2),'13673265899')
         bingren.dizhi = dizhi
-        dizhi2 = DiZhi("中国","湖北","十堰市","茅箭区施洋路83号")
-        dizhi3 = DiZhi("中国","湖南","湘潭市","湘潭县云湖桥镇北岸村道林组38号")
+        dizhi2 = DanWeiDiZhi(guojia="中国",sheng="湖北",shi="十堰市",jiedao="茅箭区施洋路83号")
+        dizhi3 = DanWeiDiZhi(guojia="中国",sheng="湖南",shi="湘潭市",jiedao="湘潭县云湖桥镇北岸村道林组38号")
         danwei = DanWei("任之堂")
         danwei2 = DanWei("润生堂")
         yisheng = YiSheng('余浩',1, date(2015, 4, 2),'13673265859')

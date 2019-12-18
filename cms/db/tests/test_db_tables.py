@@ -17,7 +17,11 @@ from zope.component import queryUtility
 from cms.db import  Session
 from cms.db import  engine
 from cms.db import ORMBase as Base
-from cms.db.orm import Yao_JingLuo_Asso, Yao_ChuFang_Asso
+from cms.db.tests.base import TABLES
+
+for tb in TABLES:
+    import_str = "from %(p)s import %(t)s" % dict(p='cms.db.orm',t=tb) 
+    exec import_str
 
 class TestDatabase(unittest.TestCase):
 
@@ -33,12 +37,12 @@ class TestDatabase(unittest.TestCase):
         Base.metadata.drop_all(engine)                                
 
     def empty_tables(self,tbls=None):
-        """drop all db tables
+        """clear all db tables
         """
 
 #         tbls = ['Yao_ChuFang_Asso','ChuFang','Yao_JingLuo_Asso','Yao','YaoWei','YaoXing','JingLuo']
-        tbls = ['YaoWei','YaoXing','JingLuo','Yao_JingLuo_Asso','Yao','Yao_ChuFang_Asso',
-                'ChuFang_BingRen_Asso','ChuFang','YiSheng','DanWei','DiZhi','BingRen']        
+        if not bool(tbls):
+            tbls = TABLES       
         items = []
         for tb in tbls:
             import_str = "from %(p)s import %(t)s as tablecls" % dict(p='cms.db.orm',t=tb) 
@@ -62,8 +66,7 @@ class TestDatabase(unittest.TestCase):
     def setUp(self):
         portal = self.layer['portal']
         setRoles(portal, TEST_USER_ID, ('Manager',))
-        tbls = ['YaoWei','YaoXing','JingLuo','Yao_JingLuo_Asso','Yao','Yao_ChuFang_Asso',
-                'ChuFang_BingRen_Asso','ChuFang','YiSheng','DanWei','DiZhi','BingRen']
+        tbls = TABLES
 #         tbls = ['Yao','YaoWei','YaoXing']
 #         self.empty_tables()
 #         self.drop_tables(tbls)
@@ -71,14 +74,36 @@ class TestDatabase(unittest.TestCase):
 
     def ptest_dummy(self):
 #         tbls = ['Yao_ChuFang_Asso','Yao_JingLuo_Asso','ChuFang','JingLuo','Yao','YaoWei','YaoXing']
-        tbls = ['YaoWei','YaoXing','JingLuo','Yao_JingLuo_Asso','Yao','Yao_ChuFang_Asso',
-                'ChuFang_BingRen_Asso','ChuFang','YiSheng','DanWei','DiZhi','BingRen']
+        tbls = TABLES
 #         tbls = ['Yao']
         self.drop_tables(tbls)
 
-    def test_yaowei(self):
+    def test_joined_inheritance_dizhi(self):
+        "test for joined inheritance table"
+
+        dizhi = DiZhi(guojia="中国",sheng="湖北",shi="十堰市",jiedao="茅箭区施洋路83号")
+        gdizhi = GeRenDiZhi(guojia="中国",sheng="湖南",shi="湘潭市",
+                            jiedao="湘潭县云湖桥镇北岸村道林组83号")
+        ddizhi = DanWeiDiZhi(guojia="中国",sheng="湖南",shi="湘潭市",
+                             jiedao="湘潭县云湖桥镇北岸村道林组38号",
+                             wangzhi="http://www.315ok.org/",
+                             gongzhonghao="zhongyi")
         
-        from cms.db.orm import YaoWei
+        Session.add_all([dizhi,gdizhi,ddizhi])
+        Session.commit()
+        rds = Session.query(DiZhi).filter(DiZhi.sheng=="湖南").all()
+        self.assertEqual(len(rds),2)        
+        rds = Session.query(GeRenDiZhi).filter(GeRenDiZhi.sheng=="湖南").all()
+        self.assertEqual(len(rds),1)
+        rds = Session.query(DanWeiDiZhi).filter(DanWeiDiZhi.gongzhonghao=="zhongyi").all()
+
+        self.assertEqual(len(rds),1)
+        tbs = ['DiZhi', 'DanWeiDiZhi', 'GeRenDiZhi']
+        self.empty_tables(tbs)
+        
+
+    def test_yaowei(self):
+
         yaowei = YaoWei("酸")
         Session.add(yaowei)
         Session.commit()
@@ -91,8 +116,7 @@ class TestDatabase(unittest.TestCase):
         self.assertEqual(bool(suan),False)
         
     def test_yaoxing(self):
-        
-        from cms.db.orm import YaoXing
+
         yaoxing = YaoXing("寒")
         Session.add(yaoxing)
         Session.commit()
@@ -106,8 +130,7 @@ class TestDatabase(unittest.TestCase):
         self.assertEqual(bool(suan),False)
  
     def test_jingluo(self):
-        
-        from cms.db.orm import JingLuo
+
         item = JingLuo("足少阳胆经")
         Session.add(item)
         Session.commit()
@@ -120,8 +143,6 @@ class TestDatabase(unittest.TestCase):
         self.assertEqual(bool(items),False)               
 
     def test_yaoes(self):
-        
-        from cms.db.orm import Yao,YaoXing,YaoWei,JingLuo
         
         yaowei = YaoWei("酸")
         yaoxing = YaoXing("寒")
@@ -149,8 +170,7 @@ class TestDatabase(unittest.TestCase):
 
     def test_chufang_yao(self):
         
-        from cms.db.orm import Yao,YaoXing,YaoWei,JingLuo,ChuFang,Yao_ChuFang_Asso
-        
+       
         yaowei = YaoWei("酸")
         yaoxing = YaoXing("寒")
         jingluo = JingLuo("足厥阴肝经")
@@ -182,9 +202,7 @@ class TestDatabase(unittest.TestCase):
 
     def test_dizhi(self):
         
-        from cms.db.orm import DiZhi
-        
-        dizhi = DiZhi("中国","湖南","湘潭市","湘潭县云湖桥镇北岸村道林组83号")
+        dizhi = DiZhi(guojia="中国",sheng="湖南",shi="湘潭市",jiedao="湘潭县云湖桥镇北岸村道林组83号")
         Session.add(dizhi)                                     
         Session.commit()
         items = Session.query(DiZhi.jiedao).filter(DiZhi.sheng=="湖南").first()
@@ -196,9 +214,7 @@ class TestDatabase(unittest.TestCase):
     
     def test_danwei(self):
         
-        from cms.db.orm import DiZhi,DanWei
-        
-        dizhi = DiZhi("中国","湖南","湘潭市","湘潭县云湖桥镇北岸村道林组83号")
+        dizhi = DanWeiDiZhi(guojia="中国",sheng="湖南",shi="湘潭市",jiedao="湘潭县云湖桥镇北岸村道林组83号")
         danwei = DanWei("任之堂")
         danwei.dizhi = dizhi
         Session.add(danwei)                                    
@@ -206,6 +222,8 @@ class TestDatabase(unittest.TestCase):
         items = Session.query(DanWei).filter(DanWei.mingcheng=="任之堂").first()
         self.assertEqual(items.dizhi.jiedao,u"湘潭县云湖桥镇北岸村道林组83号")          
         items = Session.query(DanWei).all()
+        items.extend(Session.query(GeRenDiZhi).all())
+        items.extend(Session.query(DanWeiDiZhi).all())         
         items.extend(Session.query(DiZhi).all())
 
         for m in items:
@@ -214,9 +232,7 @@ class TestDatabase(unittest.TestCase):
  
     def test_yisheng(self):
         
-        from cms.db.orm import DiZhi,DanWei,YiSheng
-        
-        dizhi = DiZhi("中国","湖南","湘潭市","湘潭县云湖桥镇北岸村道林组83号")
+        dizhi = DanWeiDiZhi(guojia="中国",sheng="湖南",shi="湘潭市",jiedao="湘潭县云湖桥镇北岸村道林组83号")
         danwei = DanWei("任之堂")
         yisheng = YiSheng('余浩',1, date(2015, 4, 2),'13673265859')
         danwei.yishengs = [yisheng]
@@ -227,10 +243,12 @@ class TestDatabase(unittest.TestCase):
         self.assertEqual(items.dizhi.jiedao,u"湘潭县云湖桥镇北岸村道林组83号")
 
         items = Session.query(YiSheng).join(DanWei).filter(DanWei.mingcheng=="任之堂").first()
-        self.assertEqual(items.danwei.dizhi.jiedao,u"湘潭县云湖桥镇北岸村道林组83号")
+        self.assertEqual(items.danwei.dizhi.jiedao,"湘潭县云湖桥镇北岸村道林组83号")
         self.assertEqual(items.danwei.yishengs[0],items)
                          
         items = Session.query(DanWei).all()
+        items.extend(Session.query(GeRenDiZhi).all())
+        items.extend(Session.query(DanWeiDiZhi).all())         
         items.extend(Session.query(DiZhi).all())
         items.extend(Session.query(YiSheng).all())
         
@@ -240,20 +258,20 @@ class TestDatabase(unittest.TestCase):
 
     def test_bingren(self):
         
-        from cms.db.orm import ChuFang,BingRen,DiZhi
-        
-        dizhi = DiZhi("中国","湖南","湘潭市","湘潭县云湖桥镇北岸村道林组83号")
+        dizhi = GeRenDiZhi(guojia="中国",sheng="湖南",shi="湘潭市",jiedao="湘潭县云湖桥镇北岸村道林组83号")
         bingren = BingRen('张三',1, date(2015, 4, 2),'13673265899')
         bingren.dizhi = dizhi
         Session.add(bingren)                                    
         Session.commit()
         items = Session.query(BingRen).filter(BingRen.dianhua=="13673265899").first()
-        self.assertEqual(items.dizhi.jiedao,u"湘潭县云湖桥镇北岸村道林组83号")
+        self.assertEqual(items.dizhi.jiedao,"湘潭县云湖桥镇北岸村道林组83号")
 
-        items = Session.query(BingRen).join(DiZhi).filter(DiZhi.sheng=="湖南").first()
-        self.assertEqual(items.dizhi.jiedao,u"湘潭县云湖桥镇北岸村道林组83号")
+        items = Session.query(BingRen).join(GeRenDiZhi).filter(GeRenDiZhi.sheng=="湖南").first()
+        self.assertEqual(items.dizhi.jiedao,"湘潭县云湖桥镇北岸村道林组83号")
                          
         items = Session.query(BingRen).all()
+        items.extend(Session.query(GeRenDiZhi).all())
+        items.extend(Session.query(DanWeiDiZhi).all())         
         items.extend(Session.query(DiZhi).all()) 
         
         for m in items:
@@ -262,13 +280,10 @@ class TestDatabase(unittest.TestCase):
 
     def test_asso_chufang_bingren(self):
         
-        from cms.db.orm import ChuFang,DanWei,\
-        BingRen,DiZhi,YiSheng,ChuFang_BingRen_Asso,YaoWei,YaoXing,JingLuo,Yao,Yao_ChuFang_Asso
-        
-        dizhi = DiZhi("中国","湖南","湘潭市","湘潭县云湖桥镇北岸村道林组83号")
+        dizhi = GeRenDiZhi(guojia="中国",sheng="湖南",shi="湘潭市",jiedao="湘潭县云湖桥镇北岸村道林组83号")
         bingren = BingRen('张三',1, date(2015, 4, 2),'13673265899')
         bingren.dizhi = dizhi
-        dizhi2 = DiZhi("中国","湖北","十堰市","茅箭区施洋路83号")
+        dizhi2 = DanWeiDiZhi(guojia="中国",sheng="湖北",shi="十堰市",jiedao="茅箭区施洋路83号")
         danwei = DanWei("任之堂")
         yisheng = YiSheng('余浩',1, date(2015, 4, 2),'13673265859')
         danwei.yishengs = [yisheng]
@@ -301,11 +316,13 @@ class TestDatabase(unittest.TestCase):
         Session.add(chufang_bingren)
                                     
         Session.commit()
-        items = Session.query(BingRen).filter(BingRen.dianhua=="13673265899").first()
-        self.assertEqual(items.dizhi.jiedao,u"湘潭县云湖桥镇北岸村道林组83号")
-
-        items = Session.query(BingRen).join(DiZhi).filter(DiZhi.sheng=="湖南").first()
-        self.assertEqual(items.dizhi.jiedao,u"湘潭县云湖桥镇北岸村道林组83号")
+        try:
+            items = Session.query(BingRen).filter(BingRen.dianhua=="13673265899").first()
+            self.assertEqual(items.dizhi.jiedao,u"湘潭县云湖桥镇北岸村道林组83号")
+            items = Session.query(BingRen).join(GeRenDiZhi).filter(GeRenDiZhi.sheng=="湖南").first()
+            self.assertEqual(items.dizhi.jiedao,u"湘潭县云湖桥镇北岸村道林组83号")
+        except:
+            Session.rollback()
         
         items = Session.query(Yao).all()
         items.extend(Session.query(YaoXing).all())
@@ -315,6 +332,8 @@ class TestDatabase(unittest.TestCase):
         items.extend(Session.query(BingRen).all())
         items.extend(Session.query(YiSheng).all())
         items.extend(Session.query(DanWei).all())
+        items.extend(Session.query(GeRenDiZhi).all())
+        items.extend(Session.query(DanWeiDiZhi).all())         
         items.extend(Session.query(DiZhi).all())        
         for m in items:
             Session.delete(m)            
@@ -323,13 +342,10 @@ class TestDatabase(unittest.TestCase):
 
     def test_all_tables(self):
         
-        from cms.db.orm import ChuFang,DanWei,\
-        BingRen,DiZhi,YiSheng,ChuFang_BingRen_Asso,YaoWei,YaoXing,JingLuo,Yao,Yao_ChuFang_Asso
-        
-        dizhi = DiZhi("中国","湖南","湘潭市","湘潭县云湖桥镇北岸村道林组83号")
+        dizhi = GeRenDiZhi(guojia="中国",sheng="湖南",shi="湘潭市",jiedao="湘潭县云湖桥镇北岸村道林组83号")
         bingren = BingRen('张三',1, date(2015, 4, 2),'13673265899')
         bingren.dizhi = dizhi
-        dizhi2 = DiZhi("中国","湖北","十堰市","茅箭区施洋路83号")
+        dizhi2 = DanWeiDiZhi(guojia="中国",sheng="湖北",shi="十堰市",jiedao="茅箭区施洋路83号")
         danwei = DanWei("任之堂")
         yisheng = YiSheng('余浩',1, date(2015, 4, 2),'13673265859')
         danwei.yishengs = [yisheng]
@@ -362,20 +378,18 @@ class TestDatabase(unittest.TestCase):
         Session.add(dizhi2)
         Session.add(danwei)        
         Session.add(yisheng)
-        Session.add(chufang_bingren)
-                                    
+        Session.add(chufang_bingren)                                    
         Session.commit()
-        items = Session.query(BingRen).filter(BingRen.dianhua=="13673265899").first()
-        self.assertEqual(items.dizhi.jiedao,u"湘潭县云湖桥镇北岸村道林组83号")
-
-        items = Session.query(BingRen).join(DiZhi).filter(DiZhi.sheng=="湖南").first()
-        self.assertEqual(items.dizhi.jiedao,u"湘潭县云湖桥镇北岸村道林组83号")
-        items = Session.query(ChuFang).join(YiSheng).filter(YiSheng.xingming=="余浩").first()
-        import pdb
-        pdb.set_trace()
-        
-        self.assertEqual(len(items.yaoes),2)
-        self.assertEqual(items.yishengxm,"余浩")
+        try:
+            items = Session.query(BingRen).filter(BingRen.dianhua=="13673265899").first()
+            self.assertEqual(items.dizhi.jiedao,u"湘潭县云湖桥镇北岸村道林组83号")
+            items = Session.query(BingRen).join(GeRenDiZhi).filter(GeRenDiZhi.sheng=="湖南").first()
+            self.assertEqual(items.dizhi.jiedao,u"湘潭县云湖桥镇北岸村道林组83号")
+            items = Session.query(ChuFang).join(YiSheng).filter(YiSheng.xingming=="余浩").first()        
+            self.assertEqual(len(items.yaoes),2)
+            self.assertEqual(items.yishengxm,"余浩")
+        except:
+            Session.rollback()
                 
         items = Session.query(Yao).all()
         items.extend(Session.query(YaoXing).all())
@@ -385,33 +399,10 @@ class TestDatabase(unittest.TestCase):
         items.extend(Session.query(BingRen).all())
         items.extend(Session.query(YiSheng).all())
         items.extend(Session.query(DanWei).all())
+        items.extend(Session.query(GeRenDiZhi).all())
+        items.extend(Session.query(DanWeiDiZhi).all())                
         items.extend(Session.query(DiZhi).all())        
         for m in items:
             Session.delete(m)            
         Session.commit() 
-        
-    
-    def mtest_dbapi_yaowei(self):
-# oracle env setting        
-#         import os
-#         os.environ['NLS_LANG'] = '.AL32UTF8'            
-#         self.create_tables(tbls=['Fashej'])
-#         self.drop_tables(tbls=['Fashej'])
-#         import pdb
-#         pdb.set_trace()
-        
-# ('333333002','发射机01','asd2w23sds212211111','m',2.4,0,2.8,10,0,2.8,20,1.1,'AM-V',2,1,' 常用发射机1')
-        values = dict(sbdm="333333003",sbmc=u"发射机02",pcdm="asd2w23sds212211111",location=u"m",
-                      freq=2.4,pd_upper=0,pd_lower=2.8,num=10,
-                      freq_upper=0,freq_lower=2.8,bw=20,base_power=1.1,
-                      tzlx="AM-V",bzf=2,mid_freq=1,comment1=u"常用发射机1")        
-        dbapi = queryUtility(IDbapi, name='fashej')
-        dbapi.add(values)
-        nums = dbapi.query({'start':0,'size':1,'SearchableText':'','sort_order':'reverse'})
-        id = nums[0].id        
-        rt = dbapi.getByCode(id)
-        self.assertTrue(nums is not None)
-        self.assertEqual(len(nums),1)
-#         rt = dbapi.DeleteByCode(id)
-        self.assertTrue(rt)
-
+  

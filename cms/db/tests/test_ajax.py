@@ -17,9 +17,12 @@ from plone.testing.z2 import Browser
 import unittest
 from cms.db import  Session
 from cms.theme.interfaces import IThemeSpecific
-from cms.db.orm import YaoWei,YaoXing,JingLuo,Yao,DiZhi,YiSheng,DanWei
-from cms.db.orm import ChuFang,YiSheng,BingRen,Yao_ChuFang_Asso,ChuFang_BingRen_Asso
 from cms.db.tests.base import inputvalues,cleardb
+from cms.db.tests.base import TABLES
+for tb in TABLES:
+    import_str = "from %(p)s import %(t)s" % dict(p='cms.db.orm',t=tb) 
+    exec import_str
+
 
 class TestView(unittest.TestCase):
     

@@ -18,10 +18,12 @@ from cms.db.contents.yao import IYao
 from sqlalchemy import and_
 
 from cms.db import  Session
-from cms.db.orm import YaoWei,YaoXing,JingLuo,Yao
-from cms.db.orm import ChuFang,BingRen,DiZhi,DanWei,YiSheng
-from cms.db.orm import Yao_ChuFang_Asso,ChuFang_BingRen_Asso
 from cms.db.tests.base import inputvalues,cleardb
+from cms.db.tests.base import TABLES
+for tb in TABLES:
+    import_str = "from %(p)s import %(t)s" % dict(p='cms.db.orm',t=tb) 
+    exec import_str
+
 
 class TestView(unittest.TestCase):
     

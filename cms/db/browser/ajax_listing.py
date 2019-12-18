@@ -49,7 +49,7 @@ from cms.db.orm import IJingLuo,JingLuo
 from cms.db.orm import IYao
 from cms.db.orm import Yao
 from cms.db.orm import IChuFang,ChuFang
-from cms.db.orm import IDiZhi,DiZhi
+from cms.db.orm import IDiZhi,DiZhi,DanWeiDiZhi,GeRenDiZhi
 from cms.db.orm import IDanWei,DanWei
 from cms.db.orm import IYiSheng,YiSheng
 from cms.db.orm import IBingRen,BingRen
@@ -1799,7 +1799,7 @@ class InputBingRen(InputYaoXing):
         for i in _clmns:
             _data[i] = data[i]                 
         _id = data['dizhi_id']
-        fk_tables = [(_id,DiZhi,'dizhi')]
+        fk_tables = [(_id,GeRenDiZhi,'dizhi')]
         asso_tables = []
         try:
             funcations.add_multi_tables(_data,fk_tables,asso_tables)
@@ -1868,7 +1868,7 @@ class UpdateBingRen(UpdateYaoXing):
             _data[i] = data[i]                               
         _data['id'] = self.id
         _id = data['dizhi']
-        fk_tables = [(_id,DiZhi,'dizhi')]
+        fk_tables = [(_id,GeRenDiZhi,'dizhi')]
         try:
             funcations.update_multi_tables(_data,fk_tables)
         except InputError, e:
@@ -2071,7 +2071,7 @@ class InputDanWei(InputYaoXing):
         for i in _clmns:
             danwei_data[i] = data[i]                 
         dizhi_id = data['dizhi']
-        fk_tables = [(dizhi_id,DiZhi,'dizhi')]
+        fk_tables = [(dizhi_id,DanWeiDiZhi,'dizhi')]
         asso_tables = []
         try:
             funcations.add_multi_tables(danwei_data,fk_tables,asso_tables)
@@ -2134,7 +2134,7 @@ class UpdateDanWei(UpdateYaoXing):
             _data[i] = data[i]                               
         _data['id'] = self.id
         _id = data['dizhi']
-        fk_tables = [(_id,DiZhi,'dizhi')]
+        fk_tables = [(_id,DanWeiDiZhi,'dizhi')]
         try:
             funcations.update_multi_tables(_data,fk_tables)
         except InputError, e:

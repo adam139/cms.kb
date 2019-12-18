@@ -142,9 +142,7 @@ class Dbapi(object):
             conds.append(cn)
         conds = " AND ".join(conds)
         rt = self.session.query(tablecls).filter(text(conds)).first()
-        return rt
-                    
-        
+        return rt                          
         
     def get_columns(self):
         "get return columns by query"

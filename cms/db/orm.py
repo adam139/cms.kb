@@ -295,12 +295,44 @@ class DiZhi(Base):
     sheng = Column(String(12))
     shi = Column(String(12))
     jiedao = Column(String(64))
+    type = Column(String(12))
     
-    def __init__(self, guojia=None, sheng=None, shi=None, jiedao=None):
-        self.guojia = guojia
-        self.sheng = sheng
-        self.shi = shi
-        self.jiedao = jiedao
+    __mapper_args__ = {
+        'polymorphic_identity':'dizhi',
+        'polymorphic_on':type
+    }
+    
+#     def __init__(self, guojia=None, sheng=None, shi=None, jiedao=None):
+#         self.guojia = guojia
+#         self.sheng = sheng
+#         self.shi = shi
+#         self.jiedao = jiedao
+
+
+###单位地址
+class DanWeiDiZhi(DiZhi):
+    
+#     implements(IDiZhi)    
+    __tablename__ = 'danweidizhi'
+
+    id = Column(Integer, ForeignKey('dizhi.id'), primary_key=True)
+    wangzhi = Column(String(36))
+    gongzhonghao = Column(String(24))
+    __mapper_args__ = {
+        'polymorphic_identity':'danweidizhi'
+    }
+    
+
+###个人地址
+class GeRenDiZhi(DiZhi):
+    
+#     implements(IDiZhi)    
+    __tablename__ = 'gerendizhi'
+
+    id = Column(Integer, ForeignKey('dizhi.id'), primary_key=True)
+    __mapper_args__ = {
+        'polymorphic_identity':'gerendizhi'
+    }
 
 
 ###医生单位
@@ -330,9 +362,9 @@ class DanWei(Base):
     __tablename__ = 'danwei'
 
     id = Column(Integer, primary_key=True)
-    dizhi_id = Column(Integer, ForeignKey('dizhi.id'))
+    dizhi_id = Column(Integer, ForeignKey('danweidizhi.id'))
     mingcheng = Column(String(32))
-    dizhi = relationship("DiZhi", uselist=False)
+    dizhi = relationship("DanWeiDiZhi", uselist=False)
 
     
     def __init__(self, mingcheng=None, dizhi=None):
@@ -371,6 +403,26 @@ class IYiSheng(Interface):
             schema=IDanWei,
         )    
 
+
+# class Person(Base):
+#     """many to one:
+#     多端放外键及关系
+#     """
+#     
+# #     implements(IYiSheng)    
+#     __tablename__ = 'person'
+#     id = Column(Integer, primary_key=True)
+#     xingming = Column(String(16))
+#     xingbie = Column(Boolean)
+#     shengri = Column(Date)
+#     dianhua = Column(String(16))
+#     type = Column(String(16))
+#     
+#     __mapper_args__ = {
+#         'polymorphic_identity':'person',
+#         'polymorphic_on':type
+#     }
+    
 
 class YiSheng(Base):
     """many to one:
@@ -438,12 +490,12 @@ class BingRen(Base):
     __tablename__ = 'bingren'
 
     id = Column(Integer, primary_key=True)
-    dizhi_id = Column(Integer, ForeignKey('dizhi.id'))
+    dizhi_id = Column(Integer, ForeignKey('gerendizhi.id'))
     xingming = Column(String(16))
     xingbie = Column(Boolean)
     shengri = Column(Date)
     dianhua = Column(String(16))
-    dizhi = relationship("DiZhi", uselist=False)
+    dizhi = relationship("GeRenDiZhi", uselist=False)
     
     # association proxy of "chufangs" collection
     # to "chufang" attribute of ChuFang_BingRen CLASS's object

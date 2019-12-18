@@ -12,14 +12,15 @@ from plone.app.testing import setRoles,login,logout
 
 from cms.db.contents.folder import IFolder
 from cms.db.contents.ormfolder import IOrmfolder
-
 from sqlalchemy import and_
-
 from cms.db import  Session
-from cms.db.orm import YaoWei,YaoXing,JingLuo,Yao
-from cms.db.orm import ChuFang,BingRen,DiZhi,DanWei,YiSheng
-from cms.db.orm import Yao_ChuFang_Asso,ChuFang_BingRen_Asso
 from cms.db.tests.base import inputvalues,cleardb
+from cms.db.tests.base import TABLES
+
+for tb in TABLES:
+    import_str = "from %(p)s import %(t)s" % dict(p='cms.db.orm',t=tb) 
+    exec import_str
+
 
 class TestView(unittest.TestCase):
     
@@ -31,7 +32,11 @@ class TestView(unittest.TestCase):
         setRoles(portal, TEST_USER_ID, ('Manager',))
         portal.invokeFactory('cms.db.folder', 'folder')
         portal['folder'].invokeFactory('cms.db.ormfolder', 'ormfolder')
-        portal['folder'].invokeFactory('cms.db.yaofolder', 'yaofolder')       
+        portal['folder'].invokeFactory('cms.db.yaofolder', 'yaofolder')
+        portal['folder'].invokeFactory('cms.db.chufangfolder', 'chufangfolder')
+        portal['folder'].invokeFactory('cms.db.bingrenfolder', 'bingrenfolder')
+        portal['folder'].invokeFactory('cms.db.yishengfolder', 'yishengfolder')
+        portal['folder'].invokeFactory('cms.db.danweifolder', 'danweifolder')               
         self.portal = portal
 
     def tearDown(self):
@@ -49,7 +54,7 @@ class TestView(unittest.TestCase):
         browser.open(portal['folder'].absolute_url())        
         self.assertTrue('class="pat-structure"' in browser.contents)
    
-    def testormfolderView(self):
+    def ormfolderView(self):
         app = self.layer['app']
         portal = self.layer['portal']
         browser = Browser(app)
@@ -71,7 +76,9 @@ class TestView(unittest.TestCase):
         browser.addHeader('Authorization', 'Basic %s:%s' % (TEST_USER_NAME, TEST_USER_PASSWORD,))
         transaction.commit()
         base = portal['folder']['ormfolder'].absolute_url()
-        browser.open(base + "/@@yaoxing_listings")        
+        browser.open(base + "/@@yaoxing_listings")
+        import pdb
+        pdb.set_trace()        
         self.assertTrue("温" in browser.contents)
         
     def testYaoWeiView(self):
@@ -205,13 +212,13 @@ class TestView(unittest.TestCase):
         base = portal['folder']['ormfolder'].absolute_url()
         # Open form
         browser.open("%s/@@input_danwei" % base)
-        dizhi_id = Session.query(DiZhi).filter(DiZhi.shi==u"湘潭市").first().id      
+        dizhi_id = Session.query(DanWeiDiZhi).filter(DanWeiDiZhi.shi==u"湘潭市").first().id      
         # Fill in the form 
         browser.getControl(name=u"form.widgets.mingcheng").value = u"泽生堂"
         browser.getControl(name=u"form.widgets.dizhi:list").value =[str(dizhi_id)]                         
         # Submit
         browser.getControl(u"Submit").click()
-        suan = Session.query(DanWei).join(DiZhi).filter(DiZhi.shi==u"湘潭市").all()
+        suan = Session.query(DanWei).join(DanWeiDiZhi).filter(DanWeiDiZhi.shi==u"湘潭市").all()
         self.assertEqual(len(suan),2)
         self.assertTrue(u"Thank you! Your data  will be update in back end DB." in browser.contents)
 
@@ -250,7 +257,7 @@ class TestView(unittest.TestCase):
         base = portal['folder']['ormfolder'].absolute_url()
         # Open form
         browser.open("%s/@@input_bingren" % base)
-        dizhi_id = Session.query(DiZhi).filter(DiZhi.jiedao=="茅箭区施洋路83号").first().id      
+        dizhi_id = Session.query(GeRenDiZhi).filter(GeRenDiZhi.jiedao=="湘潭县云湖桥镇北岸村道林组83号").first().id      
         # Fill in the form        
         browser.getControl(name=u"form.widgets.dizhi_id").value = str(dizhi_id)               
         browser.getControl(name=u"form.widgets.xingming").value = "张dong"
@@ -259,7 +266,7 @@ class TestView(unittest.TestCase):
         browser.getControl(name=u"form.widgets.dianhua").value = "13873265859"                        
         # Submit
         browser.getControl(u"Submit").click()
-        suan = Session.query(BingRen).join(DiZhi).filter(and_(DiZhi.jiedao=="茅箭区施洋路83号",BingRen.xingming=="张dong")).all()
+        suan = Session.query(BingRen).join(GeRenDiZhi).filter(and_(GeRenDiZhi.jiedao=="湘潭县云湖桥镇北岸村道林组83号",BingRen.xingming=="张dong")).all()
         self.assertEqual(len(suan),1)
         self.assertTrue(u"Thank you! Your data  will be update in back end DB." in browser.contents)
         
@@ -405,14 +412,14 @@ class TestView(unittest.TestCase):
         transaction.commit()
         base = portal['folder']['ormfolder'].absolute_url()
         danwei_id = Session.query(DanWei).filter(DanWei.mingcheng=="任之堂").first().id
-        dizhi_id = Session.query(DiZhi).filter(DiZhi.jiedao=="湘潭县云湖桥镇北岸村道林组83号").first().id
+        dizhi_id = Session.query(DanWeiDiZhi).filter(DanWeiDiZhi.jiedao=="湘潭县云湖桥镇北岸村道林组38号").first().id
         # Open form
         browser.open("%s/@@update_danwei/%s" % (base,danwei_id))
         browser.getControl(name=u"form.widgets.dizhi:list").value = [str(dizhi_id)]
         browser.getControl(name=u"form.widgets.mingcheng").value = "润生堂"       
         browser.getControl(u"Submit").click()        
-        suan = Session.query(DanWei).join(DiZhi).filter(DiZhi.jiedao=="湘潭县云湖桥镇北岸村道林组83号").all()
-        self.assertEqual(len(suan),1)
+        suan = Session.query(DanWei).join(DanWeiDiZhi).filter(DanWeiDiZhi.jiedao=="湘潭县云湖桥镇北岸村道林组38号").all()
+        self.assertEqual(len(suan),2)
         self.assertTrue(u"Thank you! Your data  will be update in back end DB." in browser.contents)
 
     def testUpdateYiShengForm(self):
@@ -442,7 +449,7 @@ class TestView(unittest.TestCase):
         browser.addHeader('Authorization', 'Basic %s:%s' % (TEST_USER_NAME, TEST_USER_PASSWORD,))
         transaction.commit()
         base = portal['folder']['ormfolder'].absolute_url()
-        dizhi_id = Session.query(DiZhi).filter(DiZhi.jiedao=="湘潭县云湖桥镇北岸村道林组38号").first().id
+        dizhi_id = Session.query(GeRenDiZhi).filter(DiZhi.jiedao=="湘潭县云湖桥镇北岸村道林组83号").first().id
         bingren_id = Session.query(BingRen).filter(BingRen.xingming=="张三").first().id
         # Open form
         browser.open("%s/@@update_bingren/%s" % (base,bingren_id))
@@ -452,7 +459,7 @@ class TestView(unittest.TestCase):
         browser.getControl(name=u"form.widgets.dizhi:list").value = [str(dizhi_id)]
       
         browser.getControl(u"Submit").click()        
-        suan = Session.query(BingRen).join(DiZhi).filter(DiZhi.jiedao=="湘潭县云湖桥镇北岸村道林组38号").all()
+        suan = Session.query(BingRen).join(GeRenDiZhi).filter(GeRenDiZhi.jiedao=="湘潭县云湖桥镇北岸村道林组83号").all()
         self.assertEqual(len(suan),1)
         self.assertTrue(u"Thank you! Your data  will be update in back end DB." in browser.contents)
 
