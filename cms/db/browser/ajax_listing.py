@@ -49,7 +49,7 @@ from cms.db.orm import IJingLuo,JingLuo
 from cms.db.orm import IYao
 from cms.db.orm import Yao
 from cms.db.orm import IChuFang,ChuFang
-from cms.db.orm import IDiZhi,DiZhi,DanWeiDiZhi,GeRenDiZhi
+from cms.db.orm import IDiZhi,IDanWeiDiZhi, IGeRenDiZhi, DiZhi,DanWeiDiZhi,GeRenDiZhi
 from cms.db.orm import IDanWei,DanWei
 from cms.db.orm import IYiSheng,YiSheng
 from cms.db.orm import IBingRen,BingRen
@@ -213,6 +213,36 @@ class DiZhiesView(BaseView):
     def search_multicondition(self,query):
         "query is dic,like :{'start':0,'size':10,'':}"
         locator = self.get_locator('dizhi')
+        recorders = locator.query(query)
+        return recorders
+
+
+class GeRenDiZhiesView(BaseView):
+    """
+    DB AJAX 查询，返回分页结果,这个class 调用数据库表 功能集 utility,
+    从Ajaxsearch view 构造 查询条件（通常是一个参数字典），该utility 接受
+    该参数，查询数据库，并返回结果。
+    view name:db_listing
+    """
+
+    def search_multicondition(self,query):
+        "query is dic,like :{'start':0,'size':10,'':}"
+        locator = self.get_locator('gerendizhi')
+        recorders = locator.query(query)
+        return recorders
+
+
+class DanWeiDiZhiesView(BaseView):
+    """
+    DB AJAX 查询，返回分页结果,这个class 调用数据库表 功能集 utility,
+    从Ajaxsearch view 构造 查询条件（通常是一个参数字典），该utility 接受
+    该参数，查询数据库，并返回结果。
+    view name:db_listing
+    """
+
+    def search_multicondition(self,query):
+        "query is dic,like :{'start':0,'size':10,'':}"
+        locator = self.get_locator('danweidizhi')
         recorders = locator.query(query)
         return recorders
 
@@ -755,6 +785,130 @@ class DiZhiAjaxsearch(YaoXingAjaxsearch):
                 k = k + 1            
         data = {'searchresult': outhtml,'start':start,'size':size,'total':totalnum}
         return data
+
+
+class GeRenDiZhiAjaxsearch(YaoXingAjaxsearch):
+    """AJAX action for search DB.
+    receive front end ajax transform parameters
+    """
+
+    def searchview(self,viewname="gerendizhi_listings"):
+        searchview = getMultiAdapter((self.context, self.request),name=viewname)
+        return searchview
+
+    def output(self,start,size,totalnum,resultDicLists,api):
+        """根据参数total,resultDicLists,返回json 输出,resultDicLists like this:
+        [(u'C7', u'\u4ed6\u7684\u624b\u673a')]"""
+        outhtml = ""
+        k = 0
+        contexturl = self.context.absolute_url()
+#         base = get_container_by_type("cms.db.dizhi").getURL()
+        if self.searchview().canbeInput:
+            for i in resultDicLists:
+                out = """<tr class="text-left">
+                                <td class="col-md-1 text-left">%(guojia)s</td>
+                                <td class="col-md-2">%(sheng)s</td>
+                                <td class="col-md-2">%(shi)s</td>
+                                <td class="col-md-5">%(jiedao)s</td>                            
+                                <td class="col-md-1 text-center">
+                                <a href="%(edit_url)s" title="edit">
+                                  <span class="glyphicon glyphicon-pencil" aria-hidden="true">
+                                  </span>
+                                </a>
+                                </td>
+                                <td class="col-md-1 text-center">
+                                <a href="%(delete_url)s" title="delete">
+                                  <span class="glyphicon glyphicon-trash" aria-hidden="true">
+                                  </span>
+                                </a>
+                                </td>
+                                </tr> """% dict(
+                                            guojia=i[1],
+                                            sheng= i[2],
+                                            shi= i[3],
+                                            jiedao= i[4],
+                                            edit_url="%s/@@update_gerendizhi/%s" % (contexturl,i[0]),
+                                            delete_url="%s/@@delete_gerendizhi/%s" % (contexturl,i[0]))
+                outhtml = "%s%s" %(outhtml ,out)
+                k = k + 1
+        else:
+            for i in resultDicLists:
+                out = """<tr class="text-left">
+                                <td class="col-md-2 text-left">%(guojia)s</td>
+                                <td class="col-md-2">%(sheng)s</td>
+                                <td class="col-md-3">%(shi)s</td>
+                                <td class="col-md-5">%(jiedao)s</td>                          
+                                </tr> """% dict(
+                                            guojia=i[1],
+                                            sheng= i[2],
+                                            shi= i[3],
+                                            jiedao= i[4],)
+                outhtml = "%s%s" %(outhtml ,out)
+                k = k + 1            
+        data = {'searchresult': outhtml,'start':start,'size':size,'total':totalnum}
+        return data
+    
+
+class DanWeiDiZhiAjaxsearch(YaoXingAjaxsearch):
+    """AJAX action for search DB.
+    receive front end ajax transform parameters
+    """
+
+    def searchview(self,viewname="danweidizhi_listings"):
+        searchview = getMultiAdapter((self.context, self.request),name=viewname)
+        return searchview
+
+    def output(self,start,size,totalnum,resultDicLists,api):
+        """根据参数total,resultDicLists,返回json 输出,resultDicLists like this:
+        [(u'C7', u'\u4ed6\u7684\u624b\u673a')]"""
+        outhtml = ""
+        k = 0
+        contexturl = self.context.absolute_url()
+#         base = get_container_by_type("cms.db.dizhi").getURL()
+        if self.searchview().canbeInput:
+            for i in resultDicLists:
+                out = """<tr class="text-left">
+                                <td class="col-md-1 text-left">%(guojia)s</td>
+                                <td class="col-md-2">%(sheng)s</td>
+                                <td class="col-md-2">%(shi)s</td>
+                                <td class="col-md-5">%(jiedao)s</td>                            
+                                <td class="col-md-1 text-center">
+                                <a href="%(edit_url)s" title="edit">
+                                  <span class="glyphicon glyphicon-pencil" aria-hidden="true">
+                                  </span>
+                                </a>
+                                </td>
+                                <td class="col-md-1 text-center">
+                                <a href="%(delete_url)s" title="delete">
+                                  <span class="glyphicon glyphicon-trash" aria-hidden="true">
+                                  </span>
+                                </a>
+                                </td>
+                                </tr> """% dict(
+                                            guojia=i[1],
+                                            sheng= i[2],
+                                            shi= i[3],
+                                            jiedao= i[4],
+                                            edit_url="%s/@@update_danweidizhi/%s" % (contexturl,i[0]),
+                                            delete_url="%s/@@delete_danweidizhi/%s" % (contexturl,i[0]))
+                outhtml = "%s%s" %(outhtml ,out)
+                k = k + 1
+        else:
+            for i in resultDicLists:
+                out = """<tr class="text-left">
+                                <td class="col-md-2 text-left">%(guojia)s</td>
+                                <td class="col-md-2">%(sheng)s</td>
+                                <td class="col-md-3">%(shi)s</td>
+                                <td class="col-md-5">%(jiedao)s</td>                          
+                                </tr> """% dict(
+                                            guojia=i[1],
+                                            sheng= i[2],
+                                            shi= i[3],
+                                            jiedao= i[4],)
+                outhtml = "%s%s" %(outhtml ,out)
+                k = k + 1            
+        data = {'searchresult': outhtml,'start':start,'size':size,'total':totalnum}
+        return data    
 
 
 class DanWeiAjaxsearch(YaoXingAjaxsearch):
@@ -2010,6 +2164,254 @@ class UpdateDiZhi(UpdateYaoXing):
         confirm = _(u"Input cancelled.")
         IStatusMessage(self.request).add(confirm, type='info')
         self.request.response.redirect(self.context.absolute_url() + '/@@dizhi_listings')
+
+class DeleteDanWeiDiZhi(DeleteYaoXing):
+    "delete the specify danweidizhi recorder"
+
+    label = _(u"delete dan wei di zhi data")
+    fields = field.Fields(IDanWeiDiZhi).omit('id')
+
+    def getContent(self):
+
+        locator = queryUtility(IDbapi, name='danweidizhi')
+        return locator.getByCode(self.id)
+
+    def update(self):
+        self.request.set('disable_border', True)
+        super(DeleteDanWeiDiZhi, self).update()
+
+    @button.buttonAndHandler(_(u"Delete"))
+    def submit(self, action):
+        """Delete danweidizhi recorder
+        """
+        data, errors = self.extractData()
+        if errors:
+            self.status = self.formErrorsMessage
+            return
+        funcations = queryUtility(IDbapi, name='danweidizhi')
+        try:
+            funcations.DeleteByCode(self.id)
+        except InputError, e:
+            IStatusMessage(self.request).add(str(e), type='error')
+            self.request.response.redirect(self.context.absolute_url() + '/@@danweidizhi_listings')
+        confirm = _(u"Your data  has been deleted.")
+        IStatusMessage(self.request).add(confirm, type='info')
+        self.request.response.redirect(self.context.absolute_url() + '/@@danweidizhi_listings')
+
+    @button.buttonAndHandler(_(u"Cancel"))
+    def cancel(self, action):
+        """Cancel the data delete
+        """
+        confirm = _(u"Delete cancelled.")
+        IStatusMessage(self.request).add(confirm, type='info')
+        self.request.response.redirect(self.context.absolute_url() + '/@@danweidizhi_listings')
+
+class InputDanWeiDiZhi(InputYaoXing):
+    """input danweidizhi table data
+    """
+
+    label = _(u"Input danwei dizhi data")
+    fields = field.Fields(IDanWeiDiZhi).omit('id')
+
+    def update(self):
+        self.request.set('disable_border', True)
+
+        # Let z3c.form do its magic
+        super(InputDanWeiDiZhi, self).update()
+
+    @button.buttonAndHandler(_(u"Submit"))
+    def submit(self, action):
+        """Submit danweidizhi recorder
+        """
+        data, errors = self.extractData()
+        if errors:
+            self.status = self.formErrorsMessage
+            return
+        funcations = queryUtility(IDbapi, name='danweidizhi')
+        try:
+            funcations.add(data)
+        except InputError, e:
+            IStatusMessage(self.request).add(str(e), type='error')
+            self.request.response.redirect(self.context.absolute_url() + '/@@danweidizhi_listings')
+        confirm = _(u"Thank you! Your data  will be update in back end DB.")
+        IStatusMessage(self.request).add(confirm, type='info')
+        self.request.response.redirect(self.context.absolute_url() + '/@@danweidizhi_listings')
+
+    @button.buttonAndHandler(_(u"Cancel"))
+    def cancel(self, action):
+        """Cancel the data input
+        """
+        confirm = _(u"Input cancelled.")
+        IStatusMessage(self.request).add(confirm, type='info')
+        self.request.response.redirect(self.context.absolute_url() + '/@@danweidizhi_listings')
+
+class UpdateDanWeiDiZhi(UpdateYaoXing):
+    """update danweidizhi table row data
+    """
+
+    label = _(u"update danwei dizhi data")
+    fields = field.Fields(IDanWeiDiZhi).omit('id')
+
+    def getContent(self):
+
+        locator = queryUtility(IDbapi, name='danweidizhi')
+        return locator.getByCode(self.id)
+
+    def update(self):
+        self.request.set('disable_border', True)
+        # Let z3c.form do its magic
+        super(UpdateDanWeiDiZhi, self).update()
+
+    @button.buttonAndHandler(_(u"Submit"))
+    def submit(self, action):
+        """Update danweidizhi recorder
+        """
+        data, errors = self.extractData()
+        data['id'] =self.id
+        if errors:
+            self.status = self.formErrorsMessage
+            return
+        funcations = queryUtility(IDbapi, name='danweidizhi')
+        try:
+            funcations.updateByCode(data)
+        except InputError, e:
+            IStatusMessage(self.request).add(str(e), type='error')
+            self.request.response.redirect(self.context.absolute_url() + '/@@danweidizhi_listings')
+        confirm = _(u"Thank you! Your data  will be update in back end DB.")
+        IStatusMessage(self.request).add(confirm, type='info')
+        self.request.response.redirect(self.context.absolute_url() + '/@@danweidizhi_listings')
+
+    @button.buttonAndHandler(_(u"Cancel"))
+    def cancel(self, action):
+        """Cancel the data input
+        """
+        confirm = _(u"Input cancelled.")
+        IStatusMessage(self.request).add(confirm, type='info')
+        self.request.response.redirect(self.context.absolute_url() + '/@@danweidizhi_listings')
+        
+        
+class DeleteGeRenDiZhi(DeleteYaoXing):
+    "delete the specify ge ren di zhi recorder"
+
+    label = _(u"delete ge ren di zhi data")
+    fields = field.Fields(IGeRenDiZhi).omit('id')
+
+    def getContent(self):
+
+        locator = queryUtility(IDbapi, name='gerendizhi')
+        return locator.getByCode(self.id)
+
+    def update(self):
+        self.request.set('disable_border', True)
+        super(DeleteGeRenDiZhi, self).update()
+
+    @button.buttonAndHandler(_(u"Delete"))
+    def submit(self, action):
+        """Delete geren dizhi recorder
+        """
+        data, errors = self.extractData()
+        if errors:
+            self.status = self.formErrorsMessage
+            return
+        funcations = queryUtility(IDbapi, name='gerendizhi')
+        rt = funcations.DeleteByCode(self.id)
+        if rt != True:
+            IStatusMessage(self.request).add(str(rt), type='error')
+            self.request.response.redirect(self.context.absolute_url() + '/@@gerendizhi_listings')
+        confirm = _(u"Your data  has been deleted.")
+        IStatusMessage(self.request).add(confirm, type='info')
+        self.request.response.redirect(self.context.absolute_url() + '/@@gerendizhi_listings')
+
+    @button.buttonAndHandler(_(u"Cancel"))
+    def cancel(self, action):
+        """Cancel the data delete
+        """
+        confirm = _(u"Delete cancelled.")
+        IStatusMessage(self.request).add(confirm, type='info')
+        self.request.response.redirect(self.context.absolute_url() + '/@@gerendizhi_listings')
+
+class InputGeRenDiZhi(InputYaoXing):
+    """input gerendizhi table data
+    """
+
+    label = _(u"Input geren dizhi data")
+    fields = field.Fields(IGeRenDiZhi).omit('id')
+
+    def update(self):
+        self.request.set('disable_border', True)
+
+        # Let z3c.form do its magic
+        super(InputGeRenDiZhi, self).update()
+
+    @button.buttonAndHandler(_(u"Submit"))
+    def submit(self, action):
+        """Submit geren dizhi recorder
+        """
+        data, errors = self.extractData()
+        if errors:
+            self.status = self.formErrorsMessage
+            return
+        funcations = queryUtility(IDbapi, name='gerendizhi')
+        try:
+            funcations.add(data)
+        except InputError, e:
+            IStatusMessage(self.request).add(str(e), type='error')
+            self.request.response.redirect(self.context.absolute_url() + '/@@gerendizhi_listings')
+        confirm = _(u"Thank you! Your data  will be update in back end DB.")
+        IStatusMessage(self.request).add(confirm, type='info')
+        self.request.response.redirect(self.context.absolute_url() + '/@@gerendizhi_listings')
+
+    @button.buttonAndHandler(_(u"Cancel"))
+    def cancel(self, action):
+        """Cancel the data input
+        """
+        confirm = _(u"Input cancelled.")
+        IStatusMessage(self.request).add(confirm, type='info')
+        self.request.response.redirect(self.context.absolute_url() + '/@@gerendizhi_listings')
+
+class UpdateGeRenDiZhi(UpdateYaoXing):
+    """update gerendizhi table row data
+    """
+
+    label = _(u"update ge ren di zhi data")
+    fields = field.Fields(IGeRenDiZhi).omit('id')
+
+    def getContent(self):
+
+        locator = queryUtility(IDbapi, name='gerendizhi')
+        return locator.getByCode(self.id)
+
+    def update(self):
+        self.request.set('disable_border', True)
+        # Let z3c.form do its magic
+        super(UpdateGeRenDiZhi, self).update()
+
+    @button.buttonAndHandler(_(u"Submit"))
+    def submit(self, action):
+        """Update dizhi recorder
+        """
+        data, errors = self.extractData()
+        data['id'] =self.id
+        if errors:
+            self.status = self.formErrorsMessage
+            return
+        funcations = queryUtility(IDbapi, name='gerendizhi')
+        try:
+            funcations.updateByCode(data)
+        except InputError, e:
+            IStatusMessage(self.request).add(str(e), type='error')
+            self.request.response.redirect(self.context.absolute_url() + '/@@gerendizhi_listings')
+        confirm = _(u"Thank you! Your data  will be update in back end DB.")
+        IStatusMessage(self.request).add(confirm, type='info')
+        self.request.response.redirect(self.context.absolute_url() + '/@@gerendizhi_listings')
+
+    @button.buttonAndHandler(_(u"Cancel"))
+    def cancel(self, action):
+        """Cancel the data input
+        """
+        confirm = _(u"Input cancelled.")
+        IStatusMessage(self.request).add(confirm, type='info')
+        self.request.response.redirect(self.context.absolute_url() + '/@@gerendizhi_listings')        
 
 
 class DeleteDanWei(DeleteYaoXing):

@@ -1,7 +1,7 @@
 #-*- coding: UTF-8 -*-
 from cms.db import  Session
 from cms.db.ORMdbAPI import Dbapi
-from cms.db.orm import YaoWei,YaoXing,JingLuo,Yao,DiZhi,YiSheng,DanWei
+from cms.db.orm import YaoWei,YaoXing,JingLuo,Yao,DiZhi,YiSheng,DanWei,DanWeiDiZhi,GeRenDiZhi
 from cms.db.orm import ChuFang,YiSheng,BingRen,Yao_ChuFang_Asso,ChuFang_BingRen_Asso
 
 yaoxing = Dbapi(Session,'cms.db.orm','yaoxing',YaoXing)
@@ -10,6 +10,8 @@ yaowei = Dbapi(Session,'cms.db.orm','yaowei',YaoWei)
 # jingluo table       
 jingluo = Dbapi(Session,'cms.db.orm','jingluo',JingLuo)
 dizhi = Dbapi(Session,'cms.db.orm','dizhi',DiZhi)
+gerendizhi = Dbapi(Session,'cms.db.orm','gerendizhi',GeRenDiZhi)
+danweidizhi = Dbapi(Session,'cms.db.orm','danweidizhi',DanWeiDiZhi)
 yao =  Dbapi(Session,'cms.db.orm','yao',Yao)
 chufang = Dbapi(Session,'cms.db.orm','chufang',ChuFang)
 bingren = Dbapi(Session,'cms.db.orm','bingren',BingRen)

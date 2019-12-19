@@ -48,6 +48,16 @@
 	/>
  <utility
 	provides=".interfaces.IDbapi"
+	component=".dbutility.gerendizhi"
+	name="gerendizhi"
+	/>
+ <utility
+	provides=".interfaces.IDbapi"
+	component=".dbutility.danweidizhi"
+	name="danweidizhi"
+	/>		
+ <utility
+	provides=".interfaces.IDbapi"
 	component=".dbutility.danwei"
 	name="danwei"
 	/>	

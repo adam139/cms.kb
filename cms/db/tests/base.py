@@ -60,7 +60,8 @@ def inputvalues():
         yao6.yaowei = yaowei4
         yao6.yaoxing = yaoxing2
         yao6.guijing = [jingluo2]                                
-        Session.add_all([yao1,yao2,yao3,yao4,yao5,yao6])        
+        Session.add_all([yao1,yao2,yao3,yao4,yao5,yao6])
+        dizhi0 = DiZhi(guojia="中国",sheng="湖南",shi="湘潭市",jiedao="湘潭县云湖桥镇北岸村道林组183号")        
         dizhi = GeRenDiZhi(guojia="中国",sheng="湖南",shi="湘潭市",jiedao="湘潭县云湖桥镇北岸村道林组83号")
         bingren = BingRen('张三',1, date(2015, 4, 2),'13673265899')
         bingren.dizhi = dizhi
@@ -77,7 +78,7 @@ def inputvalues():
         yao_chufang2 = Yao_ChuFang_Asso(yao2,chufang,10,"掰开")
         chufang_bingren = ChuFang_BingRen_Asso(bingren,chufang,datetime.now())
         yisheng.chufangs = [chufang]
-        Session.add_all([dizhi,bingren,danwei,danwei2,dizhi2,dizhi3,\
+        Session.add_all([dizhi0,dizhi,bingren,danwei,danwei2,dizhi2,dizhi3,\
                          yisheng,chufang,yao_chufang,yao_chufang2,chufang_bingren])                         
         Session.commit()
         

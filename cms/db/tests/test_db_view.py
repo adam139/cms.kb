@@ -76,9 +76,7 @@ class TestView(unittest.TestCase):
         browser.addHeader('Authorization', 'Basic %s:%s' % (TEST_USER_NAME, TEST_USER_PASSWORD,))
         transaction.commit()
         base = portal['folder']['ormfolder'].absolute_url()
-        browser.open(base + "/@@yaoxing_listings")
-        import pdb
-        pdb.set_trace()        
+        browser.open(base + "/@@yaoxing_listings")      
         self.assertTrue("温" in browser.contents)
         
     def testYaoWeiView(self):
@@ -202,6 +200,51 @@ class TestView(unittest.TestCase):
         self.assertEqual(len(suan),1)
         self.assertTrue(u"Thank you! Your data  will be update in back end DB." in browser.contents)
 
+    def testInputGeRenDiZhiForm(self):
+        app = self.layer['app']
+        portal = self.layer['portal']
+        browser = Browser(app)
+        browser.handleErrors = False             
+        browser.addHeader('Authorization', 'Basic %s:%s' % (TEST_USER_NAME, TEST_USER_PASSWORD,))
+        transaction.commit()
+        base = portal['folder']['ormfolder'].absolute_url()
+        # Open form
+        browser.open("%s/@@input_gerendizhi" % base)        
+        # Fill in the form 
+        browser.getControl(name=u"form.widgets.guojia").value = u"中国"
+        browser.getControl(name=u"form.widgets.sheng").value = u"湖南"
+        browser.getControl(name=u"form.widgets.shi").value = u"长沙市"
+        browser.getControl(name=u"form.widgets.jiedao").value = u"五一大道83号"                        
+        # Submit
+        browser.getControl(u"Submit").click()
+        suan = Session.query(GeRenDiZhi).filter(GeRenDiZhi.shi==u"长沙市").all()
+        self.assertEqual(len(suan),1)
+        self.assertTrue(u"Thank you! Your data  will be update in back end DB." in browser.contents)
+
+    def testInputDanWeiDiZhiForm(self):
+        app = self.layer['app']
+        portal = self.layer['portal']
+        browser = Browser(app)
+        browser.handleErrors = False             
+        browser.addHeader('Authorization', 'Basic %s:%s' % (TEST_USER_NAME, TEST_USER_PASSWORD,))
+        transaction.commit()
+        base = portal['folder']['ormfolder'].absolute_url()
+        # Open form
+        browser.open("%s/@@input_danweidizhi" % base)        
+        # Fill in the form 
+        browser.getControl(name=u"form.widgets.guojia").value = u"中国"
+        browser.getControl(name=u"form.widgets.sheng").value = u"湖南"
+        browser.getControl(name=u"form.widgets.shi").value = u"长沙市"
+        browser.getControl(name=u"form.widgets.jiedao").value = u"五一大道83号"
+        browser.getControl(name=u"form.widgets.wangzhi").value = u"www.21cn.com"
+        browser.getControl(name=u"form.widgets.gongzhonghao").value = u"zhongyi3"                        
+        # Submit
+        browser.getControl(u"Submit").click()
+        suan = Session.query(DanWeiDiZhi).filter(DanWeiDiZhi.shi==u"长沙市").all()
+        self.assertEqual(len(suan),1)
+        self.assertTrue(u"Thank you! Your data  will be update in back end DB." in browser.contents)
+
+
     def testInputDanWeiForm(self):
         app = self.layer['app']
         portal = self.layer['portal']
@@ -301,7 +344,6 @@ class TestView(unittest.TestCase):
 
         browser.getControl(name=u"form.widgets.bingrens.0.widgets.bingren_id:list").value = [str(bingren_id)]
         browser.getControl(name=u"form.widgets.bingrens.0.widgets.shijian").value = "2015-09-12 12:00"
-        
                                 
         # Submit
         browser.getControl(u"Submit").click()
@@ -394,7 +436,7 @@ class TestView(unittest.TestCase):
         browser.addHeader('Authorization', 'Basic %s:%s' % (TEST_USER_NAME, TEST_USER_PASSWORD,))
         transaction.commit()
         base = portal['folder']['ormfolder'].absolute_url()
-        dizhi_id = Session.query(DiZhi).filter(DiZhi.jiedao=="茅箭区施洋路83号").first().id
+        dizhi_id = Session.query(DiZhi).filter(DiZhi.jiedao=="湘潭县云湖桥镇北岸村道林组183号").first().id
         # Open form
         browser.open("%s/@@update_dizhi/%s" % (base,dizhi_id))
         browser.getControl(name=u"form.widgets.jiedao").value = "茅箭区施洋路85号"       
@@ -402,6 +444,43 @@ class TestView(unittest.TestCase):
         suan = Session.query(DiZhi).filter(DiZhi.jiedao=="茅箭区施洋路85号").all()
         self.assertEqual(len(suan),1)
         self.assertTrue(u"Thank you! Your data  will be update in back end DB." in browser.contents)
+
+    def testUpdateGeRenDiZhiForm(self):
+        app = self.layer['app']
+        portal = self.layer['portal']
+        browser = Browser(app)
+        browser.handleErrors = False             
+        browser.addHeader('Authorization', 'Basic %s:%s' % (TEST_USER_NAME, TEST_USER_PASSWORD,))
+        transaction.commit()
+        base = portal['folder']['ormfolder'].absolute_url()
+        dizhi_id = Session.query(GeRenDiZhi).filter(GeRenDiZhi.jiedao=="湘潭县云湖桥镇北岸村道林组83号").first().id
+        # Open form
+        browser.open("%s/@@update_gerendizhi/%s" % (base,dizhi_id))
+        browser.getControl(name=u"form.widgets.jiedao").value = "茅箭区施洋路85号"       
+        browser.getControl(u"Submit").click()        
+        suan = Session.query(GeRenDiZhi).filter(GeRenDiZhi.jiedao=="茅箭区施洋路85号").all()
+        self.assertEqual(len(suan),1)
+        self.assertTrue(u"Thank you! Your data  will be update in back end DB." in browser.contents)
+
+    def testUpdateDanWeiDiZhiForm(self):
+        app = self.layer['app']
+        portal = self.layer['portal']
+        browser = Browser(app)
+        browser.handleErrors = False             
+        browser.addHeader('Authorization', 'Basic %s:%s' % (TEST_USER_NAME, TEST_USER_PASSWORD,))
+        transaction.commit()
+        base = portal['folder']['ormfolder'].absolute_url()
+        dizhi_id = Session.query(DanWeiDiZhi).filter(DanWeiDiZhi.jiedao=="湘潭县云湖桥镇北岸村道林组38号").first().id
+        # Open form
+        browser.open("%s/@@update_danweidizhi/%s" % (base,dizhi_id))
+        browser.getControl(name=u"form.widgets.jiedao").value = "茅箭区施洋路85号"
+        browser.getControl(name=u"form.widgets.wangzhi").value = "www.21cn.com"
+        browser.getControl(name=u"form.widgets.gongzhonghao").value = "zhongyi2"       
+        browser.getControl(u"Submit").click()        
+        suan = Session.query(DanWeiDiZhi).filter(DanWeiDiZhi.jiedao=="茅箭区施洋路85号").all()
+        self.assertEqual(len(suan),1)
+        self.assertTrue(u"Thank you! Your data  will be update in back end DB." in browser.contents)
+
 
     def testUpdateDanWeiForm(self):
         app = self.layer['app']
@@ -522,6 +601,77 @@ class TestView(unittest.TestCase):
         browser.getControl(u"Delete").click()
         suan = Session.query(JingLuo).filter(JingLuo.mingcheng=="足太阴脾经").all()
         self.assertEqual(len(suan),0)        
+        self.assertTrue(u"Your data  has been deleted." in browser.contents)
+
+    def testDeleteDiZhiForm(self):
+        app = self.layer['app']
+        portal = self.layer['portal']
+        browser = Browser(app)
+        browser.handleErrors = False             
+        browser.addHeader('Authorization', 'Basic %s:%s' % (TEST_USER_NAME, TEST_USER_PASSWORD,))
+        transaction.commit()
+        base = portal['folder']['ormfolder'].absolute_url()
+        id = Session.query(DiZhi).filter(DiZhi.jiedao=="湘潭县云湖桥镇北岸村道林组183号").one().id
+        # Open form
+        browser.open("%s/@@delete_dizhi/%s" % (base,id))             
+        # Submit
+        browser.getControl(u"Delete").click()
+        suan = Session.query(DiZhi).filter(DiZhi.jiedao=="湘潭县云湖桥镇北岸村道林组183号").all()
+        self.assertEqual(len(suan),0)      
+        self.assertTrue(u"Your data  has been deleted." in browser.contents)
+
+    def testDeleteGeRenDiZhiForm(self):
+        app = self.layer['app']
+        portal = self.layer['portal']
+        browser = Browser(app)
+        browser.handleErrors = False             
+        browser.addHeader('Authorization', 'Basic %s:%s' % (TEST_USER_NAME, TEST_USER_PASSWORD,))
+        transaction.commit()
+        base = portal['folder']['ormfolder'].absolute_url()
+        browser.open("%s/@@input_gerendizhi" % base)        
+        # Fill in the form 
+        browser.getControl(name=u"form.widgets.guojia").value = u"中国"
+        browser.getControl(name=u"form.widgets.sheng").value = u"湖南"
+        browser.getControl(name=u"form.widgets.shi").value = u"长沙市"
+        browser.getControl(name=u"form.widgets.jiedao").value = u"五一大道83号"
+        browser.getControl(u"Submit").click()
+        suan = Session.query(GeRenDiZhi).filter(GeRenDiZhi.jiedao=="五一大道83号").all()
+        self.assertEqual(len(suan),1)                 
+        id = Session.query(GeRenDiZhi).filter(GeRenDiZhi.jiedao=="五一大道83号").one().id
+        # Open form
+        browser.open("%s/@@delete_gerendizhi/%s" % (base,id))             
+        # Submit
+        browser.getControl(u"Delete").click()
+        suan = Session.query(GeRenDiZhi).filter(GeRenDiZhi.jiedao=="五一大道83号").all()
+        self.assertEqual(len(suan),0)      
+        self.assertTrue(u"Your data  has been deleted." in browser.contents)
+
+    def testDeleteDanWeiDiZhiForm(self):
+        app = self.layer['app']
+        portal = self.layer['portal']
+        browser = Browser(app)
+        browser.handleErrors = False             
+        browser.addHeader('Authorization', 'Basic %s:%s' % (TEST_USER_NAME, TEST_USER_PASSWORD,))
+        transaction.commit()
+        base = portal['folder']['ormfolder'].absolute_url()
+        browser.open("%s/@@input_danweidizhi" % base)        
+        # Fill in the form 
+        browser.getControl(name=u"form.widgets.guojia").value = u"中国"
+        browser.getControl(name=u"form.widgets.sheng").value = u"湖南"
+        browser.getControl(name=u"form.widgets.shi").value = u"长沙市"
+        browser.getControl(name=u"form.widgets.jiedao").value = u"五一大道83号"
+        browser.getControl(name=u"form.widgets.wangzhi").value = u"www.21cn.com"
+        browser.getControl(name=u"form.widgets.gongzhonghao").value = u"zhongyi3"
+        browser.getControl(u"Submit").click()
+        suan = Session.query(DanWeiDiZhi).filter(DanWeiDiZhi.jiedao=="五一大道83号").all()
+        self.assertEqual(len(suan),1)                 
+        id = Session.query(DanWeiDiZhi).filter(DanWeiDiZhi.jiedao=="五一大道83号").one().id
+        # Open form
+        browser.open("%s/@@delete_danweidizhi/%s" % (base,id))             
+        # Submit
+        browser.getControl(u"Delete").click()
+        suan = Session.query(DanWeiDiZhi).filter(DanWeiDiZhi.jiedao=="五一大道83号").all()
+        self.assertEqual(len(suan),0)      
         self.assertTrue(u"Your data  has been deleted." in browser.contents)
 
     def testDeleteYaoForm(self):

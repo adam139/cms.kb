@@ -282,6 +282,7 @@ class IDiZhi(Interface):
         )        
     jiedao = schema.TextLine(
             title=_(u"jie dao"),
+            required=True,            
         )
     
 
@@ -308,11 +309,21 @@ class DiZhi(Base):
 #         self.shi = shi
 #         self.jiedao = jiedao
 
-
+class IDanWeiDiZhi(IDiZhi):
+    """interface for add DanWeiDiZhi"""
+    
+    wangzhi = schema.TextLine(
+            title=_(u"wang zhi"),           
+        )
+    gongzhonghao = schema.TextLine(
+            title=_(u"gong zhong hao"),           
+        )    
+    
+    
 ###单位地址
 class DanWeiDiZhi(DiZhi):
     
-#     implements(IDiZhi)    
+    implements(IDanWeiDiZhi)    
     __tablename__ = 'danweidizhi'
 
     id = Column(Integer, ForeignKey('dizhi.id'), primary_key=True)
@@ -323,10 +334,15 @@ class DanWeiDiZhi(DiZhi):
     }
     
 
+class IGeRenDiZhi(IDiZhi):
+    """interface for add GeRenDiZhi"""
+    pass
+
+
 ###个人地址
 class GeRenDiZhi(DiZhi):
     
-#     implements(IDiZhi)    
+    implements(IGeRenDiZhi)    
     __tablename__ = 'gerendizhi'
 
     id = Column(Integer, ForeignKey('dizhi.id'), primary_key=True)

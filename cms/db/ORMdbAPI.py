@@ -415,36 +415,29 @@ class Dbapi(object):
     def DeleteByCode(self,id):
         "delete the specify id recorder"
 
-        tablecls = self.init_table()
         if id != "":
-            sqltext = "SELECT * FROM %(tbl)s WHERE id=:id" % dict(tbl=self.table) 
             try:
-                recorder = session.query(tablecls).\
-                from_statement(text(sqltext)).\
-                params(id=id).one()
+                recorder = self.getByCode(id)                
                 session.delete(recorder)
                 session.commit()
                 rt = True
             except:
                 session.rollback()
-                rt = False
+                e = sys.exc_info()[1]
+                rt = e
             finally:
                 session.close()
                 return rt
         else:
-            return None
+            return "id can't be empty"
 
     def updateByCode(self,kwargs):
         "update the speicy table recorder"
 
         id = kwargs['id']
         if id != "":
-            tablecls = self.init_table()
-            sqltext = "SELECT * FROM %s WHERE id=:id" % self.table
             try:
-                recorder = session.query(tablecls).\
-                from_statement(text(sqltext)).\
-                params(id=id).one()
+                recorder = self.getByCode(id)
                 updatedattrs = [kw for kw in kwargs.keys() if kw != 'id']
                 for kw in updatedattrs:
                     setattr(recorder,kw,kwargs[kw])
@@ -460,11 +453,10 @@ class Dbapi(object):
         
         tablecls = self.init_table()        
         if id != "":
-            sqltext = "SELECT * FROM %(tbl)s WHERE id=:id" % dict(tbl=self.table)            
+#             sqltext = "SELECT * FROM %(tbl)s WHERE id=:id" % dict(tbl=self.table)            
             try:
                 recorder = session.query(tablecls).\
-                from_statement(text(sqltext)).\
-                params(id=id).one()
+                filter(tablecls.id == id).one()
                 return recorder
             except:
                 session.rollback()

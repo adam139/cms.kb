@@ -84,6 +84,16 @@
         permission="zope2.View"
         class=".ajax_listing.DiZhiAjaxsearch"/>
      <browser:page
+        name="gerendizhi_ajaxsearch"
+        for="*"
+        permission="zope2.View"
+        class=".ajax_listing.GeRenDiZhiAjaxsearch"/>
+     <browser:page
+        name="danweidizhi_ajaxsearch"
+        for="*"
+        permission="zope2.View"
+        class=".ajax_listing.DanWeiDiZhiAjaxsearch"/>                
+     <browser:page
         name="yisheng_ajaxsearch"
         for="*"
         permission="zope2.View"
@@ -136,6 +146,16 @@
         permission="cms.db.input_db"
         class=".ajax_listing.InputDiZhi"/>
       <browser:page
+        name="input_gerendizhi"
+        for="cms.db.contents.ormfolder.IOrmfolder"
+        permission="cms.db.input_db"
+        class=".ajax_listing.InputGeRenDiZhi"/>
+      <browser:page
+        name="input_danweidizhi"
+        for="cms.db.contents.ormfolder.IOrmfolder"
+        permission="cms.db.input_db"
+        class=".ajax_listing.InputDanWeiDiZhi"/>                
+      <browser:page
         name="input_yisheng"
         for="cms.db.contents.ormfolder.IOrmfolder"
         permission="cms.db.input_db"
@@ -183,6 +203,16 @@
         permission="cms.db.input_db"
         class=".ajax_listing.UpdateDiZhi"/>
       <browser:page
+        name="update_gerendizhi"
+        for="cms.db.contents.ormfolder.IOrmfolder"
+        permission="cms.db.input_db"
+        class=".ajax_listing.UpdateGeRenDiZhi"/>
+      <browser:page
+        name="update_danweidizhi"
+        for="cms.db.contents.ormfolder.IOrmfolder"
+        permission="cms.db.input_db"
+        class=".ajax_listing.UpdateDanWeiDiZhi"/>                
+      <browser:page
         name="update_yisheng"
         for="cms.db.contents.ormfolder.IOrmfolder"
         permission="cms.db.input_db"
@@ -229,6 +259,16 @@
         for="cms.db.contents.ormfolder.IOrmfolder"
         permission="cms.db.input_db"
         class=".ajax_listing.DeleteDiZhi"/>
+      <browser:page
+        name="delete_gerendizhi"
+        for="cms.db.contents.ormfolder.IOrmfolder"
+        permission="cms.db.input_db"
+        class=".ajax_listing.DeleteGeRenDiZhi"/>
+      <browser:page
+        name="delete_danweidizhi"
+        for="cms.db.contents.ormfolder.IOrmfolder"
+        permission="cms.db.input_db"
+        class=".ajax_listing.DeleteDanWeiDiZhi"/>                
       <browser:page
         name="delete_yisheng"
         for="cms.db.contents.ormfolder.IOrmfolder"
@@ -284,6 +324,18 @@
         for="cms.db.contents.ormfolder.IOrmfolder"        
         template="templates/dizhi_listings.pt"
         class=".ajax_listing.DiZhiesView"/>
+    <browser:page
+        name="gerendizhi_listings"
+        permission="cms.db.view_db"    
+        for="cms.db.contents.ormfolder.IOrmfolder"        
+        template="templates/gerendizhi_listings.pt"
+        class=".ajax_listing.GeRenDiZhiesView"/>
+    <browser:page
+        name="danweidizhi_listings"
+        permission="cms.db.view_db"    
+        for="cms.db.contents.ormfolder.IOrmfolder"        
+        template="templates/danweidizhi_listings.pt"
+        class=".ajax_listing.DanWeiDiZhiesView"/>                
     <browser:page
         name="danwei_listings"
         permission="cms.db.view_db"    
