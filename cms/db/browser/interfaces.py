@@ -84,7 +84,7 @@ class IBingRenUI (IBingRen):
 
     dizhi = schema.Choice(
             title=_(u"di zhi"),
-            vocabulary='cms.db.dizhi',
+            vocabulary='cms.db.gerendizhi',
             required=True,
         )
     

@@ -388,16 +388,13 @@ class DanWei(Base):
         self.dizhi = dizhi
         
                     
-###医生
-class IYiSheng(Interface):
+###person
+class IPerson(Interface):
     """余浩:
     
     """
     id = schema.Int(
             title=_(u"table primary key"),
-        )    
-    danwei_id = schema.Int(
-            title=_(u"foreagn key link to danwei"),
         ) 
     xingming = schema.TextLine(
             title=_(u"xing ming"),
@@ -414,33 +411,47 @@ class IYiSheng(Interface):
     dianhua = schema.TextLine(
             title=_(u"dian hua"),
         )
-    danwei = schema.Object(
-            title=_(u"dan wei"),
-            schema=IDanWei,
+    type = schema.TextLine(
+            title=_(u"lei xing"),
         )    
 
 
-# class Person(Base):
-#     """many to one:
-#     多端放外键及关系
-#     """
-#     
-# #     implements(IYiSheng)    
-#     __tablename__ = 'person'
-#     id = Column(Integer, primary_key=True)
-#     xingming = Column(String(16))
-#     xingbie = Column(Boolean)
-#     shengri = Column(Date)
-#     dianhua = Column(String(16))
-#     type = Column(String(16))
-#     
-#     __mapper_args__ = {
-#         'polymorphic_identity':'person',
-#         'polymorphic_on':type
-#     }
+class Person(Base):
+    """many to one:
+    多端放外键及关系
+    """
+     
+    implements(IPerson)    
+    __tablename__ = 'person'
+    id = Column(Integer, primary_key=True)
+    xingming = Column(String(16))
+    xingbie = Column(Boolean)
+    shengri = Column(Date)
+    dianhua = Column(String(16))
+    type = Column(String(16))
+     
+    __mapper_args__ = {
+        'polymorphic_identity':'person',
+        'polymorphic_on':type
+    }
+
+
+###医生
+class IYiSheng(IPerson):
+    """余浩:
+    
+    """
+  
+    danwei_id = schema.Int(
+            title=_(u"foreagn key link to danwei"),
+        ) 
+    danwei = schema.Object(
+            title=_(u"dan wei"),
+            schema=IDanWei,
+        )
     
 
-class YiSheng(Base):
+class YiSheng(Person):
     """many to one:
     多端放外键及关系
     """
@@ -448,81 +459,46 @@ class YiSheng(Base):
     implements(IYiSheng)    
     __tablename__ = 'yisheng'
 
-    id = Column(Integer, primary_key=True)
+    id = Column(Integer, ForeignKey('person.id'), primary_key=True)
     danwei_id = Column(Integer, ForeignKey('danwei.id'))
-    xingming = Column(String(16))
-    xingbie = Column(Boolean)
-    shengri = Column(Date)
-    dianhua = Column(String(16))
     danwei = relationship("DanWei", backref="yishengs")
-    
-    def __init__(self, xingming=None, xingbie=None, shengri=None, dianhua=None):
-        self.xingming = xingming
-        self.xingbie = xingbie
-        self.shengri = shengri
-        self.dianhua = dianhua
-        
+    __mapper_args__ = {
+        'polymorphic_identity':'yisheng',
+    }    
+       
         
 ###病人
-class IBingRen(Interface):
+class IBingRen(IPerson):
     """病人:
     
     """
-    id = schema.Int(
-            title=_(u"table primary key"),
-        )    
+   
     dizhi_id = schema.Int(
             title=_(u"foreagn key link to wei"),
-        ) 
-    xingming = schema.TextLine(
-            title=_(u"xing ming"),
-            required=True,
-        )
-    xingbie = schema.Choice(
-            title=_(u"xing bie"),
-            vocabulary='cms.db.xingbie',
-            required=True,            
-        )    
-    shengri = schema.Date(
-            title=_(u"xing ming"),
-        )        
-    dianhua = schema.TextLine(
-            title=_(u"dian hua"),
         )
     dizhi = schema.Object(
             title=_(u"di zhi"),
             schema=IDiZhi,
         )
-# all chufangs of bingren
-#     chufangs = schema.Object(
-#             title=_(u"chu fang"),
-#             schema=IChuFang,
-#         )    
+    
     
 
-class BingRen(Base):
+class BingRen(Person):
     
     implements(IBingRen)    
     __tablename__ = 'bingren'
 
-    id = Column(Integer, primary_key=True)
+    id = Column(Integer, ForeignKey('person.id'), primary_key=True)
     dizhi_id = Column(Integer, ForeignKey('gerendizhi.id'))
-    xingming = Column(String(16))
-    xingbie = Column(Boolean)
-    shengri = Column(Date)
-    dianhua = Column(String(16))
     dizhi = relationship("GeRenDiZhi", uselist=False)
     
     # association proxy of "chufangs" collection
     # to "chufang" attribute of ChuFang_BingRen CLASS's object
     chufangs = association_proxy('chufangs_bingren', 'chufang')    
     
-    def __init__(self, xingming=None, xingbie=None, shengri=None, dianhua=None, dizhi=None):
-        self.xingming = xingming
-        self.xingbie = xingbie
-        self.shengri = shengri
-        self.dianhua = dianhua
-        self.dizhi = dizhi              
+    __mapper_args__ = {
+        'polymorphic_identity':'bingren',
+    }             
         
         
  ###处方和病人关联表

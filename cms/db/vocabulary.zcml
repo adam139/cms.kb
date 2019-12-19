@@ -22,6 +22,14 @@
     name="cms.db.dizhi"
     component="cms.db.vocabulary.dizhi"
     />
+ <utility
+    name="cms.db.gerendizhi"
+    component="cms.db.vocabulary.gerendizhi"
+    />
+ <utility
+    name="cms.db.danweidizhi"
+    component="cms.db.vocabulary.danweidizhi"
+    />        
   <utility
     name="cms.db.danwei"
     component="cms.db.vocabulary.danwei"

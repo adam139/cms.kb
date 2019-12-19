@@ -341,12 +341,11 @@ class TestView(unittest.TestCase):
         browser.getControl(name=u"form.widgets.yaoes.0.widgets.yao_id:list").value = [str(yao_id)]
         browser.getControl(name=u"form.widgets.yaoes.0.widgets.yaoliang").value = '15'
         browser.getControl(name=u"form.widgets.yaoes.0.widgets.paozhi").value = 'pao zhi'
-
         browser.getControl(name=u"form.widgets.bingrens.0.widgets.bingren_id:list").value = [str(bingren_id)]
         browser.getControl(name=u"form.widgets.bingrens.0.widgets.shijian").value = "2015-09-12 12:00"
                                 
         # Submit
-        browser.getControl(u"Submit").click()
+        browser.getControl(u"Submit").click()        
         suan = Session.query(ChuFang).join(YiSheng).filter(and_(YiSheng.xingming=="余浩",ChuFang.mingcheng=="麻黄汤")).all()
         self.assertEqual(len(suan),1)
         self.assertTrue(u"Thank you! Your data  will be update in back end DB." in browser.contents)

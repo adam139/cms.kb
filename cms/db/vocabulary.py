@@ -22,11 +22,13 @@ def xingbie(context):
 def bingren(context):
   
     locator = queryUtility(IDbapi, name='bingren')
-
-    values = locator.query({'start':0,'size':1000,'SearchableText':'','sort_order':'reverse'})
+    values = locator.query({'start':0,'size':100,
+                            'SearchableText':'',
+                            'sort_order':'reverse',
+                            'with_entities':0})
 
     return SimpleVocabulary(
-        [SimpleTerm(value=int(i[0]), token=str(i[0]), title=i[2]+i[5]) for i in values],
+        [SimpleTerm(value=int(i.id), token=str(i.id), title=i.xingming) for i in values],
     )
 
 @provider(IVocabularyFactory)
@@ -55,17 +57,43 @@ def danwei(context):
 def yisheng(context):
   
     locator = queryUtility(IDbapi, name='yisheng')
-
-    values = locator.query({'start':0,'size':100,'SearchableText':'','sort_order':'reverse'})
+    values = locator.query({'start':0,'size':100,
+                            'SearchableText':'',
+                            'sort_order':'reverse',
+                            'with_entities':0})
 
     return SimpleVocabulary(
-        [SimpleTerm(value=int(i[0]), token=str(i[0]), title=i[2]) for i in values],
+        [SimpleTerm(value=int(i.id), token=str(i.id), title=i.xingming) for i in values],
     )
 
 @provider(IVocabularyFactory)
 def dizhi(context):
   
     locator = queryUtility(IDbapi, name='dizhi')
+
+    values = locator.query({'start':0,'size':100,'SearchableText':'','sort_order':'reverse'})
+
+    return SimpleVocabulary(
+        [SimpleTerm(value=int(i[0]), token=str(i[0]), title=i[3]+i[4]) for i in values],
+    )
+
+@provider(IVocabularyFactory)
+def gerendizhi(context):
+  
+    locator = queryUtility(IDbapi, name='gerendizhi')
+#     import pdb
+#     pdb.set_trace()    
+    values = locator.query({'start':0,'size':100,'SearchableText':'',
+                            'sort_order':'reverse','with_entities':0})
+
+    return SimpleVocabulary(
+        [SimpleTerm(value=int(i.id), token=str(i.id), title=i.shi + i.jiedao) for i in values],
+    )
+
+@provider(IVocabularyFactory)
+def danweidizhi(context):
+  
+    locator = queryUtility(IDbapi, name='danweidizhi')
 
     values = locator.query({'start':0,'size':100,'SearchableText':'','sort_order':'reverse'})
 

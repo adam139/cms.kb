@@ -1,4 +1,5 @@
 #-*- coding: UTF-8 -*-
+import sys
 from datetime import datetime
 from zope import schema
 from cms.db.events import RecorderCreated
@@ -236,11 +237,9 @@ class Dbapi(object):
         id = kwargs['id']
         if bool(id):
             tablecls = self.init_table()
-            sqltext = "SELECT * FROM %s WHERE id=:id" % self.table
+#             sqltext = "SELECT * FROM %s WHERE id=:id" % self.table
             try:
-                recorder = session.query(tablecls).\
-                from_statement(text(sqltext)).\
-                params(id=id).one()
+                recorder = self.getByCode(id)
                 updatedattrs = [kw for kw in kwargs.keys() if kw != 'id']
                 for kw in updatedattrs:
                     setattr(recorder,kw,kwargs[kw])
@@ -303,12 +302,14 @@ class Dbapi(object):
     
     def query(self,kwargs):
         """分页查询
-        columns = request.args.getlist('columns')
-        stmt = select([column(c) for c in columns]).\
-    select_from(some_table)
-    stmt = select([table.c[c] for c in columns])
-    results = db.session.execute(stmt).fetchall()
-    session.query.with_entities(SomeModel.col1)
+        kwargs's keys parameters:
+        start:start location
+        size:batch size
+        keyword:full search keyword
+        direction:sort direction
+        max:batch size for Oracle
+        with_entities:if using serial number fetch recorder's columns,1 True,0 False        
+        
         """
         
         tablecls = self.init_table()        
@@ -316,7 +317,12 @@ class Dbapi(object):
         size = int(kwargs['size'])
         max = size + start + 1
         keyword = kwargs['SearchableText']        
-        direction = kwargs['sort_order'].strip()        
+        direction = kwargs['sort_order'].strip()
+        try:
+            with_entities = kwargs['with_entities']
+        except:
+            kwargs['with_entities'] = 1
+            with_entities = 1                                         
 
         if size != 0:
             if keyword == "":
@@ -342,9 +348,14 @@ class Dbapi(object):
                         sqltext = """SELECT * FROM %s 
                          ORDER BY id ASC limit :start,:max""" % self.table                                        
                     selectcon = text(sqltext)                    
-                clmns = self.get_columns()
-                recorders = session.query(tablecls).with_entities(*clmns).\
+                if bool(with_entities):
+                    clmns = self.get_columns()
+                    recorders = session.query(tablecls).with_entities(*clmns).\
                             from_statement(selectcon.params(start=start,max=max)).all()
+                else:
+                    recorders = session.query(tablecls).\
+                    order_by(tablecls.id.desc()).all()[start:max]
+                    
             else:
                 keysrchtxt = self.search_clmns2sqltxt(self.fullsearch_clmns)
                 if direction == "reverse":
@@ -375,23 +386,39 @@ class Dbapi(object):
                         ORDER BY id ASC limit :start,:max
                          """ % dict(tbl=self.table,ktxt=keysrchtxt)                                                                 
                     selectcon = text(sqltxt)
-                clmns = self.get_columns()
-                recorders = session.query(tablecls).with_entities(*clmns).\
-                                      from_statement(selectcon.params(x=keyword,start=start,max=max)).all()               
+                if bool(with_entities):
+                    clmns = self.get_columns()
+                    recorders = session.query(tablecls).with_entities(*clmns).\
+                            from_statement(selectcon.params(start=start,max=max)).all()
+                else:
+                    recorders = session.query(tablecls).\
+                    order_by(tablecls.id.desc()).all()[start:max]
         else:
             if keyword == "":
                 selectcon = text("SELECT * FROM %s ORDER BY id DESC " % self.table)
-                clmns = self.get_columns()
-                recorders = session.query(tablecls).with_entities(*clmns).\
+                if bool(with_entities):
+                    clmns = self.get_columns()
+                    recorders = session.query(tablecls).with_entities(*clmns).\
                             from_statement(selectcon).all()
+                else:
+                    recorders = session.query(tablecls).\
+                    order_by(tablecls.id.desc()).all()                   
+                    
             else:
                 keysrchtxt = self.search_clmns2sqltxt(self.fullsearch_clmns)
                 sqltext = """SELECT * FROM %(tbl)s WHERE %(ktxt)s  
                  ORDER BY id DESC """ % dict(tbl=self.table,ktxt=keysrchtxt)
                 selectcon = text(sqltext)
-                clmns = self.get_columns()
-                recorders = session.query(tablecls).with_entities(*clmns).\
-                                      from_statement(selectcon.params(x=keyword)).all()                         
+                
+                if bool(with_entities):
+                    clmns = self.get_columns()
+                    recorders = session.query(tablecls).with_entities(*clmns).\
+                            from_statement(selectcon).all()
+                else:
+                    # to do add keyword filter
+                    recorders = session.query(tablecls).\
+                    order_by(tablecls.id.desc()).all()                         
+            
             nums = len(recorders)
             return nums
         try:
@@ -423,8 +450,7 @@ class Dbapi(object):
                 rt = True
             except:
                 session.rollback()
-                e = sys.exc_info()[1]
-                rt = e
+                rt = sys.exc_info()[1]
             finally:
                 session.close()
                 return rt

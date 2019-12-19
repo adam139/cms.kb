@@ -48,6 +48,7 @@ from cms.db.orm import IYaoXing,YaoXing
 from cms.db.orm import IJingLuo,JingLuo
 from cms.db.orm import IYao
 from cms.db.orm import Yao
+from cms.db.orm import Person,IPerson
 from cms.db.orm import IChuFang,ChuFang
 from cms.db.orm import IDiZhi,IDanWeiDiZhi, IGeRenDiZhi, DiZhi,DanWeiDiZhi,GeRenDiZhi
 from cms.db.orm import IDanWei,DanWei
@@ -198,6 +199,7 @@ class BingRensView(BaseView):
     def search_multicondition(self,query):
         "query is dic,like :{'start':0,'size':10,'':}"
         locator = self.get_locator('bingren')
+        query['with_entities'] = 0
         recorders = locator.query(query)
         return recorders
 
@@ -228,6 +230,7 @@ class GeRenDiZhiesView(BaseView):
     def search_multicondition(self,query):
         "query is dic,like :{'start':0,'size':10,'':}"
         locator = self.get_locator('gerendizhi')
+        query['with_entities'] = 0        
         recorders = locator.query(query)
         return recorders
 
@@ -243,6 +246,7 @@ class DanWeiDiZhiesView(BaseView):
     def search_multicondition(self,query):
         "query is dic,like :{'start':0,'size':10,'':}"
         locator = self.get_locator('danweidizhi')
+        query['with_entities'] = 0        
         recorders = locator.query(query)
         return recorders
 
@@ -273,6 +277,7 @@ class YiShengsView(BaseView):
     def search_multicondition(self,query):
         "query is dic,like :{'start':0,'size':10,'':}"
         locator = self.get_locator('yisheng')
+        query['with_entities'] = 0
         recorders = locator.query(query)
         return recorders
 
@@ -698,13 +703,13 @@ class BingRenAjaxsearch(YaoXingAjaxsearch):
                                   </span>
                                 </a>
                                 </td>
-                                </tr> """% dict(obj_url="%s/%s/@@base_view" % (base,i[0]),
-                                            xingming=i[2],
-                                            xingbie= i[3],
-                                            nianling= i[4],
-                                            dianhua= i[5],                                            
-                                            edit_url="%s/@@update_bingren/%s" % (contexturl,i[0]),
-                                            delete_url="%s/@@delete_bingren/%s" % (contexturl,i[0]))
+                                </tr> """% dict(obj_url="%s/%s/@@base_view" % (base,i.id),
+                                            xingming=i.xingming,
+                                            xingbie= i.xingbie,
+                                            nianling= i.shengri,
+                                            dianhua= i.dianhua,                                            
+                                            edit_url="%s/@@update_bingren/%s" % (contexturl,i.id),
+                                            delete_url="%s/@@delete_bingren/%s" % (contexturl,i.id))
                 outhtml = "%s%s" %(outhtml ,out)
                 k = k + 1
         else:
@@ -714,11 +719,11 @@ class BingRenAjaxsearch(YaoXingAjaxsearch):
                                 <td class="col-md-2 text-center">%(xingbie)s</td>
                                 <td class="col-md-2">%(nianling)s</td>
                                 <td class="col-md-4">%(dianhua)s</td>
-                                </tr> """% dict(obj_url="%s/%s/@@base_view" % (base,i[0]),
-                                            xingming=i[2],
-                                            xingbie= i[3],
-                                            nianling= i[4],
-                                            dianhua= i[5])
+                                </tr> """% dict(obj_url="%s/%s/@@base_view" % (base,i.id),
+                                            xingming=i.xingming,
+                                            xingbie= i.xingbie,
+                                            nianling= i.shengri,
+                                            dianhua= i.dianhua)
                 outhtml = "%s%s" %(outhtml ,out)
                 k = k + 1                
         data = {'searchresult': outhtml,'start':start,'size':size,'total':totalnum}
@@ -823,12 +828,12 @@ class GeRenDiZhiAjaxsearch(YaoXingAjaxsearch):
                                 </a>
                                 </td>
                                 </tr> """% dict(
-                                            guojia=i[1],
-                                            sheng= i[2],
-                                            shi= i[3],
-                                            jiedao= i[4],
-                                            edit_url="%s/@@update_gerendizhi/%s" % (contexturl,i[0]),
-                                            delete_url="%s/@@delete_gerendizhi/%s" % (contexturl,i[0]))
+                                            guojia=i.guojia,
+                                            sheng= i.sheng,
+                                            shi= i.shi,
+                                            jiedao= i.jiedao,
+                                            edit_url="%s/@@update_gerendizhi/%s" % (contexturl,i.id),
+                                            delete_url="%s/@@delete_gerendizhi/%s" % (contexturl,i.id))
                 outhtml = "%s%s" %(outhtml ,out)
                 k = k + 1
         else:
@@ -839,10 +844,10 @@ class GeRenDiZhiAjaxsearch(YaoXingAjaxsearch):
                                 <td class="col-md-3">%(shi)s</td>
                                 <td class="col-md-5">%(jiedao)s</td>                          
                                 </tr> """% dict(
-                                            guojia=i[1],
-                                            sheng= i[2],
-                                            shi= i[3],
-                                            jiedao= i[4],)
+                                            guojia=i.guojia,
+                                            sheng= i.sheng,
+                                            shi= i.shi,
+                                            jiedao= i.jiedao)
                 outhtml = "%s%s" %(outhtml ,out)
                 k = k + 1            
         data = {'searchresult': outhtml,'start':start,'size':size,'total':totalnum}
@@ -885,12 +890,12 @@ class DanWeiDiZhiAjaxsearch(YaoXingAjaxsearch):
                                 </a>
                                 </td>
                                 </tr> """% dict(
-                                            guojia=i[1],
-                                            sheng= i[2],
-                                            shi= i[3],
-                                            jiedao= i[4],
-                                            edit_url="%s/@@update_danweidizhi/%s" % (contexturl,i[0]),
-                                            delete_url="%s/@@delete_danweidizhi/%s" % (contexturl,i[0]))
+                                            guojia=i.guojia,
+                                            sheng= i.sheng,
+                                            shi= i.shi,
+                                            jiedao= i.jiedao,
+                                            edit_url="%s/@@update_danweidizhi/%s" % (contexturl,i.id),
+                                            delete_url="%s/@@delete_danweidizhi/%s" % (contexturl,i.id))
                 outhtml = "%s%s" %(outhtml ,out)
                 k = k + 1
         else:
@@ -901,10 +906,10 @@ class DanWeiDiZhiAjaxsearch(YaoXingAjaxsearch):
                                 <td class="col-md-3">%(shi)s</td>
                                 <td class="col-md-5">%(jiedao)s</td>                          
                                 </tr> """% dict(
-                                            guojia=i[1],
-                                            sheng= i[2],
-                                            shi= i[3],
-                                            jiedao= i[4],)
+                                            guojia=i.guojia,
+                                            sheng= i.sheng,
+                                            shi= i.shi,
+                                            jiedao= i.jiedao)
                 outhtml = "%s%s" %(outhtml ,out)
                 k = k + 1            
         data = {'searchresult': outhtml,'start':start,'size':size,'total':totalnum}
@@ -1003,13 +1008,13 @@ class YiShengAjaxsearch(YaoXingAjaxsearch):
                                   </span>
                                 </a>
                                 </td>
-                                </tr> """% dict(obj_url="%s/%s/@@base_view" % (base,i[0]),
-                                            xingming=i[2],
-                                            xingbie= i[3],
-                                            nianling= i[4],
-                                            dianhua= i[5],
-                                            edit_url="%s/@@update_yisheng/%s" % (contexturl,i[0]),
-                                            delete_url="%s/@@delete_yisheng/%s" % (contexturl,i[0]))
+                                </tr> """% dict(obj_url="%s/%s/@@base_view" % (base,i.id),
+                                            xingming=i.xingming,
+                                            xingbie= i.xingbie,
+                                            nianling= i.shengri,
+                                            dianhua= i.dianhua,
+                                            edit_url="%s/@@update_yisheng/%s" % (contexturl,i.id),
+                                            delete_url="%s/@@delete_yisheng/%s" % (contexturl,i.id))
                 outhtml = "%s%s" %(outhtml ,out)
                 k = k + 1
         else:
@@ -1019,11 +1024,11 @@ class YiShengAjaxsearch(YaoXingAjaxsearch):
                                 <td class="col-md-2 text-center">%(xingbie)s</td>
                                 <td class="col-md-2">%(nianling)s</td>
                                 <td class="col-md-4">%(dianhua)s</td>
-                                </tr> """% dict(obj_url="%s/%s/@@base_view" % (base,i[0]),
-                                            xingming=i[2],
-                                            xingbie= i[3],
-                                            nianling= i[4],
-                                            dianhua= i[5])
+                                </tr> """% dict(obj_url="%s/%s/@@base_view" % (base,i.id),
+                                            xingming=i.xingming,
+                                            xingbie= i.xingbie,
+                                            nianling= i.shengri,
+                                            dianhua= i.dianhua)
                 outhtml = "%s%s" %(outhtml ,out)
                 k = k + 1            
         data = {'searchresult': outhtml,'start':start,'size':size,'total':totalnum}
@@ -1930,7 +1935,7 @@ class InputBingRen(InputYaoXing):
     """
 
     label = _(u"Input bing ren data")
-    fields = field.Fields(IBingRenUI).omit('id')
+    fields = field.Fields(IBingRenUI).omit('id','type')
 
     def update(self):
         self.request.set('disable_border', True)
@@ -1947,7 +1952,10 @@ class InputBingRen(InputYaoXing):
             self.status = self.formErrorsMessage
             return
         funcations = queryUtility(IDbapi, name='bingren')
-        _clmns = filter_cln(BingRen)        
+        _clmns = filter_cln(BingRen)
+        # type is joined inheritance polymorphic_on,should be filtered
+        if "type" in _clmns:
+              _clmns.remove("type")      
         #过滤非本表的字段
         _data = dict()
         for i in _clmns:
@@ -1978,14 +1986,14 @@ class UpdateBingRen(UpdateYaoXing):
     """
 
     label = _(u"update bing ren data")
-    fields = field.Fields(IBingRenUI).omit('id','dizhi_id')
+    fields = field.Fields(IBingRenUI).omit('id','dizhi_id','type')
 
     def getContent(self):
 
         locator = queryUtility(IDbapi, name='bingren')
         _obj = locator.getByCode(self.id)
         # ignore fields list
-        ignore = ['id','dizhi_id']
+        ignore = ['id','dizhi_id','type']
         # obj fields list
         objfd = ['dizhi']
         data = dict()
@@ -2010,13 +2018,15 @@ class UpdateBingRen(UpdateYaoXing):
         """Update bing ren recorder
         """
 
-        data, errors = self.extractData()
-        _clmns = filter_cln(BingRen)       
+        data, errors = self.extractData()       
         if errors:
             self.status = self.formErrorsMessage
             return
         funcations = queryUtility(IDbapi, name='bingren')
         #过滤非本表的字段
+        _clmns = filter_cln(BingRen)
+        if "type" in _clmns:
+            _clmns.remove("type")        
         _data = dict()
         for i in _clmns:
             _data[i] = data[i]                               
@@ -2598,7 +2608,7 @@ class InputYiSheng(InputYaoXing):
     """
 
     label = _(u"Input yi sheng data")
-    fields = field.Fields(IYiShengUI).omit('id','danwei_id')
+    fields = field.Fields(IYiShengUI).omit('id','danwei_id','type')
 
     @button.buttonAndHandler(_(u"Submit"))
     def submit(self, action):
@@ -2609,7 +2619,9 @@ class InputYiSheng(InputYaoXing):
             self.status = self.formErrorsMessage
             return
         funcations = queryUtility(IDbapi, name='yisheng')
-        _clmns = filter_cln(YiSheng)       
+        _clmns = filter_cln(YiSheng)
+        if "type" in _clmns:
+            _clmns.remove("type")       
         #过滤非本表的字段
         _data = dict()
         for i in _clmns:
@@ -2639,14 +2651,14 @@ class UpdateYiSheng(UpdateYaoXing):
     """
 
     label = _(u"update yi sheng data")
-    fields = field.Fields(IYiShengUI).omit('id','danwei_id')
+    fields = field.Fields(IYiShengUI).omit('id','danwei_id','type')
 
     def getContent(self):
 
         locator = queryUtility(IDbapi, name='yisheng')
         _obj = locator.getByCode(self.id)
         # ignore fields list
-        ignore = ['id','danwei_id']
+        ignore = ['id','danwei_id','type']
         # obj fields list
         objfd = ['danwei']
         data = dict()
@@ -2665,13 +2677,15 @@ class UpdateYiSheng(UpdateYaoXing):
     def submit(self, action):
         """Update yisheng recorder
         """
-        data, errors = self.extractData()
-        _clmns = filter_cln(YiSheng)       
+        data, errors = self.extractData()     
         if errors:
             self.status = self.formErrorsMessage
             return
         funcations = queryUtility(IDbapi, name='yisheng')
         #过滤非本表的字段
+        _clmns = filter_cln(YiSheng)
+        if "type" in _clmns:
+            _clmns.remove("type")          
         _data = dict()
         for i in _clmns:
             _data[i] = data[i]                               
