@@ -163,7 +163,7 @@ class TestView(unittest.TestCase):
         box = self.portal['folder']['ormfolder']
         view = box.restrictedTraverse('@@dizhi_ajaxsearch')
         result = view()       
-        self.assertEqual(json.loads(result)['total'],3) 
+        self.assertEqual(json.loads(result)['total'],4) 
 
     def test_danwei(self):
         request = self.layer['request']
