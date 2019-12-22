@@ -50,14 +50,12 @@ class Dbapi(object):
         if self.fullsearch_clmns == None:
             return ""                       
         else:
-            srt=''
+            srts =[]
             for i in clmns:
-                if not bool(srt):
-                    srt = "%(c)s LIKE :x" % dict(c=i)
-                    continue
-                else:
-                    srt = "%(pre)s OR %(c)s LIKE :x" % dict(c=i,pre=srt)
-            return srt        
+                srt = "%(c)s LIKE :x" % dict(c=i)
+                srts.append(srt)
+            out = " OR ".join(srts)
+            return out        
         
     def pk_title(self,pk,factorycls,title):
         "primary key to row recorder 's title"
@@ -381,7 +379,7 @@ class Dbapi(object):
                     """ % dict(tbl=self.table,ktxt=keysrchtxt)
                     else:
                         max = max - 1
-                        sqltext = """SELECT * FROM %(tbl)s
+                        sqltxt = """SELECT * FROM %(tbl)s
                         WHERE %(ktxt)s 
                         ORDER BY id ASC limit :start,:max
                          """ % dict(tbl=self.table,ktxt=keysrchtxt)                                                                 
@@ -389,7 +387,7 @@ class Dbapi(object):
                 if bool(with_entities):
                     clmns = self.get_columns()
                     recorders = session.query(tablecls).with_entities(*clmns).\
-                            from_statement(selectcon.params(start=start,max=max)).all()
+                            from_statement(selectcon.params(x=keyword,start=start,max=max)).all()
                 else:
                     recorders = session.query(tablecls).\
                     order_by(tablecls.id.desc()).all()[start:max]
@@ -413,7 +411,7 @@ class Dbapi(object):
                 if bool(with_entities):
                     clmns = self.get_columns()
                     recorders = session.query(tablecls).with_entities(*clmns).\
-                            from_statement(selectcon).all()
+                            from_statement(selectcon.params(x=keyword)).all()
                 else:
                     # to do add keyword filter
                     recorders = session.query(tablecls).\

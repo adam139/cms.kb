@@ -102,7 +102,12 @@
                  <a tal:attributes="href string:${kb/absolute_url}/@@dizhi_listings">
                      地址
                   </a>
-                  </li>                                                                        
+                  </li>
+                  <li>
+                 <a tal:attributes="href string:${kb/absolute_url}/@@nianganzhi_listings">
+                     五运六气
+                  </a>
+                  </li>                                                                                          
           </ul>
         </li>
      

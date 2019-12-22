@@ -6,13 +6,23 @@ from sqlalchemy.orm import relationship, backref
 from sqlalchemy.dialects import mysql
 from sqlalchemy import Column, String, Integer, Date, DateTime, Boolean, Table, func
 from sqlalchemy.ext.associationproxy import association_proxy
+from sqlalchemy.ext.automap import automap_base
+from sqlalchemy import MetaData
 from datetime import datetime
 from zope import schema
 from zope.interface import Interface,implements
 
 from cms.db import ORMBase as Base
+from cms.db import engine
 from cms.db import _
 
+
+# automap
+metadata = MetaData()
+metadata.reflect(engine, only=['nianganzhi'])
+AutoBase = automap_base(metadata=metadata)
+AutoBase.prepare()
+NianGanZhi = AutoBase.classes.nianganzhi
 
 ###药味
 class IYaoWei(Interface):

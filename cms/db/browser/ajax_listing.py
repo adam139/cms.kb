@@ -282,6 +282,42 @@ class YiShengsView(BaseView):
         return recorders
 
 
+class NianGanZhisView(BaseView):
+    """
+    DB AJAX 查询，返回分页结果,这个class 调用数据库表 功能集 utility,
+    从Ajaxsearch view 构造 查询条件（通常是一个参数字典），该utility 接受
+    该参数，查询数据库，并返回结果。
+    view name:db_listing
+    """
+
+    def search_multicondition(self,query):
+        "query is dic,like :{'start':0,'size':10,'':}"
+
+        locator = self.get_locator('nianganzhi')
+#         query['with_entities'] = 0
+        direction = query['sort_order'].strip()
+        if direction == "reverse":
+            query['sort_order'] = 'forward'
+            
+#         if query['start'] == None:
+#             ty = datetime.datetime.today()
+#             tsr = int(ty.strftime("%Y"))
+#             id = self.gonglinian2ganzhi(tsr)
+#             query['start'] = id
+            
+        recorders = locator.query(query)
+        return recorders
+    
+    def gonglinian2ganzhi(self,nian):
+        "公历年份转干支"
+        yu = int(nian) % 60
+        if yu >4:
+            id = yu - 4 + 1
+        else:
+            id = yu + 60 - 4 + 1
+        
+        
+    
      
 ###### output class
  # ajax multi-condition search relation db
@@ -972,6 +1008,7 @@ class DanWeiAjaxsearch(YaoXingAjaxsearch):
                 k = k + 1            
         data = {'searchresult': outhtml,'start':start,'size':size,'total':totalnum}
         return data        
+
  
 class YiShengAjaxsearch(YaoXingAjaxsearch):
     """AJAX action for search DB.
@@ -1034,7 +1071,51 @@ class YiShengAjaxsearch(YaoXingAjaxsearch):
         data = {'searchresult': outhtml,'start':start,'size':size,'total':totalnum}
         return data
     
-                        
+ 
+class NianGanZhiAjaxsearch(YaoXingAjaxsearch):
+    """AJAX action for search DB.
+    receive front end ajax transform parameters
+    """
+
+    def searchview(self,viewname="nianganzhi_listings"):
+        searchview = getMultiAdapter((self.context, self.request),name=viewname)
+        return searchview
+
+    def output(self,start,size,totalnum,resultDicLists,api):
+        """根据参数total,resultDicLists,返回json 输出,resultDicLists like this:
+        [(u'C7', u'\u4ed6\u7684\u624b\u673a')]"""
+        outhtml = ""
+        k = 0
+        contexturl = self.context.absolute_url()
+        base = get_container_by_type("cms.db.yisheng").getURL()        
+        if self.searchview().canbeInput:        
+            for i in resultDicLists:
+                out = """<tr class="text-left">
+                                <td class="col-md-1 text-left"><a href="%(obj_url)s">%(ganzhi)s</a></td>
+                                <td class="col-md-1 text-center">%(sitian)s</td>
+                                <td class="col-md-1">%(zaiquan)s</td>
+                                <td class="col-md-1">%(dayun)s</td>
+                                <td class="col-md-1">%(zhuyun)s</td>
+                                <td class="col-md-1">%(keyun)s</td>
+                                <td class="col-md-3">%(zhuqi)s</td>
+                                <td class="col-md-3">%(keqi)s</td>                                
+                                </tr> """% dict(obj_url="%s/%s/@@base_view" % (base,i[0]),
+                                            ganzhi=i[1],
+                                            sitian= i[2],
+                                            zaiquan= i[3],
+                                            dayun= i[4],
+                                            zhuyun=i[5],
+                                            keyun= i[6],
+                                            zhuqi= i[7],
+                                            keqi= i[8],
+                                            )
+                outhtml = "%s%s" %(outhtml ,out)
+                k = k + 1
+            
+        data = {'searchresult': outhtml,'start':start,'size':size,'total':totalnum}
+        return data
+    
+                          
 ###### database actions
 # Delete Update Input block
 ### yaoxing table

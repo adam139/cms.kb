@@ -265,3 +265,22 @@ class TestView(unittest.TestCase):
         result = view()       
         self.assertEqual(json.loads(result)['total'],1)             
 
+    def test_nianganzhi(self):
+        request = self.layer['request']
+        alsoProvides(request, IThemeSpecific)        
+        keyManager = getUtility(IKeyManager)
+        secret = keyManager.secret()
+        auth = hmac.new(secret, TEST_USER_NAME, sha).hexdigest()
+        request.form = {
+                        '_authenticator': auth,
+                        'size': '10',
+                        'start':'0' ,
+                        'sortcolumn':'id',
+                        'sortdirection':'desc',
+                        'searchabletext':''                                                                       
+                        }
+# Look up and invoke the view via traversal
+        box = self.portal['folder']['ormfolder']
+        view = box.restrictedTraverse('@@nianganzhi_ajaxsearch')
+        result = view()       
+        self.assertEqual(json.loads(result)['total'],60)

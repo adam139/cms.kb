@@ -71,6 +71,10 @@
 	component=".dbutility.yao_chufang"
 	name="yao_chufang"
 	/>
-
+ <utility
+	provides=".interfaces.IDbapi"
+	component=".dbutility.nianganzhi"
+	name="nianganzhi"
+	/>
     
 </configure>    

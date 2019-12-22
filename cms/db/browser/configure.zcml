@@ -107,7 +107,13 @@
         name="bingren_ajaxsearch"
         for="*"
         permission="zope2.View"
-        class=".ajax_listing.BingRenAjaxsearch"/>                                        
+        class=".ajax_listing.BingRenAjaxsearch"/>
+     <browser:page
+        name="nianganzhi_ajaxsearch"
+        for="*"
+        permission="zope2.View"
+        class=".ajax_listing.NianGanZhiAjaxsearch"/>        
+                                                
      
      <!-- input form views define--> 
      <browser:page
@@ -286,8 +292,7 @@
         template="templates/yaoxing_listings.pt"
         for="cms.db.contents.ormfolder.IOrmfolder"
         permission="cms.db.view_db"
-        class=".ajax_listing.YaoXingsView"/>          
-   
+        class=".ajax_listing.YaoXingsView"/>            
     <browser:page
         name="yaowei_listings"
         permission="cms.db.view_db"    
@@ -348,6 +353,11 @@
         for="cms.db.contents.ormfolder.IOrmfolder"        
         template="templates/yisheng_listings.pt"
         class=".ajax_listing.YiShengsView"/>
-                                     
+    <browser:page
+        name="nianganzhi_listings"
+        permission="cms.db.view_db"    
+        for="cms.db.contents.ormfolder.IOrmfolder"        
+        template="templates/nianganzhi_listings.pt"
+        class=".ajax_listing.NianGanZhisView"/>                                     
                
 </configure>
