@@ -18,7 +18,8 @@ class Allcontents(unittest.TestCase):
         portal['folder'].invokeFactory('cms.db.chufangfolder', 'chufangfolder')
         portal['folder'].invokeFactory('cms.db.bingrenfolder', 'bingrenfolder')
         portal['folder'].invokeFactory('cms.db.yishengfolder', 'yishengfolder')
-        portal['folder'].invokeFactory('cms.db.danweifolder', 'danweifolder')        
+        portal['folder'].invokeFactory('cms.db.danweifolder', 'danweifolder')
+        portal['folder'].invokeFactory('cms.db.wuyunfolder', 'wuyunfolder')        
         portal['folder']['yaofolder'].invokeFactory('cms.db.yao', 'yao')
         portal['folder']['yaofolder'].invokeFactory('cms.db.yaowei', 'yaowei')
         portal['folder']['yaofolder'].invokeFactory('cms.db.yaoxing', 'yaoxing')
@@ -26,7 +27,8 @@ class Allcontents(unittest.TestCase):
         portal['folder']['chufangfolder'].invokeFactory('cms.db.chufang', 'chufang')
         portal['folder']['bingrenfolder'].invokeFactory('cms.db.bingren', 'bingren')
         portal['folder']['yishengfolder'].invokeFactory('cms.db.yisheng', 'yisheng')
-        portal['folder']['danweifolder'].invokeFactory('cms.db.danwei', 'danwei')                           
+        portal['folder']['danweifolder'].invokeFactory('cms.db.danwei', 'danwei')
+        portal['folder']['wuyunfolder'].invokeFactory('cms.db.wuyun', 'wuyun')                           
 
         self.portal = portal
     
@@ -49,6 +51,7 @@ class Allcontents(unittest.TestCase):
         self.assertEqual(self.portal['folder']['bingrenfolder']['bingren'].id,'bingren')
         self.assertEqual(self.portal['folder']['yishengfolder']['yisheng'].id,'yisheng')         
         self.assertEqual(self.portal['folder']['danweifolder']['danwei'].id,'danwei')
+        self.assertEqual(self.portal['folder']['wuyunfolder']['wuyun'].id,'wuyun')
                                      
                   
        

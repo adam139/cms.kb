@@ -1,28 +1,22 @@
 <?xml version="1.0"?>
-<object name="cms.db.folder"
+<object name="cms.db.wuyunfolder"
    meta_type="Dexterity FTI"
    i18n:domain="cms.db" xmlns:i18n="http://xml.zope.org/namespaces/i18n">
 
   <!-- Basic metadata -->
-  <property name="title" i18n:translate="">CMSAI</property>
+  <property name="title" i18n:translate="">wuyun folder</property>
   <property name="description"
-    i18n:translate="">Chinese medical science root folder</property>
+    i18n:translate="">wuyun folder</property>
   <property name="content_icon">++resource++cms.theme/folder.png</property>
-  <property name="global_allow">True</property>
+  <property name="global_allow">False</property>
   <property name="filter_content_types">True</property>  
   <property name="allowed_content_types">	
-       <element value="cms.db.ormfolder" />
-       <element value="cms.db.yaofolder" />
-       <element value="cms.db.chufangfolder" />
-       <element value="cms.db.bingrenfolder" />
-       <element value="cms.db.danweifolder" />
-       <element value="cms.db.yishengfolder" />
-       <element value="cms.db.wuyunfolder" />                                        
+       <element value="cms.db.wuyun" />             
   </property>
   <property name="allow_discussion">False</property>
 
   <!-- schema and class used for content items -->
-  <property name="schema">cms.db.contents.folder.IFolder</property> 
+  <property name="schema">cms.db.contents.wuyunfolder.IWuyunfolder</property> 
   <property name="klass">plone.dexterity.content.Container</property>
 
   <property name="behaviors">
@@ -32,11 +26,10 @@
 
   <!-- View information -->
   <property name="link_target"></property>
-  <property name="immediate_view">folder_contents</property>
-  <property name="default_view">folder_contents</property>
+  <property name="immediate_view">view</property>
+  <property name="default_view">sysajax_listings</property>
   <property name="view_methods">
    <element value="view"/>
-   <element value="folder_contents"/>
    <element value="sysajax_listings"/>   
   </property>
   <property name="default_view_fallback">False</property>

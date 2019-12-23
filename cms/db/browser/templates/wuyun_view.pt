@@ -1,0 +1,69 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+    xmlns:tal="http://xml.zope.org/namespaces/tal"
+    xmlns:metal="http://xml.zope.org/namespaces/metal"
+    xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+    lang="en"
+    metal:use-macro="context/main_template/macros/master"
+    i18n:domain="cms.db">
+<body>
+<metal:main fill-slot="main">
+    <tal:main-macro metal:define-macro="main">
+    <div id="yao" class="container-fluid"
+    	tal:define="p python:context.absolute_url();
+    			    toc python:False;">      	
+     <div class="row row-1">         
+       <div class="col-xs-12 col-md-12">
+       	<h3 class="title text-center" tal:content="python:context.title">context.title</h3>
+       	<ul id="subject" tal:condition="tags" tal:define="tags python:view.getags()" tal:content="structure python:tags" />
+       	<p>大运:
+       	<span class="dayun" tal:content="structure python:view.get_dayun(context.id)">dayun</span>
+       	</p>
+       	<p>
+       	<span class="sitian" tal:content="structure python:view.get_sitian(context.id)">sitian</span>
+       	司天;
+       	<span class="zaiquan" tal:content="structure python:view.get_zaiquan(context.id)">zaiquan</span>	
+       	在泉。</p>
+       	<p class="description" tal:content="python:context.description">context.description</p>
+       </div>
+     </div>
+     <div class="row row-2 yun">         
+       <div class="col-xs-12 col-md-12 table-responsive">
+         <table id="zhuyun-keyun" class="table table-striped table-bordered table-condensed">
+         	<tbody
+             tal:content="structure python:view.get_zhuyun_keyun(context.id)">
+            </tbody>
+        </table>
+      </div>
+     </div>     
+     <div class="row row-3 details">         
+       <div class="col-xs-12 col-md-12">
+         <div id="parent-fieldname-text"
+          tal:condition="context/text"
+          tal:content="structure python:context.text.output_relative_to(view.context)"
+          tal:attributes="class python: 'pat-autotoc' or ''">
+        </div>
+      </div>
+     </div>
+     <div class="row row-4 qi">         
+       <div class="col-xs-12 col-md-12 table-responsive">
+         <table id="zhuqi-keqi" class="table table-striped table-bordered table-condensed">
+         	<tbody
+             tal:content="structure python:view.get_zhuqi_keqi(context.id)">
+            </tbody>
+        </table>
+      </div>
+     </div>     
+     <div class="row row-5 report">         
+       <div class="col-xs-12 col-md-12">
+         <div id="parent-fieldname-report"
+          tal:condition="context/report"
+          tal:content="structure python:context.report.output_relative_to(view.context)"
+          tal:attributes="class python:  'pat-autotoc' or ''">
+        </div>      	
+      </div>
+     </div>         
+   </div>            
+ </tal:main-macro>
+</metal:main>
+</body>
+</html>

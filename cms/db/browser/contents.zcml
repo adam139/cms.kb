@@ -47,5 +47,12 @@
         for="cms.db.contents.yisheng.IYisheng"
         template="templates/chufang_view.pt"
         permission="zope2.View"
-        class=".contents_view.YiShengView"/>        
+        class=".contents_view.YiShengView"/>
+     <browser:page
+        name="base_view"
+        for="cms.db.contents.wuyun.IWuyun"
+        template="templates/wuyun_view.pt"
+        permission="zope2.View"
+        class=".contents_view.WuYunView"/>        
+                
 </configure>

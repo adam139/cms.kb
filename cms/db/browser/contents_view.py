@@ -250,4 +250,115 @@ class YiShengView(BaseView):
     
     def update(self):
         # Hide the editable-object border
-        self.request.set('disable_border', True)                                               
+        self.request.set('disable_border', True)
+        
+
+class WuYunView(BaseView):
+    "content type:wuyun view"
+
+    
+    def update(self):
+        # Hide the editable-object border
+        self.request.set('disable_border', True)
+        
+    def get_dayun(self,id):
+        
+        _id = long(id)
+        locator = queryUtility(IDbapi, name='nianganzhi')                
+        out = locator.getByCode(_id)
+        out = out.dayun      
+        return out        
+    
+    def get_sitian(self,id):
+        
+        _id = long(id)
+        locator = queryUtility(IDbapi, name='nianganzhi')                
+        out = locator.getByCode(_id)
+        out = out.sitian      
+        return out 
+    
+    def get_zaiquan(self,id):
+        
+        _id = long(id)
+        locator = queryUtility(IDbapi, name='nianganzhi')                
+        out = locator.getByCode(_id)
+        out = out.zaiquan      
+        return out
+    
+    def get_zhuqi_keqi(self,id):
+        
+        _id = long(id)
+        locator = queryUtility(IDbapi, name='nianganzhi')                
+        rder = locator.getByCode(_id)
+        zhuqi = rder.zhuqi.split(",")
+        keqi = rder.keqi.split(",")
+        out = []
+        dayun = """<tr>
+        <td>%s</td>
+        <td>%s</td>
+        <td>%s</td>
+        <td>%s</td>
+        <td>%s</td>
+        <td>%s</td>
+        <td>%s</td>
+        </tr>
+        """ % ("&nbsp;",
+               u"初之气",
+               u"二之气",
+               u"三之气",
+               u"四之气",
+               u"五之气", 
+               u"终之气"                                                                           
+               )
+        out.append(dayun) 
+        prefix = "<tr><td>%s</td>" % u"主气".encode('utf-8')
+        postfix = "</tr>"
+        lt = []
+        lt.append(prefix)
+        for i in zhuqi:
+            item = "<td>%s</td>" % i
+            lt.append(item)
+        lt.append(postfix)
+        out.append(''.join(lt))         
+        prefix = "<tr><td>%s</td>" % u"客气".encode('utf-8')
+        postfix = "</tr>"
+        lt = []
+        lt.append(prefix)
+        for i in keqi:
+            item = "<td>%s</td>" % i
+            lt.append(item)
+        lt.append(postfix)               
+        out.append(''.join(lt))        
+        return ''.join(out)        
+
+    
+    def get_zhuyun_keyun(self,id):
+        
+        _id = long(id)
+        locator = queryUtility(IDbapi, name='nianganzhi')                
+        rder = locator.getByCode(_id)
+        zhuyun = rder.zhuyun.split(",")
+        keyun = rder.keyun.split(",")
+        out = []
+        dayun = """<tr><td>%s</td><td colspan="5">%s</td></tr>
+        """ % (u"大运".encode('utf-8'),self.get_dayun(_id))
+        out.append(dayun) 
+        prefix = "<tr><td>%s</td>" % u"主运".encode('utf-8')
+        postfix = "</tr>"
+        lt = []
+        lt.append(prefix)
+        for i in zhuyun:
+            item = "<td>%s</td>" % i
+            lt.append(item)
+        lt.append(postfix)
+        out.append(''.join(lt))         
+        prefix = "<tr><td>%s</td>" % u"客运".encode('utf-8')
+        postfix = "</tr>"
+        lt = []
+        lt.append(prefix)
+        for i in keyun:
+            item = "<td>%s</td>" % i
+            lt.append(item)
+        lt.append(postfix)               
+        out.append(''.join(lt))        
+        return ''.join(out)                                                     

@@ -15,11 +15,13 @@
   <object name="cms.db.chufang" meta_type="Dexterity FTI" />
   <object name="cms.db.bingrenfolder" meta_type="Dexterity FTI" />
   <object name="cms.db.yishengfolder" meta_type="Dexterity FTI" />
-  <object name="cms.db.danweifolder" meta_type="Dexterity FTI" />   
+  <object name="cms.db.danweifolder" meta_type="Dexterity FTI" />
+  <object name="cms.db.wuyunfolder" meta_type="Dexterity FTI" />     
   <object name="cms.db.bingren" meta_type="Dexterity FTI" />
   <object name="cms.db.yisheng" meta_type="Dexterity FTI" />
   <object name="cms.db.danwei" meta_type="Dexterity FTI" />            
   <object name="cms.db.yaowei" meta_type="Dexterity FTI" />
   <object name="cms.db.yaoxing" meta_type="Dexterity FTI" />
-  <object name="cms.db.jingluo" meta_type="Dexterity FTI" /> 
+  <object name="cms.db.jingluo" meta_type="Dexterity FTI" />
+  <object name="cms.db.wuyun" meta_type="Dexterity FTI" />   
 </object>

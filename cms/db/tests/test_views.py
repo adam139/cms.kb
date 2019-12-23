@@ -20,6 +20,7 @@ from sqlalchemy import and_
 from cms.db import  Session
 from cms.db.tests.base import inputvalues,cleardb
 from cms.db.tests.base import TABLES
+from cms.db.orm import NianGanZhi
 for tb in TABLES:
     import_str = "from %(p)s import %(t)s" % dict(p='cms.db.orm',t=tb) 
     exec import_str
@@ -38,9 +39,11 @@ class TestView(unittest.TestCase):
         portal['folder'].invokeFactory('cms.db.yaofolder', 'yaofolder')
         portal['folder'].invokeFactory('cms.db.chufangfolder', 'chufangfolder')
         portal['folder'].invokeFactory('cms.db.bingrenfolder', 'bingrenfolder')
+        portal['folder'].invokeFactory('cms.db.wuyunfolder', 'wuyunfolder')
         yao_id = str(Session.query(Yao).filter(Yao.mingcheng=="白芍").one().id)
         bingren_id = str(Session.query(BingRen).filter(BingRen.xingming=="张三").one().id)
         chufang_id = str(Session.query(ChuFang).filter(ChuFang.mingcheng=="桂枝汤").one().id)
+        wuyun_id = str(Session.query(NianGanZhi).filter(NianGanZhi.ganzhi=="己亥").one().id)
         portal['folder']['yaofolder'].invokeFactory('cms.db.yao', yao_id,
                                                     title=u"here is title",
                                                     description=u"here is description",
@@ -83,11 +86,25 @@ class TestView(unittest.TestCase):
                                                                        'text/html'
                                                                        )
                                                     )
-                                                                     
+        portal['folder']['wuyunfolder'].invokeFactory('cms.db.wuyun', wuyun_id,
+                                                    title=u"here is title",
+                                                    description=u"here is description",
+                                                    text=RichTextValue(
+                                                                       u"here is rich text",
+                                                                       'text/plain',
+                                                                       'text/html'
+                                                                       ),
+                                                    report=RichTextValue(
+                                                                       u"here is report",
+                                                                       'text/plain',
+                                                                       'text/html'
+                                                                       )
+                                                    )                                                                     
         self.portal = portal
         self.yao_id = yao_id
         self.bingren_id = bingren_id
         self.chufang_id = chufang_id
+        self.wuyun_id = wuyun_id
         sts = (u"数据库".encode("utf-8"),"plone")
         
         portal['folder']['yaofolder'][yao_id].setSubject(sts)
@@ -154,4 +171,18 @@ class TestView(unittest.TestCase):
 #         self.assertTrue( "桂枝汤" in browser.contents)
         self.assertTrue( "白芍" in browser.contents)
         self.assertTrue( "张三" in browser.contents)       
-                                 
+
+    def testwuyunView(self):
+        app = self.layer['app']
+        portal = self.layer['portal']
+        browser = Browser(app)
+        browser.handleErrors = False             
+        browser.addHeader('Authorization', 'Basic %s:%s' % (TEST_USER_NAME, TEST_USER_PASSWORD,))
+        transaction.commit()
+        browser.open(portal['folder']['wuyunfolder'][self.wuyun_id].absolute_url() + "/@@base_view")
+        self.assertTrue("here is title" in browser.contents)
+        self.assertTrue(u"here is description" in browser.contents)               
+        self.assertTrue("here is report" in browser.contents)
+#         self.assertTrue( "桂枝汤" in browser.contents)
+        self.assertTrue( "土运不及" in browser.contents)
+        self.assertTrue( "厥阴风木" in browser.contents)                                 
