@@ -75,16 +75,19 @@ class DanWeiUI(object):
 @implementer(IYaoUI)
 class YaoUI(object):
     mingcheng = FieldProperty(IYaoUI['mingcheng'])
-    zhuzhi = FieldProperty(IYaoUI['zhuzhi'])        
+    zhuzhi = FieldProperty(IYaoUI['zhuzhi'])
+    yongliang = FieldProperty(IYaoUI['yongliang'])        
     yaowei = FieldProperty(IYaoUI['yaowei'])
     yaoxing = FieldProperty(IYaoUI['yaoxing'])
     guijing = FieldProperty(IYaoUI['guijing'])
     # allow getSource to proceed
     _Modify_portal_content_Permission = ('Anonymous', )
 
-    def __init__(self, mingcheng=None, zhuzhi=None, yaowei=None, yaoxing=None, guijing=None):
+    def __init__(self, mingcheng=None, zhuzhi=None, yongliang=None, yaowei=None,
+                  yaoxing=None, guijing=None):
         self.mingcheng = mingcheng
         self.zhuzhi = zhuzhi
+        self.yongliang = yongliang
         self.yaowei = yaowei
         self.yaoxing = yaoxing
         self.guijing = guijing
@@ -115,9 +118,12 @@ class ChuFangUI(object):
 @implementer(IChuFang_BingRen_AssoUI)
 class ChuFang_BingRen_AssoUI(object):
 
-
     bingren_id = FieldProperty(IChuFang_BingRen_AssoUI['bingren_id'])
-    shijian = FieldProperty(IChuFang_BingRen_AssoUI['shijian']) 
+    shijian = FieldProperty(IChuFang_BingRen_AssoUI['shijian'])
+    maixiang = FieldProperty(IChuFang_BingRen_AssoUI['maixiang'])
+    shexiang = FieldProperty(IChuFang_BingRen_AssoUI['shexiang'])
+    zhusu = FieldProperty(IChuFang_BingRen_AssoUI['zhusu']) 
+
 
 @implementer(IChuFang_BingRen_AssoUI)
 class EditChuFang_BingRen_AssoUI(object):
@@ -125,10 +131,17 @@ class EditChuFang_BingRen_AssoUI(object):
 
     bingren_id = FieldProperty(IChuFang_BingRen_AssoUI['bingren_id'])
     shijian = FieldProperty(IChuFang_BingRen_AssoUI['shijian'])
+    maixiang = FieldProperty(IChuFang_BingRen_AssoUI['maixiang'])
+    shexiang = FieldProperty(IChuFang_BingRen_AssoUI['shexiang'])
+    zhusu = FieldProperty(IChuFang_BingRen_AssoUI['zhusu'])    
 
-    def __init__(self, bingren_id=None, shijian=None):
+    def __init__(self, bingren_id=None, shijian=None, maixiang=None,
+                  shexiang=None, zhusu=None):
         self.bingren_id = bingren_id
         self.shijian = shijian
+        self.maixiang = maixiang
+        self.shexiang = shexiang
+        self.zhusu = zhusu                        
 
 
 @implementer(IYao_ChuFang_AssoUI)

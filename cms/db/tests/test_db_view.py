@@ -123,7 +123,8 @@ class TestView(unittest.TestCase):
         browser.open("%s/@@input_yaowei" % base)        
         # Fill in the form 
 
-        browser.getControl(name=u"form.widgets.wei").value = u"淡"        
+        browser.getControl(name=u"form.widgets.wei").value = u"淡"
+        
         # Submit
         browser.getControl(u"Submit").click()
         suan = Session.query(YaoWei).filter(YaoWei.wei==u"淡").all()
@@ -172,7 +173,8 @@ class TestView(unittest.TestCase):
         browser.getControl(name=u"form.widgets.yaoxing:list").value = [str(yaoxing_id)]
         browser.getControl(name=u"form.widgets.mingcheng").value = u"牛膝"         
 #         browser.getControl(name=u"form.widgets.guijing.to").value = [str(jingluo_id)] 
-        browser.getControl(name=u"form.widgets.zhuzhi").value = u"引气血下行"        
+        browser.getControl(name=u"form.widgets.zhuzhi").value = u"引气血下行"
+        browser.getControl(name=u"form.widgets.yongliang").value = str(30)        
         # Submit
         browser.getControl(u"Submit").click()        
         suan = Session.query(Yao).filter(Yao.mingcheng==u"牛膝").all()
@@ -343,6 +345,9 @@ class TestView(unittest.TestCase):
         browser.getControl(name=u"form.widgets.yaoes.0.widgets.paozhi").value = 'pao zhi'
         browser.getControl(name=u"form.widgets.bingrens.0.widgets.bingren_id:list").value = [str(bingren_id)]
         browser.getControl(name=u"form.widgets.bingrens.0.widgets.shijian").value = "2015-09-12 12:00"
+        browser.getControl(name=u"form.widgets.bingrens.0.widgets.maixiang").value = "两关郁,左寸小,右寸大"
+        browser.getControl(name=u"form.widgets.bingrens.0.widgets.shexiang").value = "舌苔淡青,有齿痕"
+        browser.getControl(name=u"form.widgets.bingrens.0.widgets.zhusu").value = "小腹冷痛,右肋痛,牙痛"
                                 
         # Submit
         browser.getControl(u"Submit").click()        
@@ -387,7 +392,8 @@ class TestView(unittest.TestCase):
 
 
         browser.getControl(name=u"form.widgets.yaowei:list").value = [str(yaowei_id)]
-        browser.getControl(name=u"form.widgets.zhuzhi").value = u"主脾胃"        
+        browser.getControl(name=u"form.widgets.zhuzhi").value = u"主脾胃"
+        browser.getControl(name=u"form.widgets.yongliang").value = str(31)        
         browser.getControl(u"Submit").click()        
         suan = Session.query(Yao).filter(Yao.zhuzhi==u"主脾胃").all()
         self.assertEqual(len(suan),1)
@@ -415,16 +421,24 @@ class TestView(unittest.TestCase):
         browser.getControl(name=u"form.widgets.yizhu").value = "主脾胃"
         browser.getControl(name=u"form.widgets.jiliang").value =  "3"
         browser.getControl(name=u"form.widgets.yisheng:list").value = [str(yisheng_id)]
-        #fil subform
+        #fill subform
         browser.getControl(name=u"form.widgets.yaoes.0.widgets.yao_id:list").value = [str(yao_id)]
         browser.getControl(name=u"form.widgets.yaoes.0.widgets.yaoliang").value = '15'
         browser.getControl(name=u"form.widgets.yaoes.0.widgets.paozhi").value = 'pao zhi'
         browser.getControl(name=u"form.widgets.yaoes.1.widgets.yao_id:list").value = [str(yao_id2)]        
         browser.getControl(name=u"form.widgets.yaoes.1.widgets.yaoliang").value = '20'
         browser.getControl(name=u"form.widgets.yaoes.1.widgets.paozhi").value = '晒干'        
+        
+        browser.getControl(name=u"form.widgets.bingrens.0.widgets.bingren_id:list").value = [str(bingren_id)]
+        browser.getControl(name=u"form.widgets.bingrens.0.widgets.shijian").value = "2018-09-12 12:00"
+        browser.getControl(name=u"form.widgets.bingrens.0.widgets.maixiang").value = "两关郁,左寸小,右寸大,右尺大"
+        browser.getControl(name=u"form.widgets.bingrens.0.widgets.shexiang").value = "舌苔淡白,有齿痕"
+        browser.getControl(name=u"form.widgets.bingrens.0.widgets.zhusu").value = "小腹冷痛,右肋痛,牙痛,畏冷"        
         browser.getControl(u"Submit").click()        
         suan = Session.query(ChuFang).filter(ChuFang.yizhu==u"主脾胃").all()
         self.assertEqual(len(suan),1)
+        suan = Session.query(ChuFang).join(ChuFang_BingRen_Asso).filter(ChuFang_BingRen_Asso.zhusu==u"小腹冷痛,右肋痛,牙痛,畏冷").all()
+        self.assertEqual(len(suan),1)        
         self.assertTrue(u"Thank you! Your data  will be update in back end DB." in browser.contents)
 
     def testUpdateDiZhiForm(self):

@@ -36,6 +36,15 @@ class IChuFang_BingRen_AssoUI (Interface):
     shijian = schema.Datetime(
             title=_(u"chu fang shi jian"),
         )    
+    maixiang = schema.TextLine(
+            title=_(u"mai xiang"),
+        )
+    shexiang = schema.TextLine(
+            title=_(u"she xiang"),
+        )
+    zhusu = schema.TextLine(
+            title=_(u"zhu su"),
+        )        
 
 
 class IYao_ChuFang_AssoUI (Interface):
@@ -107,6 +116,7 @@ class IDanWeiUI (IDanWei):
             vocabulary='cms.db.dizhi',
             required=True,
         )
+
     
 class IYaoUI (IYao):
     """yao table ui """

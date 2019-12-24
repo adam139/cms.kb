@@ -134,6 +134,10 @@ class IYao(Interface):
             title=_(u"zhu zhi"),
             required = False,
         )
+    yongliang = schema.Int(
+            title=_(u"tongchang yongliang"),
+            required = False,
+        )    
     yaowei = schema.Object(
             title=_(u"yao wei"),
             schema=IYaoWei,
@@ -158,15 +162,17 @@ class Yao(Base):
     yaoxing_id = Column(Integer, ForeignKey('yaoxing.id'))
     mingcheng = Column(String(4))
     zhuzhi = Column(String(64))
+    yongliang = Column(Integer)
     yaowei = relationship("YaoWei", backref="yaoes")
     yaoxing = relationship("YaoXing", backref="yaoes")
     guijing = relationship("JingLuo",secondary=Yao_JingLuo_Asso)    
 #     guijing = relationship("JingLuo",lazy='subquery', secondary=Yao_JingLuo_Asso,
 #                            backref=backref("yaoes",lazy='subquery'))    
 
-    def __init__(self, mingcheng=None,zhuzhi=None):
+    def __init__(self, mingcheng=None,zhuzhi=None,yongliang=None):
         self.mingcheng = mingcheng
         self.zhuzhi = zhuzhi
+        self.yongliang = yongliang
 
  
 ###处方
@@ -518,6 +524,12 @@ class ChuFang_BingRen_Asso(Base):
     bingren_id = Column(Integer, ForeignKey('bingren.id'), primary_key=True)
     chufang_id = Column(Integer, ForeignKey('chufang.id'), primary_key=True)
     shijian = Column(DateTime, default=func.now())
+    #脉象
+    maixiang = Column(String(64))
+    #舌相
+    shexiang = Column(String(64))
+    #主诉
+    zhusu = Column(String(64))
      
     # bidirectional attribute/collection of "bingren"/"chufang_bingren"
     bingren = relationship(BingRen,lazy='subquery',
@@ -532,10 +544,14 @@ class ChuFang_BingRen_Asso(Base):
 #     # reference to the "ChuFang" object
 #     chufang = relationship("ChuFang")
 
-    def __init__(self, bingren=None, chufang=None, shijian=None):
+    def __init__(self, bingren=None, chufang=None, shijian=None,
+                  maixiang=None, shexiang=None, zhusu=None):
         self.bingren = bingren
         self.chufang = chufang
         self.shijian = shijian
+        self.maixiang = maixiang
+        self.shexiang = shexiang
+        self.zhusu = zhusu
 
                 
                    

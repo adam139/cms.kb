@@ -588,7 +588,8 @@ class YaoAjaxsearch(YaoXingAjaxsearch):
                                 <td class="col-md-1 text-left">%(yaowei)s</td>
                                 <td class="col-md-1">%(yaoxing)s</td>
                                 <td class="col-md-1">%(jingluo)s</td>
-                                <td class="col-md-5">%(zhuzhi)s</td>                                
+                                <td class="col-md-4">%(zhuzhi)s</td>
+                                <td class="col-md-1">%(yongliang)s</td>                                
                                 <td class="col-md-1 text-center">
                                 <a href="%(edit_url)s" title="edit">
                                   <span class="glyphicon glyphicon-pencil" aria-hidden="true">
@@ -607,6 +608,7 @@ class YaoAjaxsearch(YaoXingAjaxsearch):
                                             yaoxing= yaoxing,
                                             jingluo= guijin,
                                             zhuzhi= i[4],
+                                            yongliang= i[5],
                                             edit_url="%s/@@update_yao/%s" % (contexturl,i[0]),
                                             delete_url="%s/@@delete_yao/%s" % (contexturl,i[0]))
                 outhtml = "%s%s" %(outhtml ,out)
@@ -618,13 +620,15 @@ class YaoAjaxsearch(YaoXingAjaxsearch):
                                 <td class="col-md-1 text-left"><a href="%(edit_url)s">%(yaowei)s</a></td>
                                 <td class="col-md-1">%(yaoxing)s</td>
                                 <td class="col-md-2">%(jingluo)s</td>
-                                <td class="col-md-6">%(zhuzhi)s</td>  
+                                <td class="col-md-5">%(zhuzhi)s</td>
+                                <td class="col-md-1">%(yongliang)s</td>  
                                 </tr> """% dict(obj_url="%s/%s/@@base_view" % (base,i[0]),
                                             name=i[3],
-                                            yaowei= "",
-                                            yaoxing= "",
-                                            jingluo= "",
-                                            zhuzhi= i[4])
+                                            yaowei= yaowei,
+                                            yaoxing= yaoxing,
+                                            jingluo= guijin,
+                                            zhuzhi= i[4],
+                                            yongliang= i[5])
 
                 outhtml = "%s%s" %(outhtml ,out)
                 k = k + 1            
@@ -1416,7 +1420,7 @@ class DeleteYao(DeleteYaoXing):
         """Delete yao recorder
         """
 
-        data, errors = self.extractData()        
+        data, errors = self.extractData()       
         if errors:
             self.status = self.formErrorsMessage
             return
@@ -1871,7 +1875,7 @@ class UpdateChuFang(UpdateYaoXing):
                 continue
             elif name == 'bingrens':
                 objs = []
-                fields = ['bingren_id','shijian']                
+                fields = ['bingren_id','shijian','maixiang','shexiang','zhusu']                
                 for i in p:
                     id = i.id
                     chufangid = self.id
