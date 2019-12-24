@@ -1,5 +1,5 @@
 #!/bin/sh
-PRODUCTNAME='Chinese.medical.science'
+PRODUCTNAME='cms.db'
 I18NDOMAIN=$PRODUCTNAME
 
 # Synchronise the .pot with the templates.

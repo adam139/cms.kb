@@ -1,0 +1,535 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: 2019-12-24 07:14+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0\n"
+"Language-Code: en\n"
+"Language-Name: English\n"
+"Preferred-Encodings: utf-8 latin1\n"
+"Domain: DOMAIN\n"
+
+#: ./behaviors/configure.zcml:43
+msgid "Adds Brief Report behavior"
+msgstr ""
+
+#: ./behaviors/configure.zcml:34
+msgid "Adds file field"
+msgstr ""
+
+#: ./behaviors/configure.zcml:34
+msgid "Attach File"
+msgstr ""
+
+#: ./behaviors/configure.zcml:43
+#: ./behaviors/richtext.py:19
+msgid "Brief Report"
+msgstr ""
+
+#: ./profiles/default/types/cms.db.folder.xml
+msgid "CMSAI"
+msgstr ""
+
+#: ./browser/ajax_listing.py:1170
+msgid "Cancel"
+msgstr ""
+
+#: ./profiles/default/types/cms.db.folder.xml
+msgid "Chinese medical science root folder"
+msgstr ""
+
+#: ./configure.zcml:31
+msgid "Chinese medical science system"
+msgstr ""
+
+#: ./browser/ajax_listing.py:1151
+msgid "Delete"
+msgstr ""
+
+#: ./browser/ajax_listing.py:1174
+msgid "Delete cancelled."
+msgstr ""
+
+#: ./browser/ajax_listing.py:2022
+msgid "Input bing ren data"
+msgstr ""
+
+#: ./browser/ajax_listing.py:1212
+msgid "Input cancelled."
+msgstr ""
+
+#: ./browser/ajax_listing.py:1751
+msgid "Input chu fang data"
+msgstr ""
+
+#: ./browser/ajax_listing.py:2553
+msgid "Input dan wei data"
+msgstr ""
+
+#: ./browser/ajax_listing.py:2308
+msgid "Input danwei dizhi data"
+msgstr ""
+
+#: ./browser/ajax_listing.py:2184
+msgid "Input dizhi data"
+msgstr ""
+
+#: ./browser/ajax_listing.py:2432
+msgid "Input geren dizhi data"
+msgstr ""
+
+#: ./browser/ajax_listing.py:1624
+msgid "Input jing luo data"
+msgstr ""
+
+#: ./browser/ajax_listing.py:1449
+msgid "Input yao data"
+msgstr ""
+
+#: ./browser/ajax_listing.py:1321
+msgid "Input yao wei data"
+msgstr ""
+
+#: ./browser/ajax_listing.py:1181
+msgid "Input yao xing data"
+msgstr ""
+
+#: ./browser/ajax_listing.py:2695
+msgid "Input yi sheng data"
+msgstr ""
+
+#: ./configure.zcml:31
+msgid "Profile for cms.db"
+msgstr ""
+
+#: ./browser/ajax_listing.py:1190
+msgid "Submit"
+msgstr ""
+
+#: ./browser/configure.zcml:30
+msgid "System Ajax view"
+msgstr ""
+
+#: ./profiles/default/controlpanel.xml
+msgid "System settings"
+msgstr ""
+
+#: ./browser/ajax_listing.py:1204
+msgid "Thank you! Your data  will be update in back end DB."
+msgstr ""
+
+#: ./browser/ajax_listing.py:1166
+msgid "Your data  has been deleted."
+msgstr ""
+
+#: ./browser/controlpanel.py:9
+#: ./browser/interfaces.py:149
+msgid "automatic create content types list"
+msgstr ""
+
+#: ./browser/interfaces.py:85
+msgid "bing ren"
+msgstr ""
+
+#: ./browser/interfaces.py:86
+msgid "bing ren qing dan"
+msgstr ""
+
+#: ./profiles/default/types/cms.db.bingren.xml
+msgid "bingren"
+msgstr ""
+
+#: ./profiles/default/types/cms.db.bingrenfolder.xml
+msgid "bingren folder"
+msgstr ""
+
+#: ./profiles/default/types/cms.db.bingren.xml
+msgid "bingren xiangxi shuoming"
+msgstr ""
+
+#: ./browser/templates/chufang_listings.pt:37
+msgid "chu fang"
+msgstr ""
+
+#: ./browser/interfaces.py:37
+msgid "chu fang shi jian"
+msgstr ""
+
+#: ./profiles/default/types/cms.db.chufang.xml
+msgid "chufang"
+msgstr ""
+
+#: ./profiles/default/types/cms.db.chufangfolder.xml
+msgid "chufang folder"
+msgstr ""
+
+#: ./profiles/default/types/cms.db.chufang.xml
+msgid "chufang xiangxi shuoming"
+msgstr ""
+
+#: ./browser/interfaces.py:105
+#: ./orm.py:465
+msgid "dan wei"
+msgstr ""
+
+#: ./profiles/default/types/cms.db.danwei.xml
+msgid "danwei"
+msgstr ""
+
+#: ./profiles/default/types/cms.db.danweifolder.xml
+msgid "danwei folder"
+msgstr ""
+
+#: ./profiles/default/types/cms.db.danwei.xml
+msgid "danwei xiangxi shuoming"
+msgstr ""
+
+#: ./browser/templates/messagebox_listing.pt:35
+#: ./browser/templates/workspace.pt:70
+msgid "date"
+msgstr ""
+
+#: ./profiles/default/types/cms.db.ormfolder.xml
+msgid "db map folder"
+msgstr ""
+
+#: ./browser/ajax_listing.py:1977
+msgid "delete bing ren data"
+msgstr ""
+
+#: ./browser/ajax_listing.py:1706
+msgid "delete chu fang data"
+msgstr ""
+
+#: ./browser/ajax_listing.py:2515
+msgid "delete dan wei data"
+msgstr ""
+
+#: ./browser/ajax_listing.py:2266
+msgid "delete dan wei di zhi data"
+msgstr ""
+
+#: ./browser/ajax_listing.py:2142
+msgid "delete di zhi data"
+msgstr ""
+
+#: ./browser/ajax_listing.py:2391
+msgid "delete ge ren di zhi data"
+msgstr ""
+
+#: ./browser/ajax_listing.py:1580
+msgid "delete jing luo data"
+msgstr ""
+
+#: ./browser/ajax_listing.py:1404
+msgid "delete yao data"
+msgstr ""
+
+#: ./browser/ajax_listing.py:1277
+msgid "delete yao wei data"
+msgstr ""
+
+#: ./browser/ajax_listing.py:1130
+msgid "delete yao xing data"
+msgstr ""
+
+#: ./browser/ajax_listing.py:2657
+msgid "delete yi sheng data"
+msgstr ""
+
+#: ./browser/interfaces.py:95
+#: ./orm.py:386
+msgid "di zhi"
+msgstr ""
+
+#: ./orm.py:428
+msgid "dian hua"
+msgstr ""
+
+#: ./orm.py:243
+msgid "foreagn key link to chufang"
+msgstr ""
+
+#: ./orm.py:462
+msgid "foreagn key link to danwei"
+msgstr ""
+
+#: ./orm.py:379
+msgid "foreagn key link to dizhi"
+msgstr ""
+
+#: ./orm.py:125
+msgid "foreagn key link to wei"
+msgstr ""
+
+#: ./orm.py:240
+msgid "foreagn key link to yao"
+msgstr ""
+
+#: ./orm.py:128
+msgid "foreagn key link to yao xing"
+msgstr ""
+
+#: ./orm.py:187
+msgid "foreagn key link to yisheng"
+msgstr ""
+
+#: ./orm.py:335
+msgid "gong zhong hao"
+msgstr ""
+
+#: ./browser/interfaces.py:136
+#: ./orm.py:150
+msgid "gui jing"
+msgstr ""
+
+#: ./orm.py:287
+msgid "guo jia"
+msgstr ""
+
+#: ./behaviors/belowcontentfile.py:18
+msgid "help_attachfile"
+msgstr ""
+
+#: ./orm.py:196
+msgid "ji liang"
+msgstr ""
+
+#: ./orm.py:300
+msgid "jie dao"
+msgstr ""
+
+#: ./profiles/default/types/cms.db.jingluo.xml
+msgid "jingluo"
+msgstr ""
+
+#: ./profiles/default/types/cms.db.jingluo.xml
+msgid "jingluo xiangxi shuoming"
+msgstr ""
+
+#. Default: "attach file below content body"
+#: ./behaviors/belowcontentfile.py:17
+msgid "label_attachfile"
+msgstr ""
+
+#: ./orm.py:431
+msgid "lei xing"
+msgstr ""
+
+#: ./browser/interfaces.py:40
+msgid "mai xiang"
+msgstr ""
+
+#: ./orm.py:86
+msgid "ming cheng"
+msgstr ""
+
+#: ./browser/templates/messagebox_listing.pt:33
+#: ./browser/templates/workspace.pt:69
+msgid "name"
+msgstr ""
+
+#: ./vocabulary.py:15
+msgid "nan"
+msgstr ""
+
+#: ./vocabulary.py:15
+msgid "nv"
+msgstr ""
+
+#: ./browser/templates/messagebox_listing.pt:37
+#: ./browser/templates/workspace.pt:72
+msgid "operates"
+msgstr ""
+
+#: ./browser/interfaces.py:62
+msgid "pao zhi"
+msgstr ""
+
+#: ./browser/templates/messagebox_listing.pt:27
+msgid "personal message box information"
+msgstr ""
+
+#: ./browser/templates/messagebox_listing.pt:34
+msgid "sender"
+msgstr ""
+
+#: ./browser/interfaces.py:43
+msgid "she xiang"
+msgstr ""
+
+#: ./orm.py:292
+msgid "sheng(state)"
+msgstr ""
+
+#: ./orm.py:296
+msgid "shi (city)"
+msgstr ""
+
+#: ./browser/templates/messagebox_listing.pt:36
+msgid "status"
+msgstr ""
+
+#: ./orm.py:33
+msgid "table primary key"
+msgstr ""
+
+#: ./orm.py:138
+msgid "tongchang yongliang"
+msgstr ""
+
+#: ./browser/interfaces.py:148
+msgid "types"
+msgstr ""
+
+#: ./browser/ajax_listing.py:2073
+msgid "update bing ren data"
+msgstr ""
+
+#: ./browser/ajax_listing.py:1830
+msgid "update chu fang data"
+msgstr ""
+
+#: ./browser/ajax_listing.py:2594
+msgid "update dan wei data"
+msgstr ""
+
+#: ./browser/ajax_listing.py:2347
+msgid "update danwei dizhi data"
+msgstr ""
+
+#: ./browser/ajax_listing.py:2223
+msgid "update di zhi data"
+msgstr ""
+
+#: ./browser/ajax_listing.py:2471
+msgid "update ge ren di zhi data"
+msgstr ""
+
+#: ./browser/ajax_listing.py:1662
+msgid "update jingluo data"
+msgstr ""
+
+#: ./browser/ajax_listing.py:1502
+msgid "update yao data"
+msgstr ""
+
+#: ./browser/ajax_listing.py:1360
+msgid "update yao wei data"
+msgstr ""
+
+#: ./browser/ajax_listing.py:1222
+msgid "update yao xing data"
+msgstr ""
+
+#: ./browser/ajax_listing.py:2738
+msgid "update yi sheng data"
+msgstr ""
+
+#: ./orm.py:332
+msgid "wang zhi"
+msgstr ""
+
+#: ./orm.py:36
+msgid "wu wei qizhong zhi yiwei"
+msgstr ""
+
+#: ./profiles/default/types/cms.db.wuyun.xml
+msgid "wuyun"
+msgstr ""
+
+#: ./profiles/default/types/cms.db.wuyunfolder.xml
+msgid "wuyun folder"
+msgstr ""
+
+#: ./profiles/default/types/cms.db.wuyun.xml
+msgid "wuyun xiangxi shuoming"
+msgstr ""
+
+#: ./orm.py:420
+msgid "xing bie"
+msgstr ""
+
+#: ./orm.py:416
+msgid "xing ming"
+msgstr ""
+
+#: ./browser/interfaces.py:32
+#: ./profiles/default/types/cms.db.yao.xml
+msgid "yao"
+msgstr ""
+
+#: ./profiles/default/types/cms.db.yaofolder.xml
+msgid "yao folder"
+msgstr ""
+
+#: ./browser/interfaces.py:59
+msgid "yao liang"
+msgstr ""
+
+#: ./browser/interfaces.py:75
+msgid "yao qingdan"
+msgstr ""
+
+#: ./browser/interfaces.py:76
+msgid "yao qingdan data row"
+msgstr ""
+
+#: ./browser/interfaces.py:125
+#: ./orm.py:142
+msgid "yao wei"
+msgstr ""
+
+#: ./profiles/default/types/cms.db.yao.xml
+msgid "yao xiangxi shuoming"
+msgstr ""
+
+#: ./browser/interfaces.py:130
+#: ./orm.py:61
+msgid "yao xing"
+msgstr ""
+
+#: ./profiles/default/types/cms.db.yaowei.xml
+msgid "yaowei"
+msgstr ""
+
+#: ./profiles/default/types/cms.db.yaowei.xml
+msgid "yaowei xiangxi shuoming"
+msgstr ""
+
+#: ./profiles/default/types/cms.db.yaoxing.xml
+msgid "yaoxing"
+msgstr ""
+
+#: ./profiles/default/types/cms.db.yaoxing.xml
+msgid "yaoxing xiangxi shuoming"
+msgstr ""
+
+#: ./browser/interfaces.py:70
+msgid "yi sheng"
+msgstr ""
+
+#: ./profiles/default/types/cms.db.yisheng.xml
+msgid "yisheng"
+msgstr ""
+
+#: ./profiles/default/types/cms.db.yishengfolder.xml
+msgid "yisheng folder"
+msgstr ""
+
+#: ./profiles/default/types/cms.db.yisheng.xml
+msgid "yisheng xiangxi shuoming"
+msgstr ""
+
+#: ./browser/interfaces.py:46
+msgid "zhu su"
+msgstr ""
+
+#: ./orm.py:134
+msgid "zhu zhi"
+msgstr ""

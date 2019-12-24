@@ -9,13 +9,12 @@
 <metal:main fill-slot="main">
     <tal:main-macro metal:define-macro="main">
     <div id="workspace" class="container-fluid"
-    	tal:define="p python:context.absolute_url();
-    			    toc python:False;">      	
+    	tal:define="p python:context.absolute_url()">      	
      <div class="row row-1">         
        <div class="col-xs-12 col-md-12">
-       	<h3 class="title text-center">context.title</h3>
+       	<h3 class="title text-center">context/title</h3>
         <ul id="subject" tal:condition="tags" tal:define="tags python:view.getags()" tal:content="structure python:tags" />       	
-       	<p class="description">context.description</p>
+       	<p class="description">context/description</p>
        </div>
      </div>
      <div class="row row-2 details">         
@@ -24,8 +23,9 @@
           tal:condition="context/text"
           tal:content="structure python:context.text.output_relative_to(view.context)"
           tal:attributes="class python:  'pat-autotoc' or ''">
-        </div>
-     </div>
+         </div>
+       </div>
+     </div>     
      <div class="row row-3 report">         
        <div class="col-xs-12 col-md-12">
          <div id="parent-fieldname-report"
