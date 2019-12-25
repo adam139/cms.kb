@@ -10,8 +10,8 @@ use msdb;
 from:甲子
 to:癸亥
 id :
-initial value :0 
-end value:59
+initial value :1 
+end value:60
 */
 create table if not exists nianganzhi (
     id integer unsigned not null auto_increment primary key,
@@ -23,6 +23,8 @@ create table if not exists nianganzhi (
     keyun varchar(128) not null,
     zhuqi varchar(128) not null,
     keqi varchar(128) not null,
+    jialin varchar(128) not null,    
+    jiaosi varchar(128) not null,
     index showing_ganzhi(ganzhi)
 ) engine=InnoDB DEFAULT CHARSET=utf8;
 

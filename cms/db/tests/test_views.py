@@ -183,6 +183,7 @@ class TestView(unittest.TestCase):
         self.assertTrue("here is title" in browser.contents)
         self.assertTrue(u"here is description" in browser.contents)               
         self.assertTrue("here is report" in browser.contents)
-#         self.assertTrue( "桂枝汤" in browser.contents)
+#         import pdb
+#         pdb.set_trace()
         self.assertTrue( "土运不及" in browser.contents)
         self.assertTrue( "厥阴风木" in browser.contents)                                 

@@ -2,6 +2,7 @@
 from plone import api
 from z3c.form import field
 import json
+import datetime
 from zope.event import notify
 from Acquisition import aq_inner
 from Acquisition import aq_parent
@@ -261,6 +262,31 @@ class WuYunView(BaseView):
         # Hide the editable-object border
         self.request.set('disable_border', True)
         
+    def closed30nianfen(self,id):
+        "由干支序号id,取最近30年同干支年份"
+        
+        _id = long(id)
+        locator = queryUtility(IDbapi, name='nianganzhi')                
+        ganzhi = locator.getByCode(_id).ganzhi        
+        nlist = []
+#         nlist.append(u"%s:" % ganzhi)
+        wuyun = u"年五运六气".encode('utf-8')
+        for j in self.ganzhi_generator(_id):
+            nlist.append("%s%s" % (j,wuyun))
+        return "%s:%s" %(ganzhi, ",".join(nlist))    
+        
+        
+    def ganzhi_generator(self,id):
+        from cms.db.browser.utility import gonglinian2ganzhi
+        jinnian = int(datetime.datetime.today().strftime("%Y"))
+        for j in xrange(jinnian-60,jinnian+61):
+            if gonglinian2ganzhi(j)==id:
+                yield j
+            else:
+                continue
+        
+
+    
     def get_dayun(self,id):
         
         _id = long(id)
@@ -292,6 +318,7 @@ class WuYunView(BaseView):
         rder = locator.getByCode(_id)
         zhuqi = rder.zhuqi.split(",")
         keqi = rder.keqi.split(",")
+        jialin = rder.jialin.split(",")
         out = []
         dayun = """<tr>
         <td>%s</td>
@@ -310,28 +337,15 @@ class WuYunView(BaseView):
                u"五之气", 
                u"终之气"                                                                           
                )
-        out.append(dayun) 
-        prefix = "<tr><td>%s</td>" % u"主气".encode('utf-8')
-        postfix = "</tr>"
-        lt = []
-        lt.append(prefix)
-        for i in zhuqi:
-            item = "<td>%s</td>" % i
-            lt.append(item)
-        lt.append(postfix)
-        out.append(''.join(lt))         
-        prefix = "<tr><td>%s</td>" % u"客气".encode('utf-8')
-        postfix = "</tr>"
-        lt = []
-        lt.append(prefix)
-        for i in keqi:
-            item = "<td>%s</td>" % i
-            lt.append(item)
-        lt.append(postfix)               
-        out.append(''.join(lt))        
-        return ''.join(out)        
-
-    
+        out.append(dayun)
+        tr = self.strlist2tr(zhuqi,u"主气")
+        out.append(tr)
+        tr = self.strlist2tr(keqi,u"客气")
+        out.append(tr)
+        tr = self.strlist2tr(jialin,u"加临")
+        out.append(tr)                
+        return ''.join(out)
+        
     def get_zhuyun_keyun(self,id):
         
         _id = long(id)
@@ -339,26 +353,36 @@ class WuYunView(BaseView):
         rder = locator.getByCode(_id)
         zhuyun = rder.zhuyun.split(",")
         keyun = rder.keyun.split(",")
+        jiaosi = rder.jiaosi.split(",")
         out = []
         dayun = """<tr><td>%s</td><td colspan="5">%s</td></tr>
         """ % (u"大运".encode('utf-8'),self.get_dayun(_id))
         out.append(dayun) 
-        prefix = "<tr><td>%s</td>" % u"主运".encode('utf-8')
-        postfix = "</tr>"
+        tr = self.strlist2tr(zhuyun,u"主运")
+        out.append(tr)
+        tr = self.strlist2tr(keyun,u"客运")
+        out.append(tr)
+        tr = self.strlist2tr(jiaosi,u"交司")
+        out.append(tr)                                
+        return ''.join(out)
+    
+    def strlist2tr(self,strlist,title):
+        "将一个list 数据转换 html的 tr"
+        
+        from Products.CMFPlone.utils import safe_unicode
+        title = safe_unicode(title)
+        prefix = u"<tr><td>%s</td>" % title
+        postfix = u"</tr>"
         lt = []
         lt.append(prefix)
-        for i in zhuyun:
+        for i in strlist:
             item = "<td>%s</td>" % i
             lt.append(item)
         lt.append(postfix)
-        out.append(''.join(lt))         
-        prefix = "<tr><td>%s</td>" % u"客运".encode('utf-8')
-        postfix = "</tr>"
-        lt = []
-        lt.append(prefix)
-        for i in keyun:
-            item = "<td>%s</td>" % i
-            lt.append(item)
-        lt.append(postfix)               
-        out.append(''.join(lt))        
-        return ''.join(out)                                                     
+        return ''.join(lt)
+            
+        
+        
+        
+                                                             
+

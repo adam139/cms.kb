@@ -24,6 +24,16 @@ class UnrestrictedUser(BaseUnrestrictedUser):
         """
         return self.getUserName()
 
+
+def gonglinian2ganzhi(nian):
+    "公历年份转干支"
+    yu = int(nian) % 60
+    if yu >4:
+        id = yu - 4 + 1
+    else:
+        id = yu + 60 - 4 + 1
+    return id
+
 def execute_under_special_role(portal, role, function, *args, **kwargs):
     """ Execute code under special role privileges.
 

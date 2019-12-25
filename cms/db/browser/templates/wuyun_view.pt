@@ -23,7 +23,7 @@
        	司天;
        	<span class="zaiquan" tal:content="structure python:view.get_zaiquan(context.id)">zaiquan</span>	
        	在泉。</p>
-       	<p class="description" tal:content="python:context.description">context.description</p>
+       	<p class="description" tal:content="python:view.closed30nianfen(context.id)">context.description</p>
        </div>
      </div>
      <div class="row row-2 yun">         
