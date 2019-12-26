@@ -3,6 +3,7 @@ import sys
 from datetime import datetime
 from zope import schema
 from cms.db.events import RecorderCreated
+from cms.db.events import RecorderDeleted
 from zope import event
 from zope.interface import implements
 #sqlarchemy
@@ -445,6 +446,7 @@ class Dbapi(object):
                 recorder = self.getByCode(id)                
                 session.delete(recorder)
                 session.commit()
+                self.fire_event(RecorderDeleted,recorder)
                 rt = True
             except:
                 session.rollback()

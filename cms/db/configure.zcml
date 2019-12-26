@@ -21,6 +21,10 @@
     	for="cms.db.interfaces.IRecorderCreated"
     	handler=".handlers.recorder_created_handler"
     />
+   <subscriber
+    	for="cms.db.interfaces.IRecorderDeleted"
+    	handler=".handlers.recorder_deleted_handler"
+    />    
                         				
   <genericsetup:registerProfile
       name="default"

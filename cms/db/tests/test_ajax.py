@@ -39,7 +39,8 @@ class TestView(unittest.TestCase):
         portal['folder'].invokeFactory('cms.db.chufangfolder', 'chufangfolder')
         portal['folder'].invokeFactory('cms.db.bingrenfolder', 'bingrenfolder')
         portal['folder'].invokeFactory('cms.db.yishengfolder', 'yishengfolder')
-        portal['folder'].invokeFactory('cms.db.danweifolder', 'danweifolder')      
+        portal['folder'].invokeFactory('cms.db.danweifolder', 'danweifolder')
+        portal['folder'].invokeFactory('cms.db.wuyunfolder', 'wuyunfolder')      
         self.portal = portal
 
     def tearDown(self):

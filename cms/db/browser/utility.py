@@ -12,7 +12,8 @@ CONTAINER2TYPES = {'cms.db.yao':"cms.db.yaofolder",
                    'cms.db.chufang':"cms.db.chufangfolder",
                    'cms.db.bingren':"cms.db.bingrenfolder",
                    'cms.db.yisheng':"cms.db.yishengfolder",
-                   'cms.db.danwei':"cms.db.danweifolder",                                      
+                   'cms.db.danwei':"cms.db.danweifolder",
+                   'cms.db.wuyun':"cms.db.wuyunfolder",                                       
                    }
 
 

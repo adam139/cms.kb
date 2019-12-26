@@ -1,5 +1,6 @@
 #-*- coding: UTF-8 -*-
 from zope.interface import Interface
+from zope.interface import implementer
 from zope.schema import getFieldsInOrder
 from zope.component import getMultiAdapter
 import json
@@ -12,6 +13,9 @@ from plone.memoize.instance import memoize
 from Products.Five.browser import BrowserView
 from plone.directives import form
 from z3c.form import field, button
+from z3c.form.interfaces import IFieldsAndContentProvidersForm
+from z3c.form.contentprovider import ContentProviders
+from cms.db.browser.content_providers import BingRenExtendedHelp
 from Products.statusmessages.interfaces import IStatusMessage
 from cms.db.interfaces import InputError
 from zope.component import queryUtility
@@ -1091,7 +1095,7 @@ class NianGanZhiAjaxsearch(YaoXingAjaxsearch):
         outhtml = ""
         k = 0
         contexturl = self.context.absolute_url()
-        base = get_container_by_type("cms.db.yisheng").getURL()        
+        base = get_container_by_type("cms.db.wuyun").getURL()        
         if self.searchview().canbeInput:        
             for i in resultDicLists:
                 out = """<tr class="text-left">
@@ -2015,11 +2019,18 @@ class DeleteBingRen(DeleteYaoXing):
         IStatusMessage(self.request).add(confirm, type='info')
         self.request.response.redirect(self.context.absolute_url() + '/@@bingren_listings')
 
+@implementer(IFieldsAndContentProvidersForm)
 class InputBingRen(InputYaoXing):
     """input db bingren table data
     """
 
     label = _(u"Input bing ren data")
+    contentProviders = ContentProviders()
+#     contentProviders = ContentProviders(['bingreninputHelp'])
+    contentProviders['bingreninputHelp'] = BingRenExtendedHelp
+#     import pdb
+#     pdb.set_trace()
+    contentProviders['bingreninputHelp'].position = 1
     fields = field.Fields(IBingRenUI).omit('id','type')
 
     def update(self):

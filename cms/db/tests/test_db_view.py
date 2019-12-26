@@ -241,6 +241,7 @@ class TestView(unittest.TestCase):
         browser.getControl(name=u"form.widgets.wangzhi").value = u"www.21cn.com"
         browser.getControl(name=u"form.widgets.gongzhonghao").value = u"zhongyi3"                        
         # Submit
+
         browser.getControl(u"Submit").click()
         suan = Session.query(DanWeiDiZhi).filter(DanWeiDiZhi.shi==u"长沙市").all()
         self.assertEqual(len(suan),1)
@@ -310,6 +311,8 @@ class TestView(unittest.TestCase):
         browser.getControl(name=u"form.widgets.shengri").value =  "2015-09-12"
         browser.getControl(name=u"form.widgets.dianhua").value = "13873265859"                        
         # Submit
+        import pdb
+        pdb.set_trace()        
         browser.getControl(u"Submit").click()
         suan = Session.query(BingRen).join(GeRenDiZhi).filter(and_(GeRenDiZhi.jiedao=="湘潭县云湖桥镇北岸村道林组83号",BingRen.xingming=="张dong")).all()
         self.assertEqual(len(suan),1)

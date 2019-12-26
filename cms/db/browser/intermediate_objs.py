@@ -165,5 +165,6 @@ class EditYao_ChuFang_AssoUI(object):
         self.yaoliang = yaoliang
         self.paozhi = paozhi
 
-        
+
+
                                  

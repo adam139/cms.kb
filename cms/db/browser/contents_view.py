@@ -355,7 +355,7 @@ class WuYunView(BaseView):
         keyun = rder.keyun.split(",")
         jiaosi = rder.jiaosi.split(",")
         out = []
-        dayun = """<tr><td>%s</td><td colspan="5">%s</td></tr>
+        dayun = """<tr><td>%s</td><td class="text-center" colspan="5">%s</td></tr>
         """ % (u"大运".encode('utf-8'),self.get_dayun(_id))
         out.append(dayun) 
         tr = self.strlist2tr(zhuyun,u"主运")

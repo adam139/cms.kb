@@ -47,6 +47,38 @@ def recorder_created_handler(event):
         return
                 
 
+def recorder_deleted_handler(event):
+    """relative db has been deleted a recorder,
+    This handler operate the event"""
+                   
+    id = str(event.id)
+    cls = event.cls
+#     title = safe_unicode(event.ttl)
+
+    #find parent container through cls
+    container = get_container_by_type(cls).getObject()
+    if bool(container):
+        # check id if is existed
+        try:
+            wk = container[id]
+        except:
+            wk = None
+        if not bool(wk):
+            raise("the object has't  been existed")
+            return       
+    #call create object function        
+        # bypass permission check
+        old_sm = getSecurityManager()
+        portal = api.portal.get()
+        tmp_user = UnrestrictedUser(old_sm.getUser().getId(),'', ['Manager'],'')        
+        tmp_user = tmp_user.__of__(portal.acl_users)
+        newSecurityManager(None, tmp_user)
+        api.content.delete(obj=wk, check_linkintegrity=False)        
+
+#         chown(item,userid)
+        # recover old sm
+        setSecurityManager(old_sm)
+        return
       
 
 

@@ -3,6 +3,7 @@ from plone import api
 from zope import interface
 from zope.component import getUtility
 from cms.db.interfaces import IRecorderCreated
+from cms.db.interfaces import IRecorderDeleted
 
 # we use this constant just for command line test
 TYPES_LIST = ['cms.db.yao',
@@ -58,5 +59,7 @@ class EventFilter(object):
 class RecorderCreated(EventFilter):
     interface.implements(IRecorderCreated)
     
-    
+
+class RecorderDeleted(EventFilter):
+    interface.implements(IRecorderDeleted)    
     
