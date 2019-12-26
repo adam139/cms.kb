@@ -16,6 +16,8 @@ from z3c.form import field, button
 from z3c.form.interfaces import IFieldsAndContentProvidersForm
 from z3c.form.contentprovider import ContentProviders
 from cms.db.browser.content_providers import BingRenExtendedHelp
+from cms.db.browser.content_providers import YiShengExtendedHelp
+from cms.db.browser.content_providers import DanWeiExtendedHelp
 from Products.statusmessages.interfaces import IStatusMessage
 from cms.db.interfaces import InputError
 from zope.component import queryUtility
@@ -2026,12 +2028,9 @@ class InputBingRen(InputYaoXing):
 
     label = _(u"Input bing ren data")
     contentProviders = ContentProviders()
-#     contentProviders = ContentProviders(['bingreninputHelp'])
     contentProviders['bingreninputHelp'] = BingRenExtendedHelp
-#     import pdb
-#     pdb.set_trace()
-    contentProviders['bingreninputHelp'].position = 1
-    fields = field.Fields(IBingRenUI).omit('id','type')
+    contentProviders['bingreninputHelp'].position = 0
+    fields = field.Fields(IBingRenUI).omit('id','type','dizhi_id')
 
     def update(self):
         self.request.set('disable_border', True)
@@ -2557,11 +2556,15 @@ class DeleteDanWei(DeleteYaoXing):
         IStatusMessage(self.request).add(confirm, type='info')
         self.request.response.redirect(self.context.absolute_url() + '/@@danwei_listings')
 
+@implementer(IFieldsAndContentProvidersForm)
 class InputDanWei(InputYaoXing):
     """input dan wei table data
     """
 
     label = _(u"Input dan wei data")
+    contentProviders = ContentProviders()
+    contentProviders['danweiinputHelp'] = DanWeiExtendedHelp
+    contentProviders['danweiinputHelp'].position = 0    
     fields = field.Fields(IDanWeiUI).omit('id','dizhi_id')
 
     @button.buttonAndHandler(_(u"Submit"))
@@ -2699,11 +2702,15 @@ class DeleteYiSheng(DeleteYaoXing):
         IStatusMessage(self.request).add(confirm, type='info')
         self.request.response.redirect(self.context.absolute_url() + '/@@yisheng_listings')
 
+@implementer(IFieldsAndContentProvidersForm)
 class InputYiSheng(InputYaoXing):
     """input db yisheng table data
     """
 
     label = _(u"Input yi sheng data")
+    contentProviders = ContentProviders()
+    contentProviders['yishenginputHelp'] = YiShengExtendedHelp
+    contentProviders['yishenginputHelp'].position = 0    
     fields = field.Fields(IYiShengUI).omit('id','danwei_id','type')
 
     @button.buttonAndHandler(_(u"Submit"))
