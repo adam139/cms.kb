@@ -4,7 +4,8 @@ import sqlalchemy.schema
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import relationship, backref
 from sqlalchemy.dialects import mysql
-from sqlalchemy import Column, String, Integer, Date, DateTime, Boolean, Table, func
+from sqlalchemy import Column, String, Integer, Float 
+from sqlalchemy import Date, DateTime, Boolean, Table, func
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.ext.automap import automap_base
 from sqlalchemy import MetaData
@@ -137,7 +138,15 @@ class IYao(Interface):
     yongliang = schema.Int(
             title=_(u"tongchang yongliang"),
             required = False,
-        )    
+        )
+    danjia = schema.Float(
+            title=_(u"dan jia"),
+            required = False,
+        )
+    kucun = schema.Int(
+            title=_(u"ku cun"),
+            required = False,
+        )        
     yaowei = schema.Object(
             title=_(u"yao wei"),
             schema=IYaoWei,
@@ -163,16 +172,21 @@ class Yao(Base):
     mingcheng = Column(String(4))
     zhuzhi = Column(String(64))
     yongliang = Column(Integer)
+    danjia = Column(Float(precision='8,2'))
+    kucun = Column(Integer)
     yaowei = relationship("YaoWei", backref="yaoes")
     yaoxing = relationship("YaoXing", backref="yaoes")
     guijing = relationship("JingLuo",secondary=Yao_JingLuo_Asso)    
 #     guijing = relationship("JingLuo",lazy='subquery', secondary=Yao_JingLuo_Asso,
 #                            backref=backref("yaoes",lazy='subquery'))    
 
-    def __init__(self, mingcheng=None,zhuzhi=None,yongliang=None):
+    def __init__(self, mingcheng=None,zhuzhi=None,yongliang=None,
+                 danjia=None,kucun=None):
         self.mingcheng = mingcheng
         self.zhuzhi = zhuzhi
         self.yongliang = yongliang
+        self.danjia = danjia
+        self.kucun = kucun
 
  
 ###处方

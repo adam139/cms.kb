@@ -337,13 +337,31 @@ class WuYunView(BaseView):
                u"五之气", 
                u"终之气"                                                                           
                )
+        liuqijiaosi = """<tr>
+        <td>%s</td>
+        <td>%s</td>
+        <td>%s</td>
+        <td>%s</td>
+        <td>%s</td>
+        <td>%s</td>
+        <td>%s</td>
+        </tr>
+        """ % (u"交司时段",
+               u"大寒-惊蛰",
+               u"春分-立夏",
+               u"小满-小暑",
+               u"大暑-白露",
+               u"秋分-立冬", 
+               u"小雪-小寒"                                                                           
+               )        
         out.append(dayun)
         tr = self.strlist2tr(zhuqi,u"主气")
         out.append(tr)
         tr = self.strlist2tr(keqi,u"客气")
         out.append(tr)
         tr = self.strlist2tr(jialin,u"加临")
-        out.append(tr)                
+        out.append(tr)
+        out.append(liuqijiaosi)                
         return ''.join(out)
         
     def get_zhuyun_keyun(self,id):

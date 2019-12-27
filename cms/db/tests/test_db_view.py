@@ -174,7 +174,9 @@ class TestView(unittest.TestCase):
         browser.getControl(name=u"form.widgets.mingcheng").value = u"牛膝"         
 #         browser.getControl(name=u"form.widgets.guijing.to").value = [str(jingluo_id)] 
         browser.getControl(name=u"form.widgets.zhuzhi").value = u"引气血下行"
-        browser.getControl(name=u"form.widgets.yongliang").value = str(30)        
+        browser.getControl(name=u"form.widgets.yongliang").value = str(30)
+        browser.getControl(name=u"form.widgets.danjia").value = str(0.50)
+        browser.getControl(name=u"form.widgets.kucun").value = str(3000)        
         # Submit
         browser.getControl(u"Submit").click()        
         suan = Session.query(Yao).filter(Yao.mingcheng==u"牛膝").all()
