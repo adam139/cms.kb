@@ -19,6 +19,10 @@ def recorder_created_handler(event):
                    
     id = str(event.id)
     cls = event.cls
+    postfix = cls.split(".")[-1]
+    
+    if postfix in ["yaowei","yaoxing","jingluo"]:
+        id = "%s%s" % (postfix,id)
     title = safe_unicode(event.ttl)
 #     import pdb
 #     pdb.set_trace()

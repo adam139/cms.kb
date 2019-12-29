@@ -44,7 +44,6 @@ def execute_under_special_role(portal, role, function, *args, **kwargs):
             doSomeNormallyNotAllowedStuff,
             source_folder, target_folder)
 
-
     @param portal: Reference to ISiteRoot object whose access controls we are using
 
     @param function: Method to be called with special privileges
@@ -57,7 +56,6 @@ def execute_under_special_role(portal, role, function, *args, **kwargs):
     """
 
     sm = getSecurityManager()
-
     try:
         try:
             # Clone the current user and assign a new role.

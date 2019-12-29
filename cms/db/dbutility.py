@@ -11,7 +11,8 @@ yaowei = Dbapi(Session,'cms.db.orm','yaowei',YaoWei)
 # jingluo table       
 jingluo = Dbapi(Session,'cms.db.orm','jingluo',JingLuo)
 dizhi = Dbapi(Session,'cms.db.orm','dizhi',DiZhi)
-gerendizhi = Dbapi(Session,'cms.db.orm','gerendizhi',GeRenDiZhi)
+search_clmns = ['jiedao','shi']
+gerendizhi = Dbapi(Session,'cms.db.orm','gerendizhi',GeRenDiZhi,fullsearch_clmns=search_clmns)
 danweidizhi = Dbapi(Session,'cms.db.orm','danweidizhi',DanWeiDiZhi)
 yao =  Dbapi(Session,'cms.db.orm','yao',Yao)
 chufang = Dbapi(Session,'cms.db.orm','chufang',ChuFang)
@@ -40,6 +41,21 @@ def map_yao_chufang_list(recorder):
         return ",".join([mingcheng,yaoliang,paozhi])
     else:                
         return ",".join([mingcheng,yaoliang])
+
+def map_yao_chufang_total(recorder):
+    "chufang's base_view map function,"
+    "provide a total output format"
+    "parameter:recorder is a association table object recorder"
+
+    yao_id = recorder.yao_id
+    yao = Session.query(Yao).filter(Yao.id ==yao_id).one()
+    danjia = getattr(yao,'danjia',0)
+
+    yaoliang = recorder.yaoliang
+    if bool(danjia):
+        xiaoji = str(yaoliang * danjia)
+        return xiaoji
+    return str(0.00)
 
 def map_yao_chufang_table(recorder):
     "chufang's base_view map function,"

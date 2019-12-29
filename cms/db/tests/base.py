@@ -36,11 +36,11 @@ def inputvalues():
         jingluo5 = JingLuo("足少阴肾经")
         jingluo6 = JingLuo("足太阴脾经")
         Session.add_all([jingluo1,jingluo2,jingluo3,jingluo4,jingluo5,jingluo6])
-        yao1 = Yao("白芍")
+        yao1 = Yao("白芍","降胆火",15,0.3,600)
         yao1.yaowei = yaowei1
         yao1.yaoxing = yaoxing1
         yao1.guijing = [jingluo1]         
-        yao2 = Yao("桂枝")
+        yao2 = Yao("桂枝","升发",15,0.27,800)
         yao2.yaowei = yaowei2
         yao2.yaoxing = yaoxing2
         yao2.guijing = [jingluo2]

@@ -307,14 +307,13 @@ class TestView(unittest.TestCase):
         browser.open("%s/@@input_bingren" % base)
         dizhi_id = Session.query(GeRenDiZhi).filter(GeRenDiZhi.jiedao=="湘潭县云湖桥镇北岸村道林组83号").first().id      
         # Fill in the form        
-        browser.getControl(name=u"form.widgets.dizhi_id").value = str(dizhi_id)               
+        browser.getControl(name=u"form.widgets.dizhi:list").value = [str(dizhi_id)]               
         browser.getControl(name=u"form.widgets.xingming").value = "张dong"
         browser.getControl(name=u"form.widgets.xingbie:list").value = ['1']
         browser.getControl(name=u"form.widgets.shengri").value =  "2015-09-12"
         browser.getControl(name=u"form.widgets.dianhua").value = "13873265859"                        
         # Submit
-        import pdb
-        pdb.set_trace()        
+       
         browser.getControl(u"Submit").click()
         suan = Session.query(BingRen).join(GeRenDiZhi).filter(and_(GeRenDiZhi.jiedao=="湘潭县云湖桥镇北岸村道林组83号",BingRen.xingming=="张dong")).all()
         self.assertEqual(len(suan),1)

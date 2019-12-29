@@ -12,17 +12,16 @@
     	tal:define="p python:context.absolute_url()">      	
      <div class="row row-1">         
        <div class="col-xs-12 col-md-12">
-       	<h3 class="title text-center">context/title</h3>
+       	<h3 class="title text-center" tal:content="python:context.title">context/title</h3>
         <ul id="subject" tal:condition="tags" tal:define="tags python:view.getags()" tal:content="structure python:tags" />       	
-       	<p class="description">context/description</p>
+       	<p class="description" tal:content="python:context.description">context/description</p>
        </div>
      </div>
      <div class="row row-2 details">         
        <div class="col-xs-12 col-md-12">
          <div id="parent-fieldname-text"
           tal:condition="context/text"
-          tal:content="structure python:context.text.output_relative_to(view.context)"
-          tal:attributes="class python:  'pat-autotoc' or ''">
+          tal:content="structure python:context.text.output_relative_to(view.context)">
          </div>
        </div>
      </div>     
@@ -30,8 +29,7 @@
        <div class="col-xs-12 col-md-12">
          <div id="parent-fieldname-report"
           tal:condition="context/report"
-          tal:content="structure python:context.report.output_relative_to(view.context)"
-          tal:attributes="class python:  'pat-autotoc' or ''">
+          tal:content="structure python:context.report.output_relative_to(view.context)">
         </div>      	
       </div>
      </div>          
@@ -40,8 +38,7 @@
          <div id="chufang"
           tal:define="relative python:view.relative_chufang(context.id)"
           tal:condition="relative"
-          tal:content="structure relative"
-          tal:attributes="class python:  'pat-autotoc' or ''">
+          tal:content="structure relative">
         </div>      	
       </div>
      </div>

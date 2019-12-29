@@ -8,7 +8,7 @@
 <body>
 <metal:main fill-slot="main">
     <tal:main-macro metal:define-macro="main">
-    <div id="workspace" class="container-fluid"
+    <div id="yaowei" class="container-fluid"
     	tal:define="p python:context.absolute_url()">      	
      <div class="row row-1">         
        <div class="col-xs-12 col-md-12">
@@ -20,8 +20,7 @@
        <div class="col-xs-12 col-md-12">
          <div id="parent-fieldname-text"
           tal:condition="context/text"
-          tal:content="structure python:context.text.output_relative_to(view.context)"
-          tal:attributes="class python:  'pat-autotoc' or ''">
+          tal:content="structure python:context.text.output_relative_to(view.context)">
         </div>
      </div>
    </div>

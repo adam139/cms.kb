@@ -551,9 +551,10 @@ class JingLuoAjaxsearch(YaoXingAjaxsearch):
                                             edit_url="%s/@@update_jingluo/%s" % (contexturl,i[0]),
                                             delete_url="%s/@@delete_jingluo/%s" % (contexturl,i[0]))
                 outhtml = "%s%s" %(outhtml ,out)
-                k = k + 1
+
         else:
             for i in resultDicLists:
+                k = k + 1
                 out = """<tr class="text-left">
                                 <td class="col-md-1 text-center">%(number)s</td>
                                 <td class="col-md-4 text-left">%(title)s</td>
@@ -564,7 +565,7 @@ class JingLuoAjaxsearch(YaoXingAjaxsearch):
                                             description= '')
 
                 outhtml = "%s%s" %(outhtml ,out)
-                k = k + 1            
+          
         data = {'searchresult': outhtml,'start':start,'size':size,'total':totalnum}
         return data
 
@@ -590,7 +591,7 @@ class YaoAjaxsearch(YaoXingAjaxsearch):
                 yaoxing = api.pk_title(i[2],YaoXing,'xing')
                 guijin = api.pk_ass_title(i[0],Yao,Yao_JingLuo_Asso,JingLuo,'jingluo_id','mingcheng')
                 out = """<tr class="text-left">
-                                <td class="col-md-2 text-center"><a href="%(edit_url)s">%(name)s</a></td>
+                                <td class="col-md-2 text-center"><a href="%(obj_url)s">%(name)s</a></td>
                                 <td class="col-md-1 text-left">%(yaowei)s</td>
                                 <td class="col-md-1">%(yaoxing)s</td>
                                 <td class="col-md-1">%(jingluo)s</td>
@@ -732,6 +733,10 @@ class BingRenAjaxsearch(YaoXingAjaxsearch):
         base = get_container_by_type("cms.db.bingren").getURL()
         if self.searchview().canbeInput:        
             for i in resultDicLists:
+                if bool(i.xingbie):
+                    xingbie = u'男'
+                else:
+                    xingbie = u'女'                 
                 out = """<tr class="text-left">
                                 <td class="col-md-4 text-left"><a href="%(obj_url)s">%(xingming)s</a></td>
                                 <td class="col-md-1 text-center">%(xingbie)s</td>
@@ -751,7 +756,7 @@ class BingRenAjaxsearch(YaoXingAjaxsearch):
                                 </td>
                                 </tr> """% dict(obj_url="%s/%s/@@base_view" % (base,i.id),
                                             xingming=i.xingming,
-                                            xingbie= i.xingbie,
+                                            xingbie= xingbie,
                                             nianling= i.shengri,
                                             dianhua= i.dianhua,                                            
                                             edit_url="%s/@@update_bingren/%s" % (contexturl,i.id),
@@ -1038,6 +1043,10 @@ class YiShengAjaxsearch(YaoXingAjaxsearch):
         base = get_container_by_type("cms.db.yisheng").getURL()        
         if self.searchview().canbeInput:        
             for i in resultDicLists:
+                if bool(i.xingbie):
+                    xingbie = u'男'
+                else:
+                    xingbie = u'女'                    
                 out = """<tr class="text-left">
                                 <td class="col-md-4 text-left"><a href="%(obj_url)s">%(xingming)s</a></td>
                                 <td class="col-md-1 text-center">%(xingbie)s</td>
@@ -1057,7 +1066,7 @@ class YiShengAjaxsearch(YaoXingAjaxsearch):
                                 </td>
                                 </tr> """% dict(obj_url="%s/%s/@@base_view" % (base,i.id),
                                             xingming=i.xingming,
-                                            xingbie= i.xingbie,
+                                            xingbie= xingbie,
                                             nianling= i.shengri,
                                             dianhua= i.dianhua,
                                             edit_url="%s/@@update_yisheng/%s" % (contexturl,i.id),
@@ -1901,6 +1910,10 @@ class UpdateChuFang(UpdateYaoXing):
                     p = p.decode('utf-8')
                 data[name] = p
                 continue                        
+
+        tmp = data['jiliang']
+        if isinstance(tmp,long):
+            data['jiliang'] = int(tmp)
         return ChuFangUI(**data)
 
     def update(self):
@@ -2055,7 +2068,7 @@ class InputBingRen(InputYaoXing):
         _data = dict()
         for i in _clmns:
             _data[i] = data[i]                 
-        _id = data['dizhi_id']
+        _id = data['dizhi']
         fk_tables = [(_id,GeRenDiZhi,'dizhi')]
         asso_tables = []
         try:

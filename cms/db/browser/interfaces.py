@@ -29,7 +29,7 @@ class IChuFang_BingRen_AssoUI (Interface):
     """chufang_bingren association table editing ui """
 
     bingren_id = schema.Choice(
-            title=_(u"yao"),
+            title=_(u"bing ren"),
             vocabulary='cms.db.bingren',
             required=True,
         )          

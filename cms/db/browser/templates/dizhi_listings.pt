@@ -54,7 +54,9 @@
                 </div>
                 <div class="col-xs-12 col-sm-4">
                 	<a class="btn btn-primary" 
-                		tal:attributes="href python:context.absolute_url() + '/@@input_dizhi'" alt="添加地址">添加地址</a>
+                		tal:attributes="href python:context.absolute_url() + '/@@input_gerendizhi'" alt="添加个人地址">添加个人地址</a>
+                	<a class="btn btn-primary" 
+                		tal:attributes="href python:context.absolute_url() + '/@@input_danweidizhi'" alt="添加单位地址">添加单位地址</a>
                 </div>
                 <!--快速翻页-->
                 <div class="col-xs-12 col-sm-8">

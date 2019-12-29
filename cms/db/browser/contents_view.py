@@ -28,6 +28,7 @@ from cms.db.orm import Yao,Yao_ChuFang_Asso,ChuFang
 from cms.db.orm import ChuFang_BingRen_Asso, BingRen
 from cms.db import  Session
 from cms.db.dbutility import map_yao_chufang_table as mapf
+from cms.db.dbutility import map_yao_chufang_total
 from cms.db.dbutility import map_chufang_bingren_table as mapcb
 
 from cms.theme.interfaces import IThemeSpecific
@@ -81,6 +82,7 @@ class BaseView(BrowserView):
                                                   default='')
         return title
     
+    @memoize
     def getags(self):
         "get context's subject and output"
         context = self.context
@@ -168,15 +170,13 @@ class BingRenView(BaseView):
         cnlist = self.get_chufang(id)
         if cnlist[0]:
             rt =[]        
-            base = self.getobj_url("cms.db.bingrenfolder")
+            base = self.getobj_url("cms.db.chufangfolder")
             for j in cnlist[1]:
-                url = "%s/%s" % (base,str(j.id))
+                url = "%s/%s/@@base_view" % (base,str(j.id))
                 item = "<li><a href=%s>%s</a></li>" % (url,j.mingcheng)
                 rt.append(item)
             return ''.join(rt)             
-        return False
-        
-    
+        return False    
     
     def get_chufang(self,id):
         "get all chufang by bingren id"
@@ -203,10 +203,20 @@ class ChuFangView(BaseView):
         _id = long(id)
         locator = queryUtility(IDbapi, name='chufang')        
         out = locator.pk_ass_obj_title(_id,ChuFang,Yao_ChuFang_Asso,Yao,'yao_id','mingcheng',mapf)
+        total = """<td colspan="2" class="text-right">%s</td><td class="text-left">%s</td>""" % (u"小计".encode('utf-8'),self.chufang_total(id))
+        out = "%s;%s" % (out,total)
         out = out.replace(";","</tr><tr>")
         out = "<tr>%s</tr>" % out       
         return out
 
+    def chufang_total(self,id):
+        "计算处方药品总费用"
+        _id = long(id)
+        locator = queryUtility(IDbapi, name='chufang')        
+        out = locator.pk_ass_obj_title(_id,ChuFang,Yao_ChuFang_Asso,Yao,'yao_id','mingcheng',map_yao_chufang_total)
+        out = out.split(";")        
+        return sum(map(float,out))        
+        
     
     def bingrens_table(self,id):
         "output bingren list"
@@ -235,6 +245,26 @@ class YaoXingView(BaseView):
     def update(self):
         # Hide the editable-object border
         self.request.set('disable_border', True)
+        
+    def relative_yaoes(self,id):
+        "fetch all yaoes that have same yaoxing"
+        
+        yaoes = self.yaoes_generator(id)
+        items = []
+        for j in yaoes:
+            item = "<tr><td>%s</td><td>%s</td></tr>" % (j.mingcheng,j.yaowei.wei)
+            items.append(item)
+        return ''.join(items)
+        
+    
+    def yaoes_generator(self,id):
+        _id = long(id)
+        locator = queryUtility(IDbapi, name='yaoxing')
+        rder = locator.getByCode(_id)
+        for j in rder.yaoes:
+            if not bool(j.mingcheng):
+                yield j
+                
         
         
 class JingLuoView(BaseView):
@@ -283,9 +313,7 @@ class WuYunView(BaseView):
             if gonglinian2ganzhi(j)==id:
                 yield j
             else:
-                continue
-        
-
+                continue      
     
     def get_dayun(self,id):
         
@@ -321,13 +349,13 @@ class WuYunView(BaseView):
         jialin = rder.jialin.split(",")
         out = []
         dayun = """<tr>
-        <td>%s</td>
-        <td>%s</td>
-        <td>%s</td>
-        <td>%s</td>
-        <td>%s</td>
-        <td>%s</td>
-        <td>%s</td>
+        <th>%s</th>
+        <th>%s</th>
+        <th>%s</th>
+        <th>%s</th>
+        <th>%s</th>
+        <th>%s</th>
+        <th>%s</th>
         </tr>
         """ % ("&nbsp;",
                u"初之气",
@@ -338,7 +366,7 @@ class WuYunView(BaseView):
                u"终之气"                                                                           
                )
         liuqijiaosi = """<tr>
-        <td>%s</td>
+        <th>%s</th>
         <td>%s</td>
         <td>%s</td>
         <td>%s</td>
@@ -373,7 +401,7 @@ class WuYunView(BaseView):
         keyun = rder.keyun.split(",")
         jiaosi = rder.jiaosi.split(",")
         out = []
-        dayun = """<tr><td>%s</td><td class="text-center" colspan="5">%s</td></tr>
+        dayun = """<tr><th>%s</th><th class="text-center" colspan="5">%s</th></tr>
         """ % (u"大运".encode('utf-8'),self.get_dayun(_id))
         out.append(dayun) 
         tr = self.strlist2tr(zhuyun,u"主运")
@@ -389,7 +417,7 @@ class WuYunView(BaseView):
         
         from Products.CMFPlone.utils import safe_unicode
         title = safe_unicode(title)
-        prefix = u"<tr><td>%s</td>" % title
+        prefix = u"<tr><th>%s</th>" % title
         postfix = u"</tr>"
         lt = []
         lt.append(prefix)

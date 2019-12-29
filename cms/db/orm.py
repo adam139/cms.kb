@@ -85,6 +85,7 @@ class IJingLuo(Interface):
         )    
     mingcheng = schema.TextLine(
             title=_(u"ming cheng"),
+            required = True,
         ) 
 #     yaoes = schema.Object(
 #             title=_(u"yao"),
@@ -202,12 +203,14 @@ class IChuFang(Interface):
         ) 
     mingcheng = schema.TextLine(
             title=_(u"ming cheng"),
+            required=True,
         )
     yizhu = schema.TextLine(
             title=_(u"zhu zhi"),
         )
     jiliang = schema.Int(
             title=_(u"ji liang"),
+            required=True,
         )    
 #     yisheng = schema.Object(
 #             title=_(u"dan wei"),
@@ -261,6 +264,8 @@ class IYao_ChuFang_Asso(Interface):
         )    
     paozhi = schema.TextLine(
             title=_(u"ming cheng"),
+            required=False,
+            default=u"无"
         )
     
          
@@ -343,10 +348,12 @@ class IDanWeiDiZhi(IDiZhi):
     """interface for add DanWeiDiZhi"""
     
     wangzhi = schema.TextLine(
-            title=_(u"wang zhi"),           
+            title=_(u"wang zhi"),
+            required=False,                       
         )
     gongzhonghao = schema.TextLine(
-            title=_(u"gong zhong hao"),           
+            title=_(u"gong zhong hao"),
+            required=False,           
         )    
     
     

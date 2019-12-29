@@ -54,7 +54,7 @@
                 </div>
                 <div class="col-xs-12 col-sm-4">
                 	<a class="btn btn-primary"
-                		tal:attributes="href python:context.absolute_url() + '/@@input_chufang'" alt="add chu fang">add chu fang</a>
+                		tal:attributes="href python:context.absolute_url() + '/@@input_chufang'" alt="添加处方">添加处方</a>
                 </div>
                 <!--快速翻页-->
                 <div class="col-xs-12 col-sm-4">

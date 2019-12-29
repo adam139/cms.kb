@@ -178,7 +178,7 @@ class TestView(unittest.TestCase):
                         'start':'0' ,
                         'sortcolumn':'id',
                         'sortdirection':'desc',
-                        'searchabletext':''                                                                       
+                        'searchabletext':'湘潭'                                                                       
                         }
 # Look up and invoke the view via traversal
         box = self.portal['folder']['ormfolder']

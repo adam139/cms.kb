@@ -165,10 +165,11 @@ class TestView(unittest.TestCase):
         browser.addHeader('Authorization', 'Basic %s:%s' % (TEST_USER_NAME, TEST_USER_PASSWORD,))
         transaction.commit()
         browser.open(portal['folder']['chufangfolder'][self.chufang_id].absolute_url() + "/@@base_view")
+
         self.assertTrue("here is title" in browser.contents)
         self.assertTrue(u"here is description" in browser.contents)               
         self.assertTrue("here is report" in browser.contents)
-#         self.assertTrue( "桂枝汤" in browser.contents)
+        self.assertTrue( "4.8" in browser.contents)
         self.assertTrue( "白芍" in browser.contents)
         self.assertTrue( "张三" in browser.contents)       
 
