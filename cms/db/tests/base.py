@@ -93,23 +93,139 @@ def fire_created_event():
         id = "%s" % recorder.id
         eventobj = RecorderCreated(id=id,cls=cls,ttl=recorder.xing)
         if eventobj.available():event.notify(eventobj)
+    recorder = Session.query(YaoXing).filter(YaoXing.xing=="凉").first()
+    if bool(recorder):
+        cls = "cms.db.yaoxing"
+        id = "%s" % recorder.id
+        eventobj = RecorderCreated(id=id,cls=cls,ttl=recorder.xing)
+        if eventobj.available():event.notify(eventobj)
+    recorder = Session.query(YaoXing).filter(YaoXing.xing=="寒").first()
+    if bool(recorder):
+        cls = "cms.db.yaoxing"
+        id = "%s" % recorder.id
+        eventobj = RecorderCreated(id=id,cls=cls,ttl=recorder.xing)
+        if eventobj.available():event.notify(eventobj)
+    recorder = Session.query(YaoXing).filter(YaoXing.xing=="热").first()
+    if bool(recorder):
+        cls = "cms.db.yaoxing"
+        id = "%s" % recorder.id
+        eventobj = RecorderCreated(id=id,cls=cls,ttl=recorder.xing)
+        if eventobj.available():event.notify(eventobj)
+    recorder = Session.query(YaoXing).filter(YaoXing.xing=="大热").first()
+    if bool(recorder):
+        cls = "cms.db.yaoxing"
+        id = "%s" % recorder.id
+        eventobj = RecorderCreated(id=id,cls=cls,ttl=recorder.xing)
+        if eventobj.available():event.notify(eventobj)
+    recorder = Session.query(YaoXing).filter(YaoXing.xing=="大寒").first()
+    if bool(recorder):
+        cls = "cms.db.yaoxing"
+        id = "%s" % recorder.id
+        eventobj = RecorderCreated(id=id,cls=cls,ttl=recorder.xing)
+        if eventobj.available():event.notify(eventobj)        
+                                        
     recorder = Session.query(YaoWei).filter(YaoWei.wei=="甘").first()
     if bool(recorder):
         cls = "cms.db.yaowei"
         id = "%s" % recorder.id
         eventobj = RecorderCreated(id=id,cls=cls,ttl=recorder.wei)
-        if eventobj.available():event.notify(eventobj)        
+        if eventobj.available():event.notify(eventobj)
+    recorder = Session.query(YaoWei).filter(YaoWei.wei=="甘").first()
+    if bool(recorder):
+        cls = "cms.db.yaowei"
+        id = "%s" % recorder.id
+        eventobj = RecorderCreated(id=id,cls=cls,ttl=recorder.wei)
+        if eventobj.available():event.notify(eventobj)
+    recorder = Session.query(YaoWei).filter(YaoWei.wei=="酸").first()
+    if bool(recorder):
+        cls = "cms.db.yaowei"
+        id = "%s" % recorder.id
+        eventobj = RecorderCreated(id=id,cls=cls,ttl=recorder.wei)
+        if eventobj.available():event.notify(eventobj)
+    recorder = Session.query(YaoWei).filter(YaoWei.wei=="苦").first()
+    if bool(recorder):
+        cls = "cms.db.yaowei"
+        id = "%s" % recorder.id
+        eventobj = RecorderCreated(id=id,cls=cls,ttl=recorder.wei)
+        if eventobj.available():event.notify(eventobj)
+    recorder = Session.query(YaoWei).filter(YaoWei.wei=="辛").first()
+    if bool(recorder):
+        cls = "cms.db.yaowei"
+        id = "%s" % recorder.id
+        eventobj = RecorderCreated(id=id,cls=cls,ttl=recorder.wei)
+        if eventobj.available():event.notify(eventobj) 
+    recorder = Session.query(YaoWei).filter(YaoWei.wei=="咸").first()
+    if bool(recorder):
+        cls = "cms.db.yaowei"
+        id = "%s" % recorder.id
+        eventobj = RecorderCreated(id=id,cls=cls,ttl=recorder.wei)
+        if eventobj.available():event.notify(eventobj)                                               
     recorder = Session.query(Yao).filter(Yao.mingcheng=="白芍").first()
     if bool(recorder):
         cls = "cms.db.yao"
         eventobj = RecorderCreated(id=recorder.id,cls=cls,ttl=recorder.mingcheng)
-        if eventobj.available():event.notify(eventobj)        
+        if eventobj.available():event.notify(eventobj)
+    recorder = Session.query(Yao).filter(Yao.mingcheng=="桂枝").first()
+    if bool(recorder):
+        cls = "cms.db.yao"
+        eventobj = RecorderCreated(id=recorder.id,cls=cls,ttl=recorder.mingcheng)
+        if eventobj.available():event.notify(eventobj)
+    recorder = Session.query(Yao).filter(Yao.mingcheng=="生姜").first()
+    if bool(recorder):
+        cls = "cms.db.yao"
+        eventobj = RecorderCreated(id=recorder.id,cls=cls,ttl=recorder.mingcheng)
+        if eventobj.available():event.notify(eventobj)
+    recorder = Session.query(Yao).filter(Yao.mingcheng=="大枣").first()
+    if bool(recorder):
+        cls = "cms.db.yao"
+        eventobj = RecorderCreated(id=recorder.id,cls=cls,ttl=recorder.mingcheng)
+        if eventobj.available():event.notify(eventobj)
+    recorder = Session.query(Yao).filter(Yao.mingcheng=="甘草").first()
+    if bool(recorder):
+        cls = "cms.db.yao"
+        eventobj = RecorderCreated(id=recorder.id,cls=cls,ttl=recorder.mingcheng)
+        if eventobj.available():event.notify(eventobj)
+    recorder = Session.query(Yao).filter(Yao.mingcheng=="麻黄").first()
+    if bool(recorder):
+        cls = "cms.db.yao"
+        eventobj = RecorderCreated(id=recorder.id,cls=cls,ttl=recorder.mingcheng)
+        if eventobj.available():event.notify(eventobj)                                                
     recorder = Session.query(JingLuo).filter(JingLuo.mingcheng=="足太阳膀胱经").first()
     if bool(recorder):
         cls = "cms.db.jingluo"
         id = "%s" % recorder.id
         eventobj = RecorderCreated(id=id,cls=cls,ttl=recorder.mingcheng)
         if eventobj.available():event.notify(eventobj)
+    recorder = Session.query(JingLuo).filter(JingLuo.mingcheng=="足阳明胃经").first()
+    if bool(recorder):
+        cls = "cms.db.jingluo"
+        id = "%s" % recorder.id
+        eventobj = RecorderCreated(id=id,cls=cls,ttl=recorder.mingcheng)
+        if eventobj.available():event.notify(eventobj)
+    recorder = Session.query(JingLuo).filter(JingLuo.mingcheng=="足少阳胆经").first()
+    if bool(recorder):
+        cls = "cms.db.jingluo"
+        id = "%s" % recorder.id
+        eventobj = RecorderCreated(id=id,cls=cls,ttl=recorder.mingcheng)
+        if eventobj.available():event.notify(eventobj)
+    recorder = Session.query(JingLuo).filter(JingLuo.mingcheng=="足厥阴肝经").first()
+    if bool(recorder):
+        cls = "cms.db.jingluo"
+        id = "%s" % recorder.id
+        eventobj = RecorderCreated(id=id,cls=cls,ttl=recorder.mingcheng)
+        if eventobj.available():event.notify(eventobj)
+    recorder = Session.query(JingLuo).filter(JingLuo.mingcheng=="足少阴肾经").first()
+    if bool(recorder):
+        cls = "cms.db.jingluo"
+        id = "%s" % recorder.id
+        eventobj = RecorderCreated(id=id,cls=cls,ttl=recorder.mingcheng)
+        if eventobj.available():event.notify(eventobj)
+    recorder = Session.query(JingLuo).filter(JingLuo.mingcheng=="足太阴脾经").first()
+    if bool(recorder):
+        cls = "cms.db.jingluo"
+        id = "%s" % recorder.id
+        eventobj = RecorderCreated(id=id,cls=cls,ttl=recorder.mingcheng)
+        if eventobj.available():event.notify(eventobj)                                        
     recorder = Session.query(BingRen).filter(BingRen.xingming=="张三").first()
     if bool(recorder):
         cls = "cms.db.bingren"
@@ -126,11 +242,16 @@ def fire_created_event():
         cls = "cms.db.chufang"
         eventobj = RecorderCreated(id=recorder.id,cls=cls,ttl=recorder.mingcheng)
         if eventobj.available():event.notify(eventobj)
+    recorder = Session.query(DanWei).filter(DanWei.mingcheng=="任之堂").first()
+    if bool(recorder):
+        cls = "cms.db.danwei"
+        eventobj = RecorderCreated(id=recorder.id,cls=cls,ttl=recorder.mingcheng)
+        if eventobj.available():event.notify(eventobj)
     recorder = Session.query(DanWei).filter(DanWei.mingcheng=="润生堂").first()
     if bool(recorder):
         cls = "cms.db.danwei"
         eventobj = RecorderCreated(id=recorder.id,cls=cls,ttl=recorder.mingcheng)
-        if eventobj.available():event.notify(eventobj)                
+        if eventobj.available():event.notify(eventobj)                        
                         
 def cleardb():
     "remove all recorders from db"
