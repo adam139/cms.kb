@@ -18,6 +18,7 @@ import unittest
 from cms.db import  Session
 from cms.theme.interfaces import IThemeSpecific
 from cms.db.tests.base import inputvalues,cleardb
+from cms.db.tests.base import fire_created_event
 from cms.db.tests.base import TABLES
 for tb in TABLES:
     import_str = "from %(p)s import %(t)s" % dict(p='cms.db.orm',t=tb) 
@@ -42,6 +43,7 @@ class TestView(unittest.TestCase):
         portal['folder'].invokeFactory('cms.db.danweifolder', 'danweifolder')
         portal['folder'].invokeFactory('cms.db.wuyunfolder', 'wuyunfolder')      
         self.portal = portal
+        fire_created_event()
 
     def tearDown(self):
         cleardb()
@@ -285,3 +287,50 @@ class TestView(unittest.TestCase):
         view = box.restrictedTraverse('@@nianganzhi_ajaxsearch')
         result = view()       
         self.assertEqual(json.loads(result)['total'],60)
+        
+    def test_yaofolderajaxlisting(self):
+        request = self.layer['request']
+        alsoProvides(request, IThemeSpecific)        
+        keyManager = getUtility(IKeyManager)
+        secret = keyManager.secret()
+        auth = hmac.new(secret, TEST_USER_NAME, sha).hexdigest()
+        request.form = {
+                        '_authenticator': auth,
+                        'size': '10',
+                        'start':'0' ,
+                        'sortcolumn':'created',
+                        'datetype':"0",
+                        'objid':"",
+                        'tag':"a,b,c",
+                        'sortdirection':'desc',
+                        'searchabletext':''                                                                       
+                        }
+# Look up and invoke the view via traversal
+        box = self.portal['folder']['yaofolder']
+        view = box.restrictedTraverse('@@yaofolder_ajaxsearch')
+        result = view()       
+        self.assertEqual(json.loads(result)['total'],1)
+        
+    def test_jingluofolderajaxlisting(self):
+        request = self.layer['request']
+        alsoProvides(request, IThemeSpecific)        
+        keyManager = getUtility(IKeyManager)
+        secret = keyManager.secret()
+        auth = hmac.new(secret, TEST_USER_NAME, sha).hexdigest()
+        request.form = {
+                        '_authenticator': auth,
+                        'size': '10',
+                        'start':'0' ,
+                        'sortcolumn':'created',
+                        'datetype':"0",
+                        'objid':"",
+                        'tag':"a,b,c",
+                        'sortdirection':'desc',
+                        'searchabletext':''                                                                       
+                        }
+# Look up and invoke the view via traversal
+        box = self.portal['folder']['yaofolder']
+        view = box.restrictedTraverse('@@jingluofolder_ajaxsearch')
+        result = view()       
+        self.assertEqual(json.loads(result)['total'],1)        
+                
