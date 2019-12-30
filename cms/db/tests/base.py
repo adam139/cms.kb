@@ -90,13 +90,13 @@ def fire_created_event():
     recorder = Session.query(YaoXing).filter(YaoXing.xing=="温").first()
     if bool(recorder):
         cls = "cms.db.yaoxing"
-        id = "yaoxing%s" % recorder.id
+        id = "%s" % recorder.id
         eventobj = RecorderCreated(id=id,cls=cls,ttl=recorder.xing)
         if eventobj.available():event.notify(eventobj)
     recorder = Session.query(YaoWei).filter(YaoWei.wei=="甘").first()
     if bool(recorder):
         cls = "cms.db.yaowei"
-        id = "yaowei%s" % recorder.id
+        id = "%s" % recorder.id
         eventobj = RecorderCreated(id=id,cls=cls,ttl=recorder.wei)
         if eventobj.available():event.notify(eventobj)        
     recorder = Session.query(Yao).filter(Yao.mingcheng=="白芍").first()
@@ -107,7 +107,7 @@ def fire_created_event():
     recorder = Session.query(JingLuo).filter(JingLuo.mingcheng=="足太阳膀胱经").first()
     if bool(recorder):
         cls = "cms.db.jingluo"
-        id = "jingluo%s" % recorder.id
+        id = "%s" % recorder.id
         eventobj = RecorderCreated(id=id,cls=cls,ttl=recorder.mingcheng)
         if eventobj.available():event.notify(eventobj)
     recorder = Session.query(BingRen).filter(BingRen.xingming=="张三").first()
