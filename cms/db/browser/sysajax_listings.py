@@ -19,7 +19,7 @@ from Products.Five.browser import BrowserView
 # from collective.gtags.interfaces import ITagSettings
 
 
-class sysAjaxListingView(BrowserView):
+class SysAjaxListingView(BrowserView):
     """
     system AJAX 查询，返回分页结果,for some contenttypes relative to project
     """                 
@@ -257,6 +257,38 @@ class sysAjaxListingView(BrowserView):
     def search_multicondition(self,query):  
         return self.catalog()(query)
 
+
+class YaoAjaxListingView(SysAjaxListingView):
+    """ ajax listing view for yao content types"""
+    
+    def search_multicondition(self,query):
+        query['portal_type'] = "cms.db.yao"  
+        return self.catalog()(query)
+        
+    
+class JingLuoAjaxListingView(SysAjaxListingView):
+    """ ajax listing view for yao content types"""
+    
+    def search_multicondition(self,query):
+        query['portal_type'] = "cms.db.jingluo"  
+        return self.catalog()(query)
+    
+    
+class YaoWeiAjaxListingView(SysAjaxListingView):
+    """ ajax listing view for yao content types"""
+    
+    def search_multicondition(self,query):
+        query['portal_type'] = "cms.db.yaowei"  
+        return self.catalog()(query)
+    
+    
+class YaoXingAjaxListingView(SysAjaxListingView):
+    """ ajax listing view for yao content types"""
+    
+    def search_multicondition(self,query):
+        query['portal_type'] = "cms.db.yaoxing"  
+        return self.catalog()(query)
+            
        
 class sysloadMore(BrowserView):
     """AJAX action for loardmore.
@@ -281,7 +313,7 @@ class sysloadMore(BrowserView):
 
 
  # ajax multi-condition search       
-class ajaxsearch(BrowserView):
+class Ajaxsearch(BrowserView):
     """AJAX action for search.
     """    
 
@@ -396,3 +428,280 @@ class ajaxsearch(BrowserView):
         data = {'searchresult': outhtml,'start':start,'size':size,'total':totalnum}
         return data      
 
+class YaoAjaxsearch(Ajaxsearch):
+    """AJAX action for search.
+    """    
+    def __call__(self):    
+#        self.portal_state = getMultiAdapter((self.context, self.request), name=u"plone_portal_state")
+        searchview = getMultiAdapter((self.context, self.request),name=u"yaoajax_listings")        
+ # datadic receive front ajax post data       
+        datadic = self.request.form
+        start = int(datadic['start']) # batch search start position
+        datekey = int(datadic['datetype'])  # 对应 最近一周，一月，一年……
+        size = int(datadic['size'])      # batch search size          
+#         securitykey = int(datadic['security'])  #密级属性：公开/内部/机密
+#         tasktypekey = int(datadic['type']) #任务类型属性：分析/设计/实验/仿真/培训 
+        tag = datadic['tag'].strip()
+        sortcolumn = datadic['sortcolumn']
+        sortdirection = datadic['sortdirection']
+        keyword = (datadic['searchabletext']).strip()
+        objid =  (datadic['objid']).strip()
+        if objid == "":   
+            origquery = searchview.getPathQuery()
+        else:
+            origquery = searchview.getPathQuery(objid = objid)
+
+        origquery['sort_on'] = sortcolumn  
+        origquery['sort_order'] = sortdirection                
+ #模糊搜索       
+        if keyword != "":
+            origquery['SearchableText'] = '*'+keyword+'*'       
+#         if securitykey != 0:
+#             origquery['security_level'] = searchview.getSecurityLevel(securitykey)
+        if datekey != 0:
+            origquery['created'] = self.Datecondition(datekey)         
+        # remove repeat values 
+        tag = tag.split(',')
+        tag = set(tag)
+        tag = list(tag)
+        all = u"所有".encode("utf-8")
+        unclass = u"未分类".encode("utf-8")        
+# filter contain "u'所有'"
+        tag = filter(lambda x: all not in x, tag)
+# recover un-category tag (remove:u"未分类-")
+        def recovery(value):
+            if unclass not in value:return value
+            return value.split('-')[1]
+            
+        tag = map(recovery,tag)        
+        if '0' in tag and len(tag) > 1:
+            tag.remove('0')
+            rule = {"query":tag,"operator":"and"}
+            origquery['Subject'] = rule                      
+#totalquery  search all 
+        totalquery = origquery.copy()
+#origquery provide  batch search        
+        origquery['b_size'] = size 
+        origquery['b_start'] = start
+        # search all                         
+        totalbrains = searchview.search_multicondition(totalquery)
+
+        totalnum = len(totalbrains)
+        # batch search         
+        braindata = searchview.search_multicondition(origquery)
+#        brainnum = len(braindata)         
+        del origquery 
+        del totalquery,totalbrains
+#call output function        
+        data = self.output(start,size,totalnum, braindata)
+        self.request.response.setHeader('Content-Type', 'application/json')
+        return json.dumps(data)
+    
+    
+class JingLuoAjaxsearch(Ajaxsearch):
+    """AJAX action for search.
+    """    
+    def __call__(self):    
+#        self.portal_state = getMultiAdapter((self.context, self.request), name=u"plone_portal_state")
+        searchview = getMultiAdapter((self.context, self.request),name=u"jingluoajax_listings")        
+ # datadic receive front ajax post data       
+        datadic = self.request.form
+        start = int(datadic['start']) # batch search start position
+        datekey = int(datadic['datetype'])  # 对应 最近一周，一月，一年……
+        size = int(datadic['size'])      # batch search size          
+#         securitykey = int(datadic['security'])  #密级属性：公开/内部/机密
+#         tasktypekey = int(datadic['type']) #任务类型属性：分析/设计/实验/仿真/培训 
+        tag = datadic['tag'].strip()
+        sortcolumn = datadic['sortcolumn']
+        sortdirection = datadic['sortdirection']
+        keyword = (datadic['searchabletext']).strip()
+        objid =  (datadic['objid']).strip()
+        if objid == "":   
+            origquery = searchview.getPathQuery()
+        else:
+            origquery = searchview.getPathQuery(objid = objid)
+
+        origquery['sort_on'] = sortcolumn  
+        origquery['sort_order'] = sortdirection                
+ #模糊搜索       
+        if keyword != "":
+            origquery['SearchableText'] = '*'+keyword+'*'       
+#         if securitykey != 0:
+#             origquery['security_level'] = searchview.getSecurityLevel(securitykey)
+        if datekey != 0:
+            origquery['created'] = self.Datecondition(datekey)         
+        # remove repeat values 
+        tag = tag.split(',')
+        tag = set(tag)
+        tag = list(tag)
+        all = u"所有".encode("utf-8")
+        unclass = u"未分类".encode("utf-8")        
+# filter contain "u'所有'"
+        tag = filter(lambda x: all not in x, tag)
+# recover un-category tag (remove:u"未分类-")
+        def recovery(value):
+            if unclass not in value:return value
+            return value.split('-')[1]
+            
+        tag = map(recovery,tag)        
+        if '0' in tag and len(tag) > 1:
+            tag.remove('0')
+            rule = {"query":tag,"operator":"and"}
+            origquery['Subject'] = rule                      
+#totalquery  search all 
+        totalquery = origquery.copy()
+#origquery provide  batch search        
+        origquery['b_size'] = size 
+        origquery['b_start'] = start
+        # search all                         
+        totalbrains = searchview.search_multicondition(totalquery)
+
+        totalnum = len(totalbrains)
+        # batch search         
+        braindata = searchview.search_multicondition(origquery)
+#        brainnum = len(braindata)         
+        del origquery 
+        del totalquery,totalbrains
+#call output function        
+        data = self.output(start,size,totalnum, braindata)
+        self.request.response.setHeader('Content-Type', 'application/json')
+        return json.dumps(data)
+
+class YaoWeiAjaxsearch(Ajaxsearch):
+    """AJAX action for search.
+    """    
+    def __call__(self):    
+#        self.portal_state = getMultiAdapter((self.context, self.request), name=u"plone_portal_state")
+        searchview = getMultiAdapter((self.context, self.request),name=u"yaoweiajax_listings")        
+ # datadic receive front ajax post data       
+        datadic = self.request.form
+        start = int(datadic['start']) # batch search start position
+        datekey = int(datadic['datetype'])  # 对应 最近一周，一月，一年……
+        size = int(datadic['size'])      # batch search size          
+#         securitykey = int(datadic['security'])  #密级属性：公开/内部/机密
+#         tasktypekey = int(datadic['type']) #任务类型属性：分析/设计/实验/仿真/培训 
+        tag = datadic['tag'].strip()
+        sortcolumn = datadic['sortcolumn']
+        sortdirection = datadic['sortdirection']
+        keyword = (datadic['searchabletext']).strip()
+        objid =  (datadic['objid']).strip()
+        if objid == "":   
+            origquery = searchview.getPathQuery()
+        else:
+            origquery = searchview.getPathQuery(objid = objid)
+
+        origquery['sort_on'] = sortcolumn  
+        origquery['sort_order'] = sortdirection                
+ #模糊搜索       
+        if keyword != "":
+            origquery['SearchableText'] = '*'+keyword+'*'       
+#         if securitykey != 0:
+#             origquery['security_level'] = searchview.getSecurityLevel(securitykey)
+        if datekey != 0:
+            origquery['created'] = self.Datecondition(datekey)         
+        # remove repeat values 
+        tag = tag.split(',')
+        tag = set(tag)
+        tag = list(tag)
+        all = u"所有".encode("utf-8")
+        unclass = u"未分类".encode("utf-8")        
+# filter contain "u'所有'"
+        tag = filter(lambda x: all not in x, tag)
+# recover un-category tag (remove:u"未分类-")
+        def recovery(value):
+            if unclass not in value:return value
+            return value.split('-')[1]
+            
+        tag = map(recovery,tag)        
+        if '0' in tag and len(tag) > 1:
+            tag.remove('0')
+            rule = {"query":tag,"operator":"and"}
+            origquery['Subject'] = rule                      
+#totalquery  search all 
+        totalquery = origquery.copy()
+#origquery provide  batch search        
+        origquery['b_size'] = size 
+        origquery['b_start'] = start
+        # search all                         
+        totalbrains = searchview.search_multicondition(totalquery)
+
+        totalnum = len(totalbrains)
+        # batch search         
+        braindata = searchview.search_multicondition(origquery)
+#        brainnum = len(braindata)         
+        del origquery 
+        del totalquery,totalbrains
+#call output function        
+        data = self.output(start,size,totalnum, braindata)
+        self.request.response.setHeader('Content-Type', 'application/json')
+        return json.dumps(data)
+
+
+class YaoXingAjaxsearch(Ajaxsearch):
+    """AJAX action for search.
+    """    
+    def __call__(self):    
+#        self.portal_state = getMultiAdapter((self.context, self.request), name=u"plone_portal_state")
+        searchview = getMultiAdapter((self.context, self.request),name=u"yaoxingajax_listings")        
+ # datadic receive front ajax post data       
+        datadic = self.request.form
+        start = int(datadic['start']) # batch search start position
+        datekey = int(datadic['datetype'])  # 对应 最近一周，一月，一年……
+        size = int(datadic['size'])      # batch search size          
+#         securitykey = int(datadic['security'])  #密级属性：公开/内部/机密
+#         tasktypekey = int(datadic['type']) #任务类型属性：分析/设计/实验/仿真/培训 
+        tag = datadic['tag'].strip()
+        sortcolumn = datadic['sortcolumn']
+        sortdirection = datadic['sortdirection']
+        keyword = (datadic['searchabletext']).strip()
+        objid =  (datadic['objid']).strip()
+        if objid == "":   
+            origquery = searchview.getPathQuery()
+        else:
+            origquery = searchview.getPathQuery(objid = objid)
+
+        origquery['sort_on'] = sortcolumn  
+        origquery['sort_order'] = sortdirection                
+ #模糊搜索       
+        if keyword != "":
+            origquery['SearchableText'] = '*'+keyword+'*'       
+#         if securitykey != 0:
+#             origquery['security_level'] = searchview.getSecurityLevel(securitykey)
+        if datekey != 0:
+            origquery['created'] = self.Datecondition(datekey)         
+        # remove repeat values 
+        tag = tag.split(',')
+        tag = set(tag)
+        tag = list(tag)
+        all = u"所有".encode("utf-8")
+        unclass = u"未分类".encode("utf-8")        
+# filter contain "u'所有'"
+        tag = filter(lambda x: all not in x, tag)
+# recover un-category tag (remove:u"未分类-")
+        def recovery(value):
+            if unclass not in value:return value
+            return value.split('-')[1]
+            
+        tag = map(recovery,tag)        
+        if '0' in tag and len(tag) > 1:
+            tag.remove('0')
+            rule = {"query":tag,"operator":"and"}
+            origquery['Subject'] = rule                      
+#totalquery  search all 
+        totalquery = origquery.copy()
+#origquery provide  batch search        
+        origquery['b_size'] = size 
+        origquery['b_start'] = start
+        # search all                         
+        totalbrains = searchview.search_multicondition(totalquery)
+
+        totalnum = len(totalbrains)
+        # batch search         
+        braindata = searchview.search_multicondition(origquery)
+#        brainnum = len(braindata)         
+        del origquery 
+        del totalquery,totalbrains
+#call output function        
+        data = self.output(start,size,totalnum, braindata)
+        self.request.response.setHeader('Content-Type', 'application/json')
+        return json.dumps(data)            

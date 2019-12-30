@@ -4,7 +4,7 @@
             tal:attributes="href string:${navroot}/++resource++cms.db/style.css"
             />
 </metal:block>
-<metal:block define-macro="log_navbar" i18n:domain="cms.db">
+<metal:block define-macro="content_navbar" i18n:domain="cms.db">
  <nav class="navbar navbar-default" role="navigation">
   <div class="container-fluid" tal:define="is_editable context/@@plone_context_state/is_editable;
                kb python:context">
@@ -23,13 +23,28 @@
     <div class="collapse navbar-collapse" id="log-navbar-collapse">
       <ul class="nav navbar-nav">                
         <li class="dropdown active">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">系统日志<span class="caret"></span></a>          
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">内容视图<span class="caret"></span></a>          
           <ul class="dropdown-menu" role="menu">
           	<li>
-          		<a tal:attributes="href string:${kb/absolute_url}/@@admin_logs">
-                     审计日志
+          		<a tal:attributes="href string:${kb/absolute_url}/@@yaoajax_listings">
+                     药物
                 </a>
              </li>
+          	<li>
+          		<a tal:attributes="href string:${kb/absolute_url}/@@jingluoajax_listings">
+                     经络
+                </a>
+             </li> 
+          	<li>
+          		<a tal:attributes="href string:${kb/absolute_url}/@@yaoweiajax_listings">
+                     药味
+                </a>
+             </li>
+          	<li>
+          		<a tal:attributes="href string:${kb/absolute_url}/@@yaoxingajax_listings">
+                     药性
+                </a>
+             </li>                                      
           </ul>
         </li>      
       </ul>      
