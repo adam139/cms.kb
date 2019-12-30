@@ -18,16 +18,86 @@
         class=".macros.Macros"/>
     
     <include file="contents.zcml"/>
-
+    <include file="dbpages.zcml"/>
     <browser:page
         name="sysajax_listings"
         template="templates/sysajax_listings_novocabulary.pt"
         for="*"
         permission="zope.Public"
         layer="cms.theme.interfaces.IThemeSpecific"
-        class=".sysajax_listings.sysAjaxListingView"
+        class=".sysajax_listings.SysAjaxListingView"
         menu="plone_displayviews"
         title="System Ajax view"/>
+        
+    <browser:page
+        name="yaoajax_listings"
+        template="templates/yaoajax_listings_novocabulary.pt"
+        for="*"
+        permission="zope.Public"
+        layer="cms.theme.interfaces.IThemeSpecific"
+        class=".sysajax_listings.YaoAjaxListingView"
+        menu="plone_displayviews"
+        title="yao Ajax view"/>
+    <browser:page
+        name="yaofolder_ajaxsearch"
+        for="*"
+        permission="zope2.View"
+        layer="cms.theme.interfaces.IThemeSpecific"
+        class=".sysajax_listings.YaoAjaxsearch"
+        />        
+
+    <browser:page
+        name="yaoweiajax_listings"
+        template="templates/yaoweiajax_listings_novocabulary.pt"
+        for="*"
+        permission="zope.Public"
+        layer="cms.theme.interfaces.IThemeSpecific"
+        class=".sysajax_listings.YaoWeiAjaxListingView"
+        menu="plone_displayviews"
+        title="yao wei Ajax view"/>
+    <browser:page
+        name="yaoweifolder_ajaxsearch"
+        for="*"
+        permission="zope2.View"
+        layer="cms.theme.interfaces.IThemeSpecific"
+        class=".sysajax_listings.YaoWeiAjaxsearch"
+        /> 
+        
+    <browser:page
+        name="yaoxingajax_listings"
+        template="templates/yaoxingajax_listings_novocabulary.pt"
+        for="*"
+        permission="zope.Public"
+        layer="cms.theme.interfaces.IThemeSpecific"
+        class=".sysajax_listings.YaoXingAjaxListingView"
+        menu="plone_displayviews"
+        title="yao xing Ajax view"/>
+    <browser:page
+        name="yaoxingfolder_ajaxsearch"
+        for="*"
+        permission="zope2.View"
+        layer="cms.theme.interfaces.IThemeSpecific"
+        class=".sysajax_listings.YaoXingAjaxsearch"
+        />         
+        
+    <browser:page
+        name="jingluoajax_listings"
+        template="templates/jingluoajax_listings_novocabulary.pt"
+        for="*"
+        permission="zope.Public"
+        layer="cms.theme.interfaces.IThemeSpecific"
+        class=".sysajax_listings.JingLuoAjaxListingView"
+        menu="plone_displayviews"
+        title="jing luo Ajax view"/>
+
+    <browser:page
+        name="jingluofolder_ajaxsearch"
+        for="*"
+        permission="zope2.View"
+        layer="cms.theme.interfaces.IThemeSpecific"
+        class=".sysajax_listings.JingLuoAjaxsearch"
+        />
+                                
         
     <browser:page
         name="sysloadmore_tags"
@@ -42,7 +112,7 @@
         for="*"
         permission="zope2.View"
         layer="cms.theme.interfaces.IThemeSpecific"
-        class=".sysajax_listings.ajaxsearch"
+        class=".sysajax_listings.Ajaxsearch"
         />        
         
     <!-- Control panel form -->
@@ -51,313 +121,7 @@
         for="Products.CMFPlone.interfaces.IPloneSiteRoot"
         class=".controlpanel.TypesSettingsControlPanel"
         permission="cms.policy.set_system"
-        /> 
-                
-    <browser:page
-        name="yaoxing_ajaxsearch"
-        for="*"
-        permission="zope2.View"
-        class=".ajax_listing.YaoXingAjaxsearch"/> 
-     <browser:page
-        name="yaowei_ajaxsearch"
-        for="*"
-        permission="zope2.View"
-        class=".ajax_listing.YaoWeiAjaxsearch"/> 
-     <browser:page
-        name="jingluo_ajaxsearch"
-        for="*"
-        permission="zope2.View"
-        class=".ajax_listing.JingLuoAjaxsearch"/>
-     <browser:page
-        name="yao_ajaxsearch"
-        for="*"
-        permission="zope2.View"
-        class=".ajax_listing.YaoAjaxsearch"/>
-     <browser:page
-        name="chufang_ajaxsearch"
-        for="*"
-        permission="zope2.View"
-        class=".ajax_listing.ChuFangAjaxsearch"/>
-     <browser:page
-        name="dizhi_ajaxsearch"
-        for="*"
-        permission="zope2.View"
-        class=".ajax_listing.DiZhiAjaxsearch"/>
-     <browser:page
-        name="gerendizhi_ajaxsearch"
-        for="*"
-        permission="zope2.View"
-        class=".ajax_listing.GeRenDiZhiAjaxsearch"/>
-     <browser:page
-        name="danweidizhi_ajaxsearch"
-        for="*"
-        permission="zope2.View"
-        class=".ajax_listing.DanWeiDiZhiAjaxsearch"/>                
-     <browser:page
-        name="yisheng_ajaxsearch"
-        for="*"
-        permission="zope2.View"
-        class=".ajax_listing.YiShengAjaxsearch"/>
-     <browser:page
-        name="danwei_ajaxsearch"
-        for="*"
-        permission="zope2.View"
-        class=".ajax_listing.DanWeiAjaxsearch"/>
-     <browser:page
-        name="bingren_ajaxsearch"
-        for="*"
-        permission="zope2.View"
-        class=".ajax_listing.BingRenAjaxsearch"/>
-     <browser:page
-        name="nianganzhi_ajaxsearch"
-        for="*"
-        permission="zope2.View"
-        class=".ajax_listing.NianGanZhiAjaxsearch"/>        
-                                                
-     
-     <!-- input form views define--> 
-     <browser:page
-        name="input_yaoxing"
-        for="cms.db.contents.ormfolder.IOrmfolder"
-        permission="cms.db.input_db"
-        class=".ajax_listing.InputYaoXing"/> 
-     <browser:page
-        name="input_yao"
-        for="cms.db.contents.ormfolder.IOrmfolder"
-        permission="cms.db.input_db"
-        class=".ajax_listing.InputYao"/>
-     <browser:page
-        name="input_yaowei"
-        for="cms.db.contents.ormfolder.IOrmfolder"
-        permission="cms.db.input_db"
-        class=".ajax_listing.InputYaoWei"/>
-      <browser:page
-        name="input_jingluo"
-        for="cms.db.contents.ormfolder.IOrmfolder"
-        permission="cms.db.input_db"
-        class=".ajax_listing.InputJingLuo"/>
-      <browser:page
-        name="input_chufang"
-        for="cms.db.contents.ormfolder.IOrmfolder"
-        permission="cms.db.input_db"
-        class=".ajax_listing.InputChuFang"/>
-      <browser:page
-        name="input_bingren"
-        for="cms.db.contents.ormfolder.IOrmfolder"
-        permission="cms.db.input_db"
-        class=".ajax_listing.InputBingRen"/>
-      <browser:page
-        name="input_dizhi"
-        for="cms.db.contents.ormfolder.IOrmfolder"
-        permission="cms.db.input_db"
-        class=".ajax_listing.InputDiZhi"/>
-      <browser:page
-        name="input_gerendizhi"
-        for="cms.db.contents.ormfolder.IOrmfolder"
-        permission="cms.db.input_db"
-        class=".ajax_listing.InputGeRenDiZhi"/>
-      <browser:page
-        name="input_danweidizhi"
-        for="cms.db.contents.ormfolder.IOrmfolder"
-        permission="cms.db.input_db"
-        class=".ajax_listing.InputDanWeiDiZhi"/>                
-      <browser:page
-        name="input_yisheng"
-        for="cms.db.contents.ormfolder.IOrmfolder"
-        permission="cms.db.input_db"
-        class=".ajax_listing.InputYiSheng"/>
-      <browser:page
-        name="input_danwei"
-        for="cms.db.contents.ormfolder.IOrmfolder"
-        permission="cms.db.input_db"
-        class=".ajax_listing.InputDanWei"/>
-
-     <!-- update form views define--> 
-     <browser:page
-        name="update_yaoxing"
-        for="cms.db.contents.ormfolder.IOrmfolder"
-        permission="cms.db.input_db"
-        class=".ajax_listing.UpdateYaoXing"/> 
-     <browser:page
-        name="update_yao"
-        for="cms.db.contents.ormfolder.IOrmfolder"
-        permission="cms.db.input_db"
-        class=".ajax_listing.UpdateYao"/>
-     <browser:page
-        name="update_yaowei"
-        for="cms.db.contents.ormfolder.IOrmfolder"
-        permission="cms.db.input_db"
-        class=".ajax_listing.UpdateYaoWei"/>
-      <browser:page
-        name="update_jingluo"
-        for="cms.db.contents.ormfolder.IOrmfolder"
-        permission="cms.db.input_db"
-        class=".ajax_listing.UpdateJingLuo"/>
-      <browser:page
-        name="update_chufang"
-        for="cms.db.contents.ormfolder.IOrmfolder"
-        permission="cms.db.input_db"
-        class=".ajax_listing.UpdateChuFang"/>
-      <browser:page
-        name="update_bingren"
-        for="cms.db.contents.ormfolder.IOrmfolder"
-        permission="cms.db.input_db"
-        class=".ajax_listing.UpdateBingRen"/>
-      <browser:page
-        name="update_dizhi"
-        for="cms.db.contents.ormfolder.IOrmfolder"
-        permission="cms.db.input_db"
-        class=".ajax_listing.UpdateDiZhi"/>
-      <browser:page
-        name="update_gerendizhi"
-        for="cms.db.contents.ormfolder.IOrmfolder"
-        permission="cms.db.input_db"
-        class=".ajax_listing.UpdateGeRenDiZhi"/>
-      <browser:page
-        name="update_danweidizhi"
-        for="cms.db.contents.ormfolder.IOrmfolder"
-        permission="cms.db.input_db"
-        class=".ajax_listing.UpdateDanWeiDiZhi"/>                
-      <browser:page
-        name="update_yisheng"
-        for="cms.db.contents.ormfolder.IOrmfolder"
-        permission="cms.db.input_db"
-        class=".ajax_listing.UpdateYiSheng"/>
-      <browser:page
-        name="update_danwei"
-        for="cms.db.contents.ormfolder.IOrmfolder"
-        permission="cms.db.input_db"
-        class=".ajax_listing.UpdateDanWei"/>
-        
-    <!-- delete form view -->
-     <browser:page
-        name="delete_yaoxing"
-        for="cms.db.contents.ormfolder.IOrmfolder"
-        permission="cms.db.input_db"
-        class=".ajax_listing.DeleteYaoXing"/> 
-     <browser:page
-        name="delete_yao"
-        for="cms.db.contents.ormfolder.IOrmfolder"
-        permission="cms.db.input_db"
-        class=".ajax_listing.DeleteYao"/>
-     <browser:page
-        name="delete_yaowei"
-        for="cms.db.contents.ormfolder.IOrmfolder"
-        permission="cms.db.input_db"
-        class=".ajax_listing.DeleteYaoWei"/>
-      <browser:page
-        name="delete_jingluo"
-        for="cms.db.contents.ormfolder.IOrmfolder"
-        permission="cms.db.input_db"
-        class=".ajax_listing.DeleteJingLuo"/>
-      <browser:page
-        name="delete_chufang"
-        for="cms.db.contents.ormfolder.IOrmfolder"
-        permission="cms.db.input_db"
-        class=".ajax_listing.DeleteChuFang"/>
-      <browser:page
-        name="delete_bingren"
-        for="cms.db.contents.ormfolder.IOrmfolder"
-        permission="cms.db.input_db"
-        class=".ajax_listing.DeleteBingRen"/>
-      <browser:page
-        name="delete_dizhi"
-        for="cms.db.contents.ormfolder.IOrmfolder"
-        permission="cms.db.input_db"
-        class=".ajax_listing.DeleteDiZhi"/>
-      <browser:page
-        name="delete_gerendizhi"
-        for="cms.db.contents.ormfolder.IOrmfolder"
-        permission="cms.db.input_db"
-        class=".ajax_listing.DeleteGeRenDiZhi"/>
-      <browser:page
-        name="delete_danweidizhi"
-        for="cms.db.contents.ormfolder.IOrmfolder"
-        permission="cms.db.input_db"
-        class=".ajax_listing.DeleteDanWeiDiZhi"/>                
-      <browser:page
-        name="delete_yisheng"
-        for="cms.db.contents.ormfolder.IOrmfolder"
-        permission="cms.db.input_db"
-        class=".ajax_listing.DeleteYiSheng"/>
-      <browser:page
-        name="delete_danwei"
-        for="cms.db.contents.ormfolder.IOrmfolder"
-        permission="cms.db.input_db"
-        class=".ajax_listing.DeleteDanWei"/>
-            
-   
-    <browser:page
-        name="yaoxing_listings"
-        template="templates/yaoxing_listings.pt"
-        for="cms.db.contents.ormfolder.IOrmfolder"
-        permission="cms.db.view_db"
-        class=".ajax_listing.YaoXingsView"/>            
-    <browser:page
-        name="yaowei_listings"
-        permission="cms.db.view_db"    
-        for="cms.db.contents.ormfolder.IOrmfolder"        
-        template="templates/yaowei_listings.pt"
-        class=".ajax_listing.YaoWeiesView"/>
-    <browser:page
-        name="jingluo_listings"
-        permission="cms.db.view_db"    
-        for="cms.db.contents.ormfolder.IOrmfolder"        
-        template="templates/jingluo_listings.pt"
-        class=".ajax_listing.JingLuoesView"/>
-    <browser:page
-        name="yao_listings"
-        permission="cms.db.view_db"    
-        for="cms.db.contents.ormfolder.IOrmfolder"        
-        template="templates/yao_listings.pt"
-        class=".ajax_listing.YaoesView"/>
-    <browser:page
-        name="chufang_listings"
-        permission="cms.db.view_db"    
-        for="cms.db.contents.ormfolder.IOrmfolder"        
-        template="templates/chufang_listings.pt"
-        class=".ajax_listing.ChuFangsView"/>
-    <browser:page
-        name="bingren_listings"
-        permission="cms.db.view_db"    
-        for="cms.db.contents.ormfolder.IOrmfolder"        
-        template="templates/bingren_listings.pt"
-        class=".ajax_listing.BingRensView"/>
-    <browser:page
-        name="dizhi_listings"
-        permission="cms.db.view_db"    
-        for="cms.db.contents.ormfolder.IOrmfolder"        
-        template="templates/dizhi_listings.pt"
-        class=".ajax_listing.DiZhiesView"/>
-    <browser:page
-        name="gerendizhi_listings"
-        permission="cms.db.view_db"    
-        for="cms.db.contents.ormfolder.IOrmfolder"        
-        template="templates/gerendizhi_listings.pt"
-        class=".ajax_listing.GeRenDiZhiesView"/>
-    <browser:page
-        name="danweidizhi_listings"
-        permission="cms.db.view_db"    
-        for="cms.db.contents.ormfolder.IOrmfolder"        
-        template="templates/danweidizhi_listings.pt"
-        class=".ajax_listing.DanWeiDiZhiesView"/>                
-    <browser:page
-        name="danwei_listings"
-        permission="cms.db.view_db"    
-        for="cms.db.contents.ormfolder.IOrmfolder"        
-        template="templates/danwei_listings.pt"
-        class=".ajax_listing.DanWeiesView"/>
-    <browser:page
-        name="yisheng_listings"
-        permission="cms.db.view_db"    
-        for="cms.db.contents.ormfolder.IOrmfolder"        
-        template="templates/yisheng_listings.pt"
-        class=".ajax_listing.YiShengsView"/>
-    <browser:page
-        name="nianganzhi_listings"
-        permission="cms.db.view_db"    
-        for="cms.db.contents.ormfolder.IOrmfolder"        
-        template="templates/nianganzhi_listings.pt"
-        class=".ajax_listing.NianGanZhisView"/>                                     
+        />                
+                                  
                
 </configure>
