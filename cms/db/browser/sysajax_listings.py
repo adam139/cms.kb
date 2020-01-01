@@ -12,9 +12,7 @@ from Products.CMFCore import permissions
 from Products.CMFCore.interfaces import ISiteRoot
 # from plone.directives import dexterity
 from plone.memoize.instance import memoize
-from my315ok.policy import _
-from my315ok.policy.contents.blogfolder import IBlogfolder
-from my315ok.policy.contents.blog import IBlog
+
 from Products.Five.browser import BrowserView
 # from collective.gtags.interfaces import ITagSettings
 
@@ -214,7 +212,7 @@ class SysAjaxListingView(BrowserView):
         """返回 all organizations  catalog(path={'query': folder_path, 'depth': 1})
 
         """
-        query = {}       
+        query = {}      
         path = "/".join(self.context.getPhysicalPath())
         if justchildrens:
             pathdic = {'depth':1}
