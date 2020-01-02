@@ -265,7 +265,7 @@ class YaoAjaxListingView(SysAjaxListingView):
         
     
 class JingLuoAjaxListingView(SysAjaxListingView):
-    """ ajax listing view for yao content types"""
+    """ ajax listing view for jingluo content types"""
     
     def search_multicondition(self,query):
         query['portal_type'] = "cms.db.jingluo"  
@@ -273,7 +273,7 @@ class JingLuoAjaxListingView(SysAjaxListingView):
     
     
 class YaoWeiAjaxListingView(SysAjaxListingView):
-    """ ajax listing view for yao content types"""
+    """ ajax listing view for yao wei content types"""
     
     def search_multicondition(self,query):
         query['portal_type'] = "cms.db.yaowei"  
@@ -281,7 +281,7 @@ class YaoWeiAjaxListingView(SysAjaxListingView):
     
     
 class YaoXingAjaxListingView(SysAjaxListingView):
-    """ ajax listing view for yao content types"""
+    """ ajax listing view for yao xing content types"""
     
     def search_multicondition(self,query):
         query['portal_type'] = "cms.db.yaoxing"  
