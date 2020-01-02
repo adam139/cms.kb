@@ -4,128 +4,134 @@
             tal:attributes="href string:${navroot}/++resource++cms.db/style.css"
             />
 </metal:block>
-<metal:block define-macro="content_navbar" i18n:domain="cms.db">
- <nav class="navbar navbar-default" role="navigation">
-  <div class="container-fluid" tal:define="is_editable context/@@plone_context_state/is_editable;
-               kb python:context">
-    <!-- Brand and toggle get grouped for better mobile display -->
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#log-navbar-collapse">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" href="#" tal:content="kb/title" tal:attributes="href kb/absolute_url">Brand</a>
-    </div>
 
-    <!-- Collect the nav links, forms, and other content for toggling -->
-    <div class="collapse navbar-collapse" id="log-navbar-collapse">
-      <ul class="nav navbar-nav">                
-        <li class="dropdown active">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">内容视图<span class="caret"></span></a>          
-          <ul class="dropdown-menu" role="menu">
-          	<li>
-          		<a tal:attributes="href string:${kb/absolute_url}/@@yaoajax_listings">
-                     药物
-                </a>
-             </li>
-          	<li>
-          		<a tal:attributes="href string:${kb/absolute_url}/@@jingluoajax_listings">
-                     经络
-                </a>
-             </li> 
-          	<li>
-          		<a tal:attributes="href string:${kb/absolute_url}/@@yaoweiajax_listings">
-                     药味
-                </a>
-             </li>
-          	<li>
-          		<a tal:attributes="href string:${kb/absolute_url}/@@yaoxingajax_listings">
-                     药性
-                </a>
-             </li>                                      
-          </ul>
-        </li>      
-      </ul>      
-    </div><!-- /.navbar-collapse -->
-  </div><!-- /.container-fluid -->
-</nav> 
-</metal:block>
 <metal:block define-macro="navbar" i18n:domain="cms.db">
  <nav class="navbar navbar-default" role="navigation">
-  <div class="container-fluid" tal:define="is_editable context/@@plone_context_state/is_editable;
-               kb python:context">
+  <div class="container-fluid" 
+  	   tal:define="is_editable context/@@plone_context_state/is_editable;
+                   macroview context/@@cms-db-macros;">
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse-kb-orm">
+      <button type="button" class="navbar-toggle collapsed" 
+      	data-toggle="collapse" data-target="#navbar-collapse-orm">
         <span class="sr-only">Toggle navigation</span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="#" tal:content="kb/title" tal:attributes="href kb/absolute_url">Brand</a>
+      <a class="navbar-brand" href="#" tal:content="context/title" 
+      	tal:attributes="href context/absolute_url">Brand</a>
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
-    <div class="collapse navbar-collapse" id="navbar-collapse-kb-orm">
+    <div class="collapse navbar-collapse" id="navbar-collapse-orm">
       <ul class="nav navbar-nav">
-        <li class="dropdown">
+        <li class="dropdown" tal:condition="python:is_editable">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">CMS AI数据库<span class="caret"></span></a>          
           <ul class="dropdown-menu" role="menu">
             <li>
-                 <a tal:attributes="href string:${kb/absolute_url}/@@yao_listings">
-                     药物大全
+                 <a tal:attributes="href python:macroview.getorm_url() + '/@@yao_listings'">
+                     药物
                   </a>
                   </li>
                   <li>
-                 <a tal:attributes="href string:${kb/absolute_url}/@@yaowei_listings">
+                 <a tal:attributes="href python:macroview.getorm_url() + '/@@yaowei_listings'">
                      药味
                   </a>
                   </li>
                   <li>
-                 <a tal:attributes="href string:${kb/absolute_url}/@@yaoxing_listings">
+                 <a tal:attributes="href python:macroview.getorm_url() + '/@@yaoxing_listings'">
                      药性
                   </a>
                   </li>
                   <li>
-                 <a tal:attributes="href string:${kb/absolute_url}/@@jingluo_listings">
+                 <a tal:attributes="href python:macroview.getorm_url() + '/@@jingluo_listings'">
                      经络
                   </a>
                   </li>                  
                   <li>
-                 <a tal:attributes="href string:${kb/absolute_url}/@@chufang_listings">
+                 <a tal:attributes="href python:macroview.getorm_url() + '/@@chufang_listings'">
                      处方
                   </a>
                   </li>
                   <li>
-                 <a tal:attributes="href string:${kb/absolute_url}/@@yisheng_listings">
+                 <a tal:attributes="href python:macroview.getorm_url() + '/@@yisheng_listings'">
                      医生
                   </a>
                   </li>
                   <li>
-                 <a tal:attributes="href string:${kb/absolute_url}/@@bingren_listings">
+                 <a tal:attributes="href python:macroview.getorm_url() + '/@@bingren_listings'">
                      病人
                   </a>
                   </li>
                   <li>
-                 <a tal:attributes="href string:${kb/absolute_url}/@@danwei_listings">
+                 <a tal:attributes="href python:macroview.getorm_url() + '/@@danwei_listings'">
                      单位
                   </a>
                   </li>
                   <li>
-                 <a tal:attributes="href string:${kb/absolute_url}/@@dizhi_listings">
+                 <a tal:attributes="href python:macroview.getorm_url() + '/@@dizhi_listings'">
                      地址
                   </a>
                   </li>
                   <li>
-                 <a tal:attributes="href string:${kb/absolute_url}/@@nianganzhi_listings">
+                 <a tal:attributes="href python:macroview.getorm_url() + '/@@nianganzhi_listings'">
                      五运六气
                   </a>
                   </li>                                                                                          
           </ul>
         </li>
-     
+                        
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">内容视图<span class="caret"></span></a>          
+          <ul class="dropdown-menu" role="menu">
+          	<li>
+          		<a tal:attributes="href python:macroview.yao_folder_url() + '/@@yaoajax_listings'">
+                     药物
+                </a>
+             </li>
+          	<li>
+          		<a tal:attributes="href python:macroview.yao_folder_url() + '/@@jingluoajax_listings'">
+                     经络
+                </a>
+             </li> 
+          	<li>
+          		<a tal:attributes="href python:macroview.yao_folder_url() + '/@@yaoweiajax_listings'">
+                     药味
+                </a>
+             </li>
+          	<li>
+          		<a tal:attributes="href python:macroview.yao_folder_url() + '/@@yaoxingajax_listings'">
+                     药性
+                </a>
+             </li>
+          	<li>
+          		<a tal:attributes="href python:macroview.yisheng_folder_url() + '/@@sysajax_listings'">
+                     医生
+                </a>
+             </li>
+          	<li>
+          		<a tal:attributes="href python:macroview.bingren_folder_url() + '/@@sysajax_listings'">
+                     病人
+                </a>
+             </li> 
+          	<li>
+          		<a tal:attributes="href python:macroview.danwei_folder_url() + '/@@sysajax_listings'">
+                     单位
+                </a>
+             </li>             
+          	<li>
+          		<a tal:attributes="href python:macroview.chufang_folder_url() + '/@@sysajax_listings'">
+                     处方
+                </a>
+             </li>
+          	<li>
+          		<a tal:attributes="href python:macroview.wuyun_folder_url() + '/@@sysajax_listings'">
+                     五运六气
+                </a>
+             </li>                                                                
+          </ul>
+        </li>           
       </ul>      
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
