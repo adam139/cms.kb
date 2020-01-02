@@ -16,8 +16,7 @@ from plone.memoize.instance import memoize
 from zope.interface import Interface
 # from plone.directives import dexterity
 from plone.memoize.instance import memoize
-from Products.CMFPlone.resources import add_bundle_on_request
-from Products.CMFPlone.resources import add_resource_on_request
+from cms.db.browser.utility import gonglinian2ganzhi
 from cms.db.interfaces import IDbapi
 from cms.db.contents.yaofolder import IYaofolder
 from cms.db.contents.ormfolder import IOrmfolder
@@ -292,6 +291,29 @@ class WuYunView(BaseView):
         # Hide the editable-object border
         self.request.set('disable_border', True)
         
+    def preyear(self,id):
+        ""
+        id = int(id) - 1
+        parent = self.getobj_url("cms.db.wuyunfolder")
+        return "%s/%s/@@base_view" % (parent,str(id))
+
+    def nextyear(self,id):
+        ""
+        id = int(id) + 1
+        parent = self.getobj_url("cms.db.wuyunfolder")
+        return "%s/%s/@@base_view" % (parent,str(id))
+        
+    def currentyear(self):
+        "get current year wuyuliuqi"
+        
+        parent = self.getobj_url("cms.db.wuyunfolder")
+        jinnian = int(datetime.datetime.today().strftime("%Y"))
+        wuyunid = gonglinian2ganzhi(jinnian)
+        return "%s/%s/@@base_view" % (parent,wuyunid)
+        
+        
+        
+        
     def closed30nianfen(self,id):
         "由干支序号id,取最近30年同干支年份"
         
@@ -307,7 +329,7 @@ class WuYunView(BaseView):
         
         
     def ganzhi_generator(self,id):
-        from cms.db.browser.utility import gonglinian2ganzhi
+
         jinnian = int(datetime.datetime.today().strftime("%Y"))
         for j in xrange(jinnian-60,jinnian+61):
             if gonglinian2ganzhi(j)==id:

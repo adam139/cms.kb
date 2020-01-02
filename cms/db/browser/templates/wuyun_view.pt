@@ -10,11 +10,13 @@
     <tal:main-macro metal:define-macro="main">
     <div id="yao" class="container-fluid"
     	tal:define="p python:context.absolute_url();
-    			    toc python:False;">      	
+    			    toc python:False;">    			          	
      <div class="row row-1">         
        <div class="col-xs-12 col-md-12">
        	<h3 class="title text-center" tal:content="python:context.title">context.title</h3>
-       	<ul id="subject" tal:condition="tags" tal:define="tags python:view.getags()" tal:content="structure python:tags" />
+       	<ul id="subject" tal:condition="tags" 
+       		tal:define="tags python:view.getags()" 
+       		tal:content="structure python:tags" />
        	<p>大运:
        	<span class="dayun" tal:content="structure python:view.get_dayun(context.id)">dayun</span>
        	</p>
@@ -26,7 +28,22 @@
        	<p class="description" tal:content="python:view.closed30nianfen(context.id)">context.description</p>
        </div>
      </div>
-     <div class="row row-2 yun">         
+    <div class="row row-2">
+    <div class="col-xs-12">
+      <ul id="fastPageList" class="pager center-block">
+          <li><a class="btn btn-default" href="#" 
+          	     tal:attributes="href python:view.preyear(context.id)" role="button">前一年</a>
+          </li>
+          <li><a class="btn btn-default" href="#" 
+          	     tal:attributes="href python:view.currentyear()" role="button">今年五运六气</a>
+          </li>
+          <li><a class="btn btn-default" href="#" 
+          	     tal:attributes="href python:view.nextyear(context.id)" role="button">后一年</a>
+          </li>
+      </ul>
+     </div>
+     </div>          
+     <div class="row row-3 yun">         
        <div class="col-xs-12 col-md-12 table-responsive">
          <table id="zhuyun-keyun" class="table table-striped table-bordered table-condensed">
          	<tbody
@@ -35,16 +52,15 @@
         </table>
       </div>
      </div>     
-     <div class="row row-3 details">         
+     <div class="row row-4 details">         
        <div class="col-xs-12 col-md-12">
          <div id="parent-fieldname-text"
           tal:condition="context/text"
-          tal:content="structure python:context.text.output_relative_to(view.context)"
-          tal:attributes="class python: 'pat-autotoc' or ''">
+          tal:content="structure python:context.text.output_relative_to(view.context)">
         </div>
       </div>
      </div>
-     <div class="row row-4 qi">         
+     <div class="row row-5 qi">         
        <div class="col-xs-12 col-md-12 table-responsive">
          <table id="zhuqi-keqi" class="table table-striped table-bordered table-condensed">
          	<tbody
@@ -53,12 +69,11 @@
         </table>
       </div>
      </div>     
-     <div class="row row-5 report">         
+     <div class="row row-6 report">         
        <div class="col-xs-12 col-md-12">
          <div id="parent-fieldname-report"
           tal:condition="context/report"
-          tal:content="structure python:context.report.output_relative_to(view.context)"
-          tal:attributes="class python:  'pat-autotoc' or ''">
+          tal:content="structure python:context.report.output_relative_to(view.context)">
         </div>      	
       </div>
      </div>         
