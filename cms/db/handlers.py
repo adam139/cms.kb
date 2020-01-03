@@ -35,7 +35,7 @@ def recorder_created_handler(event):
         except:
             wk = None
         if bool(wk):
-            raise("the object has been existed")
+#             raise("the object has been existed")
             return       
     #call create object function        
         # bypass permission check
