@@ -130,12 +130,6 @@ def fire_created_event():
         id = "%s" % recorder.id
         eventobj = RecorderCreated(id=id,cls=cls,ttl=recorder.wei)
         if eventobj.available():event.notify(eventobj)
-    recorder = Session.query(YaoWei).filter(YaoWei.wei=="甘").first()
-    if bool(recorder):
-        cls = "cms.db.yaowei"
-        id = "%s" % recorder.id
-        eventobj = RecorderCreated(id=id,cls=cls,ttl=recorder.wei)
-        if eventobj.available():event.notify(eventobj)
     recorder = Session.query(YaoWei).filter(YaoWei.wei=="酸").first()
     if bool(recorder):
         cls = "cms.db.yaowei"
