@@ -206,7 +206,7 @@ class IChuFang(Interface):
             required=True,
         )
     yizhu = schema.TextLine(
-            title=_(u"zhu zhi"),
+            title=_(u"yi zhu"),
         )
     jiliang = schema.Int(
             title=_(u"ji liang"),
