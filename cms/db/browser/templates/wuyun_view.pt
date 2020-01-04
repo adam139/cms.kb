@@ -5,6 +5,13 @@
     lang="en"
     metal:use-macro="context/main_template/macros/master"
     i18n:domain="cms.db">
+<head>
+      <metal:block fill-slot="top_slot">
+        <tal:insert tal:replace="nothing"
+              tal:define="disable_column_two python:request.set('disable_plone.rightcolumn', 1);
+              disable_column_one python:request.set('disable_plone.leftcolumn', 1)" />
+      </metal:block>
+</head>
 <body>
 <metal:main fill-slot="main">
     <tal:main-macro metal:define-macro="main">
@@ -51,16 +58,8 @@
             </tbody>
         </table>
       </div>
-     </div>     
-     <div class="row row-4 details">         
-       <div class="col-xs-12 col-md-12">
-         <div id="parent-fieldname-text"
-          tal:condition="context/text"
-          tal:content="structure python:context.text.output_relative_to(view.context)">
-        </div>
-      </div>
      </div>
-     <div class="row row-5 qi">         
+     <div class="row row-4 qi">         
        <div class="col-xs-12 col-md-12 table-responsive">
          <table id="zhuqi-keqi" class="table table-striped table-bordered table-condensed">
          	<tbody
@@ -68,15 +67,33 @@
             </tbody>
         </table>
       </div>
-     </div>     
-     <div class="row row-6 report">         
-       <div class="col-xs-12 col-md-12">
+     </div>
+     <div role="tabpanel" class="row row-5 details">         
+       <ul class="nav nav-tabs row" role="tablist">
+       	<li role="presentation" class="active col-xs-6">
+       	<a class="text-center" href="#base" aria-controls="base" role="tab" data-toggle="tab"
+    	   tal:attributes="data-js-target python:p + '/todo/@@view'">基本分析</a>
+    	</li>
+       	<li role="presentation" class="col-xs-6">
+       	<a class="text-center" href="#apply" aria-controls="apply" role="tab" data-toggle="tab"
+    	   tal:attributes="data-js-target python:p + '/todo/@@view'">运气应用</a>
+    	</li>
+    	</ul>    		
+       <div class="tab-content">
+       	<div role="tabpanel" class="tab-pane fade in active" id="base">
+         <div id="parent-fieldname-text"
+          tal:condition="context/text"
+          tal:content="structure python:context.text.output_relative_to(view.context)">
+         </div>
+        </div>
+       	<div role="tabpanel" class="tab-pane fade" id="apply">
          <div id="parent-fieldname-report"
           tal:condition="context/report"
           tal:content="structure python:context.report.output_relative_to(view.context)">
-        </div>      	
-      </div>
-     </div>         
+         </div>
+        </div>
+      </div>  
+     </div>                  
    </div>            
  </tal:main-macro>
 </metal:main>

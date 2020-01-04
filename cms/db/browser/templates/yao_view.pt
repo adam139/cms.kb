@@ -5,6 +5,13 @@
     lang="en"
     metal:use-macro="context/main_template/macros/master"
     i18n:domain="cms.db">
+<head>
+      <metal:block fill-slot="top_slot">
+        <tal:insert tal:replace="nothing"
+              tal:define="disable_column_two python:request.set('disable_plone.rightcolumn', 1);
+              disable_column_one python:request.set('disable_plone.leftcolumn', 1)" />
+      </metal:block>
+</head>
 <body>
 <metal:main fill-slot="main">
     <tal:main-macro metal:define-macro="main">
