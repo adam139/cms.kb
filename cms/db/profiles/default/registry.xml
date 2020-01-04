@@ -8,11 +8,34 @@
     	    	<description>automatic create content types list</description>
     	    	<value_type type="plone.registry.field.Choice">
     	    	  <vocabulary>plone.app.vocabularies.UserFriendlyTypes</vocabulary>	
-    	    	</value_type>>
+    	    	</value_type>
     	    </field>
     	    <value>
     	    	<element>cms.db.yao</element>
+    	    	<element>cms.db.yaowei</element>
+    	    	<element>cms.db.yaoxing</element>
+    	    	<element>cms.db.chufang</element>
+    	    	<element>cms.db.yisheng</element>
+    	    	<element>cms.db.bingren</element>
+    	    	<element>cms.db.danwei</element>
     	    </value>
     </record>   	
   </records>
+  <records prefix="plone.resources/bootstrap-tabs"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/components/bootstrap/js/tab.js</value>
+      <value key="deps">jquery</value>
+  </records>
+  <!-- Bundles -->
+  <records prefix="plone.bundles/contents-view"
+            interface='Products.CMFPlone.interfaces.IBundleRegistry'>    
+    <value key="depends">plone</value>
+    <value key="jscompilation">++resource++cms.db/contents.js</value>
+    <value key="last_compilation">2015-08-14 00:00:00</value>
+    <value key="compile">True</value>
+    <value key="enabled">False</value>
+    <value key="stub_js_modules">
+        <element>bootstrap-tabs</element>
+    </value>    
+  </records>    
 </registry>

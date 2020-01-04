@@ -11,6 +11,8 @@ from Products.Five.browser import BrowserView
 from zope.component import getMultiAdapter
 from zope.component import queryUtility
 from Products.CMFCore.utils import getToolByName
+from Products.CMFPlone.resources import add_resource_on_request
+from Products.CMFPlone.resources import add_bundle_on_request
 from plone.app.layout.navigation.interfaces import INavigationRoot
 from plone.memoize.instance import memoize
 from zope.interface import Interface
@@ -42,7 +44,8 @@ class BaseView(BrowserView):
         # Each view instance receives context and request as construction parameters
         self.context = context
         self.request = request
-#         add_resource_on_request(self.request, 'load-more')    
+#         add_resource_on_request(self.request, 'bootstrap-tabs')
+        add_bundle_on_request(self.request, 'contents-view')    
     
     @memoize    
     def catalog(self):
