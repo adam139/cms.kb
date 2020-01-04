@@ -283,6 +283,14 @@ class YiShengView(BaseView):
         self.request.set('disable_border', True)
         
 
+class DanWeiView(BaseView):
+    "content type:danwei view"
+
+    
+    def update(self):
+        # Hide the editable-object border
+        self.request.set('disable_border', True)
+
 class WuYunView(BaseView):
     "content type:wuyun view"
 

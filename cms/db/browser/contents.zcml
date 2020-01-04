@@ -50,6 +50,12 @@
         class=".contents_view.YiShengView"/>
      <browser:page
         name="base_view"
+        for="cms.db.contents.danwei.IDanwei"
+        template="templates/danwei_view.pt"
+        permission="zope2.View"
+        class=".contents_view.DanWeiView"/>     
+     <browser:page
+        name="base_view"
         for="cms.db.contents.wuyun.IWuyun"
         template="templates/wuyun_view.pt"
         permission="zope2.View"
