@@ -51,7 +51,7 @@ class IYao_ChuFang_AssoUI (Interface):
     """yao chufang association table editing ui """
 
     yao_id = schema.Choice(
-            title=_(u"yao"),
+            title=_(u"ming cheng"),
             vocabulary='cms.db.yao',
             required=True,
         )          
@@ -82,7 +82,7 @@ class IChuFangUI (IChuFang):
 #         required=False,
 #         )
 
-    bingrens = schema.List(title=_(u"bing ren"),
+    bingrens = schema.List(title=_(u"bing ren qingdan"),
         value_type=schema.Object(title=_(u"bing ren qing dan"), schema=IChuFang_BingRen_AssoUI),
         required=False,
         )
