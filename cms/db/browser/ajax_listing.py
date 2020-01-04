@@ -1417,7 +1417,7 @@ class DeleteYao(DeleteYaoXing):
     "delete the specify yao recorder"
 
     label = _(u"delete yao data")
-    fields = field.Fields(IYao).omit('id','yaowei_id','yaoxing_id','guijing')
+    fields = field.Fields(IYao).omit('id','yaowei_id','yaoxing_id','yaowei','yaoxing','guijing')
 
     def getContent(self):
         locator = queryUtility(IDbapi, name='yao')
@@ -1719,7 +1719,7 @@ class DeleteChuFang(DeleteYaoXing):
     "delete the specify chu fang recorder"
 
     label = _(u"delete chu fang data")
-    fields = field.Fields(IChuFang).omit('id')
+    fields = field.Fields(IChuFang).omit('id','yisheng_id')
 
     def getContent(self):
 
@@ -1857,18 +1857,16 @@ class UpdateChuFang(UpdateYaoXing):
         data = dict()
         bingrenlist = getattr(_obj, 'bingrens', [])
         yaolist = getattr(_obj, 'yaoes', [])
-        for name, f in getFieldsInOrder(IChuFangUI):          
-            try:
-                p = getattr(_obj, name, '')
-            except:
-                if name=="bingrens":
-                    p = bingrenlist
-                elif name == "yaoes":
-                    p = yaolist
-                else:
-                    raise                                                                                                                              
+        for name, f in getFieldsInOrder(IChuFangUI):
             if name in ignore:continue
-            elif name in objfd:
+            elif name=="bingrens":
+                p = bingrenlist
+            elif name == "yaoes":
+                p = yaolist                          
+            else:
+                p = getattr(_obj, name, '')                                                                          
+
+            if name in objfd:
                 data[name] = getattr(p,'id',1)
                 continue
             elif name == 'yaoes':
@@ -1912,8 +1910,10 @@ class UpdateChuFang(UpdateYaoXing):
                 continue                        
 
         tmp = data['jiliang']
-        if isinstance(tmp,long):
+        if isinstance(tmp,long) and bool(tmp):
             data['jiliang'] = int(tmp)
+        else:
+            data['jiliang'] = 0
         return ChuFangUI(**data)
 
     def update(self):
@@ -1994,7 +1994,7 @@ class DeleteBingRen(DeleteYaoXing):
 
 
     label = _(u"delete bing ren data")
-    fields = field.Fields(IBingRen).omit('id')
+    fields = field.Fields(IBingRen).omit('id','dizhi_id','dizhi')
 
     def getContent(self):
         locator = queryUtility(IDbapi, name='bingren')
@@ -2536,7 +2536,7 @@ class DeleteDanWei(DeleteYaoXing):
     "delete the specify dan wei recorder"
 
     label = _(u"delete dan wei data")
-    fields = field.Fields(IDanWei).omit('id')
+    fields = field.Fields(IDanWei).omit('id','dizhi_id','dizhi')
 
     def getContent(self):
 
@@ -2682,7 +2682,7 @@ class DeleteYiSheng(DeleteYaoXing):
 
 
     label = _(u"delete yi sheng data")
-    fields = field.Fields(IYiSheng).omit('id')
+    fields = field.Fields(IYiSheng).omit('id','danwei_id','danwei')
 
     def getContent(self):
 
