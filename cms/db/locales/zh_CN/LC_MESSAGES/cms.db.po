@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: my315ok.socialorgnization\n"
-"POT-Creation-Date: 2020-01-04 03:45+0000\n"
-"PO-Revision-Date: 2020-01-04 11:49+0800\n"
+"POT-Creation-Date: 2020-01-05 02:36+0000\n"
+"PO-Revision-Date: 2020-01-05 10:49+0800\n"
 "Last-Translator: Adam <yuejun.tang@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -30,11 +30,11 @@ msgstr ""
 
 #: behaviors/configure.zcml:43 behaviors/richtext.py:19
 msgid "Brief Report"
-msgstr ""
+msgstr "分析报告"
 
 #: profiles/default/types/cms.db.folder.xml
 msgid "CMSAI"
-msgstr ""
+msgstr "中医人工智能系统"
 
 #: browser/ajax_listing.py:1185
 msgid "Cancel"
@@ -106,7 +106,7 @@ msgstr "输入医生数据"
 
 #: configure.zcml:35
 msgid "Profile for cms.db"
-msgstr ""
+msgstr "CMS系统配置文件"
 
 #: browser/ajax_listing.py:1205
 msgid "Submit"
@@ -195,10 +195,6 @@ msgstr "单位文件夹"
 #: profiles/default/types/cms.db.danwei.xml
 msgid "danwei xiangxi shuoming"
 msgstr "单位内容类型"
-
-#: browser/templates/messagebox_listing.pt:35 browser/templates/workspace.pt:70
-msgid "date"
-msgstr "日期"
 
 #: profiles/default/types/cms.db.ormfolder.xml
 msgid "db map folder"
@@ -310,7 +306,7 @@ msgstr "街道"
 
 #: browser/configure.zcml:94
 msgid "jing luo Ajax view"
-msgstr ""
+msgstr "经络Ajax视图"
 
 #: profiles/default/types/cms.db.jingluo.xml
 msgid "jingluo"
@@ -331,7 +327,7 @@ msgstr ""
 
 #: orm.py:452
 msgid "lei xing"
-msgstr ""
+msgstr "类型"
 
 #: browser/interfaces.py:40
 msgid "mai xiang"
@@ -341,10 +337,6 @@ msgstr "脉象"
 msgid "ming cheng"
 msgstr "名称"
 
-#: browser/templates/messagebox_listing.pt:33 browser/templates/workspace.pt:69
-msgid "name"
-msgstr ""
-
 #: vocabulary.py:15
 msgid "nan"
 msgstr "男"
@@ -353,21 +345,9 @@ msgstr "男"
 msgid "nv"
 msgstr "女"
 
-#: browser/templates/messagebox_listing.pt:37 browser/templates/workspace.pt:72
-msgid "operates"
-msgstr ""
-
 #: browser/interfaces.py:62
 msgid "pao zhi"
 msgstr "炮制"
-
-#: browser/templates/messagebox_listing.pt:27
-msgid "personal message box information"
-msgstr ""
-
-#: browser/templates/messagebox_listing.pt:34
-msgid "sender"
-msgstr ""
 
 #: browser/interfaces.py:43
 msgid "she xiang"
@@ -381,10 +361,6 @@ msgstr "省"
 msgid "shi (city)"
 msgstr "市"
 
-#: browser/templates/messagebox_listing.pt:36
-msgid "status"
-msgstr "状态"
-
 #: orm.py:34
 msgid "table primary key"
 msgstr "主键"
@@ -395,7 +371,7 @@ msgstr "常用药量"
 
 #: browser/interfaces.py:148
 msgid "types"
-msgstr ""
+msgstr "类型"
 
 #: browser/ajax_listing.py:2096
 msgid "update bing ren data"
@@ -475,7 +451,7 @@ msgstr "药"
 
 #: browser/configure.zcml:40
 msgid "yao Ajax view"
-msgstr ""
+msgstr "药品Ajax视图"
 
 #: profiles/default/types/cms.db.yaofolder.xml
 msgid "yao folder"
@@ -499,7 +475,7 @@ msgstr "药味"
 
 #: browser/configure.zcml:58
 msgid "yao wei Ajax view"
-msgstr ""
+msgstr "药味Ajax视图"
 
 #: profiles/default/types/cms.db.yao.xml
 msgid "yao xiangxi shuoming"
@@ -511,7 +487,7 @@ msgstr "药性"
 
 #: browser/configure.zcml:76
 msgid "yao xing Ajax view"
-msgstr ""
+msgstr "药性Ajax视图"
 
 #: profiles/default/types/cms.db.yaowei.xml
 msgid "yaowei"

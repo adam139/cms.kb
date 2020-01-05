@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2020-01-04 03:45+0000\n"
+"POT-Creation-Date: 2020-01-05 02:36+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -197,11 +197,6 @@ msgstr ""
 msgid "danwei xiangxi shuoming"
 msgstr ""
 
-#: ./browser/templates/messagebox_listing.pt:35
-#: ./browser/templates/workspace.pt:70
-msgid "date"
-msgstr ""
-
 #: ./profiles/default/types/cms.db.ormfolder.xml
 msgid "db map folder"
 msgstr ""
@@ -346,11 +341,6 @@ msgstr ""
 msgid "ming cheng"
 msgstr ""
 
-#: ./browser/templates/messagebox_listing.pt:33
-#: ./browser/templates/workspace.pt:69
-msgid "name"
-msgstr ""
-
 #: ./vocabulary.py:15
 msgid "nan"
 msgstr ""
@@ -359,21 +349,8 @@ msgstr ""
 msgid "nv"
 msgstr ""
 
-#: ./browser/templates/messagebox_listing.pt:37
-#: ./browser/templates/workspace.pt:72
-msgid "operates"
-msgstr ""
-
 #: ./browser/interfaces.py:62
 msgid "pao zhi"
-msgstr ""
-
-#: ./browser/templates/messagebox_listing.pt:27
-msgid "personal message box information"
-msgstr ""
-
-#: ./browser/templates/messagebox_listing.pt:34
-msgid "sender"
 msgstr ""
 
 #: ./browser/interfaces.py:43
@@ -386,10 +363,6 @@ msgstr ""
 
 #: ./orm.py:315
 msgid "shi (city)"
-msgstr ""
-
-#: ./browser/templates/messagebox_listing.pt:36
-msgid "status"
 msgstr ""
 
 #: ./orm.py:34
