@@ -413,7 +413,10 @@ class Dbapi(object):
                     order_by(tablecls.id.desc()).limit(max).offset(start)
                     except:
                         session.rollback()
-            if not bool(recorders):
+            try:
+                if not bool(recorders):
+                    recorders = []
+            except:
                 recorders = []
             return recorders
         else:
