@@ -7,7 +7,6 @@ from plone.directives import form
 # from plone.autoform import directives as form
 
 from z3c.form.browser.checkbox import CheckBoxFieldWidget
-# from collective.z3cform.datagridfield import DataGridFieldFactory, DictRow
 from cms.db.orm import IYao
 from cms.db.orm import IDanWei
 from cms.db.orm import IYiSheng
@@ -18,6 +17,17 @@ from cms.db.orm import IChuFang
 from cms.db.orm import IYao_ChuFang_Asso
 from cms.db import _
          
+
+class YaoListField(schema.List):
+    """We need to have a unique class for the field list so that we
+    can apply a custom adapter."""
+    pass
+
+
+class BingRenListField(schema.List):
+    """We need to have a unique class for the field list so that we
+    can apply a custom adapter."""
+    pass
 
 
 class InputError(Exception):
@@ -71,21 +81,17 @@ class IChuFangUI (IChuFang):
             vocabulary='cms.db.yisheng',
             required=True,
         )
-#     form.widget(yaoes=DataGridFieldFactory)
-    yaoes = schema.List(title=_(u"yao qingdan"),
+
+    yaoes = YaoListField(title=_(u"yao qingdan"),
         value_type=schema.Object(title=_(u"yao qingdan data row"), schema=IYao_ChuFang_AssoUI),
         required=False,
-        )    
-#     form.widget(yaoes=DataGridFieldFactory)
-#     yaoes = schema.List(title=_(u"yao qingdan"),
-#         value_type=DictRow(title=_(u"yao qingdan data row"), schema=IYao_ChuFang_AssoUI),
-#         required=False,
-#         )
+        )   
 
-    bingrens = schema.List(title=_(u"bing ren qingdan"),
+    bingrens = BingRenListField(title=_(u"bing ren qingdan"),
         value_type=schema.Object(title=_(u"bing ren qing dan"), schema=IChuFang_BingRen_AssoUI),
         required=False,
         )
+   
 
 
 class IBingRenUI (IBingRen):
