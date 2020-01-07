@@ -17,7 +17,10 @@ from zope.interface import Interface
 from zope.component import adapter
 from zope.schema import getFieldsInOrder
 from zope.schema.fieldproperty import FieldProperty
+from collective.z3cform.datagridfield import IDataGridField
 
+from cms.db.browser.interfaces import YaoListField
+from cms.db.browser.interfaces import BingRenListField
 from cms.db.browser.interfaces import IYaoUI
 from cms.db.browser.interfaces import IDanWeiUI
 from cms.db.browser.interfaces import IChuFangUI
@@ -25,6 +28,71 @@ from cms.db.browser.interfaces import IBingRenUI
 from cms.db.browser.interfaces import IYiShengUI
 from cms.db.browser.interfaces import IChuFang_BingRen_AssoUI
 from cms.db.browser.interfaces import IYao_ChuFang_AssoUI
+
+
+class YaoList(list):
+    pass
+
+
+class BingRenList(list):
+    pass
+
+
+@adapter(YaoListField, IDataGridField)
+@implementer(IDataConverter)
+class YaoGridDataConverter(BaseDataConverter):
+    """Convert between the AddressList object and the widget.
+       If you are using objects, you must provide a custom converter
+    """
+
+    def toWidgetValue(self, value):
+        """Simply pass the data through with no change"""
+        rv = list()
+        for row in value:
+            d = dict()
+            for name, f in getFieldsInOrder(IYao_ChuFang_AssoUI):
+                d[name] = getattr(row, name)
+            rv.append(d)
+        return rv
+
+    def toFieldValue(self, value):
+        rv = YaoList()
+        for row in value:
+            d = dict()
+            for name, f in getFieldsInOrder(IYao_ChuFang_AssoUI):
+                if row.get(name, NO_VALUE) != NO_VALUE:
+                    d[name] = row.get(name)
+            rv.append(EditYao_ChuFang_AssoUI(**d))
+        return rv
+
+
+@adapter(BingRenListField, IDataGridField)
+@implementer(IDataConverter)
+class BingRenGridDataConverter(BaseDataConverter):
+    """Convert between the AddressList object and the widget.
+       If you are using objects, you must provide a custom converter
+    """
+
+    def toWidgetValue(self, value):
+        """Simply pass the data through with no change"""
+        rv = list()
+        for row in value:
+            d = dict()
+            for name, f in getFieldsInOrder(IChuFang_BingRen_AssoUI):
+                d[name] = getattr(row, name)
+            rv.append(d)
+        return rv
+
+    def toFieldValue(self, value):
+        rv = BingRenList()
+        for row in value:
+            d = dict()
+            for name, f in getFieldsInOrder(IChuFang_BingRen_AssoUI):
+                if row.get(name, NO_VALUE) != NO_VALUE:
+                    d[name] = row.get(name)
+            rv.append(EditChuFang_BingRen_AssoUI(**d))
+        return rv
+
 
 @implementer(IBingRenUI)
 class BingRenUI(object):
