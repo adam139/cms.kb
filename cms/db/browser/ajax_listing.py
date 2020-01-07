@@ -3,6 +3,8 @@ from zope.interface import Interface
 from zope.interface import implementer
 from zope.schema import getFieldsInOrder
 from zope.component import getMultiAdapter
+from collective.z3cform.datagridfield import DataGridFieldFactory
+from zope import component
 import json
 import datetime
 from Acquisition import aq_inner
@@ -12,7 +14,9 @@ from Products.CMFCore.interfaces import ISiteRoot
 from plone.memoize.instance import memoize
 from Products.Five.browser import BrowserView
 from plone.directives import form
+from z3c.form import form as z3f
 from z3c.form import field, button
+
 from z3c.form.interfaces import IFieldsAndContentProvidersForm
 from z3c.form.contentprovider import ContentProviders
 from cms.db.browser.content_providers import BingRenExtendedHelp
@@ -1228,6 +1232,29 @@ class InputYaoXing(form.Form):
         IStatusMessage(self.request).add(confirm, type='info')
         self.request.response.redirect(self.context.absolute_url() + '/@@yaoxing_listings')
 
+class UpdateBase(z3f.EditForm):
+    """
+    """
+    implements(IPublishTraverse)
+    
+    ignoreContext = False
+    id = None
+
+
+    def update(self):
+        self.request.set('disable_border', True)
+        self.request.set('disable_plone.rightcolumn',1)
+        self.request.set('disable_plone.leftcolumn',1)
+        super(UpdateBase, self).update()
+    
+    def publishTraverse(self, request, name):
+        if self.id is None:
+            self.id = name
+            return self
+        else:
+            raise NotFound()
+                
+    
 class UpdateYaoXing(form.Form):
     """update yaoxing table row data
     """
@@ -1759,15 +1786,21 @@ class DeleteChuFang(DeleteYaoXing):
         self.request.response.redirect(self.context.absolute_url() + '/@@chufang_listings')
 
 
-class InputChuFang(InputYaoXing):
+@component.adapter(IChuFangUI)
+class InputChuFang(z3f.AddForm):
+# class InputChuFang(InputYaoXing):
     """input db chufang table data
     """
 
     label = _(u"Input chu fang data")
     fields = field.Fields(IChuFangUI).omit('id','yisheng_id')
+    fields['yaoes'].widgetFactory = DataGridFieldFactory
+    fields['bingrens'].widgetFactory = DataGridFieldFactory
 
     def update(self):
         self.request.set('disable_border', True)
+        self.request.set('disable_plone.rightcolumn',1)
+        self.request.set('disable_plone.leftcolumn',1)
         super(InputChuFang, self).update()
 
     @button.buttonAndHandler(_(u"Submit"))
@@ -1837,13 +1870,15 @@ class InputChuFang(InputYaoXing):
         self.request.response.redirect(self.context.absolute_url() + '/@@chufang_listings')
 
 
-
-class UpdateChuFang(UpdateYaoXing):
+@component.adapter(IChuFangUI)
+class UpdateChuFang(UpdateBase):
     """update chufang table row data
     """
 
     label = _(u"update chu fang data")
     fields = field.Fields(IChuFangUI).omit('id','yisheng_id')
+    fields['yaoes'].widgetFactory = DataGridFieldFactory
+    fields['bingrens'].widgetFactory = DataGridFieldFactory
 
     def getContent(self):
         # create a temp obj that provided IYaoUI
@@ -1914,12 +1949,33 @@ class UpdateChuFang(UpdateYaoXing):
             data['jiliang'] = int(tmp)
         else:
             data['jiliang'] = 0
+#         import pdb
+#         pdb.set_trace()
+#         return data
         return ChuFangUI(**data)
 
-    def update(self):
-        self.request.set('disable_border', True)
-        # Let z3c.form do its magic
-        super(UpdateChuFang, self).update()
+#     def update(self):
+#         self.request.set('disable_border', True)
+#         # Let z3c.form do its magic
+#         super(UpdateChuFang, self).update()
+
+    def updateActions(self):
+        """Bypass the baseclass editform - it causes problems"""
+        super(z3f.EditForm, self).updateActions()
+
+    def updateWidgets(self):
+        super(UpdateChuFang, self).updateWidgets()
+        self.widgets['yaoes'].allow_reorder = False
+        self.widgets['yaoes'].auto_append = False
+        self.widgets['bingrens'].allow_reorder = False
+        self.widgets['bingrens'].auto_append = False
+
+#     def datagridUpdateWidgets(self, subform, widgets, widget):
+# 
+#         if widget.name == 'form.widgets.bingrens':
+#             widgets['shijian'].size = 8
+#             widgets['bingren_id'].size = 8
+
 
     @button.buttonAndHandler(_(u"Submit"))
     def submit(self, action):
