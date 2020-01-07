@@ -5,7 +5,8 @@
     i18n_domain="cms.db">
 
 	<include package="plone.app.contentmenu" />
-
+    <adapter factory=".intermediate_objs.BingRenGridDataConverter" />
+    <adapter factory=".intermediate_objs.YaoGridDataConverter" />    
   <!-- Register static resource directory -->
 	<browser:resourceDirectory
   		name="cms.db"
