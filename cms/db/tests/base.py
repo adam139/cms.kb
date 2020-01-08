@@ -7,7 +7,7 @@ from cms.db.events import RecorderCreated
 
 TABLES = ['YaoWei','YaoXing','JingLuo','Yao_JingLuo_Asso','Yao','Yao_ChuFang_Asso',
         'ChuFang_BingRen_Asso','ChuFang','Person','YiSheng','DanWei','DiZhi', 
-        'DanWeiDiZhi', 'GeRenDiZhi', 'BingRen']
+        'DanWeiDiZhi', 'GeRenDiZhi', 'BingRen', 'Yao_DanWei_Asso']
 
 for tb in TABLES:
     import_str = "from %(p)s import %(t)s" % dict(p='cms.db.orm',t=tb) 
@@ -76,12 +76,13 @@ def inputvalues():
         chufang = ChuFang("桂枝汤","加热稀粥",5)
         yao_chufang = Yao_ChuFang_Asso(yao1,chufang,7,"晒干")
         yao_chufang2 = Yao_ChuFang_Asso(yao2,chufang,10,"掰开")
+        yao_danwei = Yao_DanWei_Asso(yao1,danwei,700,0.26)
         maixiang = "两关郁,左寸小,右寸大"
         shexiang = "舌苔淡青,有齿痕"
         zhusu = "小腹冷痛,右肋痛"
         chufang_bingren = ChuFang_BingRen_Asso(bingren,chufang,datetime.now(),maixiang,shexiang,zhusu)
         yisheng.chufangs = [chufang]
-        Session.add_all([dizhi0,dizhi,bingren,danwei,danwei2,dizhi2,dizhi3,\
+        Session.add_all([dizhi0,dizhi,bingren,danwei,danwei2,dizhi2,dizhi3,Yao_DanWei_Asso,\
                          yisheng,chufang,yao_chufang,yao_chufang2,chufang_bingren])                         
         Session.commit()
         

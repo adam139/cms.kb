@@ -80,6 +80,30 @@ class TestDatabase(unittest.TestCase):
 #         tbls = ['Yao']
         self.drop_tables(tbls)
 
+    def test_yao_danwei_asso(self):
+        "test for yao_danwei table"
+        yaowei = YaoWei("酸")
+        yaoxing = YaoXing("寒")
+        jingluo = JingLuo("足厥阴肝经")
+        yao = Yao("白芍")        
+        yao.yaowei = yaowei
+        yao.yaoxing = yaoxing
+        yao.guijing = [jingluo]
+        dizhi2 = DanWeiDiZhi(guojia="中国",sheng="湖北",shi="十堰市",jiedao="茅箭区施洋路83号")        
+        danwei = DanWei("任之堂")
+        yisheng = YiSheng(xingming='余浩',xingbie=1,shengri=date(2015, 4, 2),dianhua='13673265859')
+        danwei.yishengs = [yisheng]
+        danwei.dizhi = dizhi2
+        yao_danwei = Yao_DanWei_Asso(yao,danwei,700,0.26)
+        Session.add_all([danwei,dizhi2,yao_danwei,\
+                         yisheng,yaowei,yaoxing,jingluo])                         
+        Session.commit()       
+        rds = Session.query(Yao_DanWei_Asso).all()
+        self.assertEqual(len(rds),1)
+
+        tbs = ['DanWei', 'DanWeiDiZhi', 'YaoWei', 'YaoXing','JingLuo','Yao','YiSheng','Yao_DanWei_Asso']
+        self.empty_tables(tbs)
+
     def test_joined_inheritance_dizhi(self):
         "test for joined inheritance table"
 

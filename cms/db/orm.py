@@ -304,13 +304,13 @@ class IYao_DanWei_Asso(Interface):
     danwei_id = schema.Int(
             title=_(u"foreagn key link to danwei"),
         )
-    danjia = schema.float(
+    danjia = schema.Float(
             title=_(u"dan jia"),
         )    
     kucun = schema.Int(
             title=_(u"ku cun"),
             required=False,
-            default=u"无"
+            default= 300
         )
 
 
@@ -333,7 +333,9 @@ class Yao_DanWei_Asso(Base):
     yao = relationship("Yao",lazy='subquery')
 #     yao = relationship("Yao")
 
-    def __init__(self, kucun=None, danjia=None):
+    def __init__(self, yao=None, danwei=None, kucun=None, danjia=None):
+        self.yao = yao
+        self.danwei = danwei        
         self.kucun = kucun
         self.danjia = danjia
 
