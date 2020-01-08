@@ -32,7 +32,7 @@ class TestDatabase(unittest.TestCase):
         """
 
         for tb in tbls:
-            import_str = "from %(p)s import %(t)s as tablecls" % dict(p='cms.db.orm',t=tb) 
+            import_str = "from %(p)s import %(t)s" % dict(p='cms.db.orm',t=tb) 
             exec import_str
         Base.metadata.drop_all(engine)                                
 
@@ -45,11 +45,13 @@ class TestDatabase(unittest.TestCase):
             tbls = TABLES       
         items = []
         for tb in tbls:
+            if tb == "Yao_JingLuo_Asso":continue
             import_str = "from %(p)s import %(t)s as tablecls" % dict(p='cms.db.orm',t=tb) 
             exec import_str
             items.extend(Session.query(tablecls).all())
+
         for m in items:
-            Session.delete(m)            
+            Session.delete(m)                    
         Session.commit()        
 
 
