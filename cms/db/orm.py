@@ -293,6 +293,50 @@ class Yao_ChuFang_Asso(Base):
         self.yaoliang = yaoliang
         self.paozhi = paozhi
 
+
+ ###药和处方关联表
+class IYao_DanWei_Asso(Interface):
+    """
+    """
+    yao_id = schema.Int(
+            title=_(u"foreagn key link to yao"),
+        )    
+    danwei_id = schema.Int(
+            title=_(u"foreagn key link to danwei"),
+        )
+    danjia = schema.float(
+            title=_(u"dan jia"),
+        )    
+    kucun = schema.Int(
+            title=_(u"ku cun"),
+            required=False,
+            default=u"无"
+        )
+
+
+class Yao_DanWei_Asso(Base):
+    implements(IYao_DanWei_Asso)
+    __tablename__ = 'yao_danwei'
+    
+    yao_id = Column(Integer, ForeignKey('yao.id'), primary_key=True)
+    danwei_id = Column(Integer, ForeignKey('danwei.id'), primary_key=True)
+    kucun = Column(Integer)
+    danjia = Column(Float(precision='8,2'))
+     
+    # bidirectional attribute/collection of "danwei"/"yao_danwei"
+    danwei = relationship("DanWei",lazy='subquery',
+                backref=backref("yao_danwei",lazy='subquery',
+                                cascade="all, delete-orphan")
+            )
+
+    # reference to the "Yao" object
+    yao = relationship("Yao",lazy='subquery')
+#     yao = relationship("Yao")
+
+    def __init__(self, kucun=None, danjia=None):
+        self.kucun = kucun
+        self.danjia = danjia
+
         
 ###联系地址
 class IDiZhi(Interface):
