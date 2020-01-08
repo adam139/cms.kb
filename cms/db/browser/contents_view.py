@@ -205,7 +205,8 @@ class ChuFangView(BaseView):
         _id = long(id)
         locator = queryUtility(IDbapi, name='chufang')        
         out = locator.pk_ass_obj_title(_id,ChuFang,Yao_ChuFang_Asso,Yao,'yao_id','mingcheng',mapf)
-        total = """<td colspan="2" class="text-right">%s</td><td class="text-left">%s</td>""" % (u"小计".encode('utf-8'),self.chufang_total(id))
+        total = """<td colspan="2" class="text-right">%s</td><td class="text-left">%s</td>""" \
+         % (u"小计".encode('utf-8'),self.chufang_total(id))
         out = "%s;%s" % (out,total)
         out = out.replace(";","</tr><tr>")
         out = "<tr>%s</tr>" % out       
