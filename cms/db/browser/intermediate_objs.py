@@ -41,7 +41,7 @@ class BingRenList(list):
 @adapter(YaoListField, IDataGridField)
 @implementer(IDataConverter)
 class YaoGridDataConverter(BaseDataConverter):
-    """Convert between the AddressList object and the widget.
+    """Convert between the YaoList object and the widget.
        If you are using objects, you must provide a custom converter
     """
 
@@ -69,7 +69,7 @@ class YaoGridDataConverter(BaseDataConverter):
 @adapter(BingRenListField, IDataGridField)
 @implementer(IDataConverter)
 class BingRenGridDataConverter(BaseDataConverter):
-    """Convert between the AddressList object and the widget.
+    """Convert between the BingRenList object and the widget.
        If you are using objects, you must provide a custom converter
     """
 
