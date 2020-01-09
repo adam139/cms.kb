@@ -156,5 +156,11 @@ class IAutomaticTypesSettings(Interface):
             value_type=schema.Choice(vocabulary='plone.app.vocabularies.UserFriendlyTypes'),
             required=False,
         )
+    danweiid = schema.Int(
+            title=_(u"danwei id"),
+            description=_(u"danwei id"),
+            default=1,
+            required=False,
+        )
 
             
