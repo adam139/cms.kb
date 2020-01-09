@@ -16,6 +16,14 @@ CONTAINER2TYPES = {'cms.db.yao':"cms.db.yaofolder",
                    'cms.db.wuyun':"cms.db.wuyunfolder",                                       
                    }
 
+def getDanWeiId():
+    "get danwei id from plone.app.registry setting"
+    from plone.registry.interfaces import IRegistry
+    from cms.db.browser.interfaces import IAutomaticTypesSettings
+    registry = getUtility(IRegistry)        
+    settings = registry.forInterface(IAutomaticTypesSettings, check=False)
+    return settings.danweiid    
+
 
 class UnrestrictedUser(BaseUnrestrictedUser):
     """Unrestricted user that still has an id.
