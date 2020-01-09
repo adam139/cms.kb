@@ -60,7 +60,7 @@ def map_yao_chufang_total(recorder):
 def map_yao_chufang_table(recorder):
     "chufang's base_view map function,"
     "provide a specify output format"
-    "parameter:recorder is a association table object recorder"
+    "parameter:recorder is a yao_chufang association table object recorder"
 
     yao_id = recorder.yao_id
     yao = Session.query(Yao).filter(Yao.id ==yao_id).one()
