@@ -10,6 +10,14 @@ from cms.db import _
 
 
 @provider(IVocabularyFactory)
+def zhuangtai(context):
+
+    values = {1:_(u'yi fu kuan'),0:_(u'wei fu kuan')}
+    return SimpleVocabulary(
+        [SimpleTerm(value=int(i), token=str(i), title=values[i]) for i in values.keys()],
+    )
+
+@provider(IVocabularyFactory)
 def xingbie(context):
 
     values = {1:_(u'nan'),0:_(u'nv')}

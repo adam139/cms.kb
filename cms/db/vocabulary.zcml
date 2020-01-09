@@ -7,6 +7,10 @@
 
  <!-- vocabulary utility -->
  <utility
+    name="cms.db.zhuangtai"
+    component="cms.db.vocabulary.zhuangtai"
+    />
+ <utility
     name="cms.db.yaowei"
     component="cms.db.vocabulary.yao_wei"
     />
