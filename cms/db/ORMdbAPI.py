@@ -127,6 +127,25 @@ class Dbapi(object):
         out = ";".join(more)
         return out
 
+    def ex_pk_ass_obj_title(self,pk,factorycls,asso,midcls,asso2,fk,title,mapf):
+        "通过主键查关联表对象1,连接关联表2,获取多对多关联对象的属性 "
+        #pk本地表主键  integer
+        #factorycls 本地表类 cls
+        #asso 关联表类   cls
+        #midcls 中间表类
+        #asso2 关联表类2  cls
+        #fk关联表指向目标表外键名称 string
+        #title目标表字段/属性    string
+        #mapf 映射函数  function       
+    
+        stmt2 = session.query(asso2).filter(asso.danwei_id==fk).subquery()
+        stmt = session.query(asso).join(factorycls).filter(factorycls.id==pk).subquery()
+        recorders = session.query(midcls.mingcheng,stmt.c.yaoliang,stmt2.c.danjia).\
+        join(stmt,midcls.yao_id ==stmt.yao_id).join(stmt2,stmt2.c.yao_id==stmt.c.yao_id).all()
+        more = map(mapf,recorders)
+        out = ";".join(more)
+        return out
+
     def get_asso_obj(self,cns,cls=None):
         "query association object table "
         "cns:{'column1':'value1',...}"
