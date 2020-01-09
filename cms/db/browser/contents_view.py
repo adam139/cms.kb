@@ -19,6 +19,7 @@ from zope.interface import Interface
 # from plone.directives import dexterity
 from plone.memoize.instance import memoize
 from cms.db.browser.utility import gonglinian2ganzhi
+from cms.db.browser.utility import getDanWeiId
 from cms.db.interfaces import IDbapi
 from cms.db.contents.yaofolder import IYaofolder
 from cms.db.contents.ormfolder import IOrmfolder
@@ -26,9 +27,10 @@ from cms.db.contents.yao import IYao
 from cms.db.orm import ChuFang
 from cms.db.orm import YaoWei,YaoXing,JingLuo,Yao_JingLuo_Asso
 from cms.db.orm import Yao,Yao_ChuFang_Asso,ChuFang
+from cms.db.orm import Yao_DanWei_Asso
 from cms.db.orm import ChuFang_BingRen_Asso, BingRen
 from cms.db import  Session
-from cms.db.dbutility import map_yao_chufang_table as mapf
+from cms.db.dbutility import map_yao_chufang_table
 from cms.db.dbutility import map_yao_chufang_total
 from cms.db.dbutility import map_chufang_bingren_table as mapcb
 
@@ -98,7 +100,11 @@ class BaseView(BrowserView):
         if len(items) > 1:
             return "".join(items)
         else:
-            return ""       
+            return ""
+    
+#     def danwei_id(self):
+#         ""
+#         return        
          
     
 class YaoView(BaseView):
@@ -203,8 +209,9 @@ class ChuFangView(BaseView):
         ""
         
         _id = long(id)
+        id = getDanWeiId()
         locator = queryUtility(IDbapi, name='chufang')        
-        out = locator.pk_ass_obj_title(_id,ChuFang,Yao_ChuFang_Asso,Yao,'yao_id','mingcheng',mapf)
+        out = locator.pk_ass_obj_title(_id,ChuFang,Yao_ChuFang_Asso,Yao,'yao_id','mingcheng',map_yao_chufang_table)
         total = """<td colspan="2" class="text-right">%s</td><td class="text-left">%s</td>""" \
          % (u"小计".encode('utf-8'),self.chufang_total(id))
         out = "%s;%s" % (out,total)
