@@ -77,17 +77,26 @@ def inputvalues():
         yao_chufang = Yao_ChuFang_Asso(yao1,chufang,7,"晒干")
         yao_chufang2 = Yao_ChuFang_Asso(yao2,chufang,10,"掰开")
         yao_danwei = Yao_DanWei_Asso(yao1,danwei,700,0.26)
+        yao_danwei2 = Yao_DanWei_Asso(yao2,danwei,800,0.36)
+        yao_danwei3 = Yao_DanWei_Asso(yao3,danwei,900,0.46)
+        yao_danwei4 = Yao_DanWei_Asso(yao4,danwei,1000,0.56)
+        yao_danwei5 = Yao_DanWei_Asso(yao5,danwei,1100,0.66)
+        yao_danwei6 = Yao_DanWei_Asso(yao6,danwei,1200,0.76)
         maixiang = "两关郁,左寸小,右寸大"
         shexiang = "舌苔淡青,有齿痕"
         zhusu = "小腹冷痛,右肋痛"
         chufang_bingren = ChuFang_BingRen_Asso(bingren,chufang,datetime.now(),maixiang,shexiang,zhusu)
         yisheng.chufangs = [chufang]
-        Session.add_all([dizhi0,dizhi,bingren,danwei,danwei2,dizhi2,dizhi3,Yao_DanWei_Asso,\
+        Session.add_all([dizhi0,dizhi,bingren,danwei,danwei2,dizhi2,dizhi3,\
+                         yao_danwei,yao_danwei2,yao_danwei3,yao_danwei4,yao_danwei5,yao_danwei6,\
                          yisheng,chufang,yao_chufang,yao_chufang2,chufang_bingren])                         
         Session.commit()
         
 def fire_created_event():
     "if add recorder to db is successful,fire the event"
+    from plone.registry.interfaces import IRegistry
+    from cms.db.browser.interfaces import IAutomaticTypesSettings
+    
     recorder = Session.query(YaoXing).filter(YaoXing.xing=="温").first()
     if bool(recorder):
         cls = "cms.db.yaoxing"
@@ -239,9 +248,13 @@ def fire_created_event():
         if eventobj.available():event.notify(eventobj)
     recorder = Session.query(DanWei).filter(DanWei.mingcheng=="任之堂").first()
     if bool(recorder):
+        registry = getUtility(IRegistry)
+        settings = registry.forInterface(IAutomaticTypesSettings, check=False)
+        settings.danweiid = int(recorder.id)
         cls = "cms.db.danwei"
         eventobj = RecorderCreated(id=recorder.id,cls=cls,ttl=recorder.mingcheng)
         if eventobj.available():event.notify(eventobj)
+    
     recorder = Session.query(DanWei).filter(DanWei.mingcheng=="润生堂").first()
     if bool(recorder):
         cls = "cms.db.danwei"
