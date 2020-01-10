@@ -217,7 +217,11 @@ class IChuFang(Interface):
             vocabulary='cms.db.zhuangtai',
             required=True,
             default=0,            
-        )        
+        )
+    zhenjin = schema.Float(
+            title=_(u"zhen jin"),
+            required = True,
+        )            
 #     yisheng = schema.Object(
 #             title=_(u"dan wei"),
 #             schema=IYiSheng,
@@ -235,26 +239,25 @@ class ChuFang(Base):
     jiliang = Column(Integer)
     yizhu = Column(String(64))
     zhuangtai = Column(Boolean)
-    
+    zhenjin = Column(Float(precision='6,2'))    
     # association proxy of "yaoes" collection
     # to "yao" attribute
-    yaoes = association_proxy('yao_chufang', 'yao')    
-
+    yaoes = association_proxy('yao_chufang', 'yao')
     # association proxy of "bingrens" collection
     # to "bingren" attribute of ChuFang_BingRen_Asso's object
     bingrens = association_proxy('chufang_bingrens', 'bingren')
     # chufang - yisheng: many to one relation
-    yisheng = relationship("YiSheng", backref="chufangs")
-    
+    yisheng = relationship("YiSheng", backref="chufangs")    
     # association proxy of "yishengxm" through "yisheng" relation object
     # to "xingming" attribute of YiSheng CLASS's object
     yishengxm = association_proxy('yisheng', 'xingming')
        
-    def __init__(self, mingcheng=None,yizhu=None,jiliang=5,zhuangtai=0):
+    def __init__(self, mingcheng=None,yizhu=None,jiliang=5,zhuangtai=0,zhenjin=0.00):
         self.mingcheng = mingcheng
         self.jiliang = jiliang
         self.yizhu = yizhu
         self.zhuangtai = zhuangtai
+        self.zhenjin = zhenjin
         
 
  ###药和处方关联表
