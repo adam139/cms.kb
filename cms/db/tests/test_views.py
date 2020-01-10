@@ -169,7 +169,7 @@ class TestView(unittest.TestCase):
         self.assertTrue("here is title" in browser.contents)
         self.assertTrue(u"here is description" in browser.contents)               
         self.assertTrue("here is report" in browser.contents)
-        self.assertTrue( "4.8" in browser.contents)
+        self.assertTrue( "5.42" in browser.contents)
         self.assertTrue( "白芍" in browser.contents)
         self.assertTrue( "张三" in browser.contents)       
 
