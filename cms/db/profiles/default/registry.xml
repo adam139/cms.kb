@@ -19,7 +19,8 @@
     	    	<element>cms.db.bingren</element>
     	    	<element>cms.db.danwei</element>
     	    </value>
-    </record>   	
+    </record>
+    <value key="danweiid">1</value>   	
   </records>
   <records prefix="plone.resources/bootstrap-tabs"
             interface='Products.CMFPlone.interfaces.IResourceRegistry'>
