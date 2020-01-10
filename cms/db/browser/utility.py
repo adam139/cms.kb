@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from plone import api
+from zope.component import getUtility
 from AccessControl import ClassSecurityInfo, getSecurityManager
 from AccessControl.SecurityManagement import newSecurityManager, setSecurityManager
 from AccessControl.User import nobody
