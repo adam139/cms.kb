@@ -31,7 +31,8 @@ from cms.db.orm import Yao_DanWei_Asso
 from cms.db.orm import ChuFang_BingRen_Asso, BingRen
 from cms.db import  Session
 from cms.db.dbutility import map_yao_chufang_table
-from cms.db.dbutility import map_yao_chufang_total
+from cms.db.dbutility import ex_map_yao_chufang_total
+from cms.db.dbutility import ex_map_yao_chufang_danwei
 from cms.db.dbutility import map_chufang_bingren_table as mapcb
 
 from cms.theme.interfaces import IThemeSpecific
@@ -203,29 +204,39 @@ class ChuFangView(BaseView):
     def update(self):
         # Hide the editable-object border
         self.request.set('disable_border', True)
-        
+
     @memoize
-    def chufang_structure(self,id):
+    def asso_recorders(self,id):
         ""
         
         _id = long(id)
         id = getDanWeiId()
-        locator = queryUtility(IDbapi, name='chufang')        
-        out = locator.pk_ass_obj_title(_id,ChuFang,Yao_ChuFang_Asso,Yao,'yao_id','mingcheng',map_yao_chufang_table)
-        total = """<td colspan="2" class="text-right">%s</td><td class="text-left">%s</td>""" \
-         % (u"小计".encode('utf-8'),self.chufang_total(id))
-        out = "%s;%s" % (out,total)
+
+        locator = queryUtility(IDbapi, name='chufang')
+        #pk,factorycls,asso,asso_p1,asso_p2,midcls,midp,asso2,asso2_p1,asso2_p2,p2,fk,comp,mapf        
+        recorders = locator.ex_pk_ass_obj_title(_id,ChuFang,Yao_ChuFang_Asso,'yaoliang','paozhi',
+                                          Yao,'mingcheng',Yao_DanWei_Asso,'danjia','kucun',
+                                          'danwei_id',id,'yao_id')
+        return recorders        
+        
+    
+    def chufang_structure(self,id):
+        ""
+
+        #pk,factorycls,asso,asso_p1,asso_p2,midcls,midp,asso2,asso2_p1,asso2_p2,p2,fk,comp,mapf        
+        recorders = self.asso_recorders(id)        
+        more = map(ex_map_yao_chufang_danwei,recorders)
+#         import pdb
+#         pdb.set_trace()
+        out = ";".join(more)
+        total = map(ex_map_yao_chufang_total,recorders)
+        total = sum(map(float,total))
+        out2 = """<td colspan="2" class="text-right">%s</td><td class="text-left">%s</td>""" \
+         % (u"小计".encode('utf-8'),total)
+        out = "%s;%s" % (out,out2)
         out = out.replace(";","</tr><tr>")
         out = "<tr>%s</tr>" % out       
-        return out
-
-    def chufang_total(self,id):
-        "计算处方药品总费用"
-        _id = long(id)
-        locator = queryUtility(IDbapi, name='chufang')        
-        out = locator.pk_ass_obj_title(_id,ChuFang,Yao_ChuFang_Asso,Yao,'yao_id','mingcheng',map_yao_chufang_total)
-        out = out.split(";")        
-        return sum(map(float,out))        
+        return out    
         
     
     def bingrens_table(self,id):

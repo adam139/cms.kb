@@ -127,24 +127,33 @@ class Dbapi(object):
         out = ";".join(more)
         return out
 
-    def ex_pk_ass_obj_title(self,pk,factorycls,asso,midcls,asso2,fk,title,mapf):
+    def ex_pk_ass_obj_title(self,pk,factorycls,asso,asso_p1,asso_p2,midcls,midp,\
+                            asso2,asso2_p1,asso2_p2,p2,fk,comp):
         "通过主键查关联表对象1,连接关联表2,获取多对多关联对象的属性 "
         #pk本地表主键  integer
         #factorycls 本地表类 cls
-        #asso 关联表类   cls
+        #asso 关联表1类   cls
+        #asso_p1 关联表asso要提取的字段/属性    string
+        #asso_p2 关联表asso要提取的字段/属性    string
+        #p1目标表字段/属性    string                
         #midcls 中间表类
-        #asso2 关联表类2  cls
-        #fk关联表指向目标表外键名称 string
-        #title目标表字段/属性    string
-        #mapf 映射函数  function       
-    
-        stmt2 = session.query(asso2).filter(asso.danwei_id==fk).subquery()
+        #midp 中间表要提取的字段/属性    string
+        #asso2 关联表2类  cls
+        #asso2_p1 关联表asso2要提取的字段/属性    string
+        #asso2_p2 关联表asso2要提取的字段/属性    string
+        #p2关联表asso2字段/属性    string
+        #fk关联表asso2对应p2的外键值 int
+        #comp 两个关联表共有的主键字段/属性    string
+              
+   
+        stmt2 = session.query(asso2).filter(getattr(asso2,p2)==fk).subquery()
         stmt = session.query(asso).join(factorycls).filter(factorycls.id==pk).subquery()
-        recorders = session.query(midcls.mingcheng,stmt.c.yaoliang,stmt2.c.danjia).\
-        join(stmt,midcls.yao_id ==stmt.yao_id).join(stmt2,stmt2.c.yao_id==stmt.c.yao_id).all()
-        more = map(mapf,recorders)
-        out = ";".join(more)
-        return out
+        #[(u'\u767d\u828d', 7L, u'\u6652\u5e72', 0.26, 700L), (u'\u6842\u679d', 10L, u'\u63b0\u5f00', 0.36, 800L)]        
+        recorders = session.query(getattr(midcls,midp),getattr(stmt.c,asso_p1),getattr(stmt.c,asso_p2),
+                                   getattr(stmt2.c,asso2_p1),getattr(stmt2.c,asso2_p2)).\
+        join(stmt,midcls.id ==getattr(stmt.c,comp)).join(stmt2,getattr(stmt2.c,comp)==getattr(stmt.c,comp)).all()
+        return recorders
+
 
     def get_asso_obj(self,cns,cls=None):
         "query association object table "
