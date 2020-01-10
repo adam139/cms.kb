@@ -172,6 +172,7 @@ class ChuFangUI(object):
     
     mingcheng = FieldProperty(IChuFangUI['mingcheng'])
     yizhu = FieldProperty(IChuFangUI['yizhu'])
+    zhuangtai = FieldProperty(IChuFangUI['zhuangtai'])
     jiliang = FieldProperty(IChuFangUI['jiliang'])        
     yisheng = FieldProperty(IChuFangUI['yisheng'])
     yaoes = FieldProperty(IChuFangUI['yaoes'])
@@ -179,9 +180,11 @@ class ChuFangUI(object):
     # allow getSource to proceed
     _Modify_portal_content_Permission = ('Anonymous', )
 
-    def __init__(self, mingcheng=None, yizhu=None, jiliang=None, yisheng=None, yaoes=None, bingrens=None):
+    def __init__(self, mingcheng=None, yizhu=None, jiliang=None,\
+                  yisheng=None, yaoes=None, bingrens=None, zhuangtai=None):
         self.mingcheng = mingcheng
         self.yizhu = yizhu
+        self.zhuangtai = zhuangtai
         self.jiliang = jiliang
         self.yisheng = yisheng
         self.yaoes = yaoes

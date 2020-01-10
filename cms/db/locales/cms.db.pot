@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2020-01-05 02:36+0000\n"
+"POT-Creation-Date: 2020-01-09 02:45+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -35,7 +35,7 @@ msgstr ""
 msgid "CMSAI"
 msgstr ""
 
-#: ./browser/ajax_listing.py:1185
+#: ./browser/ajax_listing.py:1189
 msgid "Cancel"
 msgstr ""
 
@@ -47,59 +47,59 @@ msgstr ""
 msgid "Chinese medical science system"
 msgstr ""
 
-#: ./browser/ajax_listing.py:1166
+#: ./browser/ajax_listing.py:1170
 msgid "Delete"
 msgstr ""
 
-#: ./browser/ajax_listing.py:1189
+#: ./browser/ajax_listing.py:1193
 msgid "Delete cancelled."
 msgstr ""
 
-#: ./browser/ajax_listing.py:2042
+#: ./browser/ajax_listing.py:2098
 msgid "Input bing ren data"
 msgstr ""
 
-#: ./browser/ajax_listing.py:1227
+#: ./browser/ajax_listing.py:1231
 msgid "Input cancelled."
 msgstr ""
 
-#: ./browser/ajax_listing.py:1766
+#: ./browser/ajax_listing.py:1795
 msgid "Input chu fang data"
 msgstr ""
 
-#: ./browser/ajax_listing.py:2577
+#: ./browser/ajax_listing.py:2633
 msgid "Input dan wei data"
 msgstr ""
 
-#: ./browser/ajax_listing.py:2331
+#: ./browser/ajax_listing.py:2387
 msgid "Input danwei dizhi data"
 msgstr ""
 
-#: ./browser/ajax_listing.py:2207
+#: ./browser/ajax_listing.py:2263
 msgid "Input dizhi data"
 msgstr ""
 
-#: ./browser/ajax_listing.py:2455
+#: ./browser/ajax_listing.py:2511
 msgid "Input geren dizhi data"
 msgstr ""
 
-#: ./browser/ajax_listing.py:1639
+#: ./browser/ajax_listing.py:1666
 msgid "Input jing luo data"
 msgstr ""
 
-#: ./browser/ajax_listing.py:1464
+#: ./browser/ajax_listing.py:1491
 msgid "Input yao data"
 msgstr ""
 
-#: ./browser/ajax_listing.py:1336
+#: ./browser/ajax_listing.py:1363
 msgid "Input yao wei data"
 msgstr ""
 
-#: ./browser/ajax_listing.py:1196
+#: ./browser/ajax_listing.py:1200
 msgid "Input yao xing data"
 msgstr ""
 
-#: ./browser/ajax_listing.py:2723
+#: ./browser/ajax_listing.py:2779
 msgid "Input yi sheng data"
 msgstr ""
 
@@ -107,11 +107,11 @@ msgstr ""
 msgid "Profile for cms.db"
 msgstr ""
 
-#: ./browser/ajax_listing.py:1205
+#: ./browser/ajax_listing.py:1209
 msgid "Submit"
 msgstr ""
 
-#: ./browser/configure.zcml:30
+#: ./browser/configure.zcml:31
 msgid "System Ajax view"
 msgstr ""
 
@@ -119,28 +119,28 @@ msgstr ""
 msgid "System settings"
 msgstr ""
 
-#: ./browser/ajax_listing.py:1219
+#: ./browser/ajax_listing.py:1223
 msgid "Thank you! Your data  will be update in back end DB."
 msgstr ""
 
-#: ./browser/ajax_listing.py:1181
+#: ./browser/ajax_listing.py:1185
 msgid "Your data  has been deleted."
 msgstr ""
 
 #: ./browser/controlpanel.py:9
-#: ./browser/interfaces.py:149
+#: ./browser/interfaces.py:155
 msgid "automatic create content types list"
 msgstr ""
 
-#: ./browser/interfaces.py:32
+#: ./browser/interfaces.py:42
 msgid "bing ren"
 msgstr ""
 
-#: ./browser/interfaces.py:86
+#: ./browser/interfaces.py:91
 msgid "bing ren qing dan"
 msgstr ""
 
-#: ./browser/interfaces.py:85
+#: ./browser/interfaces.py:90
 msgid "bing ren qingdan"
 msgstr ""
 
@@ -160,7 +160,7 @@ msgstr ""
 msgid "chu fang"
 msgstr ""
 
-#: ./browser/interfaces.py:37
+#: ./browser/interfaces.py:47
 msgid "chu fang shi jian"
 msgstr ""
 
@@ -180,8 +180,8 @@ msgstr ""
 msgid "dan jia"
 msgstr ""
 
-#: ./browser/interfaces.py:105
-#: ./orm.py:486
+#: ./browser/interfaces.py:111
+#: ./orm.py:494
 msgid "dan wei"
 msgstr ""
 
@@ -201,68 +201,68 @@ msgstr ""
 msgid "db map folder"
 msgstr ""
 
-#: ./browser/ajax_listing.py:1996
+#: ./browser/ajax_listing.py:2052
 msgid "delete bing ren data"
 msgstr ""
 
-#: ./browser/ajax_listing.py:1721
+#: ./browser/ajax_listing.py:1748
 msgid "delete chu fang data"
 msgstr ""
 
-#: ./browser/ajax_listing.py:2538
+#: ./browser/ajax_listing.py:2594
 msgid "delete dan wei data"
 msgstr ""
 
-#: ./browser/ajax_listing.py:2289
+#: ./browser/ajax_listing.py:2345
 msgid "delete dan wei di zhi data"
 msgstr ""
 
-#: ./browser/ajax_listing.py:2165
+#: ./browser/ajax_listing.py:2221
 msgid "delete di zhi data"
 msgstr ""
 
-#: ./browser/ajax_listing.py:2414
+#: ./browser/ajax_listing.py:2470
 msgid "delete ge ren di zhi data"
 msgstr ""
 
-#: ./browser/ajax_listing.py:1595
+#: ./browser/ajax_listing.py:1622
 msgid "delete jing luo data"
 msgstr ""
 
-#: ./browser/ajax_listing.py:1419
+#: ./browser/ajax_listing.py:1446
 msgid "delete yao data"
 msgstr ""
 
-#: ./browser/ajax_listing.py:1292
+#: ./browser/ajax_listing.py:1319
 msgid "delete yao wei data"
 msgstr ""
 
-#: ./browser/ajax_listing.py:1145
+#: ./browser/ajax_listing.py:1149
 msgid "delete yao xing data"
 msgstr ""
 
-#: ./browser/ajax_listing.py:2684
+#: ./browser/ajax_listing.py:2740
 msgid "delete yi sheng data"
 msgstr ""
 
-#: ./browser/interfaces.py:95
-#: ./orm.py:407
+#: ./browser/interfaces.py:101
+#: ./orm.py:415
 msgid "di zhi"
 msgstr ""
 
-#: ./orm.py:449
+#: ./orm.py:457
 msgid "dian hua"
 msgstr ""
 
-#: ./orm.py:260
+#: ./orm.py:268
 msgid "foreagn key link to chufang"
 msgstr ""
 
-#: ./orm.py:483
+#: ./orm.py:491
 msgid "foreagn key link to danwei"
 msgstr ""
 
-#: ./orm.py:400
+#: ./orm.py:408
 msgid "foreagn key link to dizhi"
 msgstr ""
 
@@ -270,7 +270,7 @@ msgstr ""
 msgid "foreagn key link to wei"
 msgstr ""
 
-#: ./orm.py:257
+#: ./orm.py:265
 msgid "foreagn key link to yao"
 msgstr ""
 
@@ -282,16 +282,16 @@ msgstr ""
 msgid "foreagn key link to yisheng"
 msgstr ""
 
-#: ./orm.py:355
+#: ./orm.py:363
 msgid "gong zhong hao"
 msgstr ""
 
-#: ./browser/interfaces.py:136
+#: ./browser/interfaces.py:142
 #: ./orm.py:160
 msgid "gui jing"
 msgstr ""
 
-#: ./orm.py:306
+#: ./orm.py:314
 msgid "guo jia"
 msgstr ""
 
@@ -303,11 +303,11 @@ msgstr ""
 msgid "ji liang"
 msgstr ""
 
-#: ./orm.py:319
+#: ./orm.py:327
 msgid "jie dao"
 msgstr ""
 
-#: ./browser/configure.zcml:94
+#: ./browser/configure.zcml:95
 msgid "jing luo Ajax view"
 msgstr ""
 
@@ -328,40 +328,40 @@ msgstr ""
 msgid "label_attachfile"
 msgstr ""
 
-#: ./orm.py:452
+#: ./orm.py:460
 msgid "lei xing"
 msgstr ""
 
-#: ./browser/interfaces.py:40
+#: ./browser/interfaces.py:50
 msgid "mai xiang"
 msgstr ""
 
-#: ./browser/interfaces.py:54
+#: ./browser/interfaces.py:64
 #: ./orm.py:87
 msgid "ming cheng"
 msgstr ""
 
-#: ./vocabulary.py:15
+#: ./vocabulary.py:23
 msgid "nan"
 msgstr ""
 
-#: ./vocabulary.py:15
+#: ./vocabulary.py:23
 msgid "nv"
 msgstr ""
 
-#: ./browser/interfaces.py:62
+#: ./browser/interfaces.py:72
 msgid "pao zhi"
 msgstr ""
 
-#: ./browser/interfaces.py:43
+#: ./browser/interfaces.py:53
 msgid "she xiang"
 msgstr ""
 
-#: ./orm.py:311
+#: ./orm.py:319
 msgid "sheng(state)"
 msgstr ""
 
-#: ./orm.py:315
+#: ./orm.py:323
 msgid "shi (city)"
 msgstr ""
 
@@ -373,56 +373,60 @@ msgstr ""
 msgid "tongchang yongliang"
 msgstr ""
 
-#: ./browser/interfaces.py:148
+#: ./browser/interfaces.py:154
 msgid "types"
 msgstr ""
 
-#: ./browser/ajax_listing.py:2096
+#: ./browser/ajax_listing.py:2152
 msgid "update bing ren data"
 msgstr ""
 
-#: ./browser/ajax_listing.py:1845
+#: ./browser/ajax_listing.py:1878
 msgid "update chu fang data"
 msgstr ""
 
-#: ./browser/ajax_listing.py:2621
+#: ./browser/ajax_listing.py:2677
 msgid "update dan wei data"
 msgstr ""
 
-#: ./browser/ajax_listing.py:2370
+#: ./browser/ajax_listing.py:2426
 msgid "update danwei dizhi data"
 msgstr ""
 
-#: ./browser/ajax_listing.py:2246
+#: ./browser/ajax_listing.py:2302
 msgid "update di zhi data"
 msgstr ""
 
-#: ./browser/ajax_listing.py:2494
+#: ./browser/ajax_listing.py:2550
 msgid "update ge ren di zhi data"
 msgstr ""
 
-#: ./browser/ajax_listing.py:1677
+#: ./browser/ajax_listing.py:1704
 msgid "update jingluo data"
 msgstr ""
 
-#: ./browser/ajax_listing.py:1517
+#: ./browser/ajax_listing.py:1544
 msgid "update yao data"
 msgstr ""
 
-#: ./browser/ajax_listing.py:1375
+#: ./browser/ajax_listing.py:1402
 msgid "update yao wei data"
 msgstr ""
 
-#: ./browser/ajax_listing.py:1237
+#: ./browser/ajax_listing.py:1264
 msgid "update yao xing data"
 msgstr ""
 
-#: ./browser/ajax_listing.py:2769
+#: ./browser/ajax_listing.py:2825
 msgid "update yi sheng data"
 msgstr ""
 
-#: ./orm.py:351
+#: ./orm.py:359
 msgid "wang zhi"
+msgstr ""
+
+#: ./vocabulary.py:15
+msgid "wei fu kuan"
 msgstr ""
 
 #: ./orm.py:37
@@ -441,11 +445,11 @@ msgstr ""
 msgid "wuyun xiangxi shuoming"
 msgstr ""
 
-#: ./orm.py:441
+#: ./orm.py:449
 msgid "xing bie"
 msgstr ""
 
-#: ./orm.py:437
+#: ./orm.py:445
 msgid "xing ming"
 msgstr ""
 
@@ -453,7 +457,7 @@ msgstr ""
 msgid "yao"
 msgstr ""
 
-#: ./browser/configure.zcml:40
+#: ./browser/configure.zcml:41
 msgid "yao Ajax view"
 msgstr ""
 
@@ -461,24 +465,24 @@ msgstr ""
 msgid "yao folder"
 msgstr ""
 
-#: ./browser/interfaces.py:59
+#: ./browser/interfaces.py:69
 msgid "yao liang"
 msgstr ""
 
-#: ./browser/interfaces.py:75
+#: ./browser/interfaces.py:85
 msgid "yao qingdan"
 msgstr ""
 
-#: ./browser/interfaces.py:76
+#: ./browser/interfaces.py:86
 msgid "yao qingdan data row"
 msgstr ""
 
-#: ./browser/interfaces.py:125
+#: ./browser/interfaces.py:131
 #: ./orm.py:152
 msgid "yao wei"
 msgstr ""
 
-#: ./browser/configure.zcml:58
+#: ./browser/configure.zcml:59
 msgid "yao wei Ajax view"
 msgstr ""
 
@@ -486,12 +490,12 @@ msgstr ""
 msgid "yao xiangxi shuoming"
 msgstr ""
 
-#: ./browser/interfaces.py:130
+#: ./browser/interfaces.py:136
 #: ./orm.py:62
 msgid "yao xing"
 msgstr ""
 
-#: ./browser/configure.zcml:76
+#: ./browser/configure.zcml:77
 msgid "yao xing Ajax view"
 msgstr ""
 
@@ -511,7 +515,11 @@ msgstr ""
 msgid "yaoxing xiangxi shuoming"
 msgstr ""
 
-#: ./browser/interfaces.py:70
+#: ./vocabulary.py:15
+msgid "yi fu kuan"
+msgstr ""
+
+#: ./browser/interfaces.py:80
 msgid "yi sheng"
 msgstr ""
 
@@ -531,10 +539,14 @@ msgstr ""
 msgid "yisheng xiangxi shuoming"
 msgstr ""
 
-#: ./browser/interfaces.py:46
+#: ./browser/interfaces.py:56
 msgid "zhu su"
 msgstr ""
 
 #: ./orm.py:136
 msgid "zhu zhi"
+msgstr ""
+
+#: ./orm.py:216
+msgid "zhuang tai"
 msgstr ""

@@ -211,7 +211,13 @@ class IChuFang(Interface):
     jiliang = schema.Int(
             title=_(u"ji liang"),
             required=True,
-        )    
+        )
+    zhuangtai = schema.Choice(
+            title=_(u"zhuang tai"),
+            vocabulary='cms.db.zhuangtai',
+            required=True,
+            default=0,            
+        )        
 #     yisheng = schema.Object(
 #             title=_(u"dan wei"),
 #             schema=IYiSheng,
@@ -228,6 +234,7 @@ class ChuFang(Base):
     mingcheng = Column(String(24))
     jiliang = Column(Integer)
     yizhu = Column(String(64))
+    zhuangtai = Column(Boolean)
     
     # association proxy of "yaoes" collection
     # to "yao" attribute
@@ -243,10 +250,11 @@ class ChuFang(Base):
     # to "xingming" attribute of YiSheng CLASS's object
     yishengxm = association_proxy('yisheng', 'xingming')
        
-    def __init__(self, mingcheng=None,yizhu=None,jiliang=5):
+    def __init__(self, mingcheng=None,yizhu=None,jiliang=5,zhuangtai=0):
         self.mingcheng = mingcheng
         self.jiliang = jiliang
         self.yizhu = yizhu
+        self.zhuangtai = zhuangtai
         
 
  ###药和处方关联表
