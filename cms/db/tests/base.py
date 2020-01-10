@@ -2,6 +2,7 @@
 from zope import event
 from datetime import date
 from datetime import datetime
+from zope.component import getUtility
 from cms.db import  Session
 from cms.db.events import RecorderCreated
 
