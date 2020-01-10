@@ -211,29 +211,45 @@ class ChuFangView(BaseView):
         
         _id = long(id)
         id = getDanWeiId()
-
         locator = queryUtility(IDbapi, name='chufang')
         #pk,factorycls,asso,asso_p1,asso_p2,midcls,midp,asso2,asso2_p1,asso2_p2,p2,fk,comp,mapf        
         recorders = locator.ex_pk_ass_obj_title(_id,ChuFang,Yao_ChuFang_Asso,'yaoliang','paozhi',
                                           Yao,'mingcheng',Yao_DanWei_Asso,'danjia','kucun',
                                           'danwei_id',id,'yao_id')
-        return recorders        
+
+        chufang = locator.getByCode(_id)
+
+        return (recorders,chufang)        
         
     
     def chufang_structure(self,id):
         ""
 
         #pk,factorycls,asso,asso_p1,asso_p2,midcls,midp,asso2,asso2_p1,asso2_p2,p2,fk,comp,mapf        
-        recorders = self.asso_recorders(id)        
+        rt = self.asso_recorders(id)
+        recorders = rt[0]        
         more = map(ex_map_yao_chufang_danwei,recorders)
 #         import pdb
 #         pdb.set_trace()
-        out = ";".join(more)
-        total = map(ex_map_yao_chufang_total,recorders)
-        total = sum(map(float,total))
+        
+        jiliang = rt[1].jiliang
+        zhenjin = rt[1].zhenjin
+        subtotal = map(ex_map_yao_chufang_total,recorders)
+        subtotal = sum(map(float,total))
         out2 = """<td colspan="2" class="text-right">%s</td><td class="text-left">%s</td>""" \
-         % (u"小计".encode('utf-8'),total)
-        out = "%s;%s" % (out,out2)
+         % (u"小计".encode('utf-8'),subtotal)         
+        out3 = """<td colspan="2" class="text-right">%s</td><td class="text-left">%s</td>""" \
+         % (u"剂量".encode('utf-8'),jiliang)
+        out4 = """<td colspan="2" class="text-right">%s</td><td class="text-left">%s</td>""" \
+         % (u"诊金".encode('utf-8'),zhenjin)
+        total = """<td colspan="2" class="text-right">%s</td><td class="text-left">%s</td>""" \
+         % (u"合计".encode('utf-8'),subtotal * jiliang + zhenjin)                           
+#         out = "%s;%s" % (out,out2)
+        more.append(out2)
+        more.append(out3)
+        more.append(out4)
+        more.append(total)
+        out = ";".join(more)
         out = out.replace(";","</tr><tr>")
         out = "<tr>%s</tr>" % out       
         return out    
