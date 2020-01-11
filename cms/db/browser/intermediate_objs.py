@@ -145,8 +145,8 @@ class YaoUI(object):
     mingcheng = FieldProperty(IYaoUI['mingcheng'])
     zhuzhi = FieldProperty(IYaoUI['zhuzhi'])
     yongliang = FieldProperty(IYaoUI['yongliang'])
-    danjia = FieldProperty(IYaoUI['danjia'])
-    kucun = FieldProperty(IYaoUI['kucun'])        
+#     danjia = FieldProperty(IYaoUI['danjia'])
+#     kucun = FieldProperty(IYaoUI['kucun'])        
     yaowei = FieldProperty(IYaoUI['yaowei'])
     yaoxing = FieldProperty(IYaoUI['yaoxing'])
     guijing = FieldProperty(IYaoUI['guijing'])
@@ -154,12 +154,11 @@ class YaoUI(object):
     _Modify_portal_content_Permission = ('Anonymous', )
 
     def __init__(self, mingcheng=None, zhuzhi=None, yongliang=None,
-                 danjia=None, kucun=None, yaowei=None,
-                  yaoxing=None, guijing=None):
+                 yaowei=None,yaoxing=None, guijing=None):
         self.mingcheng = mingcheng
         self.zhuzhi = zhuzhi
-        self.kucun = kucun
-        self.danjia = danjia
+#         self.kucun = kucun
+#         self.danjia = danjia
         self.yongliang = yongliang
         self.yaowei = yaowei
         self.yaoxing = yaoxing
