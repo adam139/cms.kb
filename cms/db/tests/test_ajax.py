@@ -128,6 +128,26 @@ class TestView(unittest.TestCase):
         result = view()       
         self.assertEqual(json.loads(result)['total'],6)        
 
+    def test_woyaoes(self):
+        request = self.layer['request']
+        alsoProvides(request, IThemeSpecific)        
+        keyManager = getUtility(IKeyManager)
+        secret = keyManager.secret()
+        auth = hmac.new(secret, TEST_USER_NAME, sha).hexdigest()
+        request.form = {
+                        '_authenticator': auth,
+                        'size': '10',
+                        'start':'0' ,
+                        'sortcolumn':'id',
+                        'sortdirection':'reverse',
+                        'searchabletext':''                                                                       
+                        }
+# Look up and invoke the view via traversal
+        box = self.portal['folder']['ormfolder']
+        view = box.restrictedTraverse('@@wo_yao_ajaxsearch')
+        result = view()       
+        self.assertEqual(json.loads(result)['total'],6) 
+
     def test_chufang(self):
         request = self.layer['request']
         alsoProvides(request, IThemeSpecific)        

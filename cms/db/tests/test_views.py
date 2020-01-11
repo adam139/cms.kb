@@ -18,7 +18,7 @@ from cms.db.contents.yao import IYao
 from sqlalchemy import and_
 
 from cms.db import  Session
-from cms.db.tests.base import inputvalues,cleardb
+from cms.db.tests.base import inputvalues,cleardb,fire_created_event
 from cms.db.tests.base import TABLES
 from cms.db.orm import NianGanZhi
 for tb in TABLES:
@@ -39,53 +39,15 @@ class TestView(unittest.TestCase):
         portal['folder'].invokeFactory('cms.db.yaofolder', 'yaofolder')
         portal['folder'].invokeFactory('cms.db.chufangfolder', 'chufangfolder')
         portal['folder'].invokeFactory('cms.db.bingrenfolder', 'bingrenfolder')
+        portal['folder'].invokeFactory('cms.db.yishengfolder', 'yishengfolder')
+        portal['folder'].invokeFactory('cms.db.danweifolder', 'danweifolder')
         portal['folder'].invokeFactory('cms.db.wuyunfolder', 'wuyunfolder')
+        fire_created_event()
         yao_id = str(Session.query(Yao).filter(Yao.mingcheng=="白芍").one().id)
         bingren_id = str(Session.query(BingRen).filter(BingRen.xingming=="张三").one().id)
         chufang_id = str(Session.query(ChuFang).filter(ChuFang.mingcheng=="桂枝汤").one().id)
         wuyun_id = str(Session.query(NianGanZhi).filter(NianGanZhi.ganzhi=="己亥").one().id)
-        portal['folder']['yaofolder'].invokeFactory('cms.db.yao', yao_id,
-                                                    title=u"here is title",
-                                                    description=u"here is description",
-                                                    text=RichTextValue(
-                                                                       u"here is rich text",
-                                                                       'text/plain',
-                                                                       'text/html'
-                                                                       ),
-                                                    report=RichTextValue(
-                                                                       u"here is report",
-                                                                       'text/plain',
-                                                                       'text/html'
-                                                                       )
-                                                    )                                                    
-        portal['folder']['bingrenfolder'].invokeFactory('cms.db.bingren', bingren_id,
-                                                    title=u"here is title",
-                                                    description=u"here is description",
-                                                    text=RichTextValue(
-                                                                       u"here is rich text",
-                                                                       'text/plain',
-                                                                       'text/html'
-                                                                       ),
-                                                    report=RichTextValue(
-                                                                       u"here is report",
-                                                                       'text/plain',
-                                                                       'text/html'
-                                                                       )
-                                                    )                                                    
-        portal['folder']['chufangfolder'].invokeFactory('cms.db.chufang', chufang_id,
-                                                    title=u"here is title",
-                                                    description=u"here is description",
-                                                    text=RichTextValue(
-                                                                       u"here is rich text",
-                                                                       'text/plain',
-                                                                       'text/html'
-                                                                       ),
-                                                    report=RichTextValue(
-                                                                       u"here is report",
-                                                                       'text/plain',
-                                                                       'text/html'
-                                                                       )
-                                                    )
+
         portal['folder']['wuyunfolder'].invokeFactory('cms.db.wuyun', wuyun_id,
                                                     title=u"here is title",
                                                     description=u"here is description",
@@ -108,7 +70,7 @@ class TestView(unittest.TestCase):
         sts = (u"数据库".encode("utf-8"),"plone")
         
         portal['folder']['yaofolder'][yao_id].setSubject(sts)
-
+        
     def tearDown(self):
 #         pass
         cleardb()                 
@@ -134,10 +96,6 @@ class TestView(unittest.TestCase):
         browser.addHeader('Authorization', 'Basic %s:%s' % (TEST_USER_NAME, TEST_USER_PASSWORD,))
         transaction.commit()
         browser.open(portal['folder']['yaofolder'][self.yao_id].absolute_url() + "/@@base_view")
-        self.assertTrue("here is title" in browser.contents)
-        self.assertTrue(u"here is description" in browser.contents)        
-        self.assertTrue("here is rich text" in browser.contents)        
-        self.assertTrue("here is report" in browser.contents)
 
         self.assertTrue( "酸" in browser.contents)
         self.assertTrue( "足太阳膀胱经" in browser.contents)
@@ -151,10 +109,7 @@ class TestView(unittest.TestCase):
         browser.addHeader('Authorization', 'Basic %s:%s' % (TEST_USER_NAME, TEST_USER_PASSWORD,))
         transaction.commit()
         browser.open(portal['folder']['bingrenfolder'][self.bingren_id].absolute_url() + "/@@base_view")
-        self.assertTrue("here is title" in browser.contents)
-        self.assertTrue(u"here is description" in browser.contents)        
-        self.assertTrue("here is rich text" in browser.contents)        
-        self.assertTrue("here is report" in browser.contents)
+
         self.assertTrue( "桂枝汤" in browser.contents)
 
     def testchufangView(self):
@@ -166,9 +121,7 @@ class TestView(unittest.TestCase):
         transaction.commit()
         browser.open(portal['folder']['chufangfolder'][self.chufang_id].absolute_url() + "/@@base_view")
 
-        self.assertTrue("here is title" in browser.contents)
-        self.assertTrue(u"here is description" in browser.contents)               
-        self.assertTrue("here is report" in browser.contents)
+
         self.assertTrue( "5.42" in browser.contents)
         self.assertTrue( "白芍" in browser.contents)
         self.assertTrue( "张三" in browser.contents)       

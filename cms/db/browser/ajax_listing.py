@@ -183,6 +183,24 @@ class YaoesView(BaseView):
         return recorders
 
 
+class WoYaoesView(BaseView):
+    """
+    DB AJAX 查询，返回分页结果,这个class 调用数据库表 功能集 utility,
+    从Ajaxsearch view 构造 查询条件（通常是一个参数字典），该utility 接受
+    该参数，查询数据库，并返回结果。
+    view name:wo_yao_listings
+    """
+
+    def search_multicondition(self,query):
+        "query is dic,like :{'start':0,'size':10,'':}"
+        from cms.db.orm import Yao_DanWei_Asso
+        from cms.db.browser.utility import getDanWeiId
+        locator = self.get_locator('yao')
+        query['with_entities'] = 1
+        recorders = locator.multi_query(query,Yao_DanWei_Asso,'yao_danwei','danwei_id',getDanWeiId(),'id','yao_id')
+        return recorders
+
+
 class ChuFangsView(BaseView):
     """
     DB AJAX 查询，返回分页结果,这个class 调用数据库表 功能集 utility,
@@ -591,6 +609,81 @@ class YaoAjaxsearch(YaoXingAjaxsearch):
         base = get_container_by_type("cms.db.yao").getURL()
         if self.searchview().canbeInput:        
             for i in resultDicLists:
+                yaowei = api.pk_title(i[1],YaoWei,'wei')
+                yaoxing = api.pk_title(i[2],YaoXing,'xing')
+                guijin = api.pk_ass_title(i[0],Yao,Yao_JingLuo_Asso,JingLuo,'jingluo_id','mingcheng')
+                out = """<tr class="text-left">
+                                <td class="col-md-2 text-center"><a href="%(obj_url)s">%(name)s</a></td>
+                                <td class="col-md-1 text-left">%(yaowei)s</td>
+                                <td class="col-md-1">%(yaoxing)s</td>
+                                <td class="col-md-1">%(jingluo)s</td>
+                                <td class="col-md-4">%(zhuzhi)s</td>
+                                <td class="col-md-1">%(yongliang)s</td>                                
+                                <td class="col-md-1 text-center">
+                                <a href="%(edit_url)s" title="edit">
+                                  <span class="glyphicon glyphicon-pencil" aria-hidden="true">
+                                  </span>
+                                </a>
+                                </td>
+                                <td class="col-md-1 text-center">
+                                <a href="%(delete_url)s" title="delete">
+                                  <span class="glyphicon glyphicon-trash" aria-hidden="true">
+                                  </span>
+                                </a>
+                                </td>
+                                </tr> """% dict(obj_url="%s/%s/@@base_view" % (base,i[0]),
+                                            name=i[3],
+                                            yaowei= yaowei,
+                                            yaoxing= yaoxing,
+                                            jingluo= guijin,
+                                            zhuzhi= i[4],
+                                            yongliang= i[5],
+                                            edit_url="%s/@@update_yao/%s" % (contexturl,i[0]),
+                                            delete_url="%s/@@delete_yao/%s" % (contexturl,i[0]))
+                outhtml = "%s%s" %(outhtml ,out)
+                k = k + 1
+        else:
+            for i in resultDicLists:
+                out = """<tr class="text-left">
+                                <td class="col-md-2 text-center">%(name)s</td>
+                                <td class="col-md-1 text-left"><a href="%(edit_url)s">%(yaowei)s</a></td>
+                                <td class="col-md-1">%(yaoxing)s</td>
+                                <td class="col-md-2">%(jingluo)s</td>
+                                <td class="col-md-5">%(zhuzhi)s</td>
+                                <td class="col-md-1">%(yongliang)s</td>  
+                                </tr> """% dict(obj_url="%s/%s/@@base_view" % (base,i[0]),
+                                            name=i[3],
+                                            yaowei= yaowei,
+                                            yaoxing= yaoxing,
+                                            jingluo= guijin,
+                                            zhuzhi= i[4],
+                                            yongliang= i[5])
+
+                outhtml = "%s%s" %(outhtml ,out)
+                k = k + 1            
+        data = {'searchresult': outhtml,'start':start,'size':size,'total':totalnum}
+        return data
+
+
+class WoYaoAjaxsearch(YaoXingAjaxsearch):
+    """AJAX action for search DB.
+    receive front end ajax transform parameters
+    """
+
+    def searchview(self,viewname="wo_yao_listings"):
+        searchview = getMultiAdapter((self.context, self.request),name=viewname)
+        return searchview
+
+    def output(self,start,size,totalnum,resultDicLists,api):
+        """根据参数total,resultDicLists,返回json 输出,resultDicLists like this:
+        [(u'C7', u'\u4ed6\u7684\u624b\u673a')]"""
+        outhtml = ""
+        k = 0
+        contexturl = self.context.absolute_url()
+        base = get_container_by_type("cms.db.yao").getURL()
+        if self.searchview().canbeInput:        
+            for i in resultDicLists:
+#                 i = (13L, 10L, 9L, u'\u9ebb\u9ec4', None, None, 13L, 4L, 1200L, 0.76)
                 yaowei = api.pk_title(i[1],YaoWei,'wei')
                 yaoxing = api.pk_title(i[2],YaoXing,'xing')
                 guijin = api.pk_ass_title(i[0],Yao,Yao_JingLuo_Asso,JingLuo,'jingluo_id','mingcheng')

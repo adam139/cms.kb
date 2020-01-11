@@ -182,6 +182,20 @@ class Dbapi(object):
             return columns                        
         else:
             return self.columns            
+
+    def join_columns(self,maper):
+        "return them' columns when join two tables "
+        
+        if self.columns == None:
+            tablecls = self.init_table()
+            from sqlalchemy.inspection import inspect
+            table = inspect(tablecls)
+            table2 = inspect(maper)
+            columns = [column.name for column in table.c]
+            column2 = [column.name for column in table2.c]
+            return columns + column2                       
+        else:
+            return self.columns
             
     def add(self,kwargs):
         
@@ -502,6 +516,159 @@ class Dbapi(object):
                 nums = 0
             return nums
 
+    def multi_query(self,kwargs,tmaper,tbl,tc,cv,key1,key2):
+        """多表连接分页查询
+        kwargs's keys parameters:
+        start:start location
+        size:batch size
+        keyword:full search keyword
+        direction:sort direction
+        max:batch size for Oracle
+        with_entities:if using serial number fetch recorder's columns,1 True,0 False
+        tmaper: will joined table's mapper object
+        tbl: will joined table's name
+        tc:will be checked table column
+        cv:the tc should equal value
+        key1:first table primary key
+        key:second table fk's refer to first table     
+        """        
+        tablecls = self.init_table()        
+        start = int(kwargs['start']) 
+        size = int(kwargs['size'])
+        max = size + start + 1
+        keyword = kwargs['SearchableText']        
+        direction = kwargs['sort_order'].strip()
+        import pdb
+        pdb.set_trace()
+        try:
+            with_entities = kwargs['with_entities']
+        except:
+            kwargs['with_entities'] = 1
+            with_entities = 1                                       
+        if size != 0:
+            if keyword == "":
+                if direction == "reverse":
+                    if linkstr.startswith("oracle"):
+                        sqltext = """SELECT * FROM 
+                    (SELECT a.*,rownum rn FROM 
+                    (SELECT * FROM %s JOIN %s WHERE %s = %s AND %s = %s ORDER BY id DESC) a  
+                    WHERE rownum < :max) WHERE rn > :start""" % (self.table,tbl,tc,cv,key1,key2)
+                    else:                            
+                        max = max - 1                        
+                        sqltext = """SELECT * FROM %s JOIN %s WHERE %s = %s AND %s = %s
+                         ORDER BY id DESC limit :start,:max""" % (self.table,tbl,tc,cv,key1,key2)                    
+                    selectcon = text(sqltext)
+                else:
+                    if linkstr.startswith("oracle"):
+                        sqltext = """SELECT * FROM 
+                    (SELECT a.*,rownum rn FROM 
+                    (SELECT * FROM %s JOIN %s WHERE %s = %s AND %s = %s ORDER BY id ASC) a  
+                    WHERE rownum < :max) WHERE rn > :start""" % (self.table,tbl,tc,cv,key1,key2)
+                    else:                  
+                        max = max - 1                        
+                        sqltext = """SELECT * FROM %s JOIN %s WHERE %s = %s AND %s = %s 
+                         ORDER BY id ASC limit :start,:max""" % (self.table,tbl,tc,cv,key1,key2)                                       
+                    selectcon = text(sqltext)                    
+                if bool(with_entities):
+                    clmns = self.join_columns(tmaper)
+                    try:
+                        recorders = session.query(tablecls).with_entities(*clmns).\
+                            from_statement(selectcon.params(start=start,max=max)).all()
+                    except:
+                        session.rollback()
+                        return []
+                else:
+                    try:
+                        recorders = session.query(tablecls).\
+                            from_statement(selectcon.params(start=start,max=max)).all()
+                    except:
+                        session.rollback()
+                        return []                    
+            else:
+                keysrchtxt = self.search_clmns2sqltxt(self.fullsearch_clmns)
+                if direction == "reverse":
+                    if linkstr.startswith("oracle"):                                                                
+                        sqltxt = """SELECT * FROM
+                    (SELECT a.*,rownum rn FROM 
+(SELECT * FROM %(tbl)s JOIN %(tbl2)s WHERE %(ktxt)s AND %(tc)s = %(cv)s  AND %(key1)s = %(key2)s ORDER BY id DESC ) a 
+                     WHERE rownum < :max) WHERE rn > :start
+                    """ % dict(tbl=self.table,ktxt=keysrchtxt,tbl2=tbl,tc=tc,cv=cv,key1=key1,key2=key2)
+                    else:
+                        max = max - 1
+                        sqltext = """SELECT * FROM %(tbl)s JOIN %(tbl2)s
+                        WHERE %(ktxt)s AND %(tc)s = %(cv)s AND %(key1)s = %(key2)s 
+                        ORDER BY id DESC limit :start,:max
+                         """ % dict(tbl=self.table,ktxt=keysrchtxt,tbl2=tbl,tc=tc,cv=cv,key1=key1,key2=key2)                        
+                    selectcon = text(sqltxt)
+                else:
+                    if linkstr.startswith("oracle"):                     
+                        sqltxt = """SELECT * FROM
+                    (SELECT a.*,rownum rn FROM 
+(SELECT * FROM %(tbl)s JOIN %(tbl2)s WHERE %(ktxt)s AND %(tc)s = %(cv)s AND %(key1)s = %(key2)s ORDER BY id ASC ) a  
+                     WHERE rownum < :max) WHERE rn > :start
+                    """ % dict(tbl=self.table,ktxt=keysrchtxt,tbl2=tbl,tc=tc,cv=cv,key1=key1,key2=key2)
+                    else:
+                        max = max - 1
+                        sqltext = """SELECT * FROM %(tbl)s JOIN %(tbl2)s
+                        WHERE %(ktxt)s AND %(tc)s = %(cv)s AND %(key1)s = %(key2)s 
+                        ORDER BY id ASC limit :start,:max
+                         """ % dict(tbl=self.table,ktxt=keysrchtxt,tbl2=tbl,tc=tc,cv=cv,key1=key1,key2=key2)                                                                 
+                    selectcon = text(sqltxt)
+                if bool(with_entities):
+                    clmns = self.join_columns(tmaper)
+                    try:
+                        recorders = session.query(tablecls).with_entities(*clmns).\
+                            from_statement(selectcon.params(x=keyword,start=start,max=max)).all()
+                    except:
+                        session.rollback()
+                        return []
+                else:
+                    try:
+                        recorders = session.query(tablecls).\
+                            from_statement(selectcon.params(x=keyword,start=start,max=max)).all()
+                    except:
+                        session.rollback()
+                        return []
+            return recorders
+# return total
+        else:
+            if keyword == "":               
+                try:
+                    recorders = session.query(tablecls).join(tmaper,getattr(tmaper,tc)==cv).\
+                    filter(getattr(tablecls,key1)==getattr(tmaper,key2)).all()
+                except:
+                    session.rollback()
+                    recorders = []                  
+            else:
+                keysearchcnd = self.search_clmns4filter(self.fullsearch_clmns,tablecls,keyword)
+                if bool(keysearchcnd):
+                    if len(keysearchcnd) > 1:
+                        try:
+                            recorders = session.query(tablecls).join(tmaper,getattr(tmaper,tc)==cv).\
+                                filter(getattr(tablecls,key1)==getattr(tmaper,key2)).filter(or_(*keysearchcnd)).all()
+                        except:
+                            session.rollback()
+                            recorders = []
+                    else:
+                        try:
+                            recorders = session.query(tablecls).join(tmaper,getattr(tmaper,tc)==cv).\
+                                filter(getattr(tablecls,key1)==getattr(tmaper,key2)).filter(keysearchcnd[0]).all()
+                        except:
+                            session.rollback()
+                            recorders = []                                                                                  
+                else:
+                    try:
+                        recorders = session.query(tablecls).join(tmaper,getattr(tmaper,tc)==cv).\
+                            filter(getattr(tablecls,key1)==getattr(tmaper,key2)).all()
+                    except:
+                        session.rollback()
+                        recorders = []                                                                                             
+            
+            if bool(recorders):
+                nums = len(recorders)
+            else:
+                nums = 0
+            return nums
             
     
     def init_table(self):

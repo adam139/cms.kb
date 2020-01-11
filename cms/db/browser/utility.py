@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 from plone import api
-from zope.component import getUtility
 from AccessControl import ClassSecurityInfo, getSecurityManager
 from AccessControl.SecurityManagement import newSecurityManager, setSecurityManager
 from AccessControl.User import nobody
@@ -21,6 +20,7 @@ def getDanWeiId():
     "get danwei id from plone.app.registry setting"
     from plone.registry.interfaces import IRegistry
     from cms.db.browser.interfaces import IAutomaticTypesSettings
+    from zope.component import getUtility
     registry = getUtility(IRegistry)        
     settings = registry.forInterface(IAutomaticTypesSettings, check=False)
     return settings.danweiid    

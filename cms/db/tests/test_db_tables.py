@@ -70,15 +70,15 @@ class TestDatabase(unittest.TestCase):
         setRoles(portal, TEST_USER_ID, ('Manager',))
         tbls = TABLES
 #         tbls = ['Yao','YaoWei','YaoXing']
-#         self.empty_tables()
+        self.empty_tables()
 #         self.drop_tables(tbls)
-        self.create_tables(tbls)
+#         self.create_tables(tbls)
 
-    def ptest_dummy(self):
+    def test_dummy(self):
 #         tbls = ['Yao_ChuFang_Asso','Yao_JingLuo_Asso','ChuFang','JingLuo','Yao','YaoWei','YaoXing']
         tbls = TABLES
 #         tbls = ['Yao']
-        self.drop_tables(tbls)
+#         self.drop_tables(tbls)
 
     def test_yao_danwei_asso(self):
         "test for yao_danwei table"

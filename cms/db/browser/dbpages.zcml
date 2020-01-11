@@ -25,6 +25,11 @@
         permission="zope2.View"
         class=".ajax_listing.YaoAjaxsearch"/>
      <browser:page
+        name="wo_yao_ajaxsearch"
+        for="*"
+        permission="zope2.View"
+        class=".ajax_listing.WoYaoAjaxsearch"/>        
+     <browser:page
         name="chufang_ajaxsearch"
         for="*"
         permission="zope2.View"
@@ -262,6 +267,12 @@
         for="cms.db.contents.ormfolder.IOrmfolder"        
         template="templates/yao_listings.pt"
         class=".ajax_listing.YaoesView"/>
+    <browser:page
+        name="wo_yao_listings"
+        permission="cms.db.view_db"    
+        for="cms.db.contents.ormfolder.IOrmfolder"        
+        template="templates/wo_yao_listings.pt"
+        class=".ajax_listing.WoYaoesView"/>        
     <browser:page
         name="chufang_listings"
         permission="cms.db.view_db"    
