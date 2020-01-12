@@ -14,7 +14,7 @@ from cms.db import _
 @provider(IVocabularyFactory)
 def zhuangtai(context):
 
-    values = {1:_(u'yi fu kuan'),0:_(u'wei fu kuan')}
+    values = {True:_(u'yi fu kuan'),False:_(u'wei fu kuan')}
     return SimpleVocabulary(
         [SimpleTerm(value=int(i), token=str(i), title=values[i]) for i in values.keys()],
     )
