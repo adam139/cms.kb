@@ -214,7 +214,7 @@ class IChuFang(Interface):
             title=_(u"zhuang tai"),
             vocabulary='cms.db.zhuangtai',
             required=True,
-            default=0,            
+            default=False,            
         )
     zhenjin = schema.Float(
             title=_(u"zhen jin"),
