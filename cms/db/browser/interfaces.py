@@ -76,7 +76,7 @@ class IYao_ChuFang_AssoUI (Interface):
 
     yao_id = schema.Choice(
             title=_(u"ming cheng"),
-            vocabulary='cms.db.yao',
+            vocabulary='cms.db.wo_yao',
             required=True,
         )          
     yaoliang = schema.Int(
