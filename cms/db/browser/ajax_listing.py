@@ -2224,8 +2224,7 @@ class UpdateChuFang(UpdateBase):
             data['jiliang'] = int(tmp)
         else:
             data['jiliang'] = 0
-#         import pdb
-#         pdb.set_trace()
+
 #         return data
         return ChuFangUI(**data)
 
