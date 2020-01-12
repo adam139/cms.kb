@@ -60,8 +60,12 @@ def inputvalues():
         yao6 = Yao("麻黄")
         yao6.yaowei = yaowei4
         yao6.yaoxing = yaoxing2
-        yao6.guijing = [jingluo2]                                
-        Session.add_all([yao1,yao2,yao3,yao4,yao5,yao6])
+        yao6.guijing = [jingluo2]
+        yao7 = Yao("杏仁")
+        yao7.yaowei = yaowei5
+        yao7.yaoxing = yaoxing5
+        yao7.guijing = [jingluo5]                                        
+        Session.add_all([yao1,yao2,yao3,yao4,yao5,yao6,yao7])
         dizhi0 = DiZhi(guojia="中国",sheng="湖南",shi="湘潭市",jiedao="湘潭县云湖桥镇北岸村道林组183号")        
         dizhi = GeRenDiZhi(guojia="中国",sheng="湖南",shi="湘潭市",jiedao="湘潭县云湖桥镇北岸村道林组83号")
         bingren = BingRen(xingming='张三',xingbie=1, shengri=date(2015, 4, 2),dianhua='13673265899')

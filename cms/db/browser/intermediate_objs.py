@@ -28,6 +28,7 @@ from cms.db.browser.interfaces import IBingRenUI
 from cms.db.browser.interfaces import IYiShengUI
 from cms.db.browser.interfaces import IChuFang_BingRen_AssoUI
 from cms.db.browser.interfaces import IYao_ChuFang_AssoUI
+from cms.db.browser.interfaces import IYao_DanWei_AssoUI
 
 
 class YaoList(list):
@@ -206,7 +207,6 @@ class ChuFang_BingRen_AssoUI(object):
 @implementer(IChuFang_BingRen_AssoUI)
 class EditChuFang_BingRen_AssoUI(object):
 
-
     bingren_id = FieldProperty(IChuFang_BingRen_AssoUI['bingren_id'])
     shijian = FieldProperty(IChuFang_BingRen_AssoUI['shijian'])
     maixiang = FieldProperty(IChuFang_BingRen_AssoUI['maixiang'])
@@ -233,7 +233,6 @@ class Yao_ChuFang_AssoUI(object):
 @implementer(IYao_ChuFang_AssoUI)
 class EditYao_ChuFang_AssoUI(object):
 
-
     yao_id = FieldProperty(IYao_ChuFang_AssoUI['yao_id'])
     yaoliang = FieldProperty(IYao_ChuFang_AssoUI['yaoliang'])
     paozhi = FieldProperty(IYao_ChuFang_AssoUI['paozhi'])
@@ -243,6 +242,18 @@ class EditYao_ChuFang_AssoUI(object):
         self.yaoliang = yaoliang
         self.paozhi = paozhi
 
+
+@implementer(IYao_DanWei_AssoUI)
+class EditYao_DanWei_AssoUI(object):
+
+    yao_id = FieldProperty(IYao_DanWei_AssoUI['yao_id'])
+    danjia = FieldProperty(IYao_DanWei_AssoUI['danjia'])
+    kucun = FieldProperty(IYao_DanWei_AssoUI['kucun'])
+    
+    def __init__(self, yao_id=None, danjia=None, kucun=None):
+        self.yao_id = yao_id
+        self.danjia = danjia
+        self.kucun = kucun
 
 
                                  

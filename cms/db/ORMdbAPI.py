@@ -221,6 +221,7 @@ class Dbapi(object):
         # asso_obj_tables:[(pk,targetcls,attr,[property1,property2,...]),...]
         tablecls = self.init_table() 
         recorder = tablecls()
+
         for kw in kwargs.keys():
             setattr(recorder,kw,kwargs[kw])
         for i in fk_tables:
@@ -262,6 +263,7 @@ class Dbapi(object):
             session.close()                        
 
     def fire_event(self,eventcls,recorder):
+            if getattr(recorder,'id','') == '':return
             cls = "cms.db.%s" % self.table
             ttl = getattr(recorder,'mingcheng',u'') or getattr(recorder,'xingming',u'') or \
              getattr(recorder,'xing',u'') or getattr(recorder,'wei',u'')
@@ -279,7 +281,6 @@ class Dbapi(object):
         id = kwargs['id']
         if bool(id):
             tablecls = self.init_table()
-#             sqltext = "SELECT * FROM %s WHERE id=:id" % self.table
             try:
                 recorder = self.getByCode(id)
                 updatedattrs = [kw for kw in kwargs.keys() if kw != 'id']
@@ -342,6 +343,23 @@ class Dbapi(object):
         else:
             pass    
     
+    def update_asso_table(self,kwargs,searchcnd):
+        """
+        data:will be update data :type dict
+        searchcnd:the search condition that located the recorder type: dict
+        """
+        if bool(searchcnd):
+            recorder = self.getByKwargs(**searchcnd)
+            try:
+                updatedattrs = [kw for kw in kwargs.keys()]
+                for kw in updatedattrs:
+                    setattr(recorder,kw,kwargs[kw])                
+                session.commit()
+            except:
+                session.rollback()
+            finally:
+                session.close()                
+                        
     def query(self,kwargs):
         """分页查询
         kwargs's keys parameters:
@@ -538,8 +556,7 @@ class Dbapi(object):
         max = size + start + 1
         keyword = kwargs['SearchableText']        
         direction = kwargs['sort_order'].strip()
-        import pdb
-        pdb.set_trace()
+
         try:
             with_entities = kwargs['with_entities']
         except:
@@ -680,6 +697,26 @@ class Dbapi(object):
         else:
             return self.factorycls          
     
+    def deleteByKwargs(self,**args):
+        ""
+        tablecls = self.init_table()       
+        if bool(args):           
+            try:
+                args2 = ["%s = %s" %(kw,vl) for kw,vl in args.items()]
+                args2 = map(text,args2)
+                recorder = session.query(tablecls).filter(and_(*args2)).first()
+                session.delete(recorder)
+                session.commit()
+                rt = True
+            except:
+                session.rollback()
+                rt = sys.exc_info()[1]
+            finally:
+                session.close()
+                return rt
+        else:
+            return "id can't be empty"        
+
     def DeleteByCode(self,id):
         "delete the specify id recorder"
 
@@ -725,6 +762,21 @@ class Dbapi(object):
             try:
                 recorder = session.query(tablecls).\
                 filter(tablecls.id == id).one()
+                return recorder
+            except:
+                session.rollback()
+                return None
+        else:
+            return None
+
+    def getByKwargs(self,**args):
+        
+        tablecls = self.init_table()       
+        if bool(args):           
+            try:
+                args2 = ["%s = %s" %(kw,vl) for kw,vl in args.items()]
+                args2 = map(text,args2)
+                recorder = session.query(tablecls).filter(and_(*args2)).first()
                 return recorder
             except:
                 session.rollback()

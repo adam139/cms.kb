@@ -14,8 +14,9 @@ from cms.db.contents.folder import IFolder
 from cms.db.contents.ormfolder import IOrmfolder
 from sqlalchemy import and_
 from cms.db import  Session
-from cms.db.tests.base import inputvalues,cleardb
+from cms.db.tests.base import inputvalues,cleardb,fire_created_event
 from cms.db.tests.base import TABLES
+from cms.db.browser.utility import getDanWeiId
 
 for tb in TABLES:
     import_str = "from %(p)s import %(t)s" % dict(p='cms.db.orm',t=tb) 
@@ -38,6 +39,7 @@ class TestView(unittest.TestCase):
         portal['folder'].invokeFactory('cms.db.yishengfolder', 'yishengfolder')
         portal['folder'].invokeFactory('cms.db.danweifolder', 'danweifolder')               
         self.portal = portal
+        fire_created_event()
 
     def tearDown(self):
         cleardb()       
@@ -110,7 +112,6 @@ class TestView(unittest.TestCase):
         self.assertEqual(len(suan),1)
         self.assertTrue(u"Thank you! Your data  will be update in back end DB." in browser.contents)        
 
-
     def testInputYaoWeiForm(self):
         app = self.layer['app']
         portal = self.layer['portal']
@@ -130,6 +131,29 @@ class TestView(unittest.TestCase):
         suan = Session.query(YaoWei).filter(YaoWei.wei==u"淡").all()
         self.assertEqual(len(suan),1)
         self.assertTrue(u"Thank you! Your data  will be update in back end DB." in browser.contents)   
+
+    def testInputWoYaoForm(self):
+        app = self.layer['app']
+        portal = self.layer['portal']
+        browser = Browser(app)
+        browser.handleErrors = False             
+        browser.addHeader('Authorization', 'Basic %s:%s' % (TEST_USER_NAME, TEST_USER_PASSWORD,))
+        transaction.commit()
+        base = portal['folder']['ormfolder'].absolute_url()
+        # Open form
+        browser.open("%s/@@input_wo_yao" % base)
+        suan = Session.query(Yao).filter(Yao.mingcheng=="杏仁").first().id        
+        # Fill in the form
+
+        browser.getControl(name=u"form.widgets.yao_id:list").value = [str(suan)]
+#         browser.getControl(name=u"form.widgets.danwei_id").value = "1"
+        browser.getControl(name=u"form.widgets.danjia").value = "0.78"
+        browser.getControl(name=u"form.widgets.kucun").value = "2000"
+        # Submit
+        browser.getControl(u"Submit").click()
+        suan = Session.query(Yao_DanWei_Asso).filter(Yao_DanWei_Asso.kucun==long(2000)).all()
+        self.assertEqual(len(suan),1)
+        self.assertTrue(u"Thank you! Your data  will be update in back end DB." in browser.contents)  
 
     def testInputJingLuoForm(self):
         app = self.layer['app']
@@ -166,8 +190,6 @@ class TestView(unittest.TestCase):
         yaoxing_id = Session.query(YaoXing).filter(YaoXing.xing=="凉").first().id
         jingluo_id = Session.query(JingLuo).filter(JingLuo.mingcheng=="足少阳胆经").first().id
         jingluo_id2 = Session.query(JingLuo).filter(JingLuo.mingcheng=="足厥阴肝经").first().id
-
-
         # Fill in the form 
         browser.getControl(name=u"form.widgets.yaowei:list").value = [str(yaowei_id)]
         browser.getControl(name=u"form.widgets.yaoxing:list").value = [str(yaoxing_id)]
@@ -175,8 +197,8 @@ class TestView(unittest.TestCase):
 #         browser.getControl(name=u"form.widgets.guijing.to").value = [str(jingluo_id)] 
         browser.getControl(name=u"form.widgets.zhuzhi").value = u"引气血下行"
         browser.getControl(name=u"form.widgets.yongliang").value = str(30)
-        browser.getControl(name=u"form.widgets.danjia").value = str(0.50)
-        browser.getControl(name=u"form.widgets.kucun").value = str(3000)        
+#         browser.getControl(name=u"form.widgets.danjia").value = str(0.50)
+#         browser.getControl(name=u"form.widgets.kucun").value = str(3000)        
         # Submit
         browser.getControl(u"Submit").click()        
         suan = Session.query(Yao).filter(Yao.mingcheng==u"牛膝").all()
@@ -379,7 +401,35 @@ class TestView(unittest.TestCase):
         suan = Session.query(YaoXing).filter(YaoXing.xing==u"微寒").all()
         self.assertEqual(len(suan),1)
         self.assertTrue(u"Thank you! Your data  will be update in back end DB." in browser.contents)
+
+    def testUpdateWoYaoForm(self):
+        app = self.layer['app']
+        portal = self.layer['portal']
+        browser = Browser(app)
+        browser.handleErrors = False             
+        browser.addHeader('Authorization', 'Basic %s:%s' % (TEST_USER_NAME, TEST_USER_PASSWORD,))
+        transaction.commit()
+        base = portal['folder']['ormfolder'].absolute_url()
+        danwei_id = getDanWeiId()
+        yao_id = Session.query(Yao).filter(Yao.mingcheng==u"杏仁").first().id
+        yao_danwei_id = Session.query(Yao).join(Yao_DanWei_Asso,Yao.id==Yao_DanWei_Asso.yao_id).\
+        filter(Yao.mingcheng=="桂枝").\
+        filter(Yao_DanWei_Asso.danwei_id==long(danwei_id)).first().id
         
+        # Open form
+        browser.open("%s/@@update_wo_yao/%s" % (base,yao_danwei_id))
+        import pdb
+        pdb.set_trace()
+
+        browser.getControl(name=u"form.widgets.danjia").value = "1.23"
+        browser.getControl(name=u"form.widgets.kucun").value = "2200"       
+        browser.getControl(u"Submit").click()        
+        suan = Session.query(Yao_DanWei_Asso).join(Yao,Yao.id==Yao_DanWei_Asso.yao_id).\
+        filter(Yao.mingcheng=="桂枝").\
+        filter(Yao_DanWei_Asso.danwei_id==long(danwei_id)).first()
+        self.assertEqual(suan.kucun,long(2200))
+        self.assertEqual(suan.danjia,1.23)
+        self.assertTrue(u"Thank you! Your data  will be update in back end DB." in browser.contents)        
         
     def testUpdateYaoForm(self):
         app = self.layer['app']
@@ -712,6 +762,30 @@ class TestView(unittest.TestCase):
         # Submit
         browser.getControl(u"Delete").click()
         suan = Session.query(Yao).filter(Yao.mingcheng=="麻黄").all()
+        self.assertEqual(len(suan),0)        
+        self.assertTrue(u"Your data  has been deleted." in browser.contents)
+
+    def testDeleteWoYaoForm(self):
+        app = self.layer['app']
+        portal = self.layer['portal']
+        browser = Browser(app)
+        browser.handleErrors = False             
+        browser.addHeader('Authorization', 'Basic %s:%s' % (TEST_USER_NAME, TEST_USER_PASSWORD,))
+        transaction.commit()
+        base = portal['folder']['ormfolder'].absolute_url()
+        danwei_id = getDanWeiId()
+        yao_danwei_id = Session.query(Yao).join(Yao_DanWei_Asso,Yao.id==Yao_DanWei_Asso.yao_id).\
+        filter(Yao.mingcheng=="桂枝").\
+        filter(Yao_DanWei_Asso.danwei_id==long(danwei_id)).first().id        
+        # Open form
+        browser.open("%s/@@delete_wo_yao/%s" % (base,yao_danwei_id))
+        import pdb
+        pdb.set_trace()
+     
+        browser.getControl(u"Delete").click()        
+        suan = Session.query(Yao_DanWei_Asso).join(Yao,Yao.id==Yao_DanWei_Asso.yao_id).\
+        filter(Yao.mingcheng=="桂枝").\
+        filter(Yao_DanWei_Asso.danwei_id==long(danwei_id)).all()
         self.assertEqual(len(suan),0)        
         self.assertTrue(u"Your data  has been deleted." in browser.contents)
 

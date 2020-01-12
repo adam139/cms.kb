@@ -29,6 +29,7 @@ from zope.component import provideAdapter
 from cms.db.interfaces import IDbapi
 # 有外键的表必须调用定制UI接口
 from cms.db.browser.interfaces import IYaoUI
+from cms.db.browser.interfaces import IYao_DanWei_AssoUI
 from cms.db.browser.interfaces import IDanWeiUI
 from cms.db.browser.interfaces import IYiShengUI
 from cms.db.browser.interfaces import IBingRenUI
@@ -41,6 +42,7 @@ from cms.db.browser.intermediate_objs import YiShengUI
 from cms.db.browser.intermediate_objs import DanWeiUI
 from cms.db.browser.intermediate_objs import EditChuFang_BingRen_AssoUI
 from cms.db.browser.intermediate_objs import EditYao_ChuFang_AssoUI
+from cms.db.browser.intermediate_objs import EditYao_DanWei_AssoUI
 #register multiwidget for association object interfaces
 from cms.db.browser.interfaces import IYao_ChuFang_AssoUI
 from cms.db.browser.interfaces import IChuFang_BingRen_AssoUI
@@ -51,6 +53,7 @@ registerFactoryAdapter(IYao_ChuFang_AssoUI, Yao_ChuFang_AssoUI)
 registerFactoryAdapter(IChuFang_BingRen_AssoUI, ChuFang_BingRen_AssoUI)
 
 from cms.db.browser.utility import filter_cln,to_utf_8
+from cms.db.browser.utility import getDanWeiId
 from cms.db.browser.utility import map_field2cls, get_container_by_type
 from cms.db.dbutility import map_yao_chufang_list as mapf
 from cms.db.orm import IYaoWei,YaoWei
@@ -64,7 +67,7 @@ from cms.db.orm import IDiZhi,IDanWeiDiZhi, IGeRenDiZhi, DiZhi,DanWeiDiZhi,GeRen
 from cms.db.orm import IDanWei,DanWei
 from cms.db.orm import IYiSheng,YiSheng
 from cms.db.orm import IBingRen,BingRen
-from cms.db.orm import Yao_JingLuo_Asso,ChuFang_BingRen_Asso,Yao_ChuFang_Asso
+from cms.db.orm import Yao_JingLuo_Asso,ChuFang_BingRen_Asso,Yao_ChuFang_Asso,Yao_DanWei_Asso
 
 
 from zope.interface import implements
@@ -193,8 +196,8 @@ class WoYaoesView(BaseView):
 
     def search_multicondition(self,query):
         "query is dic,like :{'start':0,'size':10,'':}"
-        from cms.db.orm import Yao_DanWei_Asso
-        from cms.db.browser.utility import getDanWeiId
+#         from cms.db.orm import Yao_DanWei_Asso
+#         from cms.db.browser.utility import getDanWeiId
         locator = self.get_locator('yao')
         query['with_entities'] = 1
         recorders = locator.multi_query(query,Yao_DanWei_Asso,'yao_danwei','danwei_id',getDanWeiId(),'id','yao_id')
@@ -1707,6 +1710,176 @@ class UpdateYao(UpdateYaoXing):
         confirm = _(u"Input cancelled.")
         IStatusMessage(self.request).add(confirm, type='info')
         self.request.response.redirect(self.context.absolute_url() + '/@@yao_listings')
+
+
+class DeleteWoYao(DeleteYaoXing):
+    "delete the specify yao recorder"
+
+    label = _(u"delete yao data")
+    fields = field.Fields(IYao_DanWei_AssoUI).omit('danwei_id')
+
+    def getContent(self):
+        locator = queryUtility(IDbapi, name='yao_danwei')
+        danwei_id = getDanWeiId()
+        _obj = locator.getByKwargs(yao_id=self.id,danwei_id=danwei_id)
+        # ignore fields list
+        ignore = ['danwei_id']
+        data = dict()
+        for name, f in getFieldsInOrder(IYao_DanWei_AssoUI):            
+            p = getattr(_obj, name, '')
+            if name in ignore:continue
+            else:
+                if isinstance(p,str):
+                    p = p.decode('utf-8')
+                data[name] = p                         
+        return EditYao_DanWei_AssoUI(**data)
+
+    def update(self):
+        self.request.set('disable_border', True)
+        #Let z3c.form do its magic
+        super(DeleteWoYao, self).update()
+
+    @button.buttonAndHandler(_(u"Delete"))
+    def submit(self, action):
+        """Delete yao recorder
+        """
+
+        data, errors = self.extractData()       
+        if errors:
+            self.status = self.formErrorsMessage
+            return
+        funcations = queryUtility(IDbapi, name='yao_danwei')
+        danwei_id = getDanWeiId()
+        try:
+            funcations.deleteByKwargs(yao_id=self.id,danwei_id=danwei_id)
+        except InputError, e:
+            IStatusMessage(self.request).add(str(e), type='error')
+            self.request.response.redirect(self.context.absolute_url() + '/@@wo_yao_listings')
+        confirm = _(u"Your data  has been deleted.")
+        IStatusMessage(self.request).add(confirm, type='info')
+        self.request.response.redirect(self.context.absolute_url() + '/@@wo_yao_listings')
+
+    @button.buttonAndHandler(_(u"Cancel"))
+    def cancel(self, action):
+        """Cancel the data delete
+        """
+        confirm = _(u"Delete cancelled.")
+        IStatusMessage(self.request).add(confirm, type='info')
+        self.request.response.redirect(self.context.absolute_url() + '/@@wo_yao_listings')
+
+class InputWoYao(InputYaoXing):
+    """input db yao table data
+    """
+
+    label = _(u"Input yao data")
+    fields = field.Fields(IYao_DanWei_AssoUI).omit('danwei_id')
+
+    def update(self):
+        self.request.set('disable_border', True)
+        # Let z3c.form do its magic
+        super(InputWoYao, self).update()
+
+    @button.buttonAndHandler(_(u"Submit"))
+    def submit(self, action):
+        """Submit yao recorder
+        """
+        data, errors = self.extractData()
+        if errors:
+            self.status = self.formErrorsMessage
+            return
+        funcations = queryUtility(IDbapi, name='yao_danwei')
+        columns = filter_cln(Yao_DanWei_Asso)        
+        #过滤非本表的字段
+        _data = dict()
+        for i in columns:
+            _data[i] = data[i]
+        danwei_id = getDanWeiId()
+        yao_id = data['yao_id']
+        fk_tables = [(danwei_id,DanWei,'danwei'),(yao_id,Yao,'yao')]
+        try:
+            funcations.add_multi_tables(_data,fk_tables)
+        except InputError, e:
+            IStatusMessage(self.request).add(str(e), type='error')
+            self.request.response.redirect(self.context.absolute_url() + '/@@wo_yao_listings')
+
+        confirm = _(u"Thank you! Your data  will be update in back end DB.")
+        IStatusMessage(self.request).add(confirm, type='info')
+        self.request.response.redirect(self.context.absolute_url() + '/@@wo_yao_listings')
+
+    @button.buttonAndHandler(_(u"Cancel"))
+    def cancel(self, action):
+        """Cancel the data input
+        """
+        confirm = _(u"Input cancelled.")
+        IStatusMessage(self.request).add(confirm, type='info')
+        self.request.response.redirect(self.context.absolute_url() + '/@@wo_yao_listings')
+
+
+class UpdateWoYao(UpdateYaoXing):
+    """update yao table row data
+    """
+
+    label = _(u"update yao data")
+    fields = field.Fields(IYao_DanWei_AssoUI).omit('danwei_id')
+    
+
+    def getContent(self):
+        # create a temp obj that provided IYaoUI
+        #assemble the obj from those association tables fetch data
+        locator = queryUtility(IDbapi, name='yao_danwei')
+        danwei_id = getDanWeiId()
+        _obj = locator.getByKwargs(yao_id=self.id,danwei_id=danwei_id)
+        # ignore fields list
+        ignore = ['danwei_id']
+        data = dict()
+        for name, f in getFieldsInOrder(IYao_DanWei_AssoUI):            
+            p = getattr(_obj, name, '')
+            if name in ignore:continue
+            else:
+                if isinstance(p,str):
+                    p = p.decode('utf-8')
+                data[name] = p                         
+        return EditYao_DanWei_AssoUI(**data)
+
+    def update(self):
+        self.request.set('disable_border', True)
+        # Let z3c.form do its magic
+        super(UpdateWoYao, self).update()
+
+    @button.buttonAndHandler(_(u"Submit"))
+    def submit(self, action):
+        """Update yao recorder
+        """
+
+        data, errors = self.extractData()       
+        _clmns = filter_cln(Yao_DanWei_Asso)        
+        if errors:
+            self.status = self.formErrorsMessage
+            return
+        funcations = queryUtility(IDbapi, name='yao_danwei')
+        #过滤非本表的字段
+        _data = dict()
+        for i in _clmns:
+            _data[i] = data[i]                              
+
+        danwei_id = getDanWeiId()
+        searchcnd = {"yao_id":data['yao_id'],"danwei_id":danwei_id}
+        try:
+            funcations.update_asso_table(_data,searchcnd)
+        except InputError, e:
+            IStatusMessage(self.request).add(str(e), type='error')
+            self.request.response.redirect(self.context.absolute_url() + '/@@wo_yao_listings')
+        confirm = _(u"Thank you! Your data  will be update in back end DB.")
+        IStatusMessage(self.request).add(confirm, type='info')
+        self.request.response.redirect(self.context.absolute_url() + '/@@wo_yao_listings')
+
+    @button.buttonAndHandler(_(u"Cancel"))
+    def cancel(self, action):
+        """Cancel the data input
+        """
+        confirm = _(u"Input cancelled.")
+        IStatusMessage(self.request).add(confirm, type='info')
+        self.request.response.redirect(self.context.absolute_url() + '/@@wo_yao_listings')
 
 
 class DeleteJingLuo(DeleteYaoXing):

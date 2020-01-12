@@ -15,6 +15,7 @@ from cms.db.orm import IYaoXing
 from cms.db.orm import IJingLuo
 from cms.db.orm import IChuFang
 from cms.db.orm import IYao_ChuFang_Asso
+from cms.db.orm import IYao_DanWei_Asso
 from cms.db import _
          
 
@@ -35,6 +36,19 @@ class InputError(Exception):
     """
 
 # db table add,modify interfaces
+
+
+class IYao_DanWei_AssoUI (IYao_DanWei_Asso):
+    """yao_danwei association table editing ui """
+
+    yao_id = schema.Choice(
+            title=_(u"ming cheng"),
+            vocabulary='cms.db.yao',
+            required=True,
+        )          
+ 
+
+
 class IChuFang_BingRen_AssoUI (Interface):
     """chufang_bingren association table editing ui """
 

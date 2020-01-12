@@ -218,7 +218,6 @@ class ChuFangView(BaseView):
                                           'danwei_id',id,'yao_id')
 
         chufang = locator.getByCode(_id)
-
         return (recorders,chufang)        
         
     

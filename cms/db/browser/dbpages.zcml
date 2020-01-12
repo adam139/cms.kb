@@ -83,6 +83,11 @@
         permission="cms.db.input_db"
         class=".ajax_listing.InputYao"/>
      <browser:page
+        name="input_wo_yao"
+        for="cms.db.contents.ormfolder.IOrmfolder"
+        permission="cms.db.input_db"
+        class=".ajax_listing.InputWoYao"/>        
+     <browser:page
         name="input_yaowei"
         for="cms.db.contents.ormfolder.IOrmfolder"
         permission="cms.db.input_db"
@@ -140,6 +145,11 @@
         permission="cms.db.input_db"
         class=".ajax_listing.UpdateYao"/>
      <browser:page
+        name="update_wo_yao"
+        for="cms.db.contents.ormfolder.IOrmfolder"
+        permission="cms.db.input_db"
+        class=".ajax_listing.UpdateWoYao"/>        
+     <browser:page
         name="update_yaowei"
         for="cms.db.contents.ormfolder.IOrmfolder"
         permission="cms.db.input_db"
@@ -196,6 +206,12 @@
         for="cms.db.contents.ormfolder.IOrmfolder"
         permission="cms.db.input_db"
         class=".ajax_listing.DeleteYao"/>
+     <browser:page
+        name="delete_wo_yao"
+        for="cms.db.contents.ormfolder.IOrmfolder"
+        permission="cms.db.input_db"
+        class=".ajax_listing.DeleteWoYao"/>
+                
      <browser:page
         name="delete_yaowei"
         for="cms.db.contents.ormfolder.IOrmfolder"
