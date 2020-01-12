@@ -695,7 +695,9 @@ class WoYaoAjaxsearch(YaoXingAjaxsearch):
                                 <td class="col-md-1 text-left">%(yaowei)s</td>
                                 <td class="col-md-1">%(yaoxing)s</td>
                                 <td class="col-md-1">%(jingluo)s</td>
-                                <td class="col-md-4">%(zhuzhi)s</td>
+                                <td class="col-md-2">%(zhuzhi)s</td>
+                                <td class="col-md-1">%(danjia)s</td>
+                                <td class="col-md-1">%(kucun)s</td>
                                 <td class="col-md-1">%(yongliang)s</td>                                
                                 <td class="col-md-1 text-center">
                                 <a href="%(edit_url)s" title="edit">
@@ -716,18 +718,22 @@ class WoYaoAjaxsearch(YaoXingAjaxsearch):
                                             jingluo= guijin,
                                             zhuzhi= i[4],
                                             yongliang= i[5],
-                                            edit_url="%s/@@update_yao/%s" % (contexturl,i[0]),
-                                            delete_url="%s/@@delete_yao/%s" % (contexturl,i[0]))
+                                            danjia = i[9],
+                                            kucun = i[8],
+                                            edit_url="%s/@@update_wo_yao/%s" % (contexturl,i[0]),
+                                            delete_url="%s/@@delete_wo_yao/%s" % (contexturl,i[0]))
                 outhtml = "%s%s" %(outhtml ,out)
                 k = k + 1
         else:
             for i in resultDicLists:
                 out = """<tr class="text-left">
                                 <td class="col-md-2 text-center">%(name)s</td>
-                                <td class="col-md-1 text-left"><a href="%(edit_url)s">%(yaowei)s</a></td>
+                                <td class="col-md-1 text-left"><a href="%(obj_url)s">%(yaowei)s</a></td>
                                 <td class="col-md-1">%(yaoxing)s</td>
                                 <td class="col-md-2">%(jingluo)s</td>
-                                <td class="col-md-5">%(zhuzhi)s</td>
+                                <td class="col-md-3">%(zhuzhi)s</td>
+                                <td class="col-md-1">%(danjia)s</td>
+                                <td class="col-md-1">%(kucun)s</td>
                                 <td class="col-md-1">%(yongliang)s</td>  
                                 </tr> """% dict(obj_url="%s/%s/@@base_view" % (base,i[0]),
                                             name=i[3],
@@ -735,7 +741,10 @@ class WoYaoAjaxsearch(YaoXingAjaxsearch):
                                             yaoxing= yaoxing,
                                             jingluo= guijin,
                                             zhuzhi= i[4],
-                                            yongliang= i[5])
+                                            yongliang= i[5],
+                                            danjia = i[9],
+                                            kucun = i[8]                                          
+                                            )
 
                 outhtml = "%s%s" %(outhtml ,out)
                 k = k + 1            
@@ -1558,7 +1567,7 @@ class DeleteYao(DeleteYaoXing):
         """Delete yao recorder
         """
 
-        data, errors = self.extractData()       
+        data, errors = self.extractData()      
         if errors:
             self.status = self.formErrorsMessage
             return
@@ -2183,6 +2192,8 @@ class UpdateChuFang(UpdateBase):
                     vls = [getattr(asso_obj,j,"") for j in fields]                   
                     vls = to_utf_8(vls)                        
                     value = dict(zip(fields,vls))
+                    import pdb
+                    pdb.set_trace()
                     obj = EditYao_ChuFang_AssoUI(**value)
                     objs.append(obj)                                                         
                 data[name] = objs
