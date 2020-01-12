@@ -35,6 +35,11 @@
                   </a>
                   </li>
                   <li>
+                 <a tal:attributes="href python:macroview.getorm_url() + '/@@wo_yao_listings'">
+                     药物库存
+                  </a>
+                  </li>                  
+                  <li>
                  <a tal:attributes="href python:macroview.getorm_url() + '/@@yaowei_listings'">
                      药味
                   </a>
