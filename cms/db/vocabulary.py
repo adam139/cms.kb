@@ -5,6 +5,8 @@ from zope.schema.interfaces import IVocabularyFactory
 from zope.schema.vocabulary import SimpleTerm
 from zope.schema.vocabulary import SimpleVocabulary
 
+from cms.db.orm import Yao_DanWei_Asso
+from cms.db.browser.utility import getDanWeiId
 from cms.db.interfaces import IDbapi
 from cms.db import _
 
@@ -46,6 +48,17 @@ def yao(context):
 
     values = locator.query({'start':0,'size':300,'SearchableText':'','sort_order':'reverse'})
 
+    return SimpleVocabulary(
+        [SimpleTerm(value=int(i[0]), token=str(i[0]), title=i[3]) for i in values],
+    )
+
+@provider(IVocabularyFactory)
+def wo_yao(context):
+  
+    locator = queryUtility(IDbapi, name='yao_danwei')
+
+    query = {'start':0,'size':300,'SearchableText':'','sort_order':'reverse'}
+    values = locator.multi_query(query,Yao_DanWei_Asso,'yao_danwei','danwei_id',getDanWeiId(),'id','yao_id')
     return SimpleVocabulary(
         [SimpleTerm(value=int(i[0]), token=str(i[0]), title=i[3]) for i in values],
     )

@@ -51,6 +51,10 @@
     component="cms.db.vocabulary.yao"
     />
   <utility
+    name="cms.db.wo_yao"
+    component="cms.db.vocabulary.wo_yao"
+    />    
+  <utility
     name="cms.db.bingren"
     component="cms.db.vocabulary.bingren"
     />
