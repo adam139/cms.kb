@@ -2192,8 +2192,6 @@ class UpdateChuFang(UpdateBase):
                     vls = [getattr(asso_obj,j,"") for j in fields]                   
                     vls = to_utf_8(vls)                        
                     value = dict(zip(fields,vls))
-                    import pdb
-                    pdb.set_trace()
                     obj = EditYao_ChuFang_AssoUI(**value)
                     objs.append(obj)                                                         
                 data[name] = objs
