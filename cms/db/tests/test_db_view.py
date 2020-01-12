@@ -756,9 +756,17 @@ class TestView(unittest.TestCase):
         browser.getControl(u"Delete").click()
         suan = Session.query(Yao).filter(Yao.mingcheng=="白芍").all()
         self.assertEqual(len(suan),1)
-        id = Session.query(Yao).filter(Yao.mingcheng=="麻黄").one().id
+        danwei_id = getDanWeiId()
+        yao_danwei_id = Session.query(Yao).join(Yao_DanWei_Asso,Yao.id==Yao_DanWei_Asso.yao_id).\
+        filter(Yao.mingcheng=="麻黄").\
+        filter(Yao_DanWei_Asso.danwei_id==long(danwei_id)).first().id        
         # Open form
-        browser.open("%s/@@delete_yao/%s" % (base,id))             
+        browser.open("%s/@@delete_wo_yao/%s" % (base,yao_danwei_id))        
+        browser.getControl(u"Delete").click()
+        # Open form
+        id = Session.query(Yao).filter(Yao.mingcheng=="麻黄").one().id
+        browser.open("%s/@@delete_yao/%s" % (base,id))
+         
         # Submit
         browser.getControl(u"Delete").click()
         suan = Session.query(Yao).filter(Yao.mingcheng=="麻黄").all()
@@ -779,8 +787,6 @@ class TestView(unittest.TestCase):
         filter(Yao_DanWei_Asso.danwei_id==long(danwei_id)).first().id        
         # Open form
         browser.open("%s/@@delete_wo_yao/%s" % (base,yao_danwei_id))
-        import pdb
-        pdb.set_trace()
      
         browser.getControl(u"Delete").click()        
         suan = Session.query(Yao_DanWei_Asso).join(Yao,Yao.id==Yao_DanWei_Asso.yao_id).\
