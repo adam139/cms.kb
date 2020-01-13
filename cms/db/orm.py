@@ -200,7 +200,7 @@ class IChuFang(Interface):
             title=_(u"foreagn key link to yisheng"),
         ) 
     mingcheng = schema.TextLine(
-            title=_(u"ming cheng"),
+            title=_(u"chufang ming cheng"),
             required=True,
         )
     yizhu = schema.TextLine(

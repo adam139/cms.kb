@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2020-01-13 05:44+0000\n"
+"POT-Creation-Date: 2020-01-13 06:05+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -55,7 +55,7 @@ msgstr ""
 msgid "Delete cancelled."
 msgstr ""
 
-#: ./browser/ajax_listing.py:2387
+#: ./browser/ajax_listing.py:2388
 msgid "Input bing ren data"
 msgstr ""
 
@@ -67,19 +67,19 @@ msgstr ""
 msgid "Input chu fang data"
 msgstr ""
 
-#: ./browser/ajax_listing.py:2922
+#: ./browser/ajax_listing.py:2923
 msgid "Input dan wei data"
 msgstr ""
 
-#: ./browser/ajax_listing.py:2676
+#: ./browser/ajax_listing.py:2677
 msgid "Input danwei dizhi data"
 msgstr ""
 
-#: ./browser/ajax_listing.py:2552
+#: ./browser/ajax_listing.py:2553
 msgid "Input dizhi data"
 msgstr ""
 
-#: ./browser/ajax_listing.py:2800
+#: ./browser/ajax_listing.py:2801
 msgid "Input geren dizhi data"
 msgstr ""
 
@@ -99,7 +99,7 @@ msgstr ""
 msgid "Input yao xing data"
 msgstr ""
 
-#: ./browser/ajax_listing.py:3068
+#: ./browser/ajax_listing.py:3069
 msgid "Input yi sheng data"
 msgstr ""
 
@@ -209,7 +209,7 @@ msgstr ""
 msgid "db map folder"
 msgstr ""
 
-#: ./browser/ajax_listing.py:2341
+#: ./browser/ajax_listing.py:2342
 msgid "delete bing ren data"
 msgstr ""
 
@@ -217,19 +217,19 @@ msgstr ""
 msgid "delete chu fang data"
 msgstr ""
 
-#: ./browser/ajax_listing.py:2883
+#: ./browser/ajax_listing.py:2884
 msgid "delete dan wei data"
 msgstr ""
 
-#: ./browser/ajax_listing.py:2634
+#: ./browser/ajax_listing.py:2635
 msgid "delete dan wei di zhi data"
 msgstr ""
 
-#: ./browser/ajax_listing.py:2510
+#: ./browser/ajax_listing.py:2511
 msgid "delete di zhi data"
 msgstr ""
 
-#: ./browser/ajax_listing.py:2759
+#: ./browser/ajax_listing.py:2760
 msgid "delete ge ren di zhi data"
 msgstr ""
 
@@ -249,7 +249,7 @@ msgstr ""
 msgid "delete yao xing data"
 msgstr ""
 
-#: ./browser/ajax_listing.py:3029
+#: ./browser/ajax_listing.py:3030
 msgid "delete yi sheng data"
 msgstr ""
 
@@ -385,7 +385,7 @@ msgstr ""
 msgid "types"
 msgstr ""
 
-#: ./browser/ajax_listing.py:2441
+#: ./browser/ajax_listing.py:2442
 msgid "update bing ren data"
 msgstr ""
 
@@ -393,19 +393,19 @@ msgstr ""
 msgid "update chu fang data"
 msgstr ""
 
-#: ./browser/ajax_listing.py:2966
+#: ./browser/ajax_listing.py:2967
 msgid "update dan wei data"
 msgstr ""
 
-#: ./browser/ajax_listing.py:2715
+#: ./browser/ajax_listing.py:2716
 msgid "update danwei dizhi data"
 msgstr ""
 
-#: ./browser/ajax_listing.py:2591
+#: ./browser/ajax_listing.py:2592
 msgid "update di zhi data"
 msgstr ""
 
-#: ./browser/ajax_listing.py:2839
+#: ./browser/ajax_listing.py:2840
 msgid "update ge ren di zhi data"
 msgstr ""
 
@@ -425,7 +425,7 @@ msgstr ""
 msgid "update yao xing data"
 msgstr ""
 
-#: ./browser/ajax_listing.py:3114
+#: ./browser/ajax_listing.py:3115
 msgid "update yi sheng data"
 msgstr ""
 
