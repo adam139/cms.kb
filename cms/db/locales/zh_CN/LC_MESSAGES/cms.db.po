@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: my315ok.socialorgnization\n"
-"POT-Creation-Date: 2020-01-09 02:45+0000\n"
+"POT-Creation-Date: 2020-01-13 04:26+0000\n"
 "PO-Revision-Date: 2020-01-05 16:48+0800\n"
 "Last-Translator: Adam <yuejun.tang@gmail.com>\n"
 "Language-Team: \n"
@@ -37,7 +37,7 @@ msgstr "分析报告"
 msgid "CMSAI"
 msgstr "中医人工智能系统"
 
-#: ./browser/ajax_listing.py:1189
+#: ./browser/ajax_listing.py:1190
 msgid "Cancel"
 msgstr "取消"
 
@@ -49,59 +49,59 @@ msgstr "CMS根文件夹"
 msgid "Chinese medical science system"
 msgstr "中医科学系统"
 
-#: ./browser/ajax_listing.py:1170
+#: ./browser/ajax_listing.py:1171
 msgid "Delete"
 msgstr "删除"
 
-#: ./browser/ajax_listing.py:1193
+#: ./browser/ajax_listing.py:1194
 msgid "Delete cancelled."
 msgstr "删除操作已取消"
 
-#: ./browser/ajax_listing.py:2098
+#: ./browser/ajax_listing.py:2113
 msgid "Input bing ren data"
 msgstr "输入病人数据"
 
-#: ./browser/ajax_listing.py:1231
+#: ./browser/ajax_listing.py:1232
 msgid "Input cancelled."
 msgstr "输入已取消."
 
-#: ./browser/ajax_listing.py:1795
+#: ./browser/ajax_listing.py:1796
 msgid "Input chu fang data"
 msgstr "输入处方数据"
 
-#: ./browser/ajax_listing.py:2633
+#: ./browser/ajax_listing.py:2648
 msgid "Input dan wei data"
 msgstr "输入单位数据"
 
-#: ./browser/ajax_listing.py:2387
+#: ./browser/ajax_listing.py:2402
 msgid "Input danwei dizhi data"
 msgstr "输入单位地址数据"
 
-#: ./browser/ajax_listing.py:2263
+#: ./browser/ajax_listing.py:2278
 msgid "Input dizhi data"
 msgstr "输入地址数据"
 
-#: ./browser/ajax_listing.py:2511
+#: ./browser/ajax_listing.py:2526
 msgid "Input geren dizhi data"
 msgstr "输入个人地址数据"
 
-#: ./browser/ajax_listing.py:1666
+#: ./browser/ajax_listing.py:1667
 msgid "Input jing luo data"
 msgstr "输入经络数据"
 
-#: ./browser/ajax_listing.py:1491
+#: ./browser/ajax_listing.py:1492
 msgid "Input yao data"
 msgstr "输入药数据"
 
-#: ./browser/ajax_listing.py:1363
+#: ./browser/ajax_listing.py:1364
 msgid "Input yao wei data"
 msgstr "输入药味数据"
 
-#: ./browser/ajax_listing.py:1200
+#: ./browser/ajax_listing.py:1201
 msgid "Input yao xing data"
 msgstr "输入药性数据"
 
-#: ./browser/ajax_listing.py:2779
+#: ./browser/ajax_listing.py:2794
 msgid "Input yi sheng data"
 msgstr "输入医生数据"
 
@@ -109,7 +109,7 @@ msgstr "输入医生数据"
 msgid "Profile for cms.db"
 msgstr "CMS系统配置文件"
 
-#: ./browser/ajax_listing.py:1209
+#: ./browser/ajax_listing.py:1210
 msgid "Submit"
 msgstr "提交"
 
@@ -121,11 +121,11 @@ msgstr "系统Ajax视图"
 msgid "System settings"
 msgstr "系统设置"
 
-#: ./browser/ajax_listing.py:1223
+#: ./browser/ajax_listing.py:1224
 msgid "Thank you! Your data  will be update in back end DB."
 msgstr "你的数据已在数据库更新."
 
-#: ./browser/ajax_listing.py:1185
+#: ./browser/ajax_listing.py:1186
 msgid "Your data  has been deleted."
 msgstr "数据已被删除."
 
@@ -174,6 +174,10 @@ msgstr "处方"
 msgid "chufang folder"
 msgstr "处方文件夹"
 
+#: ./orm.py:133
+msgid "chufang ming cheng"
+msgstr "处方名称"
+
 #: ./profiles/default/types/cms.db.chufang.xml
 msgid "chufang xiangxi shuoming"
 msgstr "处方内容类型"
@@ -183,7 +187,7 @@ msgid "dan jia"
 msgstr "单价:元"
 
 #: ./browser/interfaces.py:111
-#: ./orm.py:494
+#: ./orm.py:497
 msgid "dan wei"
 msgstr "单位"
 
@@ -203,68 +207,68 @@ msgstr "单位内容类型"
 msgid "db map folder"
 msgstr "数据库映射文件夹"
 
-#: ./browser/ajax_listing.py:2052
+#: ./browser/ajax_listing.py:2067
 msgid "delete bing ren data"
 msgstr "删除病人数据"
 
-#: ./browser/ajax_listing.py:1748
+#: ./browser/ajax_listing.py:1749
 msgid "delete chu fang data"
 msgstr "删除处方数据"
 
-#: ./browser/ajax_listing.py:2594
+#: ./browser/ajax_listing.py:2609
 msgid "delete dan wei data"
 msgstr "删除单位数据"
 
-#: ./browser/ajax_listing.py:2345
+#: ./browser/ajax_listing.py:2360
 msgid "delete dan wei di zhi data"
 msgstr "删除单位地址数据"
 
-#: ./browser/ajax_listing.py:2221
+#: ./browser/ajax_listing.py:2236
 msgid "delete di zhi data"
 msgstr "删除地址数据"
 
-#: ./browser/ajax_listing.py:2470
+#: ./browser/ajax_listing.py:2485
 msgid "delete ge ren di zhi data"
 msgstr "删除个人地址数据"
 
-#: ./browser/ajax_listing.py:1622
+#: ./browser/ajax_listing.py:1623
 msgid "delete jing luo data"
 msgstr "删除经络数据"
 
-#: ./browser/ajax_listing.py:1446
+#: ./browser/ajax_listing.py:1447
 msgid "delete yao data"
 msgstr "删除药数据"
 
-#: ./browser/ajax_listing.py:1319
+#: ./browser/ajax_listing.py:1320
 msgid "delete yao wei data"
 msgstr "删除药味数据"
 
-#: ./browser/ajax_listing.py:1149
+#: ./browser/ajax_listing.py:1150
 msgid "delete yao xing data"
 msgstr "删除药性数据"
 
-#: ./browser/ajax_listing.py:2740
+#: ./browser/ajax_listing.py:2755
 msgid "delete yi sheng data"
 msgstr "删除医生数据"
 
 #: ./browser/interfaces.py:101
-#: ./orm.py:415
+#: ./orm.py:418
 msgid "di zhi"
 msgstr "地址"
 
-#: ./orm.py:457
+#: ./orm.py:460
 msgid "dian hua"
 msgstr "电话"
 
-#: ./orm.py:268
+#: ./orm.py:271
 msgid "foreagn key link to chufang"
 msgstr "连接处方的外键"
 
-#: ./orm.py:491
+#: ./orm.py:494
 msgid "foreagn key link to danwei"
 msgstr "连接单位的外键"
 
-#: ./orm.py:408
+#: ./orm.py:411
 msgid "foreagn key link to dizhi"
 msgstr "连接地址的外键"
 
@@ -272,7 +276,7 @@ msgstr "连接地址的外键"
 msgid "foreagn key link to wei"
 msgstr "外键"
 
-#: ./orm.py:265
+#: ./orm.py:268
 msgid "foreagn key link to yao"
 msgstr "外键"
 
@@ -284,7 +288,7 @@ msgstr "外键"
 msgid "foreagn key link to yisheng"
 msgstr "外键"
 
-#: ./orm.py:363
+#: ./orm.py:366
 msgid "gong zhong hao"
 msgstr "公众号"
 
@@ -293,7 +297,7 @@ msgstr "公众号"
 msgid "gui jing"
 msgstr "归经"
 
-#: ./orm.py:314
+#: ./orm.py:317
 msgid "guo jia"
 msgstr "国家"
 
@@ -305,7 +309,7 @@ msgstr ""
 msgid "ji liang"
 msgstr "剂量"
 
-#: ./orm.py:327
+#: ./orm.py:330
 msgid "jie dao"
 msgstr "街道"
 
@@ -330,7 +334,7 @@ msgstr "库存(单位:g)"
 msgid "label_attachfile"
 msgstr ""
 
-#: ./orm.py:460
+#: ./orm.py:463
 msgid "lei xing"
 msgstr "类型"
 
@@ -359,11 +363,11 @@ msgstr "炮制"
 msgid "she xiang"
 msgstr "舌相"
 
-#: ./orm.py:319
+#: ./orm.py:322
 msgid "sheng(state)"
 msgstr "省"
 
-#: ./orm.py:323
+#: ./orm.py:326
 msgid "shi (city)"
 msgstr "市"
 
@@ -379,51 +383,51 @@ msgstr "常用药量"
 msgid "types"
 msgstr "类型"
 
-#: ./browser/ajax_listing.py:2152
+#: ./browser/ajax_listing.py:2167
 msgid "update bing ren data"
 msgstr "更新病人数据"
 
-#: ./browser/ajax_listing.py:1878
+#: ./browser/ajax_listing.py:1891
 msgid "update chu fang data"
 msgstr "更新处方数据"
 
-#: ./browser/ajax_listing.py:2677
+#: ./browser/ajax_listing.py:2692
 msgid "update dan wei data"
 msgstr "更新单位数据"
 
-#: ./browser/ajax_listing.py:2426
+#: ./browser/ajax_listing.py:2441
 msgid "update danwei dizhi data"
 msgstr "更新单位地址数据"
 
-#: ./browser/ajax_listing.py:2302
+#: ./browser/ajax_listing.py:2317
 msgid "update di zhi data"
 msgstr "更新地址数据"
 
-#: ./browser/ajax_listing.py:2550
+#: ./browser/ajax_listing.py:2565
 msgid "update ge ren di zhi data"
 msgstr "更新个人地址数据"
 
-#: ./browser/ajax_listing.py:1704
+#: ./browser/ajax_listing.py:1705
 msgid "update jingluo data"
 msgstr "更新经络数据"
 
-#: ./browser/ajax_listing.py:1544
+#: ./browser/ajax_listing.py:1545
 msgid "update yao data"
 msgstr "更新药数据"
 
-#: ./browser/ajax_listing.py:1402
+#: ./browser/ajax_listing.py:1403
 msgid "update yao wei data"
 msgstr "更新药味数据"
 
-#: ./browser/ajax_listing.py:1264
+#: ./browser/ajax_listing.py:1265
 msgid "update yao xing data"
 msgstr "更新药性数据"
 
-#: ./browser/ajax_listing.py:2825
+#: ./browser/ajax_listing.py:2840
 msgid "update yi sheng data"
 msgstr "更新医生数据"
 
-#: ./orm.py:359
+#: ./orm.py:362
 msgid "wang zhi"
 msgstr "网址"
 
@@ -447,11 +451,11 @@ msgstr "五运六气文件夹"
 msgid "wuyun xiangxi shuoming"
 msgstr "五运六气内容类型"
 
-#: ./orm.py:449
+#: ./orm.py:452
 msgid "xing bie"
 msgstr "性别"
 
-#: ./orm.py:445
+#: ./orm.py:448
 msgid "xing ming"
 msgstr "姓名"
 
@@ -540,6 +544,10 @@ msgstr "医生文件夹"
 #: ./profiles/default/types/cms.db.yisheng.xml
 msgid "yisheng xiangxi shuoming"
 msgstr "医生详细说明"
+
+#: ./orm.py:222
+msgid "zhen jin"
+msgstr ""
 
 #: ./browser/interfaces.py:56
 msgid "zhu su"
