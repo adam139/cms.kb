@@ -1793,7 +1793,9 @@ class InputChuFang(z3f.AddForm):
     """
 
     label = _(u"Input chu fang data")
-    fields = field.Fields(IChuFangUI).omit('id','yisheng_id')
+    fields = field.Fields(IChuFangUI)
+    fields = fields.select('bingrens','mingcheng','yaoes', 'yisheng','yizhu', 'jiliang', 
+                  'zhenjin')
     fields['yaoes'].widgetFactory = DataGridFieldFactory
     fields['bingrens'].widgetFactory = DataGridFieldFactory
 
