@@ -2083,6 +2083,8 @@ class InputChuFang(z3f.AddForm):
 
     def updateWidgets(self):
         super(InputChuFang, self).updateWidgets()
+        import pdb
+        pdb.set_trace()
         self.widgets['bingrens'].columns = [
             c for c in self.widgets['bingrens'].columns
             if c['name'] != 'shijian'
@@ -2258,12 +2260,13 @@ class UpdateChuFang(UpdateBase):
         self.widgets['yaoes'].auto_append = False
         self.widgets['bingrens'].allow_reorder = False
         self.widgets['bingrens'].auto_append = False
+        self.widgets['bingrens'].columns = [
+            c for c in self.widgets['bingrens'].columns
+            if c['name'] != 'shijian'
+        ]
 
-#     def datagridUpdateWidgets(self, subform, widgets, widget):
-# 
-#         if widget.name == 'form.widgets.bingrens':
-#             widgets['shijian'].size = 8
-#             widgets['bingren_id'].size = 8
+    def datagridInitialise(self, subform, widget):
+        subform.fields = subform.fields.omit('shijian')
 
 
     @button.buttonAndHandler(_(u"Submit"))
