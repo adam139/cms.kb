@@ -2081,6 +2081,16 @@ class InputChuFang(z3f.AddForm):
         self.request.set('disable_plone.leftcolumn',1)
         super(InputChuFang, self).update()
 
+    def updateWidgets(self):
+        super(InputChuFang, self).updateWidgets()
+        self.widgets['bingrens'].columns = [
+            c for c in self.widgets['bingrens'].columns
+            if c['name'] != 'shijian'
+        ]
+
+    def datagridInitialise(self, subform, widget):
+        subform.fields = subform.fields.omit('shijian')
+
     @button.buttonAndHandler(_(u"Submit"))
     def submit(self, action):
         """Submit chufang recorder
@@ -2154,9 +2164,11 @@ class UpdateChuFang(UpdateBase):
     """
 
     label = _(u"update chu fang data")
-    fields = field.Fields(IChuFangUI).omit('id','yisheng_id')
+    fields = field.Fields(IChuFangUI)
+    fields = fields.select('bingrens','mingcheng','yaoes', 'yisheng','yizhu', 'jiliang', 
+                  'zhenjin')
     fields['yaoes'].widgetFactory = DataGridFieldFactory
-    fields['bingrens'].widgetFactory = DataGridFieldFactory
+    fields['bingrens'].widgetFactory = BlockDataGridFieldFactory
 
     def getContent(self):
         # create a temp obj that provided IYaoUI
