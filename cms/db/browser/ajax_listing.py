@@ -4,6 +4,7 @@ from zope.interface import implementer
 from zope.schema import getFieldsInOrder
 from zope.component import getMultiAdapter
 from collective.z3cform.datagridfield import DataGridFieldFactory
+from collective.z3cform.datagridfield import BlockDataGridFieldFactory
 from zope import component
 import json
 import datetime
@@ -2072,7 +2073,7 @@ class InputChuFang(z3f.AddForm):
     fields = fields.select('bingrens','mingcheng','yaoes', 'yisheng','yizhu', 'jiliang', 
                   'zhenjin')
     fields['yaoes'].widgetFactory = DataGridFieldFactory
-    fields['bingrens'].widgetFactory = DataGridFieldFactory
+    fields['bingrens'].widgetFactory = BlockDataGridFieldFactory
 
     def update(self):
         self.request.set('disable_border', True)
