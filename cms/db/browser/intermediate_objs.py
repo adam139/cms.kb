@@ -59,6 +59,7 @@ class YaoGridDataConverter(BaseDataConverter):
     def toFieldValue(self, value):
         rv = YaoList()
         for row in value:
+            if row == NO_VALUE:continue
             d = dict()
             for name, f in getFieldsInOrder(IYao_ChuFang_AssoUI):
                 if row.get(name, NO_VALUE) != NO_VALUE:
@@ -86,7 +87,9 @@ class BingRenGridDataConverter(BaseDataConverter):
 
     def toFieldValue(self, value):
         rv = BingRenList()
+
         for row in value:
+            if row == NO_VALUE:continue
             d = dict()
             for name, f in getFieldsInOrder(IChuFang_BingRen_AssoUI):
                 if row.get(name, NO_VALUE) != NO_VALUE:
@@ -183,7 +186,7 @@ class ChuFangUI(object):
     _Modify_portal_content_Permission = ('Anonymous', )
 
     def __init__(self, mingcheng=None, yizhu=None, jiliang=None, zhenjin=0.00,\
-                  yisheng=None, yaoes=None, bingrens=None, zhuangtai=None):
+                  yisheng=None, yaoes=None, bingrens=None, zhuangtai=False):
         self.mingcheng = mingcheng
         self.yizhu = yizhu
         self.zhuangtai = zhuangtai
