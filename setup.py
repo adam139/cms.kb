@@ -25,7 +25,7 @@ setup(name='cms.db',
       zip_safe=False,
       install_requires=[
           'setuptools',
-          'MySQL-python',
+          'mysqlclient',
           'SQLAlchemy',
           'plone.behavior',            
           'plone.app.dexterity',

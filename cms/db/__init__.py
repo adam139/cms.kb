@@ -14,7 +14,8 @@ sys.setdefaultencoding('utf-8')
 InputDb = "cms.db:Input db"
 ORMBase = declarative.declarative_base()
 ## GRANT ALL PRIVILEGES ON msdb.* TO 'MSdba'@'localhost' IDENTIFIED BY 'cms391124$DBA';
-linkstr = 'mysql://MSdba:cms391124$DBA@127.0.0.1:3306/msdb?charset=utf8'
+# linkstr = 'mysql://MSdba:cms391124$DBA@127.0.0.1:3306/msdb?charset=utf8'
+linkstr = 'mysql+mysqldb://MSdba:cms391124$DBA@127.0.0.1:3306/msdb?charset=utf8'
 engine = create_engine(linkstr,echo=False,pool_recycle=3600)
 Scope_session = scoped_session(sessionmaker(autocommit=False,autoflush=False,bind=engine,expire_on_commit=False))
 Session = Scope_session()
