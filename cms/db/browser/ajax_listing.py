@@ -2097,7 +2097,8 @@ class InputChuFang(z3f.AddForm):
         columns = filter_cln(ChuFang)        
         #过滤非本表的字段
         _data = dict()
-        for i in columns:           
+        for i in columns:
+            if i == 'zhuangtai':continue           
             _data[i] = data[i]                  
         _data['zhuangtai'] = 0
         _id = data['yisheng']
