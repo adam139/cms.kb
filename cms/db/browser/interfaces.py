@@ -59,12 +59,14 @@ class IChuFang_BingRen_AssoUI (Interface):
         )          
     shijian = schema.Datetime(
             title=_(u"chu fang shi jian"),
+            required=False,
         )    
     maixiang = schema.TextLine(
             title=_(u"mai xiang"),
         )
     shexiang = schema.TextLine(
             title=_(u"she xiang"),
+            required=False,
         )
     zhusu = schema.TextLine(
             title=_(u"zhu su"),
@@ -84,6 +86,7 @@ class IYao_ChuFang_AssoUI (Interface):
         )    
     paozhi = schema.TextLine(
             title=_(u"pao zhi"),
+            required=False,
         )
  
 
