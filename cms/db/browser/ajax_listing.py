@@ -17,7 +17,7 @@ from Products.Five.browser import BrowserView
 from plone.directives import form
 from z3c.form import form as z3f
 from z3c.form import field, button
-
+from z3c.form.interfaces import HIDDEN_MODE
 from z3c.form.interfaces import IFieldsAndContentProvidersForm
 from z3c.form.contentprovider import ContentProviders
 from cms.db.browser.content_providers import BingRenExtendedHelp
@@ -1830,8 +1830,7 @@ class UpdateWoYao(UpdateYaoXing):
     """
 
     label = _(u"update yao data")
-    fields = field.Fields(IYao_DanWei_AssoUI).omit('danwei_id')
-    
+    fields = field.Fields(IYao_DanWei_AssoUI).omit('danwei_id')    
 
     def getContent(self):
         # create a temp obj that provided IYaoUI
@@ -1870,8 +1869,7 @@ class UpdateWoYao(UpdateYaoXing):
         #过滤非本表的字段
         _data = dict()
         for i in _clmns:
-            _data[i] = data[i]                              
-
+            _data[i] = data[i]                             
         danwei_id = getDanWeiId()
         searchcnd = {"yao_id":data['yao_id'],"danwei_id":danwei_id}
         try:
@@ -2025,14 +2023,11 @@ class DeleteChuFang(DeleteYaoXing):
     fields = field.Fields(IChuFang).omit('id','yisheng_id')
 
     def getContent(self):
-
         locator = queryUtility(IDbapi, name='chufang')
         return locator.getByCode(self.id)
 
     def update(self):
         self.request.set('disable_border', True)
-
-        #Let z3c.form do its magic
         super(DeleteChuFang, self).update()
 
     @button.buttonAndHandler(_(u"Delete"))
@@ -2081,17 +2076,11 @@ class InputChuFang(z3f.AddForm):
         self.request.set('disable_plone.leftcolumn',1)
         super(InputChuFang, self).update()
 
-    def updateWidgets(self):
-        super(InputChuFang, self).updateWidgets()
-        import pdb
-        pdb.set_trace()
-        self.widgets['bingrens'].columns = [
-            c for c in self.widgets['bingrens'].columns
-            if c['name'] != 'shijian'
-        ]
+    def datagridUpdateWidgets(self, subform, widgets, widget):
+        # This one hides the widgets
 
-    def datagridInitialise(self, subform, widget):
-        subform.fields = subform.fields.omit('shijian')
+        if subform.schema.getName() == "IChuFang_BingRen_AssoUI":
+            widgets['shijian'].mode = HIDDEN_MODE
 
     @button.buttonAndHandler(_(u"Submit"))
     def submit(self, action):
@@ -2100,7 +2089,7 @@ class InputChuFang(z3f.AddForm):
         #todo z3c.form.converter add adapter
         # Collection Sequence Data Converter
         #https://z3cform.readthedocs.io/en/latest/informative/converter.html        
-        data, errors = self.extractData()
+        data, errors = self.extractData()      
         if errors:
             self.status = self.formErrorsMessage
             return
@@ -2108,8 +2097,9 @@ class InputChuFang(z3f.AddForm):
         columns = filter_cln(ChuFang)        
         #过滤非本表的字段
         _data = dict()
-        for i in columns:
+        for i in columns:           
             _data[i] = data[i]                  
+        _data['zhuangtai'] = 0
         _id = data['yisheng']
         fk_tables = [(_id,YiSheng,'yisheng')]
         #[<cms.db.browser.interfaces.Yao_ChuFang_AssoUI object at 0x7fb156e389d0>]
@@ -2168,7 +2158,7 @@ class UpdateChuFang(UpdateBase):
     label = _(u"update chu fang data")
     fields = field.Fields(IChuFangUI)
     fields = fields.select('bingrens','mingcheng','yaoes', 'yisheng','yizhu', 'jiliang', 
-                  'zhenjin')
+                  'zhenjin', 'zhuangtai')
     fields['yaoes'].widgetFactory = DataGridFieldFactory
     fields['bingrens'].widgetFactory = BlockDataGridFieldFactory
 
@@ -2235,20 +2225,12 @@ class UpdateChuFang(UpdateBase):
                     p = p.decode('utf-8')
                 data[name] = p
                 continue                        
-
-        tmp = data['jiliang']
-        if isinstance(tmp,long) and bool(tmp):
-            data['jiliang'] = int(tmp)
-        else:
-            data['jiliang'] = 0
-
-#         return data
         return ChuFangUI(**data)
 
-#     def update(self):
-#         self.request.set('disable_border', True)
-#         # Let z3c.form do its magic
-#         super(UpdateChuFang, self).update()
+    def update(self):
+        self.request.set('disable_border', True)
+        # Let z3c.form do its magic
+        super(UpdateChuFang, self).update()
 
     def updateActions(self):
         """Bypass the baseclass editform - it causes problems"""
@@ -2260,14 +2242,6 @@ class UpdateChuFang(UpdateBase):
         self.widgets['yaoes'].auto_append = False
         self.widgets['bingrens'].allow_reorder = False
         self.widgets['bingrens'].auto_append = False
-        self.widgets['bingrens'].columns = [
-            c for c in self.widgets['bingrens'].columns
-            if c['name'] != 'shijian'
-        ]
-
-    def datagridInitialise(self, subform, widget):
-        subform.fields = subform.fields.omit('shijian')
-
 
     @button.buttonAndHandler(_(u"Submit"))
     def submit(self, action):
