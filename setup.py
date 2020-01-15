@@ -25,13 +25,13 @@ setup(name='cms.db',
       zip_safe=False,
       install_requires=[
           'setuptools',
-          'mysqlclient',
+          'mysqlclient==1.4.6',
           'SQLAlchemy',
           'plone.behavior',            
           'plone.app.dexterity',
           'plone.app.textfield',
           'plone.directives.form',
-          'collective.z3cform.datagridfield',
+          'collective.z3cform.datagridfield==1.4.0',
       ],
       extras_require={
     'test': ['plone.app.testing',]
