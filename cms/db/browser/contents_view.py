@@ -363,7 +363,7 @@ class WuYunView(BaseView):
     def nextyear(self,id):
         ""
         id = int(id) + 1
-        if id==65:id=1
+        if id==61:id=1
         parent = self.getobj_url("cms.db.wuyunfolder")
         return "%s/%s/@@base_view" % (parent,str(id))
         
