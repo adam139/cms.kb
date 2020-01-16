@@ -1,7 +1,5 @@
 #-*- coding: UTF-8 -*-
 from plone import api
-from z3c.form import field
-import json
 import datetime
 from zope.event import notify
 from Acquisition import aq_inner
@@ -33,7 +31,7 @@ from cms.db import  Session
 from cms.db.dbutility import map_yao_chufang_table
 from cms.db.dbutility import ex_map_yao_chufang_total
 from cms.db.dbutility import ex_map_yao_chufang_danwei
-from cms.db.dbutility import map_chufang_bingren_table as mapcb
+from cms.db.dbutility import map_chufang_bingren_table 
 
 from cms.theme.interfaces import IThemeSpecific
 
@@ -253,7 +251,8 @@ class ChuFangView(BaseView):
         
         _id = long(id)
         locator = queryUtility(IDbapi, name='chufang')        
-        out = locator.pk_ass_obj_title(_id,ChuFang,ChuFang_BingRen_Asso,BingRen,'bingren_id','xingming',mapcb)
+        out = locator.pk_ass_obj_title(_id,ChuFang,ChuFang_BingRen_Asso,
+                                       BingRen,'bingren_id','xingming',map_chufang_bingren_table)
 
         out = out.replace(";","</tr><tr>")
         out = "<tr>%s</tr>" % out       
@@ -333,12 +332,14 @@ class WuYunView(BaseView):
     def preyear(self,id):
         ""
         id = int(id) - 1
+        if id==0:id=64
         parent = self.getobj_url("cms.db.wuyunfolder")
         return "%s/%s/@@base_view" % (parent,str(id))
 
     def nextyear(self,id):
         ""
         id = int(id) + 1
+        if id==65:id=1
         parent = self.getobj_url("cms.db.wuyunfolder")
         return "%s/%s/@@base_view" % (parent,str(id))
         
@@ -348,10 +349,7 @@ class WuYunView(BaseView):
         parent = self.getobj_url("cms.db.wuyunfolder")
         jinnian = int(datetime.datetime.today().strftime("%Y"))
         wuyunid = gonglinian2ganzhi(jinnian)
-        return "%s/%s/@@base_view" % (parent,wuyunid)
-        
-        
-        
+        return "%s/%s/@@base_view" % (parent,wuyunid)                     
         
     def closed30nianfen(self,id):
         "由干支序号id,取最近30年同干支年份"
@@ -364,8 +362,7 @@ class WuYunView(BaseView):
         wuyun = u"年五运六气".encode('utf-8')
         for j in self.ganzhi_generator(_id):
             nlist.append("%s%s" % (j,wuyun))
-        return "%s:%s" %(ganzhi, ",".join(nlist))    
-        
+        return "%s:%s" %(ganzhi, ",".join(nlist))           
         
     def ganzhi_generator(self,id):
 
@@ -486,8 +483,7 @@ class WuYunView(BaseView):
             item = "<td>%s</td>" % i
             lt.append(item)
         lt.append(postfix)
-        return ''.join(lt)
-            
+        return ''.join(lt)           
         
         
         
