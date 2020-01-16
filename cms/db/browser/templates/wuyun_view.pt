@@ -71,12 +71,16 @@
      <div role="tabpanel" class="row row-5 details">         
        <ul class="nav nav-tabs row" role="tablist">
        	<li role="presentation" class="active col-xs-6">
+       	<h4 class="text-center">	
        	<a class="text-center" href="#base" aria-controls="base" role="tab" data-toggle="tab"
     	   tal:attributes="data-js-target python:p + '/todo/@@view'">基本分析</a>
+    	</h4>
     	</li>
        	<li role="presentation" class="col-xs-6">
+       	<h4 class="text-center">	
        	<a class="text-center" href="#apply" aria-controls="apply" role="tab" data-toggle="tab"
     	   tal:attributes="data-js-target python:p + '/todo/@@view'">运气应用</a>
+    	</h4>
     	</li>
     	</ul>    		
        <div class="tab-content">

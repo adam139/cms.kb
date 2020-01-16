@@ -258,18 +258,9 @@ class ChuFangView(BaseView):
         out = "<tr>%s</tr>" % out       
         return out            
 
-
-class YaoWeiView(BaseView):
-    "content type:yaowei view"
-
-    
-    def update(self):
-        # Hide the editable-object border
-        self.request.set('disable_border', True)
-        
+       
 class YaoXingView(BaseView):
     "content type:yaoxing view"
-
     
     def update(self):
         # Hide the editable-object border
@@ -278,22 +269,54 @@ class YaoXingView(BaseView):
     def relative_yaoes(self,id):
         "fetch all yaoes that have same yaoxing"
         
+        if "yaoxing" in id:
+            id = id.split('yaoxing')[1]
         yaoes = self.yaoes_generator(id)
+        base = self.getobj_url("cms.db.yaofolder")
         items = []
         for j in yaoes:
-            item = "<tr><td>%s</td><td>%s</td></tr>" % (j.mingcheng,j.yaowei.wei)
+            item = """<tr><td><a href='%s/%s/@@base_view'>%s</a></td><td>%s</td></tr>
+            """ %(base,j.id,j.mingcheng,j.yaowei.wei)
             items.append(item)
-        return ''.join(items)
-        
+        return ''.join(items)        
     
     def yaoes_generator(self,id):
         _id = long(id)
         locator = queryUtility(IDbapi, name='yaoxing')
         rder = locator.getByCode(_id)
         for j in rder.yaoes:
-            if not bool(j.mingcheng):
+            if bool(j.mingcheng):
                 yield j
-                
+            else:
+                continue               
+
+
+class YaoWeiView(YaoXingView):
+    "content type:yaowei view"
+
+    def relative_yaoes(self,id):
+        "fetch all yaoes that have same yaowei"
+        
+        if "yaowei" in id:
+            id = id.split('yaowei')[1]
+        yaoes = self.yaoes_generator(id)
+        base = self.getobj_url("cms.db.yaofolder")
+        items = []
+        for j in yaoes:
+            item = """<tr><td><a href='%s/%s/@@base_view'>%s</a></td><td>%s</td></tr>
+            """ %(base,j.id,j.mingcheng,j.yaoxing.xing)
+            items.append(item)
+        return ''.join(items)        
+    
+    def yaoes_generator(self,id):
+        _id = long(id)
+        locator = queryUtility(IDbapi, name='yaowei')
+        rder = locator.getByCode(_id)
+        for j in rder.yaoes:
+            if bool(j.mingcheng):
+                yield j
+            else:
+                continue
         
         
 class JingLuoView(BaseView):
@@ -304,6 +327,7 @@ class JingLuoView(BaseView):
         # Hide the editable-object border
         self.request.set('disable_border', True) 
         
+
 class YiShengView(BaseView):
     "content type:jingluo view"
 

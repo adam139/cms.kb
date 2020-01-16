@@ -44,6 +44,8 @@ class TestView(unittest.TestCase):
         portal['folder'].invokeFactory('cms.db.wuyunfolder', 'wuyunfolder')
         fire_created_event()
         yao_id = str(Session.query(Yao).filter(Yao.mingcheng=="白芍").one().id)
+        yaoxing_id = str(Session.query(YaoXing).filter(YaoXing.xing=="热").one().id)
+        yaowei_id = str(Session.query(YaoWei).filter(YaoWei.wei=="苦").one().id)
         bingren_id = str(Session.query(BingRen).filter(BingRen.xingming=="张三").one().id)
         chufang_id = str(Session.query(ChuFang).filter(ChuFang.mingcheng=="桂枝汤").one().id)
         wuyun_id = str(Session.query(NianGanZhi).filter(NianGanZhi.ganzhi=="己亥").one().id)
@@ -64,6 +66,8 @@ class TestView(unittest.TestCase):
                                                     )                                                                     
         self.portal = portal
         self.yao_id = yao_id
+        self.yaoxing_id = yaoxing_id
+        self.yaowei_id = yaowei_id
         self.bingren_id = bingren_id
         self.chufang_id = chufang_id
         self.wuyun_id = wuyun_id
@@ -86,6 +90,28 @@ class TestView(unittest.TestCase):
         transaction.commit()
         browser.open(portal['folder']['ormfolder'].absolute_url())        
         self.assertTrue('class="pat-structure"' in browser.contents)
+
+    def testyaoxingView(self):
+        app = self.layer['app']
+        portal = self.layer['portal']
+        browser = Browser(app)
+        browser.handleErrors = False             
+        browser.addHeader('Authorization', 'Basic %s:%s' % (TEST_USER_NAME, TEST_USER_PASSWORD,))
+        transaction.commit()
+        browser.open(portal['folder']['yaofolder']['yaoxing' + self.yaoxing_id].absolute_url() + "/@@base_view")
+
+        self.assertTrue( "桂枝" in browser.contents)
+
+    def testyaoweiView(self):
+        app = self.layer['app']
+        portal = self.layer['portal']
+        browser = Browser(app)
+        browser.handleErrors = False             
+        browser.addHeader('Authorization', 'Basic %s:%s' % (TEST_USER_NAME, TEST_USER_PASSWORD,))
+        transaction.commit()
+        browser.open(portal['folder']['yaofolder']['yaowei' + self.yaowei_id].absolute_url() + "/@@base_view")
+
+        self.assertTrue( "苦" in browser.contents)
     
 
     def testyaoView(self):
