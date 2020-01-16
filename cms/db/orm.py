@@ -139,15 +139,7 @@ class IYao(Interface):
     yongliang = schema.Int(
             title=_(u"tongchang yongliang"),
             required = False,
-        )
-#     danjia = schema.Float(
-#             title=_(u"dan jia"),
-#             required = False,
-#         )
-#     kucun = schema.Int(
-#             title=_(u"ku cun"),
-#             required = False,
-#         )        
+        )    
     yaowei = schema.Object(
             title=_(u"yao wei"),
             schema=IYaoWei,

@@ -28,6 +28,11 @@
 	/>
  <utility
 	provides=".interfaces.IDbapi"
+	component=".dbutility.yao_jingluo"
+	name="yao_jingluo"
+	/>	
+ <utility
+	provides=".interfaces.IDbapi"
 	component=".dbutility.chufang"
 	name="chufang"
 	/>

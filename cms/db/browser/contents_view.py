@@ -319,14 +319,36 @@ class YaoWeiView(YaoXingView):
                 continue
         
         
-class JingLuoView(BaseView):
+class JingLuoView(YaoXingView):
     "content type:jingluo view"
 
-    
-    def update(self):
-        # Hide the editable-object border
-        self.request.set('disable_border', True) 
+    def relative_yaoes(self,id):
+        "fetch all yaoes that have same jingluo"
         
+        if "jingluo" in id:
+            id = id.split('jingluo')[1]
+        yaoes = self.yaoes_generator(id)
+        base = self.getobj_url("cms.db.yaofolder")
+        items = []       
+        for j in yaoes:
+            item = """<tr><td><a href='%s/%s/@@base_view'>%s</a></td><td>%s</td><td>%s</td></tr>
+            """ %(base,j.id,j.mingcheng,j.yaoxing.xing,j.yaowei.wei)
+            items.append(item)
+        return ''.join(items)
+        
+
+    def yaoes_generator(self,id):
+        _id = long(id)
+        locator = queryUtility(IDbapi, name='yao_jingluo')
+        rders = locator.getMultiByKwargs(jingluo_id =_id)
+        locator = queryUtility(IDbapi, name='yao')
+        for j in rders:
+            rdr = locator.getByCode(j[0])
+            if bool(rdr):
+                yield rdr
+            else:
+                continue
+
 
 class YiShengView(BaseView):
     "content type:jingluo view"

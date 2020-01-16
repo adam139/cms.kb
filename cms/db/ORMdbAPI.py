@@ -783,6 +783,24 @@ class Dbapi(object):
                 return None
         else:
             return None
+
+    def getMultiByKwargs(self,**args):
+        
+        tablecls = self.init_table()       
+        if bool(args):           
+            try:
+                args2 = ["%s = %s" %(kw,vl) for kw,vl in args.items()]
+                args2 = map(text,args2)
+                recorders = session.query(tablecls).filter(and_(*args2)).all()
+                return recorders
+            except:
+                session.rollback()
+                return []
+            finally:
+                session.close()
+                
+        else:
+            return []
     
     def get_rownumber(self):
         "fetch table's rownumber"

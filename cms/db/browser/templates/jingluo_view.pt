@@ -15,7 +15,7 @@
 <body>
 <metal:main fill-slot="main">
     <tal:main-macro metal:define-macro="main">
-    <div id="workspace" class="container-fluid"
+    <div id="jingluo" class="container-fluid"
     	tal:define="p python:context.absolute_url()">      	
      <div class="row row-1">         
        <div class="col-xs-12 col-md-12">
@@ -23,7 +23,28 @@
        	<p class="description" tal:content="python:context.description">context/description</p>
        </div>
      </div>
-     <div class="row row-2 details">         
+     <div class="row row-2 relative-yaoes">
+       <div class="col-xs-12 col-md-12 table-responsive">
+         <table class="table table-striped table-bordered">
+         	<caption>相关药物</caption>
+         	<thead>
+         		<tr>
+         			<th>名称</th>
+         			<th>药性</th>
+         			<th>药味</th>
+         		</tr>
+         	</thead>
+         	<tbody id="yao-datas"         		
+                tal:content="structure python:view.relative_yaoes(context.id)">
+         		<tr>
+         			<td>name</td>
+         			<td>number</td>
+         		</tr>
+         	</tbody>          
+        </table>
+     </div>     	
+     </div>     
+     <div class="row row-3 details">         
        <div class="col-xs-12 col-md-12">
          <div id="parent-fieldname-text"
           tal:condition="context/text"
