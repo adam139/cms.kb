@@ -19,8 +19,8 @@
     	tal:define="p python:context.absolute_url()">      	
      <div class="row row-1">         
        <div class="col-xs-12 col-md-12">
-       	<h3 class="title text-center">context/title</h3>
-       	<p class="description">context/description</p>
+       	<h3 class="title text-center" tal:content="python:context.title">context/title</h3>
+       	<p class="description" tal:content="python:context.description">context/description</p>
        </div>
      </div>
      <div class="row row-2 relative-yaoes">
