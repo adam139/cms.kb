@@ -8,9 +8,10 @@
 <head>
       <metal:block fill-slot="top_slot">
         <tal:insert tal:replace="nothing"
-              tal:define="disable_column_two python:request.set('disable_plone.rightcolumn', 1)" />
+              tal:define="disable_column_one python:request.set('disable_plone.leftcolumn',1);
+                          disable_column_two python:request.set('disable_plone.rightcolumn',1)" />
       </metal:block>
-  </head>
+</head>
 <body>
 	<div metal:fill-slot="main">
 	<metal:block   use-macro="context/@@cms-db-macros/macros/navbar"/>	
