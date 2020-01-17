@@ -47,10 +47,12 @@
         </div>      	
       </div>
      </div>          
-     <div class="row row-4 relative-object">         
+     <div class="row row-4 relative-object"
+     	  tal:define="chfgs python:view.get_chufang(context.id)"
+     	  tal:condition="python:bool(chfgs)">         
        <div class="col-xs-12 col-md-12">
-         <div id="chufang"          
-          tal:content="structure python:view.get_chufang(context.id)">
+         <div id="chufang"         	          
+            tal:content="structure python:chfgs">
         </div>      	
       </div>
      </div>
