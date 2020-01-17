@@ -21,10 +21,10 @@
        <div class="col-xs-12 col-md-12">
        	<h3 class="title text-center" tal:content="python:context.title">context.title</h3>
        	<ul id="subject" tal:condition="tags" tal:define="tags python:view.getags()" tal:content="structure python:tags" />
-       	<p>味:
-       	<span class="yaowei" tal:content="structure python:view.get_yaowei(context.id)">yao wei</span>
-       	;性:
-       	<span class="yaoxing" tal:content="structure python:view.get_yaoxing(context.id)">yao xing</span>
+       	<p>味:<a href="" tal:attributes="href python:view.get_yaowei_url(context.id)">
+       	<span class="yaowei" tal:content="structure python:view.get_yaowei(context.id)">yao wei</span></a>
+       	;性:<a href="" tal:attributes="href python:view.get_yaoxing_url(context.id)">
+       	<span class="yaoxing" tal:content="structure python:view.get_yaoxing(context.id)">yao xing</span></a>
        	;归经:
        	<span class="guijing" tal:content="structure python:view.get_guijing(context.id)">gui jing</span>	
        	</p>
@@ -49,10 +49,8 @@
      </div>          
      <div class="row row-4 relative-object">         
        <div class="col-xs-12 col-md-12">
-         <div id="chufang"
-          tal:condition="context/report"
-          tal:content="structure python:view.get_chufang(context.id)"
-          tal:attributes="class python:  'pat-autotoc' or ''">
+         <div id="chufang"          
+          tal:content="structure python:view.get_chufang(context.id)">
         </div>      	
       </div>
      </div>

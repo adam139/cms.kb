@@ -100,10 +100,7 @@ class BaseView(BrowserView):
             return "".join(items)
         else:
             return ""
-    
-#     def danwei_id(self):
-#         ""
-#         return        
+   
          
     
 class YaoView(BaseView):
@@ -123,15 +120,13 @@ class YaoView(BaseView):
         yaoid = long(yaoid)
         chufangs = Session.query(ChuFang).filter(ChuFang.yaoes.any(id = yaoid)).all()
         rt =[]
-
         if bool(chufangs):
             base = self.getobj_url("cms.db.chufangfolder")
             for j in chufangs:
                 url = "%s/%s" % (base,str(j.id))
                 item = "<li><a href=%s>%s</a></li>" % (url,j.mingcheng)
                 rt.append(item)
-            return ''.join(rt) 
-        
+            return ''.join(rt)        
         return "<li>None</li>"    
     
     @memoize
@@ -143,6 +138,14 @@ class YaoView(BaseView):
         locator = queryUtility(IDbapi, name='yao')
         wei =locator.pk_obj_property(yaoid,'yaowei','wei')
         return wei
+
+    def get_yaowei_url(self,yaoid):
+        ""
+        yaoid = long(yaoid)
+        locator = queryUtility(IDbapi, name='yao')
+        id =locator.pk_obj_property(yaoid,'yaowei','id')
+        base = self.getobj_url("cms.db.yaofolder")        
+        return "%s/yaowei%s/@@base_view" % (base,id)
     
     @memoize
     def get_yaoxing(self,yaoid):
@@ -153,13 +156,33 @@ class YaoView(BaseView):
         locator = queryUtility(IDbapi, name='yao')   
         xing =locator.pk_obj_property(yaoid,'yaoxing','xing')        
         return xing
+
+    def get_yaoxing_url(self,yaoid):
+        ""
+        yaoid = long(yaoid)
+        locator = queryUtility(IDbapi, name='yao')
+        id =locator.pk_obj_property(yaoid,'yaoxing','id')
+        base = self.getobj_url("cms.db.yaofolder")        
+        return "%s/yaoxing%s/@@base_view" % (base,id)
     
     @memoize    
     def get_guijing(self,yaoid):
         
         yaoid = long(yaoid)
         locator = queryUtility(IDbapi, name='yao')        
-        out = locator.pk_ass_title(yaoid,Yao,Yao_JingLuo_Asso,JingLuo,'jingluo_id','mingcheng')
+        out = locator.pk_ass_recorders(yaoid,Yao,Yao_JingLuo_Asso)
+        
+        def outmap(recorder):
+           locator = queryUtility(IDbapi, name='jingluo')
+           fkv = set(list(recorder))
+           if len(fkv) > 1:fkv.remove(yaoid)           
+           base = self.getobj_url("cms.db.yaofolder")
+           id = list(fkv)[0]
+           rd = locator.getByCode(id)
+           out = """<span class="jingluo"><a href="%s/jingluo%s/@@base_view">%s</a><span>""" % (base,id,rd.mingcheng)
+           return out
+        more = map(outmap,out)
+        out = "".join(more)
         return out
 
 
@@ -250,12 +273,27 @@ class ChuFangView(BaseView):
         "output bingren list"
         
         _id = long(id)
-        locator = queryUtility(IDbapi, name='chufang')        
-        out = locator.pk_ass_obj_title(_id,ChuFang,ChuFang_BingRen_Asso,
-                                       BingRen,'bingren_id','xingming',map_chufang_bingren_table)
+        locator = queryUtility(IDbapi, name='chufang')
+        rcdrs = locator.pk_ass_recorders(_id,ChuFang,ChuFang_BingRen_Asso)        
+#         out = locator.pk_ass_obj_title(_id,ChuFang,ChuFang_BingRen_Asso,
+#                                        BingRen,'bingren_id','xingming',map_chufang_bingren_table)
 
-        out = out.replace(";","</tr><tr>")
-        out = "<tr>%s</tr>" % out       
+        base = self.getobj_url("cms.db.bingrenfolder")
+        def outmap(rdr):
+            ""
+            _id = rdr.bingren_id
+            locator = queryUtility(IDbapi, name='bingren')
+            bingren = locator.getByCode(_id)
+            xingming = getattr(bingren,'xingming',"")
+            dianhua = getattr(bingren,'dianhua',"")
+            shijian = rdr.shijian
+            url = "%s/%s/@@base_view" % (base,str(_id))
+            out = "<td><a href='%s'>%s</a></td><td>%s</td><td>%s</td>" % (url,xingming,dianhua,shijian)
+            return out
+        out = map(outmap,rcdrs)    
+        out = "</tr><tr>".join(out)
+#         out = out.replace(";","</tr><tr>")
+        out = "<tr>%s</tr>" % out      
         return out            
 
        

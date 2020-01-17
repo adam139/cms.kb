@@ -95,7 +95,7 @@ def ex_map_yao_chufang_total(recorder):
 def ex_map_yao_chufang_danwei(recorder):
     "chufang's base_view map function,"
     "provide a specify output format"
-    "parameter:recorder is a yao_chufang association table object recorder"
+    "parameter:recorder is a yao_danwei association table object recorder"
     "recorder like:(u'\u767d\u828d', 7L,'wu', 0.26,700)"
 
 

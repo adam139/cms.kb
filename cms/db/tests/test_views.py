@@ -149,6 +149,7 @@ class TestView(unittest.TestCase):
         browser.open(portal['folder']['bingrenfolder'][self.bingren_id].absolute_url() + "/@@base_view")
 
         self.assertTrue( "桂枝汤" in browser.contents)
+        self.assertTrue( "张三" in browser.contents)
 
     def testchufangView(self):
         app = self.layer['app']
