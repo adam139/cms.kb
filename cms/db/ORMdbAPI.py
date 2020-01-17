@@ -92,6 +92,15 @@ class Dbapi(object):
         robj = getattr(recorder,rpt,"")
         return getattr(robj,title,"")
 
+    def pk_ass_recorders(self,pk,factorycls,asso):
+        "通过主键查关联表,获取多个关联表对象 "
+        #pk本地表主键  integer
+        #factorycls 本地表类 cls
+        #asso 关联表类  cls     
+ 
+        recorders = session.query(asso).join(factorycls).filter(factorycls.id==pk).all()
+        return recorders
+
     def pk_ass_title(self,pk,factorycls,asso,targetcls,fk,title):
         "通过主键查关联表,获取多对多的对象属性 "
         #pk本地表主键  integer
