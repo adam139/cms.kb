@@ -123,8 +123,8 @@ class YaoView(BaseView):
         if bool(chufangs):
             base = self.getobj_url("cms.db.chufangfolder")
             for j in chufangs:
-                url = "%s/%s" % (base,str(j.id))
-                item = "<li><a href=%s>%s</a></li>" % (url,j.mingcheng)
+#                 url = "%s/%s/@@base_view" % (base,str(j.id))
+                item = """<li><a href="%s/%s/@@base_view">%s</a></li>""" % (base,str(j.id),j.mingcheng)
                 rt.append(item)
             return ''.join(rt)        
         return 0    
