@@ -127,7 +127,7 @@ class YaoView(BaseView):
                 item = "<li><a href=%s>%s</a></li>" % (url,j.mingcheng)
                 rt.append(item)
             return ''.join(rt)        
-        return "<li>None</li>"    
+        return 0    
     
     @memoize
     def get_yaowei(self,yaoid):
