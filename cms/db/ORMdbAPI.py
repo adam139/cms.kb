@@ -12,7 +12,7 @@ from sqlalchemy import func
 from sqlalchemy import and_
 from sqlalchemy import or_
 from cms.db import Session as session
-from cms.db.interfaces import IDbapi
+from sqlalchemy.dbapi.interfaces import IDbapi
 import datetime
 from cms.policy import fmt
 from cms.db import linkstr

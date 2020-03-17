@@ -12,7 +12,7 @@ from sqlalchemy import text
 from sqlalchemy import func
 from sqlalchemy.ext.declarative import declarative_base
 
-from cms.db.interfaces import IDbapi
+from sqlalchemy.dbapi.interfaces import IDbapi
 from zope.component import queryUtility
 from cms.db import  Session
 from cms.db import  engine

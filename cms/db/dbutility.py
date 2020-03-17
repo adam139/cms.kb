@@ -1,6 +1,6 @@
 #-*- coding: UTF-8 -*-
 from cms.db import  Session
-from cms.db.ORMdbAPI import Dbapi
+from sqlalchemy.dbapi.ORMdbAPI import Dbapi
 from cms.db.orm import YaoWei,YaoXing,JingLuo,Yao,DiZhi,YiSheng,DanWei,DanWeiDiZhi,GeRenDiZhi
 from cms.db.orm import ChuFang,YiSheng,BingRen,Yao_ChuFang_Asso,ChuFang_BingRen_Asso
 from cms.db.orm import Yao_JingLuo_Asso

@@ -78,7 +78,8 @@ class TestView(unittest.TestCase):
         browser.addHeader('Authorization', 'Basic %s:%s' % (TEST_USER_NAME, TEST_USER_PASSWORD,))
         transaction.commit()
         base = portal['folder']['ormfolder'].absolute_url()
-        browser.open(base + "/@@yaoxing_listings")      
+        browser.open(base + "/@@yaoxing_listings") 
+
         self.assertTrue("温" in browser.contents)
         
     def testYaoWeiView(self):

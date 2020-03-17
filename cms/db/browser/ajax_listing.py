@@ -27,7 +27,7 @@ from Products.statusmessages.interfaces import IStatusMessage
 from cms.db.interfaces import InputError
 from zope.component import queryUtility
 from zope.component import provideAdapter
-from cms.db.interfaces import IDbapi
+from sqlalchemy.dbapi.interfaces import IDbapi
 # 有外键的表必须调用定制UI接口
 from cms.db.browser.interfaces import IYaoUI
 from cms.db.browser.interfaces import IYao_DanWei_AssoUI
