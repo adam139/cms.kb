@@ -18,7 +18,7 @@ from zope.interface import Interface
 from plone.memoize.instance import memoize
 from cms.db.browser.utility import gonglinian2ganzhi
 from cms.db.browser.utility import getDanWeiId
-from sqlalchemy.dbapi.interfaces import IDbapi
+from cms.db.interfaces import IDbapi
 from cms.db.contents.yaofolder import IYaofolder
 from cms.db.contents.ormfolder import IOrmfolder
 from cms.db.contents.yao import IYao

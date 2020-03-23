@@ -7,7 +7,7 @@ from zope.schema.vocabulary import SimpleVocabulary
 
 from cms.db.orm import Yao_DanWei_Asso
 from cms.db.browser.utility import getDanWeiId
-from sqlalchemy.dbapi.interfaces import IDbapi
+from cms.db.interfaces import IDbapi
 from cms.db import _
 
 
