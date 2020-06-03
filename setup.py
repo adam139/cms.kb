@@ -31,7 +31,7 @@ setup(name='cms.db',
           'plone.app.dexterity',
           'plone.app.textfield',
           'plone.directives.form',
-          'collective.z3cform.datagridfield==1.4.0',
+          'collective.z3cform.datagridfield==1.5.3',
       ],
       extras_require={
     'test': ['plone.app.testing',]
