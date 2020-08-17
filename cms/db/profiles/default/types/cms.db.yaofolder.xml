@@ -14,7 +14,8 @@
        <element value="cms.db.yao" />
        <element value="cms.db.yaowei" /> 
        <element value="cms.db.yaoxing" /> 
-       <element value="cms.db.jingluo" />                                       
+       <element value="cms.db.jingluo" />
+       <element value="Image" />
   </property>
   <property name="allow_discussion">False</property>
 
