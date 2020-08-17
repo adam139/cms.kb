@@ -31,7 +31,7 @@ msgstr ""
 #: ./behaviors/configure.zcml:43
 #: ./behaviors/richtext.py:19
 msgid "Brief Report"
-msgstr "分析报告"
+msgstr "参考资料"
 
 #: ./profiles/default/types/cms.db.folder.xml
 msgid "CMSAI"
