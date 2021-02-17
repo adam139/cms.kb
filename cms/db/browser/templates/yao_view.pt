@@ -27,7 +27,7 @@
        	<span class="yaoxing" tal:content="structure python:view.get_yaoxing(context.id)">yao xing</span></a>
        	;归经:
        	<span class="guijing" tal:content="structure python:view.get_guijing(context.id)">gui jing</span>
-       	<a  href="" tal:condition="python:view.isEditable()" tal:attributes="href python:view.edit_yao_url(context.id)">
+       	<a  href="" tal:condition="python:view.isEditable" tal:attributes="href python:view.edit_yao_url(context.id)">
        	<span class="edit">编辑</span>
        	</a>
        	</p>
