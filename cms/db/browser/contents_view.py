@@ -62,7 +62,7 @@ class BaseView(BrowserView):
             
     @property
     def isEditable(self):
-        return self.pm().checkPermission(permissions.ManagePortal,self.context)
+        return self.pm().checkPermission('cmf.ManagePortal',self.context)
        
     def getobj_url(self,type):
         catalog = api.portal.get_tool('portal_catalog')
