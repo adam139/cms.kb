@@ -54,11 +54,11 @@ class BaseView(BrowserView):
         pc = getToolByName(context, "portal_catalog")
         return pc
     
-    @memoize    
+    @memoize
     def pm(self):
         context = aq_inner(self.context)
         pm = getToolByName(context, "portal_membership")
-        return pm    
+        return pm
             
     @property
     def isEditable(self):
@@ -126,8 +126,8 @@ class YaoView(BaseView):
 #                 url = "%s/%s/@@base_view" % (base,str(j.id))
                 item = """<li><a href="%s/%s/@@base_view">%s</a></li>""" % (base,str(j.id),j.mingcheng)
                 rt.append(item)
-            return ''.join(rt)        
-        return 0    
+            return ''.join(rt)
+        return 0
     
     @memoize
     def get_yaowei(self,yaoid):
@@ -144,8 +144,15 @@ class YaoView(BaseView):
         yaoid = long(yaoid)
         locator = queryUtility(IDbapi, name='yao')
         id =locator.pk_obj_property(yaoid,'yaowei','id')
-        base = self.getobj_url("cms.db.yaofolder")        
+        base = self.getobj_url("cms.db.yaofolder")
         return "%s/yaowei%s/@@base_view" % (base,id)
+    
+    def edit_yao_url(self,yaoid):
+        "http://cms.315ok.org/root/ormfolder/@@update_yao/20"
+        
+#         yaoid = long(yaoid)
+        base = self.getobj_url("cms.db.ormfolder")
+        return "%s/@@update_yao/%s" % (base,yaoid)
     
     @memoize
     def get_yaoxing(self,yaoid):
@@ -154,7 +161,7 @@ class YaoView(BaseView):
         
         yaoid = long(yaoid)
         locator = queryUtility(IDbapi, name='yao')   
-        xing =locator.pk_obj_property(yaoid,'yaoxing','xing')        
+        xing =locator.pk_obj_property(yaoid,'yaoxing','xing')
         return xing
 
     def get_yaoxing_url(self,yaoid):
@@ -162,7 +169,7 @@ class YaoView(BaseView):
         yaoid = long(yaoid)
         locator = queryUtility(IDbapi, name='yao')
         id =locator.pk_obj_property(yaoid,'yaoxing','id')
-        base = self.getobj_url("cms.db.yaofolder")        
+        base = self.getobj_url("cms.db.yaofolder")
         return "%s/yaoxing%s/@@base_view" % (base,id)
     
     @memoize    
@@ -175,7 +182,7 @@ class YaoView(BaseView):
         def outmap(recorder):
            locator = queryUtility(IDbapi, name='jingluo')
            fkv = set(list(recorder))
-           if len(fkv) > 1:fkv.remove(yaoid)           
+           if len(fkv) > 1:fkv.remove(yaoid)
            base = self.getobj_url("cms.db.yaofolder")
            id = list(fkv)[0]
            rd = locator.getByCode(id)
@@ -199,14 +206,14 @@ class BingRenView(BaseView):
         ""
         cnlist = self.get_chufang(id)
         if cnlist[0]:
-            rt =[]        
+            rt =[]
             base = self.getobj_url("cms.db.chufangfolder")
             for j in cnlist[1]:
                 url = "%s/%s/@@base_view" % (base,str(j.id))
                 item = "<li><a href=%s>%s</a></li>" % (url,j.mingcheng)
                 rt.append(item)
-            return ''.join(rt)             
-        return False    
+            return ''.join(rt)
+        return False
     
     def get_chufang(self,id):
         "get all chufang by bingren id"
@@ -239,14 +246,14 @@ class ChuFangView(BaseView):
                                           'danwei_id',id,'yao_id')
 
         chufang = locator.getByCode(_id)
-        return (recorders,chufang)        
+        return (recorders,chufang)
         
     
     def chufang_structure(self,id):
         ""
         #pk,factorycls,asso,asso_p1,asso_p2,midcls,midp,asso2,asso2_p1,asso2_p2,p2,fk,comp,mapf        
         rt = self.asso_recorders(id)
-        recorders = rt[0]        
+        recorders = rt[0]
         more = map(ex_map_yao_chufang_danwei,recorders)       
         jiliang = rt[1].jiliang
         zhenjin = rt[1].zhenjin
@@ -266,8 +273,8 @@ class ChuFangView(BaseView):
         more.append(total)
         out = ";".join(more)
         out = out.replace(";","</tr><tr>")
-        out = "<tr>%s</tr>" % out       
-        return out        
+        out = "<tr>%s</tr>" % out
+        return out
     
     def bingrens_table(self,id):
         "output bingren list"
@@ -290,11 +297,11 @@ class ChuFangView(BaseView):
             url = "%s/%s/@@base_view" % (base,str(_id))
             out = "<td><a href='%s'>%s</a></td><td>%s</td><td>%s</td>" % (url,xingming,dianhua,shijian)
             return out
-        out = map(outmap,rcdrs)    
+        out = map(outmap,rcdrs)
         out = "</tr><tr>".join(out)
 #         out = out.replace(";","</tr><tr>")
-        out = "<tr>%s</tr>" % out      
-        return out            
+        out = "<tr>%s</tr>" % out
+        return out
 
        
 class YaoXingView(BaseView):
@@ -316,7 +323,7 @@ class YaoXingView(BaseView):
             item = """<tr><td><a href='%s/%s/@@base_view'>%s</a></td><td>%s</td></tr>
             """ %(base,j.id,j.mingcheng,j.yaowei.wei)
             items.append(item)
-        return ''.join(items)        
+        return ''.join(items)
     
     def yaoes_generator(self,id):
         _id = long(id)
@@ -326,7 +333,7 @@ class YaoXingView(BaseView):
             if bool(j.mingcheng):
                 yield j
             else:
-                continue               
+                continue
 
 
 class YaoWeiView(YaoXingView):
@@ -344,7 +351,7 @@ class YaoWeiView(YaoXingView):
             item = """<tr><td><a href='%s/%s/@@base_view'>%s</a></td><td>%s</td></tr>
             """ %(base,j.id,j.mingcheng,j.yaoxing.xing)
             items.append(item)
-        return ''.join(items)        
+        return ''.join(items)
     
     def yaoes_generator(self,id):
         _id = long(id)
@@ -367,13 +374,12 @@ class JingLuoView(YaoXingView):
             id = id.split('jingluo')[1]
         yaoes = self.yaoes_generator(id)
         base = self.getobj_url("cms.db.yaofolder")
-        items = []       
+        items = []
         for j in yaoes:
             item = """<tr><td><a href='%s/%s/@@base_view'>%s</a></td><td>%s</td><td>%s</td></tr>
             """ %(base,j.id,j.mingcheng,j.yaoxing.xing,j.yaowei.wei)
             items.append(item)
         return ''.join(items)
-        
 
     def yaoes_generator(self,id):
         _id = long(id)
@@ -433,20 +439,20 @@ class WuYunView(BaseView):
         parent = self.getobj_url("cms.db.wuyunfolder")
         jinnian = int(datetime.datetime.today().strftime("%Y"))
         wuyunid = gonglinian2ganzhi(jinnian)
-        return "%s/%s/@@base_view" % (parent,wuyunid)                     
+        return "%s/%s/@@base_view" % (parent,wuyunid)
         
     def closed30nianfen(self,id):
         "由干支序号id,取最近30年同干支年份"
         
         _id = long(id)
-        locator = queryUtility(IDbapi, name='nianganzhi')                
-        ganzhi = locator.getByCode(_id).ganzhi        
+        locator = queryUtility(IDbapi, name='nianganzhi')
+        ganzhi = locator.getByCode(_id).ganzhi
         nlist = []
 #         nlist.append(u"%s:" % ganzhi)
         wuyun = u"年五运六气".encode('utf-8')
         for j in self.ganzhi_generator(_id):
             nlist.append("%s%s" % (j,wuyun))
-        return "%s:%s" %(ganzhi, ",".join(nlist))           
+        return "%s:%s" %(ganzhi, ",".join(nlist))
         
     def ganzhi_generator(self,id):
 
@@ -455,12 +461,12 @@ class WuYunView(BaseView):
             if gonglinian2ganzhi(j)==id:
                 yield j
             else:
-                continue      
+                continue
     
     def get_dayun(self,id):
         
         _id = long(id)
-        locator = queryUtility(IDbapi, name='nianganzhi')                
+        locator = queryUtility(IDbapi, name='nianganzhi')
         out = locator.getByCode(_id)
         out = out.dayun      
         return out        
@@ -468,7 +474,7 @@ class WuYunView(BaseView):
     def get_sitian(self,id):
         
         _id = long(id)
-        locator = queryUtility(IDbapi, name='nianganzhi')                
+        locator = queryUtility(IDbapi, name='nianganzhi')
         out = locator.getByCode(_id)
         out = out.sitian      
         return out 
@@ -476,15 +482,15 @@ class WuYunView(BaseView):
     def get_zaiquan(self,id):
         
         _id = long(id)
-        locator = queryUtility(IDbapi, name='nianganzhi')                
+        locator = queryUtility(IDbapi, name='nianganzhi')
         out = locator.getByCode(_id)
-        out = out.zaiquan      
+        out = out.zaiquan
         return out
     
     def get_zhuqi_keqi(self,id):
         
         _id = long(id)
-        locator = queryUtility(IDbapi, name='nianganzhi')                
+        locator = queryUtility(IDbapi, name='nianganzhi')
         rder = locator.getByCode(_id)
         zhuqi = rder.zhuqi.split(",")
         keqi = rder.keqi.split(",")
@@ -505,7 +511,7 @@ class WuYunView(BaseView):
                u"三之气",
                u"四之气",
                u"五之气", 
-               u"终之气"                                                                           
+               u"终之气"
                )
         liuqijiaosi = """<tr>
         <th>%s</th>
@@ -522,7 +528,7 @@ class WuYunView(BaseView):
                u"小满-小暑",
                u"大暑-白露",
                u"秋分-立冬", 
-               u"小雪-小寒"                                                                           
+               u"小雪-小寒"
                )        
         out.append(dayun)
         tr = self.strlist2tr(zhuqi,u"主气")
@@ -531,13 +537,13 @@ class WuYunView(BaseView):
         out.append(tr)
         tr = self.strlist2tr(jialin,u"加临")
         out.append(tr)
-        out.append(liuqijiaosi)                
+        out.append(liuqijiaosi)
         return ''.join(out)
         
     def get_zhuyun_keyun(self,id):
         
         _id = long(id)
-        locator = queryUtility(IDbapi, name='nianganzhi')                
+        locator = queryUtility(IDbapi, name='nianganzhi')
         rder = locator.getByCode(_id)
         zhuyun = rder.zhuyun.split(",")
         keyun = rder.keyun.split(",")
@@ -551,7 +557,7 @@ class WuYunView(BaseView):
         tr = self.strlist2tr(keyun,u"客运")
         out.append(tr)
         tr = self.strlist2tr(jiaosi,u"交司")
-        out.append(tr)                                
+        out.append(tr)
         return ''.join(out)
     
     def strlist2tr(self,strlist,title):
@@ -567,9 +573,9 @@ class WuYunView(BaseView):
             item = "<td>%s</td>" % i
             lt.append(item)
         lt.append(postfix)
-        return ''.join(lt)           
+        return ''.join(lt)
         
         
         
-                                                             
+
 

@@ -16,8 +16,8 @@
 <metal:main fill-slot="main">
     <tal:main-macro metal:define-macro="main">
     <div id="yao" class="container-fluid"
-    	 tal:define="p python:context.absolute_url();">      	
-     <div class="row row-1">         
+    	 tal:define="p python:context.absolute_url();">
+     <div class="row row-1">
        <div class="col-xs-12 col-md-12">
        	<h3 class="title text-center" tal:content="python:context.title">context.title</h3>
        	<ul id="subject" tal:condition="tags" tal:define="tags python:view.getags()" tal:content="structure python:tags" />
@@ -26,12 +26,15 @@
        	;性:<a href="" tal:attributes="href python:view.get_yaoxing_url(context.id)">
        	<span class="yaoxing" tal:content="structure python:view.get_yaoxing(context.id)">yao xing</span></a>
        	;归经:
-       	<span class="guijing" tal:content="structure python:view.get_guijing(context.id)">gui jing</span>	
+       	<span class="guijing" tal:content="structure python:view.get_guijing(context.id)">gui jing</span>
+       	<a  href="" tal:condition="python:view.isEditable()" tal:attributes="href python:view.edit_yao_url(context.id)"
+       	<span class="edit">编辑</span>
+       	</a>
        	</p>
        	<p class="description" tal:content="python:context.description">context.description</p>
        </div>
      </div>
-     <div class="row row-2 details">         
+     <div class="row row-2 details">
        <div class="col-xs-12 col-md-12">
          <div id="parent-fieldname-text"
           tal:condition="context/text"
@@ -39,24 +42,24 @@
         </div>
       </div>
      </div>
-     <div class="row row-3 report">         
+     <div class="row row-3 report">
        <div class="col-xs-12 col-md-12">
          <div id="parent-fieldname-report"
           tal:condition="context/report"
           tal:content="structure python:context.report.output_relative_to(view.context)">
-        </div>      	
-      </div>
-     </div>          
-     <div class="row row-4 relative-object"
-     	  tal:define="chfgs python:view.get_chufang(context.id)"
-     	  tal:condition="python:bool(chfgs)">         
-       <div class="col-xs-12 col-md-12">
-         <div id="chufang"         	          
-            tal:content="structure python:chfgs">
-        </div>      	
+        </div>
       </div>
      </div>
-   </div>            
+     <div class="row row-4 relative-object"
+     	  tal:define="chfgs python:view.get_chufang(context.id)"
+     	  tal:condition="python:bool(chfgs)">
+       <div class="col-xs-12 col-md-12">
+         <div id="chufang"
+            tal:content="structure python:chfgs">
+        </div>
+      </div>
+     </div>
+   </div>
  </tal:main-macro>
 </metal:main>
 </body>
