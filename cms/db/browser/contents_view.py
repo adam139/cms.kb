@@ -169,7 +169,7 @@ class YaoView(BaseView):
     def get_guijing(self,yaoid):
         
         yaoid = long(yaoid)
-        locator = queryUtility(IDbapi, name='yao')        
+        locator = queryUtility(IDbapi, name='yao')
         out = locator.pk_ass_recorders(yaoid,Yao,Yao_JingLuo_Asso)
         
         def outmap(recorder):
@@ -182,7 +182,7 @@ class YaoView(BaseView):
            out = """<span class="jingluo"><a href="%s/jingluo%s/@@base_view">%s</a><span>""" % (base,id,rd.mingcheng)
            return out
         more = map(outmap,out)
-        out = "".join(more)
+        out = ", ".join(more)
         return out
 
 

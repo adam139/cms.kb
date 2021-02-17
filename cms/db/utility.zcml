@@ -7,82 +7,82 @@
 
  <!-- db named utility -->
   <utility
-	provides=".interfaces.IDbapi"
+	provides="cms.db.interfaces.IDbapi"
 	component=".dbutility.yaoxing"
 	name="yaoxing"
 	/>
  <utility
-	provides=".interfaces.IDbapi"
+	provides="cms.db.interfaces.IDbapi"
 	component=".dbutility.yaowei"
 	name="yaowei"
 	/>
  <utility
-	provides=".interfaces.IDbapi"
+	provides="cms.db.interfaces.IDbapi"
 	component=".dbutility.jingluo"
 	name="jingluo"
 	/>
  <utility
-	provides=".interfaces.IDbapi"
+	provides="cms.db.interfaces.IDbapi"
 	component=".dbutility.yao"
 	name="yao"
 	/>
  <utility
-	provides=".interfaces.IDbapi"
+	provides="cms.db.interfaces.IDbapi"
 	component=".dbutility.yao_jingluo"
 	name="yao_jingluo"
 	/>	
  <utility
-	provides=".interfaces.IDbapi"
+	provides="cms.db.interfaces.IDbapi"
 	component=".dbutility.chufang"
 	name="chufang"
 	/>
  <utility
-	provides=".interfaces.IDbapi"
+	provides="cms.db.interfaces.IDbapi"
 	component=".dbutility.bingren"
 	name="bingren"
 	/>
  <utility
-	provides=".interfaces.IDbapi"
+	provides="cms.db.interfaces.IDbapi"
 	component=".dbutility.yisheng"
 	name="yisheng"
 	/>					
  <utility
-	provides=".interfaces.IDbapi"
+	provides="cms.db.interfaces.IDbapi"
 	component=".dbutility.dizhi"
 	name="dizhi"
 	/>
  <utility
-	provides=".interfaces.IDbapi"
+	provides="cms.db.interfaces.IDbapi"
 	component=".dbutility.gerendizhi"
 	name="gerendizhi"
 	/>
  <utility
-	provides=".interfaces.IDbapi"
+	provides="cms.db.interfaces.IDbapi"
 	component=".dbutility.danweidizhi"
 	name="danweidizhi"
 	/>		
  <utility
-	provides=".interfaces.IDbapi"
+	provides="cms.db.interfaces.IDbapi"
 	component=".dbutility.danwei"
 	name="danwei"
 	/>	
  <utility
-	provides=".interfaces.IDbapi"
+	provides="cms.db.interfaces.IDbapi"
 	component=".dbutility.chufang_bingren"
 	name="chufang_bingren"
 	/>
  <utility
-	provides=".interfaces.IDbapi"
+	provides="cms.db.interfaces.IDbapi"
 	component=".dbutility.yao_chufang"
 	name="yao_chufang"
 	/>
  <utility
-	provides=".interfaces.IDbapi"
+	provides="cms.db.interfaces.IDbapi"
 	component=".dbutility.yao_danwei"
 	name="yao_danwei"
 	/>	
  <utility
-	provides=".interfaces.IDbapi"
+	provides="cms.db.interfaces.IDbapi"
 	component=".dbutility.nianganzhi"
 	name="nianganzhi"
 	/>
