@@ -1829,7 +1829,7 @@ class UpdateWoYao(UpdateYaoXing):
     """update yao table row data
     """
 
-    label = _(u"update yao data")
+    label = _(u"update yao  kucun data")
     fields = field.Fields(IYao_DanWei_AssoUI).omit('danwei_id')    
 
     def getContent(self):
