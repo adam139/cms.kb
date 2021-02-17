@@ -1781,7 +1781,7 @@ class InputWoYao(InputYaoXing):
     """input db yao table data
     """
 
-    label = _(u"Input yao data")
+    label = _(u"Input yao  kucun data")
     fields = field.Fields(IYao_DanWei_AssoUI).omit('danwei_id')
 
     def update(self):
@@ -1791,7 +1791,7 @@ class InputWoYao(InputYaoXing):
 
     @button.buttonAndHandler(_(u"Submit"))
     def submit(self, action):
-        """Submit yao recorder
+        """Submit yao kucun recorder
         """
         data, errors = self.extractData()
         if errors:

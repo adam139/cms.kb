@@ -86,7 +86,7 @@
         name="input_wo_yao"
         for="cms.db.contents.ormfolder.IOrmfolder"
         permission="cms.policy.add_yao"
-        class=".ajax_listing.InputWoYao"/>        
+        class=".ajax_listing.InputWoYao"/>
      <browser:page
         name="input_yaowei"
         for="cms.db.contents.ormfolder.IOrmfolder"
