@@ -130,7 +130,7 @@ class IYao(Interface):
             title=_(u"foreagn key link to yao xing"),
         )       
     mingcheng = schema.TextLine(
-            title=_(u"chufang ming cheng"),
+            title=_(u"yao ming cheng"),
         )
     zhuzhi = schema.TextLine(
             title=_(u"zhu zhi"),
