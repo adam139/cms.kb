@@ -3,8 +3,8 @@
       xmlns:tal="http://xml.zope.org/namespaces/tal"
       xmlns:metal="http://xml.zope.org/namespaces/metal"
       metal:use-macro="context/main_template/macros/master"
-      xmlns:i18n="http://xml.zope.org/namespaces/i18n"      
-      i18n:domain="cms.db">        
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      i18n:domain="cms.db">
 <head>
       <metal:block fill-slot="top_slot">
         <tal:insert tal:replace="nothing"
@@ -34,8 +34,8 @@
 				</div>
 			</div>
 			<div class="row">
-                <h1 class="documentFirstHeading">药品信息</h1>				
-			</div>			
+                <h1 class="documentFirstHeading">药品信息</h1>
+			</div>
 			<input type="hidden" value="0" id="dateSearch">
 			<!-- search fashej table ,so index name define as "sbdm" -->
 			<input type="hidden" value="id" id="solrSortColumn">
@@ -46,7 +46,7 @@
             <div class="row">
             	<div class="col-xs-12 col-sm-4">
             	<ul id="eventListSort" class="pager">
-                    <li><span>排序：</span></li>                   
+                    <li><span>排序：</span></li>
                     <li><a class="a" id="startTimestamp" href="javascript:void(0)">
                     	<span data-name="id" class="glyphicon glyphicon-arrow-up">时间</span>
                     	</a></li>
@@ -75,7 +75,7 @@
             			<th class="col-md-1 text-left">药性</th>
             			<th class="col-md-1 text-left">归经</th>
             			<th class="col-md-4 text-left">主治</th>
-            			<th class="col-md-1 text-left">用量</th>            			            			            			
+            			<th class="col-md-1 text-left">用量</th>
             			<th class="col-md-1 text-center">编辑</th>
             			<th class="col-md-1 text-center">删除</th>
             		</tr>
@@ -85,7 +85,7 @@
             			<th class="col-md-1 text-left">药性</th>
             			<th class="col-md-2 text-left">归经</th>
             			<th class="col-md-5 text-left">主治</th>
-            			<th class="col-md-1 text-left">用量</th>            			            			            			
+            			<th class="col-md-1 text-left">用量</th>
             		</tr>            		
             	</thead>
             	<tbody id="searchResultDiv">
@@ -99,16 +99,16 @@
             			<td class="col-md-1 text-left">测试依据</td>
             			<td class="col-md-1 text-left">签发人</td>
             			<td class="col-md-1 text-left">审核人</td>
-            			<td class="col-md-1 text-left">测试结果</td>            			            			            			
+            			<td class="col-md-1 text-left">测试结果</td>
             			<td class="col-md-1 text-center">编辑</td>
             			<td class="col-md-1 text-center">删除</td>
             		</tr>
             	</tbody>
-            </table>            
-					
+            </table>
+
             <!--搜索结果列表 End-->
             <!--分页-->
-           <nav class="text-center">          	
+           <nav class="text-center">
             <ul id="bottomPageId" class="pagination">
             	<li><a class="page" href="javascript:void(0)">首页</a></li>
             	<li><a class="page" href="javascript:void(0)">上一页</a></li>
@@ -120,13 +120,13 @@
             </ul>
            </nav>
 		</div>
-        <!--左边内容 End-->		
+        <!--左边内容 End-->
 	</div>
   <metal:js fill-slot="javascript_bottom_slot">
 	<script type="text/javascript"
 		tal:define="navroot context/@@plone_portal_state/navigation_root_url"
-     tal:attributes="src string:${navroot}/++resource++cms.db/ajaxsearch_db.js">		
-	</script>	
+     tal:attributes="src string:${navroot}/++resource++cms.db/ajaxsearch_db.js">
+	</script>
 	</metal:js>
 </body>
 </html>

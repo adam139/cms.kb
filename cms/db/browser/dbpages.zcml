@@ -68,7 +68,7 @@
         name="nianganzhi_ajaxsearch"
         for="*"
         permission="zope2.View"
-        class=".ajax_listing.NianGanZhiAjaxsearch"/>        
+        class=".ajax_listing.NianGanZhiAjaxsearch"/>
                                                 
      
      <!-- input form views define--> 
@@ -279,8 +279,8 @@
         class=".ajax_listing.JingLuoesView"/>
     <browser:page
         name="yao_listings"
-        permission="cms.db.view_db"    
-        for="cms.db.contents.ormfolder.IOrmfolder"        
+        permission="cms.db.view_db"
+        for="cms.db.contents.ormfolder.IOrmfolder"
         template="templates/yao_listings.pt"
         class=".ajax_listing.YaoesView"/>
     <browser:page
@@ -327,15 +327,15 @@
         class=".ajax_listing.DanWeiesView"/>
     <browser:page
         name="yisheng_listings"
-        permission="cms.db.view_db"    
-        for="cms.db.contents.ormfolder.IOrmfolder"        
+        permission="cms.db.view_db"
+        for="cms.db.contents.ormfolder.IOrmfolder"
         template="templates/yisheng_listings.pt"
         class=".ajax_listing.YiShengsView"/>
     <browser:page
         name="nianganzhi_listings"
-        permission="cms.db.view_db"    
-        for="cms.db.contents.ormfolder.IOrmfolder"        
+        permission="cms.db.view_db"
+        for="cms.db.contents.ormfolder.IOrmfolder"
         template="templates/nianganzhi_listings.pt"
-        class=".ajax_listing.NianGanZhisView"/>                                     
+        class=".ajax_listing.NianGanZhisView"/>
                
 </configure>    

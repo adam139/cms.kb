@@ -28,8 +28,8 @@ var searchEvent = function(jumpPage, rows, initKeyword) {
     } else {
         keyword = $("#searchKeyword").val();
     }	  
-    var sortColumn = $("#solrSortColumn").val();    
-    var sortDirection = $("#solrSortDirection").val();        
+    var sortColumn = $("#solrSortColumn").val();
+    var sortDirection = $("#solrSortDirection").val();
     var data = {};
     if (keyword === undefined || keyword === null || keyword === "") {
            data['searchabletext'] = "";
@@ -37,7 +37,7 @@ var searchEvent = function(jumpPage, rows, initKeyword) {
            data['searchabletext'] = keyword;
     }    
     data['sortcolumn'] = sortColumn;
-    data['sortdirection'] = sortDirection;      
+    data['sortdirection'] = sortDirection;
 
     if (jumpPage !== undefined && jumpPage !== "") 
     {   var start = jumpPage > 0 ? (jumpPage - 1) * rows : 0;

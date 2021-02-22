@@ -336,7 +336,7 @@ class Yao_DanWei_Asso(Base):
 
     def __init__(self, yao=None, danwei=None, kucun=None, danjia=None):
         self.yao = yao
-        self.danwei = danwei        
+        self.danwei = danwei
         self.kucun = kucun
         self.danjia = danjia
 

@@ -79,7 +79,7 @@ class Dbapi(baseapi):
             for kw in setvalues.keys():
                 setattr(link_obj,kw,setvalues[kw])
             #submit to db
-            session.add(link_obj)                   
+            session.add(link_obj)
         try:
             session.commit()
             self.fire_event(RecorderCreated,recorder)
@@ -87,7 +87,7 @@ class Dbapi(baseapi):
             session.rollback()
             raise
         finally:
-            session.close()                        
+            session.close()
 
     def fire_event(self,eventcls,recorder):
             if getattr(recorder,'id','') == '':return
@@ -95,14 +95,14 @@ class Dbapi(baseapi):
             ttl = getattr(recorder,'mingcheng',u'') or getattr(recorder,'xingming',u'') or \
              getattr(recorder,'xing',u'') or getattr(recorder,'wei',u'')
             eventobj = eventcls(id=recorder.id,cls=cls,ttl=ttl) 
-            if eventobj.available():event.notify(eventobj)               
+            if eventobj.available():event.notify(eventobj)
 
     def DeleteByCode(self,id):
        "delete the specify id recorder"
 
        if id != "":
            try:
-               recorder = self.getByCode(id)                
+               recorder = self.getByCode(id)
                session.delete(recorder)
                session.commit()
                self.fire_event(RecorderDeleted,recorder)

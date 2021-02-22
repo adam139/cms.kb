@@ -1216,8 +1216,8 @@ class NianGanZhiAjaxsearch(YaoXingAjaxsearch):
         outhtml = ""
         k = 0
         contexturl = self.context.absolute_url()
-        base = get_container_by_type("cms.db.wuyun").getURL()        
-        if self.searchview().canbeInput:        
+        base = get_container_by_type("cms.db.wuyun").getURL()
+        if self.searchview().canbeInput:
             for i in resultDicLists:
                 out = """<tr class="text-left">
                                 <td class="col-md-1 text-left"><a href="%(obj_url)s">%(ganzhi)s</a></td>
@@ -1227,7 +1227,7 @@ class NianGanZhiAjaxsearch(YaoXingAjaxsearch):
                                 <td class="col-md-1">%(zhuyun)s</td>
                                 <td class="col-md-1">%(keyun)s</td>
                                 <td class="col-md-3">%(zhuqi)s</td>
-                                <td class="col-md-3">%(keqi)s</td>                                
+                                <td class="col-md-3">%(keqi)s</td>
                                 </tr> """% dict(obj_url="%s/%s/@@base_view" % (base,i[0]),
                                             ganzhi=i[1],
                                             sitian= i[2],
