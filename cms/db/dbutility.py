@@ -8,20 +8,24 @@ from cms.db.orm import NianGanZhi
 from cms.db.orm import Yao_DanWei_Asso
 
 yaoxing = Dbapi(Session,'cms.db.orm','yaoxing',YaoXing)
-# yaowei table       
+# yaowei table
 yaowei = Dbapi(Session,'cms.db.orm','yaowei',YaoWei)
-# jingluo table       
+# jingluo table
 jingluo = Dbapi(Session,'cms.db.orm','jingluo',JingLuo)
 dizhi = Dbapi(Session,'cms.db.orm','dizhi',DiZhi)
 search_clmns = ['jiedao','shi']
 gerendizhi = Dbapi(Session,'cms.db.orm','gerendizhi',GeRenDiZhi,fullsearch_clmns=search_clmns)
 danweidizhi = Dbapi(Session,'cms.db.orm','danweidizhi',DanWeiDiZhi)
-yao =  Dbapi(Session,'cms.db.orm','yao',Yao)
+search_clmns = ['mingcheng']
+yao =  Dbapi(Session,'cms.db.orm','yao',Yao,fullsearch_clmns=search_clmns)
 yao_jingluo =  Dbapi(Session,'cms.db.orm','yao_jingluo',Yao_JingLuo_Asso)
-chufang = Dbapi(Session,'cms.db.orm','chufang',ChuFang)
-bingren = Dbapi(Session,'cms.db.orm','bingren',BingRen)
+search_clmns = ['mingcheng']
+chufang = Dbapi(Session,'cms.db.orm','chufang',ChuFang,fullsearch_clmns=search_clmns)
+search_clmns = ['xingming']
+bingren = Dbapi(Session,'cms.db.orm','bingren',BingRen,fullsearch_clmns=search_clmns)
 danwei =  Dbapi(Session,'cms.db.orm','danwei',DanWei)
-yisheng =  Dbapi(Session,'cms.db.orm','yisheng',YiSheng)
+search_clmns = ['xingming']
+yisheng =  Dbapi(Session,'cms.db.orm','yisheng',YiSheng,fullsearch_clmns=search_clmns)
 chufang_bingren =  Dbapi(Session,'cms.db.orm','chufang_bingren',ChuFang_BingRen_Asso)
 yao_chufang =  Dbapi(Session,'cms.db.orm','yao_chufang',Yao_ChuFang_Asso)
 yao_danwei =  Dbapi(Session,'cms.db.orm','yao_danwei',Yao_DanWei_Asso)
