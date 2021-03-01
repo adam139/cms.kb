@@ -70,7 +70,6 @@ from cms.db.orm import IYiSheng,YiSheng
 from cms.db.orm import IBingRen,BingRen
 from cms.db.orm import Yao_JingLuo_Asso,ChuFang_BingRen_Asso,Yao_ChuFang_Asso,Yao_DanWei_Asso
 
-
 from zope.interface import implements
 from zope.publisher.interfaces import IPublishTraverse
 from zExceptions import NotFound
@@ -1735,13 +1734,13 @@ class DeleteWoYao(DeleteYaoXing):
         # ignore fields list
         ignore = ['danwei_id']
         data = dict()
-        for name, f in getFieldsInOrder(IYao_DanWei_AssoUI):            
+        for name, f in getFieldsInOrder(IYao_DanWei_AssoUI):
             p = getattr(_obj, name, '')
             if name in ignore:continue
             else:
                 if isinstance(p,str):
                     p = p.decode('utf-8')
-                data[name] = p                         
+                data[name] = p
         return EditYao_DanWei_AssoUI(**data)
 
     def update(self):

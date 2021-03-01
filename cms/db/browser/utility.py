@@ -13,7 +13,7 @@ CONTAINER2TYPES = {'cms.db.yao':"cms.db.yaofolder",
                    'cms.db.bingren':"cms.db.bingrenfolder",
                    'cms.db.yisheng':"cms.db.yishengfolder",
                    'cms.db.danwei':"cms.db.danweifolder",
-                   'cms.db.wuyun':"cms.db.wuyunfolder",                                       
+                   'cms.db.wuyun':"cms.db.wuyunfolder",
                    }
 
 def getDanWeiId():
@@ -21,9 +21,9 @@ def getDanWeiId():
     from plone.registry.interfaces import IRegistry
     from cms.db.browser.interfaces import IAutomaticTypesSettings
     from zope.component import getUtility
-    registry = getUtility(IRegistry)        
+    registry = getUtility(IRegistry)
     settings = registry.forInterface(IAutomaticTypesSettings, check=False)
-    return settings.danweiid    
+    return settings.danweiid
 
 
 class UnrestrictedUser(BaseUnrestrictedUser):
@@ -106,20 +106,17 @@ def get_container_by_type(type):
         return brain[0]        
     else:
         return None
-
-    
-    
+        
 def to_utf_8(lts):
     rt = []
     for i in lts:
-        if isinstance(i,str):            
+        if isinstance(i,str):
             rt.append(i.decode('utf-8'))
             continue
         else:
             rt.append(i)
     return rt
             
-        
 
 def map_field2cls(fieldname):
     "为编辑表单的getcontent()提供字段名到中间对象class name映射"
@@ -127,11 +124,11 @@ def map_field2cls(fieldname):
     return dt[fieldname]
 
 def filter_cln(cls):
-    "过滤指定表类的列,只保留基本属性列"            
+    "过滤指定表类的列,只保留基本属性列"
 
     from sqlalchemy.inspection import inspect
     table = inspect(cls)
     columns = [column.name for column in table.c]
-    #过滤主键,外键
+    #过滤掉主键,外键
     columns = filter(lambda elem: not elem.endswith("id"),columns)
     return columns 

@@ -34,7 +34,7 @@ class TestDatabase(unittest.TestCase):
         for tb in tbls:
             import_str = "from %(p)s import %(t)s" % dict(p='cms.db.orm',t=tb) 
             exec import_str
-        Base.metadata.drop_all(engine)                                
+        Base.metadata.drop_all(engine)
 
     def empty_tables(self,tbls=None):
         """clear all db tables
@@ -42,7 +42,7 @@ class TestDatabase(unittest.TestCase):
 
 #         tbls = ['Yao_ChuFang_Asso','ChuFang','Yao_JingLuo_Asso','Yao','YaoWei','YaoXing','JingLuo']
         if not bool(tbls):
-            tbls = TABLES       
+            tbls = TABLES
         items = []
         for tb in tbls:
             if tb == "Yao_JingLuo_Asso":continue
@@ -51,8 +51,8 @@ class TestDatabase(unittest.TestCase):
             items.extend(Session.query(tablecls).all())
 
         for m in items:
-            Session.delete(m)                    
-        Session.commit()        
+            Session.delete(m)
+        Session.commit()
 
 
     def create_tables(self,tbls=None):
@@ -85,7 +85,7 @@ class TestDatabase(unittest.TestCase):
         yaowei = YaoWei("酸")
         yaoxing = YaoXing("寒")
         jingluo = JingLuo("足厥阴肝经")
-        yao = Yao("白芍")        
+        yao = Yao("白芍")
         yao.yaowei = yaowei
         yao.yaoxing = yaoxing
         yao.guijing = [jingluo]
@@ -96,8 +96,8 @@ class TestDatabase(unittest.TestCase):
         danwei.dizhi = dizhi2
         yao_danwei = Yao_DanWei_Asso(yao,danwei,700,0.26)
         Session.add_all([danwei,dizhi2,yao_danwei,\
-                         yisheng,yaowei,yaoxing,jingluo])                         
-        Session.commit()       
+                         yisheng,yaowei,yaoxing,jingluo])
+        Session.commit()
         rds = Session.query(Yao_DanWei_Asso).all()
         self.assertEqual(len(rds),1)
 
@@ -118,7 +118,7 @@ class TestDatabase(unittest.TestCase):
         Session.add_all([dizhi,gdizhi,ddizhi])
         Session.commit()
         rds = Session.query(DiZhi).filter(DiZhi.sheng=="湖南").all()
-        self.assertEqual(len(rds),2)        
+        self.assertEqual(len(rds),2)
         rds = Session.query(GeRenDiZhi).filter(GeRenDiZhi.sheng=="湖南").all()
         self.assertEqual(len(rds),1)
         rds = Session.query(DanWeiDiZhi).filter(DanWeiDiZhi.gongzhonghao=="zhongyi").all()
@@ -136,9 +136,9 @@ class TestDatabase(unittest.TestCase):
         suan = Session.query(YaoWei).filter(YaoWei.wei=="酸").all()
         self.assertEqual(len(suan),1)
         for xing in suan:
-            Session.delete(xing)            
+            Session.delete(xing)
         Session.commit()
-        suan = Session.query(YaoWei).all()        
+        suan = Session.query(YaoWei).all()
         self.assertEqual(bool(suan),False)
         
     def test_yaoxing(self):
@@ -147,10 +147,10 @@ class TestDatabase(unittest.TestCase):
         Session.add(yaoxing)
         Session.commit()
         suan = Session.query(YaoXing).filter(YaoXing.xing=="寒").all()
-        self.assertEqual(len(suan),1)                     
+        self.assertEqual(len(suan),1)
         suan = Session.query(YaoXing).all()
         for xing in suan:
-            Session.delete(xing)            
+            Session.delete(xing)
         Session.commit()
         suan = Session.query(YaoXing).all()
         self.assertEqual(bool(suan),False)
