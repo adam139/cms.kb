@@ -2059,7 +2059,7 @@ class DeleteChuFang(DeleteYaoXing):
 
 @component.adapter(IChuFangUI)
 class InputChuFang(z3f.AddForm):
-# class InputChuFang(InputYaoXing):
+
     """input db chufang table data
     """
 
@@ -2088,18 +2088,19 @@ class InputChuFang(z3f.AddForm):
         """
         #todo z3c.form.converter add adapter
         # Collection Sequence Data Converter
-        #https://z3cform.readthedocs.io/en/latest/informative/converter.html        
-        data, errors = self.extractData()      
+        #https://z3cform.readthedocs.io/en/latest/informative/converter.html
+                
+        data, errors = self.extractData()
         if errors:
             self.status = self.formErrorsMessage
             return
-        funcations = queryUtility(IDbapi, name='chufang')             
-        columns = filter_cln(ChuFang)        
+        funcations = queryUtility(IDbapi, name='chufang')
+        columns = filter_cln(ChuFang)
         #过滤非本表的字段
         _data = dict()
         for i in columns:
-            if i == 'zhuangtai':continue           
-            _data[i] = data[i]                  
+            if i == 'zhuangtai':continue  # this version do not think about pay status
+            _data[i] = data[i]
         _data['zhuangtai'] = 0
         _id = data['yisheng']
         fk_tables = [(_id,YiSheng,'yisheng')]
@@ -2107,16 +2108,16 @@ class InputChuFang(z3f.AddForm):
         #Yao_ChuFang_Asso(yao1,chufang,7,"晒干")
         # asso_obj_tables:[(pk,targetcls,attr,[property1,property2,...]),...]
         bingrens = data['bingrens']
-        if not bool(bingrens):bingrens = []        
-        bingren_asso_columns = filter_cln(ChuFang_BingRen_Asso)        
+        if not bool(bingrens):bingrens = []
+        bingren_asso_columns = filter_cln(ChuFang_BingRen_Asso)
         yaoes = data['yaoes']
-        if not bool(yaoes):yaoes = []        
+        if not bool(yaoes):yaoes = []
         asso_columns = filter_cln(Yao_ChuFang_Asso)
         asso_obj_tables = []
         for i in yaoes:
             pk = getattr(i,'yao_id',1)
             pk_cls = Yao
-            pk_attr = 'yao'            
+            pk_attr = 'yao'
             asso_cls = Yao_ChuFang_Asso
             asso_attr = 'chufang'
             vls = [getattr(i,k,'') for k in asso_columns ]
@@ -2125,12 +2126,12 @@ class InputChuFang(z3f.AddForm):
         for i in bingrens:
             pk = getattr(i,'bingren_id',1)
             pk_cls = BingRen
-            pk_attr = 'bingren'            
+            pk_attr = 'bingren'
             asso_cls = ChuFang_BingRen_Asso
             asso_attr = 'chufang'
             vls = [getattr(i,k,'') for k in bingren_asso_columns ]
             ppt = dict(zip(bingren_asso_columns,vls))
-            asso_obj_tables.append((pk,pk_cls,pk_attr,asso_cls,asso_attr,ppt))        
+            asso_obj_tables.append((pk,pk_cls,pk_attr,asso_cls,asso_attr,ppt))
         asso_tables = []
         try:
             funcations.add_multi_tables(_data,fk_tables,asso_tables,asso_obj_tables)

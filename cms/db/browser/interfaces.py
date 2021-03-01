@@ -45,7 +45,7 @@ class IYao_DanWei_AssoUI (IYao_DanWei_Asso):
             title=_(u"ming cheng"),
             vocabulary='cms.db.yao',
             required=True,
-        )          
+        )
  
 
 
@@ -112,7 +112,7 @@ class IChuFangUI (IChuFang):
 
 
 class IBingRenUI (IBingRen):
-    """yisheng table editing ui """
+    """bingren table editing ui """
 
     dizhi = schema.Choice(
             title=_(u"di zhi"),
@@ -180,4 +180,4 @@ class IAutomaticTypesSettings(Interface):
             required=False,
         )
 
-            
+

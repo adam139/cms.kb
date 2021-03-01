@@ -107,19 +107,19 @@ def AdminLogoutEventHandler(event):
     dbapi,timeout,bsize,percentage,max = fetch_log_parameter('adminlog')  
     # check log size and send warning
     userid = '777777888888999999'
-    url = "%s/@@admin_logs" % api.portal.get().absolute_url()      
-    check_size(dbapi,percentage,max,userid,url)      
+    url = "%s/@@admin_logs" % api.portal.get().absolute_url()
+    check_size(dbapi,percentage,max,userid,url)
     # truncate log      
     task = CheckLog(8,dbapi,timeout,bsize,max,percentage)
     task.start()
     
     values = {'adminid':event.adminid,'userid':' ','datetime':event.datetime,
-              'ip':event.ip,'type':0,'operlevel':5,'result':1,'description':u''}                
+              'ip':event.ip,'type':0,'operlevel':5,'result':1,'description':u''}
     if not bool(event.description):
         values['description'] = u"%s登出了EMC系统" % (event.adminid)
     else:
         values['description'] = u"%s%s" % (event.adminid,event.description)
-        values['operlevel'] = 4         
+        values['operlevel'] = 4
     locator = getUtility(IAdminLogLocator)
     locator.add(values)
 

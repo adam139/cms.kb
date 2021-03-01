@@ -97,11 +97,13 @@
         for="cms.db.contents.ormfolder.IOrmfolder"
         permission="cms.db.input_db"
         class=".ajax_listing.InputJingLuo"/>
+        
       <browser:page
         name="input_chufang"
         for="cms.db.contents.ormfolder.IOrmfolder"
         permission="cms.db.input_db"
         class=".ajax_listing.InputChuFang"/>
+        
       <browser:page
         name="input_bingren"
         for="cms.db.contents.ormfolder.IOrmfolder"

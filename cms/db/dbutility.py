@@ -47,7 +47,7 @@ def map_yao_chufang_list(recorder):
     if bool(paozhi):
         paozhi = "(%s)" % recorder.paozhi
         return ",".join([mingcheng,yaoliang,paozhi])
-    else:                
+    else:
         return ",".join([mingcheng,yaoliang])
 
 def ex_map_yao_chufang_list(recorder):
@@ -63,7 +63,7 @@ def ex_map_yao_chufang_list(recorder):
     if bool(paozhi):
         paozhi = "(%s)" % recorder.paozhi
         return ",".join([mingcheng,yaoliang,paozhi])
-    else:                
+    else:
         return ",".join([mingcheng,yaoliang])
 
 def map_yao_chufang_total(recorder):
@@ -128,7 +128,7 @@ def map_yao_chufang_table(recorder):
     if bool(paozhi):
 #         paozhi = "(%s)" % recorder.paozhi
         return "<td>%s</td><td>%s</td><td>%s</td>" % (mingcheng,yaoliang,paozhi)
-    else:                
+    else:
         paozhi = u"无"
         return "<td>%s</td><td>%s</td><td>%s</td>" % (mingcheng,yaoliang,paozhi)
     
@@ -139,7 +139,7 @@ def map_chufang_bingren_table(recorder):
 
     _id = recorder.bingren_id
     bingren = Session.query(BingRen).filter(BingRen.id ==_id).one()
-    xingming = getattr(bingren,'xingming',"")    
+    xingming = getattr(bingren,'xingming',"")
     dianhua = getattr(bingren,'dianhua',"") 
     shijian = recorder.shijian   
 

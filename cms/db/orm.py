@@ -220,7 +220,7 @@ class IChuFang(Interface):
         
 class ChuFang(Base):
     
-    implements(IChuFang)    
+    implements(IChuFang)
     __tablename__ = 'chufang'
 
     id = Column(Integer, primary_key=True)
@@ -253,6 +253,7 @@ class ChuFang(Base):
  ###药和处方关联表
 class IYao_ChuFang_Asso(Interface):
     """
+    多对多关联
     """
     yao_id = schema.Int(
             title=_(u"foreagn key link to yao"),
@@ -271,6 +272,8 @@ class IYao_ChuFang_Asso(Interface):
     
          
 class Yao_ChuFang_Asso(Base):
+    "many to many association"
+    
     __tablename__ = 'yao_chufang'
     
     yao_id = Column(Integer, ForeignKey('yao.id'), primary_key=True)
@@ -295,7 +298,7 @@ class Yao_ChuFang_Asso(Base):
         self.paozhi = paozhi
 
 
- ###药和处方关联表
+ ###药品库存和单位(医疗机构)关联表
 class IYao_DanWei_Asso(Interface):
     """
     """
@@ -316,6 +319,8 @@ class IYao_DanWei_Asso(Interface):
 
 
 class Yao_DanWei_Asso(Base):
+    "每个单位有自己独立的药物库存"
+    
     implements(IYao_DanWei_Asso)
     __tablename__ = 'yao_danwei'
     
@@ -356,21 +361,21 @@ class IDiZhi(Interface):
         )
     sheng = schema.TextLine(
             title=_(u"sheng(state)"),
-            required=True,            
+            required=True,
         )    
     shi = schema.TextLine(
             title=_(u"shi (city)"),
-            required=True,             
+            required=True,
         )        
     jiedao = schema.TextLine(
             title=_(u"jie dao"),
-            required=True,            
+            required=True,
         )
     
 
 class DiZhi(Base):
     
-    implements(IDiZhi)    
+    implements(IDiZhi)
     __tablename__ = 'dizhi'
 
     id = Column(Integer, primary_key=True)
@@ -505,7 +510,7 @@ class Person(Base):
     多端放外键及关系
     """
      
-    implements(IPerson)    
+    implements(IPerson)
     __tablename__ = 'person'
     id = Column(Integer, primary_key=True)
     xingming = Column(String(16))
@@ -540,7 +545,7 @@ class YiSheng(Person):
     多端放外键及关系
     """
     
-    implements(IYiSheng)    
+    implements(IYiSheng)
     __tablename__ = 'yisheng'
 
     id = Column(Integer, ForeignKey('person.id'), primary_key=True)
@@ -569,7 +574,7 @@ class IBingRen(IPerson):
 
 class BingRen(Person):
     
-    implements(IBingRen)    
+    implements(IBingRen)
     __tablename__ = 'bingren'
 
     id = Column(Integer, ForeignKey('person.id'), primary_key=True)
