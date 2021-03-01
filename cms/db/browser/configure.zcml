@@ -6,7 +6,7 @@
 
 	<include package="plone.app.contentmenu" />
     <adapter factory=".intermediate_objs.BingRenGridDataConverter" />
-    <adapter factory=".intermediate_objs.YaoGridDataConverter" />    
+    <adapter factory=".intermediate_objs.YaoGridDataConverter" />
   <!-- Register static resource directory -->
 	<browser:resourceDirectory
   		name="cms.db"

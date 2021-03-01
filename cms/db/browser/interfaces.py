@@ -42,7 +42,7 @@ class InputError(Exception):
 class IYao_DanWei_AssoUI (IYao_DanWei_Asso):
     """yao_danwei association table editing ui """
     
-    adirectives.widget(yao_id=AutocompleteFieldWidget)
+#     adirectives.widget(yao_id=AutocompleteFieldWidget)
     yao_id = schema.Choice(
             title=_(u"ming cheng"),
             vocabulary='cms.db.yao',
