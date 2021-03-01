@@ -4,7 +4,9 @@ import zope.interface
 from zope.schema.fieldproperty import FieldProperty
 from zope import schema
 from plone.directives import form
-# from plone.autoform import directives as form
+# from plone.autoform import directives
+from plone.formwidget.autocomplete import AutocompleteFieldWidget
+from plone.autoform import directives as adirectives
 
 from z3c.form.browser.checkbox import CheckBoxFieldWidget
 from cms.db.orm import IYao
@@ -17,7 +19,7 @@ from cms.db.orm import IChuFang
 from cms.db.orm import IYao_ChuFang_Asso
 from cms.db.orm import IYao_DanWei_Asso
 from cms.db import _
-         
+
 
 class YaoListField(schema.List):
     """We need to have a unique class for the field list so that we
@@ -35,18 +37,17 @@ class InputError(Exception):
     """Exception raised if there is an error making a data input
     """
 
-# db table add,modify interfaces
 
-
+## db table add,modify interfaces
 class IYao_DanWei_AssoUI (IYao_DanWei_Asso):
     """yao_danwei association table editing ui """
-
+    
+    adirectives.widget(yao_id=AutocompleteFieldWidget)
     yao_id = schema.Choice(
             title=_(u"ming cheng"),
             vocabulary='cms.db.yao',
             required=True,
         )
- 
 
 
 class IChuFang_BingRen_AssoUI (Interface):
