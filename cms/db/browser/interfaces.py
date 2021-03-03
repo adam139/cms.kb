@@ -4,11 +4,8 @@ import zope.interface
 from zope.schema.fieldproperty import FieldProperty
 from zope import schema
 from plone.directives import form
-# from plone.autoform import directives
-from plone.formwidget.autocomplete import AutocompleteFieldWidget
-from plone.autoform import directives as adirectives
-
 from z3c.form.browser.checkbox import CheckBoxFieldWidget
+from cms.db.sources import YaoSourceBinder
 from cms.db.orm import IYao
 from cms.db.orm import IDanWei
 from cms.db.orm import IYiSheng
@@ -42,10 +39,11 @@ class InputError(Exception):
 class IYao_DanWei_AssoUI (IYao_DanWei_Asso):
     """yao_danwei association table editing ui """
     
-#     adirectives.widget(yao_id=AutocompleteFieldWidget)
+
     yao_id = schema.Choice(
             title=_(u"ming cheng"),
-            vocabulary='cms.db.yao',
+#             vocabulary='cms.db.yao',
+            source = YaoSourceBinder(),
             required=True,
         )
 

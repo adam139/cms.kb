@@ -18,6 +18,7 @@ from plone.directives import form
 from z3c.form import form as z3f
 from z3c.form import field, button
 from z3c.form.interfaces import HIDDEN_MODE
+from plone.formwidget.autocomplete import AutocompleteFieldWidget
 from z3c.form.interfaces import IFieldsAndContentProvidersForm
 from z3c.form.contentprovider import ContentProviders
 from cms.db.browser.content_providers import BingRenExtendedHelp
@@ -1782,6 +1783,7 @@ class InputWoYao(InputYaoXing):
 
     label = _(u"Input yao  kucun data")
     fields = field.Fields(IYao_DanWei_AssoUI).omit('danwei_id')
+    fields['yao_id'].widgetFactory = AutocompleteFieldWidget
 
     def update(self):
         self.request.set('disable_border', True)
