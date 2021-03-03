@@ -2,9 +2,9 @@
   <records interface="cms.db.browser.interfaces.IAutomaticTypesSettings" prefix="cms.db.browser.interfaces.IAutomaticTypesSettings"
            condition="installed cms.db">
     <record name="cms.db.browser.interfaces.IAutomaticTypesSettings.types"
-    	interface="cms.db.browser.interfaces.IAutomaticTypesSettings" field="types">
+        interface="cms.db.browser.interfaces.IAutomaticTypesSettings" field="types">
     	    <field type="plone.registry.field.List">
-    	    	<title>types</title>    	    	
+    	    	<title>types</title> 
     	    	<description>automatic create content types list</description>
     	    	<value_type type="plone.registry.field.Choice">
     	    	  <vocabulary>plone.app.vocabularies.UserFriendlyTypes</vocabulary>	
@@ -20,7 +20,8 @@
     	    	<element>cms.db.danwei</element>
     	    </value>
     </record>
-    <value key="danweiid">1</value>   	
+    <value key="danweiid">1</value>
+    <value key="yaoshuliang">300</value>
   </records>
   <records prefix="plone.resources/bootstrap-tabs"
             interface='Products.CMFPlone.interfaces.IResourceRegistry'>
@@ -37,6 +38,6 @@
     <value key="enabled">False</value>
     <value key="stub_js_modules">
         <element>bootstrap-tabs</element>
-    </value>    
-  </records>    
+    </value>
+  </records>
 </registry>

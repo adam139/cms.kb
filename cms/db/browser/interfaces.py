@@ -55,11 +55,11 @@ class IChuFang_BingRen_AssoUI (Interface):
             title=_(u"bing ren"),
             vocabulary='cms.db.bingren',
             required=True,
-        )          
+        )
     shijian = schema.Datetime(
             title=_(u"chu fang shi jian"),
             required=False,
-        )    
+        )
     maixiang = schema.TextLine(
             title=_(u"mai xiang"),
         )
@@ -69,7 +69,7 @@ class IChuFang_BingRen_AssoUI (Interface):
         )
     zhusu = schema.TextLine(
             title=_(u"zhu su"),
-        )        
+        )
 
 
 class IYao_ChuFang_AssoUI (Interface):
@@ -163,7 +163,7 @@ class IYaoUI (IYao):
     
     
 class IAutomaticTypesSettings(Interface):
-    """A utility used to set CMSAI system 's automatic create content types list
+    """A utility used to set CMS AI system 's automatic create content types list
     """
     
     types = schema.List(
@@ -176,6 +176,12 @@ class IAutomaticTypesSettings(Interface):
             title=_(u"danwei id"),
             description=_(u"danwei id"),
             default=1,
+            required=False,
+        )
+    yaoshuliang = schema.Int(
+            title=_(u"yao shuliang"),
+            description=_(u"meici chaxun fanhui de yaopin zongliang"),
+            default=300,
             required=False,
         )
 

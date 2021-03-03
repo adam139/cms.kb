@@ -25,6 +25,15 @@ def getDanWeiId():
     settings = registry.forInterface(IAutomaticTypesSettings, check=False)
     return settings.danweiid
 
+def getYaoShuliang():
+    "get yao batch number from plone.app.registry setting"
+    from plone.registry.interfaces import IRegistry
+    from cms.db.browser.interfaces import IAutomaticTypesSettings
+    from zope.component import getUtility
+    registry = getUtility(IRegistry)
+    settings = registry.forInterface(IAutomaticTypesSettings, check=False)
+    return settings.yaoshuliang
+
 
 class UnrestrictedUser(BaseUnrestrictedUser):
     """Unrestricted user that still has an id.

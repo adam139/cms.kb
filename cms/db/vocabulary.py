@@ -7,6 +7,7 @@ from zope.schema.vocabulary import SimpleVocabulary
 
 from cms.db.orm import Yao_DanWei_Asso
 from cms.db.browser.utility import getDanWeiId
+from cms.db.browser.utility import getYaoShuliang
 from cms.db.interfaces import IDbapi
 from cms.db import _
 
@@ -45,8 +46,8 @@ def bingren(context):
 def yao(context):
   
     locator = queryUtility(IDbapi, name='yao')
-
-    values = locator.query({'start':0,'size':300,'SearchableText':'','sort_order':'reverse'})
+    size = getYaoShuliang()
+    values = locator.query({'start':0,'size':size,'SearchableText':'','sort_order':'reverse'})
 
     return SimpleVocabulary(
         [SimpleTerm(value=int(i[0]), token=str(i[0]), title=i[3]) for i in values],

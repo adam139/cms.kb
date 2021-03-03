@@ -5,6 +5,7 @@ from zope.schema.vocabulary import SimpleTerm
 from zope.schema.vocabulary import SimpleVocabulary
 from zope.component import queryUtility
 from cms.db.interfaces import IDbapi
+from cms.db.browser.utility import getYaoShuliang
 
 
 @implementer(IQuerySource)
@@ -12,7 +13,8 @@ class YaoSource(object):
     def __init__(self, context):
         self.context = context
         locator = queryUtility(IDbapi, name='yao')
-        values = locator.query({'start':0,'size':300,'SearchableText':'','sort_order':'reverse'})
+        size = getYaoShuliang()
+        values = locator.query({'start':0,'size':size,'SearchableText':'','sort_order':'reverse'})
         self.vocab = SimpleVocabulary(
             [SimpleTerm(value=int(i[0]), token=str(i[0]), title=i[3]) for i in values],
         )
