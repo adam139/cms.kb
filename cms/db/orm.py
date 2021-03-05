@@ -207,7 +207,7 @@ class IChuFang(Interface):
             title=_(u"zhuang tai"),
             vocabulary='cms.db.zhuangtai',
             required=True,
-            default=False,            
+            default=False,
         )
     zhenjin = schema.Float(
             title=_(u"zhen jin"),
@@ -230,7 +230,7 @@ class ChuFang(Base):
     jiliang = Column(Integer)
     yizhu = Column(String(64))
     zhuangtai = Column(Boolean)
-    zhenjin = Column(Float(precision='6,2'))    
+    zhenjin = Column(Float(precision='6,2'))
     # association proxy of "yaoes" collection
     # to "yao" attribute
     yaoes = association_proxy('yao_chufang', 'yao')
@@ -238,7 +238,7 @@ class ChuFang(Base):
     # to "bingren" attribute of ChuFang_BingRen_Asso's object
     bingrens = association_proxy('chufang_bingrens', 'bingren')
     # chufang - yisheng: many to one relation
-    yisheng = relationship("YiSheng", backref="chufangs")    
+    yisheng = relationship("YiSheng", backref="chufangs")
     # association proxy of "yishengxm" through "yisheng" relation object
     # to "xingming" attribute of YiSheng CLASS's object
     yishengxm = association_proxy('yisheng', 'xingming')
