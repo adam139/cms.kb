@@ -135,6 +135,7 @@ class IYao(Interface):
     zhuzhi = schema.TextLine(
             title=_(u"zhu zhi"),
             required = False,
+            max_length=64,
         )
     yongliang = schema.Int(
             title=_(u"tongchang yongliang"),
@@ -463,7 +464,7 @@ class IDanWei(Interface):
 
 class DanWei(Base):
     
-    implements(IDanWei)    
+    implements(IDanWei)
     __tablename__ = 'danwei'
 
     id = Column(Integer, primary_key=True)
