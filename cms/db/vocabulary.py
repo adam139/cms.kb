@@ -57,7 +57,6 @@ def yao(context):
 def wo_yao(context):
   
     locator = queryUtility(IDbapi, name='yao')
-
     query = {'start':0,'size':300,'SearchableText':'','sort_order':'reverse'}
     values = locator.multi_query(query,Yao_DanWei_Asso,'yao_danwei','danwei_id',getDanWeiId(),'id','yao_id')
     return SimpleVocabulary(

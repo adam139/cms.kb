@@ -1799,7 +1799,7 @@ class InputWoYao(InputYaoXing):
             self.status = self.formErrorsMessage
             return
         funcations = queryUtility(IDbapi, name='yao_danwei')
-        columns = filter_cln(Yao_DanWei_Asso)        
+        columns = filter_cln(Yao_DanWei_Asso)
         #过滤非本表的字段
         _data = dict()
         for i in columns:
@@ -1831,7 +1831,7 @@ class UpdateWoYao(UpdateYaoXing):
     """
 
     label = _(u"update yao  kucun data")
-    fields = field.Fields(IYao_DanWei_AssoUI).omit('danwei_id')    
+    fields = field.Fields(IYao_DanWei_AssoUI).omit('danwei_id')
 
     def getContent(self):
         # create a temp obj that provided IYaoUI
@@ -1842,13 +1842,13 @@ class UpdateWoYao(UpdateYaoXing):
         # ignore fields list
         ignore = ['danwei_id']
         data = dict()
-        for name, f in getFieldsInOrder(IYao_DanWei_AssoUI):            
+        for name, f in getFieldsInOrder(IYao_DanWei_AssoUI):
             p = getattr(_obj, name, '')
             if name in ignore:continue
             else:
                 if isinstance(p,str):
                     p = p.decode('utf-8')
-                data[name] = p                         
+                data[name] = p
         return EditYao_DanWei_AssoUI(**data)
 
     def update(self):
@@ -1861,8 +1861,8 @@ class UpdateWoYao(UpdateYaoXing):
         """Update yao recorder
         """
 
-        data, errors = self.extractData()       
-        _clmns = filter_cln(Yao_DanWei_Asso)        
+        data, errors = self.extractData()
+        _clmns = filter_cln(Yao_DanWei_Asso)
         if errors:
             self.status = self.formErrorsMessage
             return
@@ -1870,7 +1870,7 @@ class UpdateWoYao(UpdateYaoXing):
         #过滤非本表的字段
         _data = dict()
         for i in _clmns:
-            _data[i] = data[i]                             
+            _data[i] = data[i]
         danwei_id = getDanWeiId()
         searchcnd = {"yao_id":data['yao_id'],"danwei_id":danwei_id}
         try:
