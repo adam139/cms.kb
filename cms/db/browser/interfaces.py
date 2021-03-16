@@ -48,6 +48,18 @@ class IYao_DanWei_AssoUI (IYao_DanWei_Asso):
         )
 
 
+class IYao_DanWei_AssoUpdateUI (IYao_DanWei_Asso):
+    """yao_danwei association table editing ui """
+    
+
+    yao_id = schema.Choice(
+            title=_(u"ming cheng"),
+            vocabulary='cms.db.yao',
+#             source = YaoSourceBinder(),
+            required=True,
+        )
+
+
 class IChuFang_BingRen_AssoUI (Interface):
     """chufang_bingren association table editing ui """
 

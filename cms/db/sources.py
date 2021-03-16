@@ -5,7 +5,7 @@ from zope.schema.vocabulary import SimpleTerm
 from zope.schema.vocabulary import SimpleVocabulary
 from zope.component import queryUtility
 from cms.db.interfaces import IDbapi
-
+from cms.db.browser.utility import getYaoShuliang
 from cms.db.browser.utility import getDanWeiId
 from cms.db.orm import Yao_DanWei_Asso
 from cms.db.orm import Yao
@@ -66,7 +66,7 @@ class WoyaoSource(Source):
     def __init__(self, context):
         self.context = context
         locator = queryUtility(IDbapi, name='yao')
-        query = {'start':0,'size':0,'SearchableText':'','sort_order':'reverse'}
+        query = {'start':0,'size':getYaoShuliang(),'SearchableText':'','sort_order':'reverse'}
         values = locator.multi_query(query,Yao_DanWei_Asso,'yao_danwei','danwei_id',getDanWeiId(),'id','yao_id')
         self.vocab = SimpleVocabulary(
             [SimpleTerm(value=int(i[0]), token=str(i[0]), title=i[3]) for i in values],
@@ -86,7 +86,7 @@ class BingrenSource(Source):
     def __init__(self, context):
         self.context = context
         locator = queryUtility(IDbapi, name='bingren')
-        values = locator.query({'start':0,'size':0,
+        values = locator.query({'start':0,'size':2 * getYaoShuliang(),
                             'SearchableText':'',
                             'sort_order':'reverse',
                             'with_entities':0})

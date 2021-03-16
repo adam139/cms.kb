@@ -32,6 +32,7 @@ from cms.db.interfaces import IDbapi
 # 有外键的表必须调用定制UI接口
 from cms.db.browser.interfaces import IYaoUI
 from cms.db.browser.interfaces import IYao_DanWei_AssoUI
+from cms.db.browser.interfaces import IYao_DanWei_AssoUpdateUI
 from cms.db.browser.interfaces import IDanWeiUI
 from cms.db.browser.interfaces import IYiShengUI
 from cms.db.browser.interfaces import IBingRenUI
@@ -197,8 +198,7 @@ class WoYaoesView(BaseView):
 
     def search_multicondition(self,query):
         "query is dic,like :{'start':0,'size':10,'':}"
-#         from cms.db.orm import Yao_DanWei_Asso
-#         from cms.db.browser.utility import getDanWeiId
+
         locator = self.get_locator('yao')
         query['with_entities'] = 1
         recorders = locator.multi_query(query,Yao_DanWei_Asso,'yao_danwei','danwei_id',getDanWeiId(),'id','yao_id')
@@ -347,10 +347,8 @@ class NianGanZhisView(BaseView):
             id = yu - 4 + 1
         else:
             id = yu + 60 - 4 + 1
-        
-        
-    
-     
+
+
 ###### output class
  # ajax multi-condition search relation db
 class YaoXingAjaxsearch(BrowserView):
@@ -529,12 +527,12 @@ class YaoWeiAjaxsearch(YaoXingAjaxsearch):
                                             title=i[1],
                                             description= "")
                 outhtml = "%s%s" %(outhtml ,out)
-                k = k + 1                
+                k = k + 1
                 
         data = {'searchresult': outhtml,'start':start,'size':size,'total':totalnum}
         return data
-        
-    
+
+
 class JingLuoAjaxsearch(YaoXingAjaxsearch):
     """AJAX action for search DB.
     receive front end ajax transform parameters
@@ -595,6 +593,7 @@ class JingLuoAjaxsearch(YaoXingAjaxsearch):
         data = {'searchresult': outhtml,'start':start,'size':size,'total':totalnum}
         return data
 
+
 class YaoAjaxsearch(YaoXingAjaxsearch):
     """AJAX action for search DB.
     receive front end ajax transform parameters
@@ -611,7 +610,7 @@ class YaoAjaxsearch(YaoXingAjaxsearch):
         k = 0
         contexturl = self.context.absolute_url()
         base = get_container_by_type("cms.db.yao").getURL()
-        if self.searchview().canbeInput:        
+        if self.searchview().canbeInput:
             for i in resultDicLists:
                 yaowei = api.pk_title(i[1],YaoWei,'wei')
                 yaoxing = api.pk_title(i[2],YaoXing,'xing')
@@ -622,7 +621,7 @@ class YaoAjaxsearch(YaoXingAjaxsearch):
                                 <td class="col-md-1">%(yaoxing)s</td>
                                 <td class="col-md-1">%(jingluo)s</td>
                                 <td class="col-md-4">%(zhuzhi)s</td>
-                                <td class="col-md-1">%(yongliang)s</td>                                
+                                <td class="col-md-1">%(yongliang)s</td>
                                 <td class="col-md-1 text-center">
                                 <a href="%(edit_url)s" title="edit">
                                   <span class="glyphicon glyphicon-pencil" aria-hidden="true">
@@ -664,7 +663,7 @@ class YaoAjaxsearch(YaoXingAjaxsearch):
                                             yongliang= i[5])
 
                 outhtml = "%s%s" %(outhtml ,out)
-                k = k + 1            
+                k = k + 1
         data = {'searchresult': outhtml,'start':start,'size':size,'total':totalnum}
         return data
 
@@ -744,11 +743,11 @@ class WoYaoAjaxsearch(YaoXingAjaxsearch):
                                             zhuzhi= i[4],
                                             yongliang= i[5],
                                             danjia = i[9],
-                                            kucun = i[8]                                          
+                                            kucun = i[8]
                                             )
 
                 outhtml = "%s%s" %(outhtml ,out)
-                k = k + 1            
+                k = k + 1
         data = {'searchresult': outhtml,'start':start,'size':size,'total':totalnum}
         return data
 
@@ -820,7 +819,7 @@ class ChuFangAjaxsearch(YaoXingAjaxsearch):
                                             yaoes= yaoes,
                                             yisheng= yisheng)
                 outhtml = "%s%s" %(outhtml ,out)
-                k = k + 1            
+                k = k + 1
         data = {'searchresult': outhtml,'start':start,'size':size,'total':totalnum}
         return data
 
@@ -846,7 +845,7 @@ class BingRenAjaxsearch(YaoXingAjaxsearch):
                 if bool(i.xingbie):
                     xingbie = u'男'
                 else:
-                    xingbie = u'女'                 
+                    xingbie = u'女'
                 out = """<tr class="text-left">
                                 <td class="col-md-4 text-left"><a href="%(obj_url)s">%(xingming)s</a></td>
                                 <td class="col-md-1 text-center">%(xingbie)s</td>
@@ -868,7 +867,7 @@ class BingRenAjaxsearch(YaoXingAjaxsearch):
                                             xingming=i.xingming,
                                             xingbie= xingbie,
                                             nianling= i.shengri,
-                                            dianhua= i.dianhua,                                            
+                                            dianhua= i.dianhua,
                                             edit_url="%s/@@update_bingren/%s" % (contexturl,i.id),
                                             delete_url="%s/@@delete_bingren/%s" % (contexturl,i.id))
                 outhtml = "%s%s" %(outhtml ,out)
@@ -886,7 +885,7 @@ class BingRenAjaxsearch(YaoXingAjaxsearch):
                                             nianling= i.shengri,
                                             dianhua= i.dianhua)
                 outhtml = "%s%s" %(outhtml ,out)
-                k = k + 1                
+                k = k + 1
         data = {'searchresult': outhtml,'start':start,'size':size,'total':totalnum}
         return data
 
@@ -941,14 +940,14 @@ class DiZhiAjaxsearch(YaoXingAjaxsearch):
                                 <td class="col-md-2 text-left">%(guojia)s</td>
                                 <td class="col-md-2">%(sheng)s</td>
                                 <td class="col-md-3">%(shi)s</td>
-                                <td class="col-md-5">%(jiedao)s</td>                          
+                                <td class="col-md-5">%(jiedao)s</td>
                                 </tr> """% dict(
                                             guojia=i[1],
                                             sheng= i[2],
                                             shi= i[3],
                                             jiedao= i[4],)
                 outhtml = "%s%s" %(outhtml ,out)
-                k = k + 1            
+                k = k + 1
         data = {'searchresult': outhtml,'start':start,'size':size,'total':totalnum}
         return data
 
@@ -1003,14 +1002,14 @@ class GeRenDiZhiAjaxsearch(YaoXingAjaxsearch):
                                 <td class="col-md-2 text-left">%(guojia)s</td>
                                 <td class="col-md-2">%(sheng)s</td>
                                 <td class="col-md-3">%(shi)s</td>
-                                <td class="col-md-5">%(jiedao)s</td>                          
+                                <td class="col-md-5">%(jiedao)s</td>
                                 </tr> """% dict(
                                             guojia=i.guojia,
                                             sheng= i.sheng,
                                             shi= i.shi,
                                             jiedao= i.jiedao)
                 outhtml = "%s%s" %(outhtml ,out)
-                k = k + 1            
+                k = k + 1
         data = {'searchresult': outhtml,'start':start,'size':size,'total':totalnum}
         return data
     
@@ -1065,14 +1064,14 @@ class DanWeiDiZhiAjaxsearch(YaoXingAjaxsearch):
                                 <td class="col-md-2 text-left">%(guojia)s</td>
                                 <td class="col-md-2">%(sheng)s</td>
                                 <td class="col-md-3">%(shi)s</td>
-                                <td class="col-md-5">%(jiedao)s</td>                          
+                                <td class="col-md-5">%(jiedao)s</td>
                                 </tr> """% dict(
                                             guojia=i.guojia,
                                             sheng= i.sheng,
                                             shi= i.shi,
                                             jiedao= i.jiedao)
                 outhtml = "%s%s" %(outhtml ,out)
-                k = k + 1            
+                k = k + 1
         data = {'searchresult': outhtml,'start':start,'size':size,'total':totalnum}
         return data    
 
@@ -1092,10 +1091,10 @@ class DanWeiAjaxsearch(YaoXingAjaxsearch):
         outhtml = ""
         k = 0
         contexturl = self.context.absolute_url()
-        base = get_container_by_type("cms.db.danwei").getURL()        
+        base = get_container_by_type("cms.db.danwei").getURL()
         if self.searchview().canbeInput:
             for i in resultDicLists:
-                out = """<tr class="text-left">                                
+                out = """<tr class="text-left">
                                 <td class="col-md-1">%(num)s</td>
                                 <td class="col-md-9 text-left">
                                 <a href="%(obj_url)s">%(mingcheng)s</a>
@@ -1121,18 +1120,18 @@ class DanWeiAjaxsearch(YaoXingAjaxsearch):
                 k = k + 1
         else:
             for i in resultDicLists:
-                out = """<tr class="text-left">                                
+                out = """<tr class="text-left">
                                 <td class="col-md-1">%(num)s</td>
                                 <td class="col-md-11 text-left">
                                 <a href="%(obj_url)s">%(mingcheng)s</a>
-                                </td>                                                              
+                                </td>
                                 </tr> """% dict(obj_url="%s/%s/@@base_view" % (base,i[0]),
                                             num = str(k+1),
                                             mingcheng=i[2])
                 outhtml = "%s%s" %(outhtml ,out)
-                k = k + 1            
+                k = k + 1
         data = {'searchresult': outhtml,'start':start,'size':size,'total':totalnum}
-        return data        
+        return data
 
  
 class YiShengAjaxsearch(YaoXingAjaxsearch):
@@ -1150,13 +1149,13 @@ class YiShengAjaxsearch(YaoXingAjaxsearch):
         outhtml = ""
         k = 0
         contexturl = self.context.absolute_url()
-        base = get_container_by_type("cms.db.yisheng").getURL()        
-        if self.searchview().canbeInput:        
+        base = get_container_by_type("cms.db.yisheng").getURL()
+        if self.searchview().canbeInput:
             for i in resultDicLists:
                 if bool(i.xingbie):
                     xingbie = u'男'
                 else:
-                    xingbie = u'女'                    
+                    xingbie = u'女'
                 out = """<tr class="text-left">
                                 <td class="col-md-4 text-left"><a href="%(obj_url)s">%(xingming)s</a></td>
                                 <td class="col-md-1 text-center">%(xingbie)s</td>
@@ -1196,11 +1195,11 @@ class YiShengAjaxsearch(YaoXingAjaxsearch):
                                             nianling= i.shengri,
                                             dianhua= i.dianhua)
                 outhtml = "%s%s" %(outhtml ,out)
-                k = k + 1            
+                k = k + 1
         data = {'searchresult': outhtml,'start':start,'size':size,'total':totalnum}
         return data
-    
- 
+
+
 class NianGanZhiAjaxsearch(YaoXingAjaxsearch):
     """AJAX action for search DB.
     receive front end ajax transform parameters
@@ -1243,8 +1242,8 @@ class NianGanZhiAjaxsearch(YaoXingAjaxsearch):
             
         data = {'searchresult': outhtml,'start':start,'size':size,'total':totalnum}
         return data
-    
-                          
+
+
 ###### database actions
 # Delete Update Input block
 ### yaoxing table
@@ -1726,7 +1725,7 @@ class DeleteWoYao(DeleteYaoXing):
     "delete the specify yao recorder"
 
     label = _(u"delete yao data")
-    fields = field.Fields(IYao_DanWei_AssoUI).omit('danwei_id')
+    fields = field.Fields(IYao_DanWei_AssoUpdateUI).omit('danwei_id')
 
     def getContent(self):
         locator = queryUtility(IDbapi, name='yao_danwei')
@@ -1735,7 +1734,7 @@ class DeleteWoYao(DeleteYaoXing):
         # ignore fields list
         ignore = ['danwei_id']
         data = dict()
-        for name, f in getFieldsInOrder(IYao_DanWei_AssoUI):
+        for name, f in getFieldsInOrder(IYao_DanWei_AssoUpdateUI):
             p = getattr(_obj, name, '')
             if name in ignore:continue
             else:
@@ -1831,7 +1830,7 @@ class UpdateWoYao(UpdateYaoXing):
     """
 
     label = _(u"update yao  kucun data")
-    fields = field.Fields(IYao_DanWei_AssoUI).omit('danwei_id')
+    fields = field.Fields(IYao_DanWei_AssoUpdateUI).omit('danwei_id')
 
     def getContent(self):
         # create a temp obj that provided IYaoUI
@@ -1842,7 +1841,7 @@ class UpdateWoYao(UpdateYaoXing):
         # ignore fields list
         ignore = ['danwei_id']
         data = dict()
-        for name, f in getFieldsInOrder(IYao_DanWei_AssoUI):
+        for name, f in getFieldsInOrder(IYao_DanWei_AssoUpdateUI):
             p = getattr(_obj, name, '')
             if name in ignore:continue
             else:
