@@ -18,6 +18,7 @@ from plone.directives import form
 from z3c.form import form as z3f
 from z3c.form import field, button
 from z3c.form.interfaces import HIDDEN_MODE
+from z3c.form.interfaces  import DISPLAY_MODE
 from plone.formwidget.autocomplete import AutocompleteFieldWidget
 from z3c.form.interfaces import IFieldsAndContentProvidersForm
 from z3c.form.contentprovider import ContentProviders
@@ -1247,12 +1248,15 @@ class NianGanZhiAjaxsearch(YaoXingAjaxsearch):
 ###### database actions
 # Delete Update Input block
 ### yaoxing table
-class DeleteYaoXing(form.Form):
+
+
+class DeleteYaoXing(z3f.Form):
     "delete the specify yao xing recorder"
     
     implements(IPublishTraverse)
     label = _(u"delete yao xing data")
     fields = field.Fields(IYaoXing).omit('id')
+    mode = DISPLAY_MODE
     ignoreContext = False
     id = None
     #receive url parameters
@@ -1724,7 +1728,7 @@ class UpdateYao(UpdateYaoXing):
 class DeleteWoYao(DeleteYaoXing):
     "delete the specify yao recorder"
 
-    label = _(u"delete yao data")
+    label = _(u"delete kucun yao data")
     fields = field.Fields(IYao_DanWei_AssoUpdateUI).omit('danwei_id')
 
     def getContent(self):
@@ -2181,16 +2185,16 @@ class UpdateChuFang(UpdateBase):
             elif name=="bingrens":
                 p = bingrenlist
             elif name == "yaoes":
-                p = yaolist                          
+                p = yaolist
             else:
-                p = getattr(_obj, name, '')                                                                          
+                p = getattr(_obj, name, '')
 
             if name in objfd:
                 data[name] = getattr(p,'id',1)
                 continue
             elif name == 'yaoes':
                 objs = []
-                fields = ['yao_id','yaoliang','paozhi']                
+                fields = ['yao_id','yaoliang','paozhi']
                 for i in p:
                     id = i.id
                     chufangid = self.id
@@ -2198,16 +2202,16 @@ class UpdateChuFang(UpdateBase):
                     # query Yao_ChuFang_Asso obj
                     asso_obj = queryUtility(IDbapi, name='yao_chufang').\
                     get_asso_obj(qdt)
-                    vls = [getattr(asso_obj,j,"") for j in fields]                   
-                    vls = to_utf_8(vls)                        
+                    vls = [getattr(asso_obj,j,"") for j in fields]
+                    vls = to_utf_8(vls)
                     value = dict(zip(fields,vls))
                     obj = EditYao_ChuFang_AssoUI(**value)
-                    objs.append(obj)                                                         
+                    objs.append(obj)
                 data[name] = objs
                 continue
             elif name == 'bingrens':
                 objs = []
-                fields = ['bingren_id','shijian','maixiang','shexiang','zhusu']                
+                fields = ['bingren_id','shijian','maixiang','shexiang','zhusu']
                 for i in p:
                     id = i.id
                     chufangid = self.id
@@ -2216,17 +2220,17 @@ class UpdateChuFang(UpdateBase):
                     asso_obj = queryUtility(IDbapi, name='chufang_bingren').\
                     get_asso_obj(qdt)
                     vls = [getattr(asso_obj,j,"") for j in fields]
-                    vls = to_utf_8(vls)                        
+                    vls = to_utf_8(vls)
                     value = dict(zip(fields,vls))
                     obj = EditChuFang_BingRen_AssoUI(**value)
-                    objs.append(obj)                                                          
+                    objs.append(obj)
                 data[name] = objs
                 continue
             else:
                 if isinstance(p,str):
                     p = p.decode('utf-8')
                 data[name] = p
-                continue                        
+                continue
         return ChuFangUI(**data)
 
     def update(self):
@@ -2259,16 +2263,16 @@ class UpdateChuFang(UpdateBase):
         #过滤非本表的字段
         _data = dict()
         for i in _clmns:
-            _data[i] = data[i]                               
+            _data[i] = data[i]
         _data['id'] = self.id
         yisheng_id = data['yisheng']
         yaoes = data['yaoes']
-        bingrens = data['bingrens']        
+        bingrens = data['bingrens']
         fk_tables = [(yisheng_id,YiSheng,'yisheng')]
-        if not bool(bingrens):bingrens = []        
-        bingren_asso_columns = filter_cln(ChuFang_BingRen_Asso)        
+        if not bool(bingrens):bingrens = []
+        bingren_asso_columns = filter_cln(ChuFang_BingRen_Asso)
         yaoes = data['yaoes']
-        if not bool(yaoes):yaoes = []        
+        if not bool(yaoes):yaoes = []
         asso_columns = filter_cln(Yao_ChuFang_Asso)
         asso_obj_tables = {}
         tlist = []
@@ -2281,12 +2285,12 @@ class UpdateChuFang(UpdateBase):
             vls = [getattr(i,k,'') for k in asso_columns ]
             ppt = dict(zip(asso_columns,vls))
             tlist.append((pk,pk_cls,pk_attr,asso_cls,asso_attr,ppt)) 
-        asso_obj_tables['yaoes']= tlist                   
+        asso_obj_tables['yaoes']= tlist
         tlist = []
         for i in bingrens:
             pk = getattr(i,'bingren_id',1)
             pk_cls = BingRen
-            pk_attr = 'bingren'            
+            pk_attr = 'bingren'
             asso_cls = ChuFang_BingRen_Asso
             asso_attr = 'chufang'
             vls = [getattr(i,k,'') for k in bingren_asso_columns ]
