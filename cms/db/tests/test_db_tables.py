@@ -307,11 +307,11 @@ class TestDatabase(unittest.TestCase):
     def test_asso_chufang_bingren(self):
         
         dizhi = GeRenDiZhi(guojia="中国",sheng="湖南",shi="湘潭市",jiedao="湘潭县云湖桥镇北岸村道林组83号")
-        bingren = BingRen('张三',1, date(2015, 4, 2),'13673265899')
+        bingren = BingRen(xingming='张三',xingbie=1, shengri=date(2015, 4, 2),dianhua='13673265899')
         bingren.dizhi = dizhi
         dizhi2 = DanWeiDiZhi(guojia="中国",sheng="湖北",shi="十堰市",jiedao="茅箭区施洋路83号")
         danwei = DanWei("任之堂")
-        yisheng = YiSheng('余浩',1, date(2015, 4, 2),'13673265859')
+        yisheng = YiSheng(xingming='余浩',xingbie=1,shengri=date(2015, 4, 2),dianhua='13673265859')
         danwei.yishengs = [yisheng]
         danwei.dizhi = dizhi2
         yaowei = YaoWei("酸")
@@ -369,11 +369,11 @@ class TestDatabase(unittest.TestCase):
     def test_all_tables(self):
         
         dizhi = GeRenDiZhi(guojia="中国",sheng="湖南",shi="湘潭市",jiedao="湘潭县云湖桥镇北岸村道林组83号")
-        bingren = BingRen('张三',1, date(2015, 4, 2),'13673265899')
+        bingren = BingRen(xingming='张三',xingbie=1, shengri=date(2015, 4, 2),dianhua='13673265899')
         bingren.dizhi = dizhi
         dizhi2 = DanWeiDiZhi(guojia="中国",sheng="湖北",shi="十堰市",jiedao="茅箭区施洋路83号")
         danwei = DanWei("任之堂")
-        yisheng = YiSheng('余浩',1, date(2015, 4, 2),'13673265859')
+        yisheng = YiSheng(xingming='余浩',xingbie=1,shengri=date(2015, 4, 2),dianhua='13673265859')
         danwei.yishengs = [yisheng]
         danwei.dizhi = dizhi2
         yaowei = YaoWei("酸")
@@ -429,6 +429,6 @@ class TestDatabase(unittest.TestCase):
         items.extend(Session.query(DanWeiDiZhi).all())                
         items.extend(Session.query(DiZhi).all())        
         for m in items:
-            Session.delete(m)            
+            Session.delete(m)
         Session.commit() 
   

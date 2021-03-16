@@ -40,7 +40,7 @@ def inputvalues():
         yao1 = Yao("白芍","降胆火",15)
         yao1.yaowei = yaowei1
         yao1.yaoxing = yaoxing1
-        yao1.guijing = [jingluo1]         
+        yao1.guijing = [jingluo1]
         yao2 = Yao("桂枝","升发",15)
         yao2.yaowei = yaowei2
         yao2.yaoxing = yaoxing2
@@ -64,9 +64,9 @@ def inputvalues():
         yao7 = Yao("杏仁")
         yao7.yaowei = yaowei5
         yao7.yaoxing = yaoxing5
-        yao7.guijing = [jingluo5]                                        
+        yao7.guijing = [jingluo5]
         Session.add_all([yao1,yao2,yao3,yao4,yao5,yao6,yao7])
-        dizhi0 = DiZhi(guojia="中国",sheng="湖南",shi="湘潭市",jiedao="湘潭县云湖桥镇北岸村道林组183号")        
+        dizhi0 = DiZhi(guojia="中国",sheng="湖南",shi="湘潭市",jiedao="湘潭县云湖桥镇北岸村道林组183号")
         dizhi = GeRenDiZhi(guojia="中国",sheng="湖南",shi="湘潭市",jiedao="湘潭县云湖桥镇北岸村道林组83号")
         bingren = BingRen(xingming='张三',xingbie=1, shengri=date(2015, 4, 2),dianhua='13673265899')
         bingren.dizhi = dizhi
@@ -94,9 +94,9 @@ def inputvalues():
         yisheng.chufangs = [chufang]
         Session.add_all([dizhi0,dizhi,bingren,danwei,danwei2,dizhi2,dizhi3,\
                          yao_danwei,yao_danwei2,yao_danwei3,yao_danwei4,yao_danwei5,yao_danwei6,\
-                         yisheng,chufang,yao_chufang,yao_chufang2,chufang_bingren])                         
+                         yisheng,chufang,yao_chufang,yao_chufang2,chufang_bingren])
         Session.commit()
-        
+
 def fire_created_event():
     "if add recorder to db is successful,fire the event"
     from plone.registry.interfaces import IRegistry
@@ -137,8 +137,8 @@ def fire_created_event():
         cls = "cms.db.yaoxing"
         id = "%s" % recorder.id
         eventobj = RecorderCreated(id=id,cls=cls,ttl=recorder.xing)
-        if eventobj.available():event.notify(eventobj)        
-                                        
+        if eventobj.available():event.notify(eventobj)
+
     recorder = Session.query(YaoWei).filter(YaoWei.wei=="甘").first()
     if bool(recorder):
         cls = "cms.db.yaowei"
@@ -168,7 +168,7 @@ def fire_created_event():
         cls = "cms.db.yaowei"
         id = "%s" % recorder.id
         eventobj = RecorderCreated(id=id,cls=cls,ttl=recorder.wei)
-        if eventobj.available():event.notify(eventobj)                                               
+        if eventobj.available():event.notify(eventobj)
     recorder = Session.query(Yao).filter(Yao.mingcheng=="白芍").first()
     if bool(recorder):
         cls = "cms.db.yao"
@@ -198,7 +198,7 @@ def fire_created_event():
     if bool(recorder):
         cls = "cms.db.yao"
         eventobj = RecorderCreated(id=recorder.id,cls=cls,ttl=recorder.mingcheng)
-        if eventobj.available():event.notify(eventobj)                                                
+        if eventobj.available():event.notify(eventobj)
     recorder = Session.query(JingLuo).filter(JingLuo.mingcheng=="足太阳膀胱经").first()
     if bool(recorder):
         cls = "cms.db.jingluo"
@@ -234,7 +234,7 @@ def fire_created_event():
         cls = "cms.db.jingluo"
         id = "%s" % recorder.id
         eventobj = RecorderCreated(id=id,cls=cls,ttl=recorder.mingcheng)
-        if eventobj.available():event.notify(eventobj)                                        
+        if eventobj.available():event.notify(eventobj)
     recorder = Session.query(BingRen).filter(BingRen.xingming=="张三").first()
     if bool(recorder):
         cls = "cms.db.bingren"
@@ -264,8 +264,9 @@ def fire_created_event():
     if bool(recorder):
         cls = "cms.db.danwei"
         eventobj = RecorderCreated(id=recorder.id,cls=cls,ttl=recorder.mingcheng)
-        if eventobj.available():event.notify(eventobj)                        
-                        
+        if eventobj.available():event.notify(eventobj)
+
+
 def cleardb():
     "remove all recorders from db"
     items = Session.query(YaoWei).all()
@@ -277,9 +278,6 @@ def cleardb():
     items.extend(Session.query(YiSheng).all())
     items.extend(Session.query(DanWei).all())
     items.extend(Session.query(DiZhi).all())
-               
     for item in items:
-        Session.delete(item)            
-    Session.commit()    
-    
-            
+        Session.delete(item)
+    Session.commit()
