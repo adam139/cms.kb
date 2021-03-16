@@ -11,10 +11,8 @@ import datetime
 from Acquisition import aq_inner
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore import permissions
-from Products.CMFCore.interfaces import ISiteRoot
 from plone.memoize.instance import memoize
 from Products.Five.browser import BrowserView
-from plone.directives import form
 from z3c.form import form as z3f
 from z3c.form import field, button
 from z3c.form.interfaces import HIDDEN_MODE
@@ -1250,12 +1248,10 @@ class NianGanZhiAjaxsearch(YaoXingAjaxsearch):
 ### yaoxing table
 
 
-class DeleteYaoXing(z3f.Form):
-    "delete the specify yao xing recorder"
-    
+class DeleteForm(z3f.Form):
+    """ delete form base class
+    """
     implements(IPublishTraverse)
-    label = _(u"delete yao xing data")
-    fields = field.Fields(IYaoXing).omit('id')
     mode = DISPLAY_MODE
     ignoreContext = False
     id = None
@@ -1266,6 +1262,13 @@ class DeleteYaoXing(z3f.Form):
             return self
         else:
             raise NotFound()
+
+
+class DeleteYaoXing(DeleteForm):
+    "delete the specify yao xing recorder"
+
+    label = _(u"delete yao xing data")
+    fields = field.Fields(IYaoXing).omit('id')
 
     def getContent(self):
         locator = queryUtility(IDbapi, name='yaoxing')
@@ -1303,12 +1306,26 @@ class DeleteYaoXing(z3f.Form):
         IStatusMessage(self.request).add(confirm, type='info')
         self.request.response.redirect(self.context.absolute_url() + '/@@yaoxing_listings')
 
-class InputYaoXing(form.Form):
+
+class InputBase(z3f.Form):
+    """ input form base class
+    """
+    
+    ignoreContext = True
+
+    def update(self):
+        self.request.set('disable_border', True)
+        self.request.set('disable_plone.rightcolumn',1)
+        self.request.set('disable_plone.leftcolumn',1)
+        super(InputBase, self).update()
+
+
+class InputYaoXing(InputBase):
     """input db yao xing table data
     """
     label = _(u"Input yao xing data")
     fields = field.Fields(IYaoXing).omit('id')
-    ignoreContext = True
+
 
     def update(self):
         self.request.set('disable_border', True)
@@ -1341,14 +1358,13 @@ class InputYaoXing(form.Form):
         IStatusMessage(self.request).add(confirm, type='info')
         self.request.response.redirect(self.context.absolute_url() + '/@@yaoxing_listings')
 
+
 class UpdateBase(z3f.EditForm):
-    """
+    """ update form base class
     """
     implements(IPublishTraverse)
-    
     ignoreContext = False
     id = None
-
 
     def update(self):
         self.request.set('disable_border', True)
@@ -1362,30 +1378,18 @@ class UpdateBase(z3f.EditForm):
             return self
         else:
             raise NotFound()
-                
-    
-class UpdateYaoXing(form.Form):
+
+
+class UpdateYaoXing(UpdateBase):
     """update yaoxing table row data
     """
 
-    implements(IPublishTraverse)
-
     label = _(u"update yao xing data")
     fields = field.Fields(IYaoXing).omit('id')
-    ignoreContext = False
-    id = None
-    #receive url parameters
-    # reset content
+
     def getContent(self):
         locator = queryUtility(IDbapi, name='yaoxing')
         return locator.getByCode(self.id)
-
-    def publishTraverse(self, request, name):
-        if self.id is None:
-            self.id = name
-            return self
-        else:
-            raise NotFound()
 
     def update(self):
         self.request.set('disable_border', True)
@@ -1422,7 +1426,7 @@ class UpdateYaoXing(form.Form):
         self.request.response.redirect(self.context.absolute_url() + '/@@yaoxing_listings')
 
 
-class DeleteYaoWei(DeleteYaoXing):
+class DeleteYaoWei(DeleteForm):
     "delete the specify yaowei recorder"
 
     label = _(u"delete yao wei data")
@@ -1465,7 +1469,7 @@ class DeleteYaoWei(DeleteYaoXing):
         self.request.response.redirect(self.context.absolute_url() + '/@@yaowei_listings')
 
 
-class InputYaoWei(InputYaoXing):
+class InputYaoWei(InputBase):
     """input db yaowei table data
     """
 
@@ -1505,7 +1509,7 @@ class InputYaoWei(InputYaoXing):
         self.request.response.redirect(self.context.absolute_url() + '/@@yaowei_listings')
 
 
-class UpdateYaoWei(UpdateYaoXing):
+class UpdateYaoWei(UpdateBase):
     """update yaowei table row data
     """
     label = _(u"update yao wei data")
@@ -1549,7 +1553,7 @@ class UpdateYaoWei(UpdateYaoXing):
         self.request.response.redirect(self.context.absolute_url() + '/@@yaowei_listings')
 
 
-class DeleteYao(DeleteYaoXing):
+class DeleteYao(DeleteForm):
     "delete the specify yao recorder"
 
     label = _(u"delete yao data")
@@ -1593,7 +1597,8 @@ class DeleteYao(DeleteYaoXing):
         IStatusMessage(self.request).add(confirm, type='info')
         self.request.response.redirect(self.context.absolute_url() + '/@@yao_listings')
 
-class InputYao(InputYaoXing):
+
+class InputYao(InputBase):
     """input db yao table data
     """
 
@@ -1614,17 +1619,17 @@ class InputYao(InputYaoXing):
             self.status = self.formErrorsMessage
             return
         funcations = queryUtility(IDbapi, name='yao')
-        columns = filter_cln(Yao)        
+        columns = filter_cln(Yao)
         #过滤非本表的字段
         yao_data = dict()
         for i in columns:
-            yao_data[i] = data[i]                  
+            yao_data[i] = data[i]
         yaowei_id = data['yaowei']
         yaoxing_id = data['yaoxing']
         guijing = data['guijing']
         fk_tables = [(yaowei_id,YaoWei,'yaowei'),(yaoxing_id,YaoXing,'yaoxing')]
         if bool(guijing):
-            asso_tables = [(guijing,JingLuo,'guijing')]            
+            asso_tables = [(guijing,JingLuo,'guijing')]
         else:
             asso_tables = []
         try:
@@ -1646,7 +1651,7 @@ class InputYao(InputYaoXing):
         self.request.response.redirect(self.context.absolute_url() + '/@@yao_listings')
 
 
-class UpdateYao(UpdateYaoXing):
+class UpdateYao(UpdateBase):
     """update yao table row data
     """
 
@@ -1664,7 +1669,7 @@ class UpdateYao(UpdateYaoXing):
         objfd = ['yaowei','yaoxing']
         listobjfd = ['guijing']
         data = dict()
-        for name, f in getFieldsInOrder(IYaoUI):            
+        for name, f in getFieldsInOrder(IYaoUI):
             p = getattr(yao_obj, name, '')
             if name in ignore:continue
             elif name in objfd:
@@ -1674,7 +1679,7 @@ class UpdateYao(UpdateYaoXing):
             else:
                 if isinstance(p,str):
                     p = p.decode('utf-8')
-                data[name] = p                         
+                data[name] = p
         return YaoUI(**data)
 
     def update(self):
@@ -1687,8 +1692,8 @@ class UpdateYao(UpdateYaoXing):
         """Update yao recorder
         """
 
-        data, errors = self.extractData()       
-        yao_clmns = filter_cln(Yao)        
+        data, errors = self.extractData()
+        yao_clmns = filter_cln(Yao)
         if errors:
             self.status = self.formErrorsMessage
             return
@@ -1696,7 +1701,7 @@ class UpdateYao(UpdateYaoXing):
         #过滤非本表的字段
         yao_data = dict()
         for i in yao_clmns:
-            yao_data[i] = data[i]                               
+            yao_data[i] = data[i]
         yao_data['id'] = self.id
         yaowei_id = data['yaowei']
         yaoxing_id = data['yaoxing']
@@ -1704,7 +1709,7 @@ class UpdateYao(UpdateYaoXing):
         fk_tables = [(yaowei_id,YaoWei,'yaowei'),(yaoxing_id,YaoXing,'yaoxing')]
 
         if bool(guijing):
-            asso_tables = [(guijing,JingLuo,'guijing')]            
+            asso_tables = [(guijing,JingLuo,'guijing')]
         else:
             asso_tables = []
         try:
@@ -1725,7 +1730,7 @@ class UpdateYao(UpdateYaoXing):
         self.request.response.redirect(self.context.absolute_url() + '/@@yao_listings')
 
 
-class DeleteWoYao(DeleteYaoXing):
+class DeleteWoYao(DeleteForm):
     "delete the specify yao recorder"
 
     label = _(u"delete kucun yao data")
@@ -1780,7 +1785,7 @@ class DeleteWoYao(DeleteYaoXing):
         IStatusMessage(self.request).add(confirm, type='info')
         self.request.response.redirect(self.context.absolute_url() + '/@@wo_yao_listings')
 
-class InputWoYao(InputYaoXing):
+class InputWoYao(InputBase):
     """input db yao table data
     """
 
@@ -1829,7 +1834,7 @@ class InputWoYao(InputYaoXing):
         self.request.response.redirect(self.context.absolute_url() + '/@@wo_yao_listings')
 
 
-class UpdateWoYao(UpdateYaoXing):
+class UpdateWoYao(UpdateBase):
     """update yao table row data
     """
 
@@ -1894,7 +1899,7 @@ class UpdateWoYao(UpdateYaoXing):
         self.request.response.redirect(self.context.absolute_url() + '/@@wo_yao_listings')
 
 
-class DeleteJingLuo(DeleteYaoXing):
+class DeleteJingLuo(DeleteForm):
     "delete the specify jingluo recorder"
 
     label = _(u"delete jing luo data")
@@ -1937,7 +1942,7 @@ class DeleteJingLuo(DeleteYaoXing):
         IStatusMessage(self.request).add(confirm, type='info')
         self.request.response.redirect(self.context.absolute_url() + '/@@jingluo_listings')
 
-class InputJingLuo(InputYaoXing):
+class InputJingLuo(InputBase):
     """input db jingluo table data
     """
 
@@ -1976,7 +1981,8 @@ class InputJingLuo(InputYaoXing):
         IStatusMessage(self.request).add(confirm, type='info')
         self.request.response.redirect(self.context.absolute_url() + '/@@jingluo_listings')
 
-class UpdateJingLuo(UpdateYaoXing):
+
+class UpdateJingLuo(UpdateBase):
     """update jingluo table row data
     """
     label = _(u"update jingluo data")
@@ -2020,7 +2026,7 @@ class UpdateJingLuo(UpdateYaoXing):
         self.request.response.redirect(self.context.absolute_url() + '/@@jingluo_listings')
 
 
-class DeleteChuFang(DeleteYaoXing):
+class DeleteChuFang(DeleteForm):
     "delete the specify chu fang recorder"
 
     label = _(u"delete chu fang data")
@@ -2317,9 +2323,8 @@ class UpdateChuFang(UpdateBase):
         self.request.response.redirect(self.context.absolute_url() + '/@@chufang_listings')
 
 
-class DeleteBingRen(DeleteYaoXing):
+class DeleteBingRen(DeleteForm):
     "delete the specify bing ren recorder"
-
 
     label = _(u"delete bing ren data")
     fields = field.Fields(IBingRen).omit('id','dizhi_id','dizhi')
@@ -2362,8 +2367,9 @@ class DeleteBingRen(DeleteYaoXing):
         IStatusMessage(self.request).add(confirm, type='info')
         self.request.response.redirect(self.context.absolute_url() + '/@@bingren_listings')
 
+
 @implementer(IFieldsAndContentProvidersForm)
-class InputBingRen(InputYaoXing):
+class InputBingRen(InputBase):
     """input db bingren table data
     """
 
@@ -2417,7 +2423,7 @@ class InputBingRen(InputYaoXing):
         IStatusMessage(self.request).add(confirm, type='info')
         self.request.response.redirect(self.context.absolute_url() + '/@@bingren_listings')
 
-class UpdateBingRen(UpdateYaoXing):
+class UpdateBingRen(UpdateBase):
     """update bingren table row data
     """
 
@@ -2433,7 +2439,7 @@ class UpdateBingRen(UpdateYaoXing):
         # obj fields list
         objfd = ['dizhi']
         data = dict()
-        for name, f in getFieldsInOrder(IBingRenUI):            
+        for name, f in getFieldsInOrder(IBingRenUI):
             p = getattr(_obj, name, '')
             if name in ignore:continue
             elif name in objfd:
@@ -2441,7 +2447,7 @@ class UpdateBingRen(UpdateYaoXing):
             else:
                 if isinstance(p,str):
                     p = p.decode('utf-8')
-                data[name] = p                        
+                data[name] = p
         return BingRenUI(**data)
 
     def update(self):
@@ -2454,7 +2460,7 @@ class UpdateBingRen(UpdateYaoXing):
         """Update bing ren recorder
         """
 
-        data, errors = self.extractData()       
+        data, errors = self.extractData()
         if errors:
             self.status = self.formErrorsMessage
             return
@@ -2462,10 +2468,10 @@ class UpdateBingRen(UpdateYaoXing):
         #过滤非本表的字段
         _clmns = filter_cln(BingRen)
         if "type" in _clmns:
-            _clmns.remove("type")        
+            _clmns.remove("type")
         _data = dict()
         for i in _clmns:
-            _data[i] = data[i]                               
+            _data[i] = data[i]
         _data['id'] = self.id
         _id = data['dizhi']
         fk_tables = [(_id,GeRenDiZhi,'dizhi')]
@@ -2487,14 +2493,13 @@ class UpdateBingRen(UpdateYaoXing):
         self.request.response.redirect(self.context.absolute_url() + '/@@bingren_listings')
 
 
-class DeleteDiZhi(DeleteYaoXing):
+class DeleteDiZhi(DeleteForm):
     "delete the specify di zhi recorder"
 
     label = _(u"delete di zhi data")
     fields = field.Fields(IDiZhi).omit('id')
 
     def getContent(self):
-
         locator = queryUtility(IDbapi, name='dizhi')
         return locator.getByCode(self.id)
 
@@ -2528,7 +2533,8 @@ class DeleteDiZhi(DeleteYaoXing):
         IStatusMessage(self.request).add(confirm, type='info')
         self.request.response.redirect(self.context.absolute_url() + '/@@dizhi_listings')
 
-class InputDiZhi(InputYaoXing):
+
+class InputDiZhi(InputBase):
     """input db dizhi table data
     """
 
@@ -2567,7 +2573,8 @@ class InputDiZhi(InputYaoXing):
         IStatusMessage(self.request).add(confirm, type='info')
         self.request.response.redirect(self.context.absolute_url() + '/@@dizhi_listings')
 
-class UpdateDiZhi(UpdateYaoXing):
+
+class UpdateDiZhi(UpdateBase):
     """update dizhi table row data
     """
 
@@ -2575,7 +2582,6 @@ class UpdateDiZhi(UpdateYaoXing):
     fields = field.Fields(IDiZhi).omit('id')
 
     def getContent(self):
-
         locator = queryUtility(IDbapi, name='dizhi')
         return locator.getByCode(self.id)
 
@@ -2611,14 +2617,14 @@ class UpdateDiZhi(UpdateYaoXing):
         IStatusMessage(self.request).add(confirm, type='info')
         self.request.response.redirect(self.context.absolute_url() + '/@@dizhi_listings')
 
-class DeleteDanWeiDiZhi(DeleteYaoXing):
+
+class DeleteDanWeiDiZhi(DeleteForm):
     "delete the specify danweidizhi recorder"
 
     label = _(u"delete dan wei di zhi data")
     fields = field.Fields(IDanWeiDiZhi).omit('id')
 
     def getContent(self):
-
         locator = queryUtility(IDbapi, name='danweidizhi')
         return locator.getByCode(self.id)
 
@@ -2652,7 +2658,7 @@ class DeleteDanWeiDiZhi(DeleteYaoXing):
         IStatusMessage(self.request).add(confirm, type='info')
         self.request.response.redirect(self.context.absolute_url() + '/@@danweidizhi_listings')
 
-class InputDanWeiDiZhi(InputYaoXing):
+class InputDanWeiDiZhi(InputBase):
     """input danweidizhi table data
     """
 
@@ -2691,7 +2697,8 @@ class InputDanWeiDiZhi(InputYaoXing):
         IStatusMessage(self.request).add(confirm, type='info')
         self.request.response.redirect(self.context.absolute_url() + '/@@danweidizhi_listings')
 
-class UpdateDanWeiDiZhi(UpdateYaoXing):
+
+class UpdateDanWeiDiZhi(UpdateBase):
     """update danweidizhi table row data
     """
 
@@ -2736,14 +2743,13 @@ class UpdateDanWeiDiZhi(UpdateYaoXing):
         self.request.response.redirect(self.context.absolute_url() + '/@@danweidizhi_listings')
         
         
-class DeleteGeRenDiZhi(DeleteYaoXing):
+class DeleteGeRenDiZhi(DeleteForm):
     "delete the specify ge ren di zhi recorder"
 
     label = _(u"delete ge ren di zhi data")
     fields = field.Fields(IGeRenDiZhi).omit('id')
 
     def getContent(self):
-
         locator = queryUtility(IDbapi, name='gerendizhi')
         return locator.getByCode(self.id)
 
@@ -2776,7 +2782,7 @@ class DeleteGeRenDiZhi(DeleteYaoXing):
         IStatusMessage(self.request).add(confirm, type='info')
         self.request.response.redirect(self.context.absolute_url() + '/@@gerendizhi_listings')
 
-class InputGeRenDiZhi(InputYaoXing):
+class InputGeRenDiZhi(InputBase):
     """input gerendizhi table data
     """
 
@@ -2815,7 +2821,8 @@ class InputGeRenDiZhi(InputYaoXing):
         IStatusMessage(self.request).add(confirm, type='info')
         self.request.response.redirect(self.context.absolute_url() + '/@@gerendizhi_listings')
 
-class UpdateGeRenDiZhi(UpdateYaoXing):
+
+class UpdateGeRenDiZhi(UpdateBase):
     """update gerendizhi table row data
     """
 
@@ -2860,14 +2867,13 @@ class UpdateGeRenDiZhi(UpdateYaoXing):
         self.request.response.redirect(self.context.absolute_url() + '/@@gerendizhi_listings')        
 
 
-class DeleteDanWei(DeleteYaoXing):
+class DeleteDanWei(DeleteForm):
     "delete the specify dan wei recorder"
 
     label = _(u"delete dan wei data")
     fields = field.Fields(IDanWei).omit('id','dizhi_id','dizhi')
 
     def getContent(self):
-
         locator = queryUtility(IDbapi, name='danwei')
         return locator.getByCode(self.id)
 
@@ -2897,8 +2903,9 @@ class DeleteDanWei(DeleteYaoXing):
         IStatusMessage(self.request).add(confirm, type='info')
         self.request.response.redirect(self.context.absolute_url() + '/@@danwei_listings')
 
+
 @implementer(IFieldsAndContentProvidersForm)
-class InputDanWei(InputYaoXing):
+class InputDanWei(InputBase):
     """input dan wei table data
     """
 
@@ -2917,11 +2924,11 @@ class InputDanWei(InputYaoXing):
             self.status = self.formErrorsMessage
             return
         funcations = queryUtility(IDbapi, name='danwei')
-        _clmns = filter_cln(DanWei)        
+        _clmns = filter_cln(DanWei)
         #过滤非本表的字段
         danwei_data = dict()
         for i in _clmns:
-            danwei_data[i] = data[i]                 
+            danwei_data[i] = data[i]
         dizhi_id = data['dizhi']
         fk_tables = [(dizhi_id,DanWeiDiZhi,'dizhi')]
         asso_tables = []
@@ -2942,7 +2949,8 @@ class InputDanWei(InputYaoXing):
         IStatusMessage(self.request).add(confirm, type='info')
         self.request.response.redirect(self.context.absolute_url() + '/@@danwei_listings')
 
-class UpdateDanWei(UpdateYaoXing):
+
+class UpdateDanWei(UpdateBase):
     """update dan wei table row data
     """
 
@@ -2958,15 +2966,15 @@ class UpdateDanWei(UpdateYaoXing):
         # obj fields list
         objfd = ['dizhi']
         data = dict()
-        for name, f in getFieldsInOrder(IDanWeiUI):            
+        for name, f in getFieldsInOrder(IDanWeiUI):
             p = getattr(_obj, name, '')
             if name in ignore:continue
             elif name in objfd:
                 data[name] = getattr(p,'id',1)
             else:
                 if isinstance(p,str):
-                    p = p.decode('utf-8')                
-                data[name] = p                         
+                    p = p.decode('utf-8')
+                data[name] = p
         return DanWeiUI(**data)
 
 
@@ -2975,7 +2983,7 @@ class UpdateDanWei(UpdateYaoXing):
         """Update model recorder
         """
         data, errors = self.extractData()
-        _clmns = filter_cln(DanWei)       
+        _clmns = filter_cln(DanWei)
         if errors:
             self.status = self.formErrorsMessage
             return
@@ -2983,7 +2991,7 @@ class UpdateDanWei(UpdateYaoXing):
         #过滤非本表的字段
         _data = dict()
         for i in _clmns:
-            _data[i] = data[i]                               
+            _data[i] = data[i]
         _data['id'] = self.id
         _id = data['dizhi']
         fk_tables = [(_id,DanWeiDiZhi,'dizhi')]
@@ -3005,7 +3013,7 @@ class UpdateDanWei(UpdateYaoXing):
         self.request.response.redirect(self.context.absolute_url() + '/@@danwei_listings')
 
 
-class DeleteYiSheng(DeleteYaoXing):
+class DeleteYiSheng(DeleteForm):
     "delete the specify yi sheng recorder"
 
 
@@ -3013,7 +3021,6 @@ class DeleteYiSheng(DeleteYaoXing):
     fields = field.Fields(IYiSheng).omit('id','danwei_id','danwei')
 
     def getContent(self):
-
         locator = queryUtility(IDbapi, name='yisheng')
         return locator.getByCode(self.id)
 
@@ -3043,8 +3050,9 @@ class DeleteYiSheng(DeleteYaoXing):
         IStatusMessage(self.request).add(confirm, type='info')
         self.request.response.redirect(self.context.absolute_url() + '/@@yisheng_listings')
 
+
 @implementer(IFieldsAndContentProvidersForm)
-class InputYiSheng(InputYaoXing):
+class InputYiSheng(InputBase):
     """input db yisheng table data
     """
 
@@ -3090,7 +3098,8 @@ class InputYiSheng(InputYaoXing):
         IStatusMessage(self.request).add(confirm, type='info')
         self.request.response.redirect(self.context.absolute_url() + '/@@yisheng_listings')
 
-class UpdateYiSheng(UpdateYaoXing):
+
+class UpdateYiSheng(UpdateBase):
     """update yisheng table row data
     """
 
@@ -3098,7 +3107,6 @@ class UpdateYiSheng(UpdateYaoXing):
     fields = field.Fields(IYiShengUI).omit('id','danwei_id','type')
 
     def getContent(self):
-
         locator = queryUtility(IDbapi, name='yisheng')
         _obj = locator.getByCode(self.id)
         # ignore fields list
@@ -3106,7 +3114,7 @@ class UpdateYiSheng(UpdateYaoXing):
         # obj fields list
         objfd = ['danwei']
         data = dict()
-        for name, f in getFieldsInOrder(IYiShengUI):            
+        for name, f in getFieldsInOrder(IYiShengUI):
             p = getattr(_obj, name, '')
             if name in ignore:continue
             elif name in objfd:
@@ -3114,14 +3122,14 @@ class UpdateYiSheng(UpdateYaoXing):
             else:
                 if isinstance(p,str):
                     p = p.decode('utf-8')
-                data[name] = p                        
+                data[name] = p
         return YiShengUI(**data)
 
     @button.buttonAndHandler(_(u"Submit"))
     def submit(self, action):
         """Update yisheng recorder
         """
-        data, errors = self.extractData()     
+        data, errors = self.extractData()
         if errors:
             self.status = self.formErrorsMessage
             return
@@ -3129,10 +3137,10 @@ class UpdateYiSheng(UpdateYaoXing):
         #过滤非本表的字段
         _clmns = filter_cln(YiSheng)
         if "type" in _clmns:
-            _clmns.remove("type")          
+            _clmns.remove("type")
         _data = dict()
         for i in _clmns:
-            _data[i] = data[i]                               
+            _data[i] = data[i]
         _data['id'] = self.id
         _id = data['danwei']
         fk_tables = [(_id,DanWei,'danwei')]
