@@ -108,7 +108,7 @@ class BaseView(BrowserView):
     def canbeInput(self):
 # checkPermission function must be use Title style permission
         canbe = self.pm().checkPermission("cms.db:Input db",self.context)
-        return canbe    
+        return canbe
     
     def getPathQuery(self):
 
@@ -133,7 +133,7 @@ class YaoXingsView(BaseView):
     该参数，查询数据库，并返回结果。
     view name:admin_logs
     """
-           
+
     def search_multicondition(self,query):
         "query is dic,like :{'start':0,'size':10,'':}"
 
@@ -217,7 +217,7 @@ class ChuFangsView(BaseView):
         locator = self.get_locator('chufang')
         recorders = locator.query(query)
         return recorders
-    
+
 
 class BingRensView(BaseView):
     """
@@ -277,7 +277,7 @@ class DanWeiDiZhiesView(BaseView):
     def search_multicondition(self,query):
         "query is dic,like :{'start':0,'size':10,'':}"
         locator = self.get_locator('danweidizhi')
-        query['with_entities'] = 0        
+        query['with_entities'] = 0
         recorders = locator.query(query)
         return recorders
 
@@ -467,7 +467,7 @@ class YaoXingAjaxsearch(BrowserView):
                                             title=i[1],
                                             description= "")
                 outhtml = "%s%s" %(outhtml ,out)
-                k = k + 1                                                               
+                k = k + 1
         data = {'searchresult': outhtml,'start':start,'size':size,'total':totalnum}
         return data
 
@@ -548,7 +548,7 @@ class JingLuoAjaxsearch(YaoXingAjaxsearch):
         k = 0
         contexturl = self.context.absolute_url()
         base = get_container_by_type("cms.db.jingluo").getURL()
-        if self.searchview().canbeInput:        
+        if self.searchview().canbeInput:
             for i in resultDicLists:
                 k = k + 1
                 out = """<tr class="text-left">
@@ -581,14 +581,13 @@ class JingLuoAjaxsearch(YaoXingAjaxsearch):
                 out = """<tr class="text-left">
                                 <td class="col-md-1 text-center">%(number)s</td>
                                 <td class="col-md-4 text-left">%(title)s</td>
-                                <td class="col-md-7">%(description)s</td>                                
+                                <td class="col-md-7">%(description)s</td>
                                 </tr> """% dict(obj_url="%s/jingluo%s/@@base_view" % (base,i[0]),
                                             number=k,
                                             title= i[1],
                                             description= '')
 
                 outhtml = "%s%s" %(outhtml ,out)
-          
         data = {'searchresult': outhtml,'start':start,'size':size,'total':totalnum}
         return data
 
@@ -683,7 +682,7 @@ class WoYaoAjaxsearch(YaoXingAjaxsearch):
         k = 0
         contexturl = self.context.absolute_url()
         base = get_container_by_type("cms.db.yao").getURL()
-        if self.searchview().canbeInput:        
+        if self.searchview().canbeInput:
             for i in resultDicLists:
 #                 i = (13L, 10L, 9L, u'\u9ebb\u9ec4', None, None, 13L, 4L, 1200L, 0.76)
                 yaowei = api.pk_title(i[1],YaoWei,'wei')
@@ -779,7 +778,7 @@ class ChuFangAjaxsearch(YaoXingAjaxsearch):
                                 <td class="col-md-5 text-left">%(yaoes)s</td>
                                 <td class="col-md-1">%(yisheng)s</td>
                                 <td class="col-md-1">%(jiliang)s</td>
-                                <td class="col-md-1">%(yizhu)s</td>                              
+                                <td class="col-md-1">%(yizhu)s</td>
                                 <td class="col-md-1 text-center">
                                 <a href="%(edit_url)s" title="edit">
                                   <span class="glyphicon glyphicon-pencil" aria-hidden="true">
@@ -839,7 +838,7 @@ class BingRenAjaxsearch(YaoXingAjaxsearch):
         k = 0
         contexturl = self.context.absolute_url()
         base = get_container_by_type("cms.db.bingren").getURL()
-        if self.searchview().canbeInput:        
+        if self.searchview().canbeInput:
             for i in resultDicLists:
                 if bool(i.xingbie):
                     xingbie = u'男'
@@ -911,7 +910,7 @@ class DiZhiAjaxsearch(YaoXingAjaxsearch):
                                 <td class="col-md-1 text-left">%(guojia)s</td>
                                 <td class="col-md-2">%(sheng)s</td>
                                 <td class="col-md-2">%(shi)s</td>
-                                <td class="col-md-5">%(jiedao)s</td>                            
+                                <td class="col-md-5">%(jiedao)s</td>
                                 <td class="col-md-1 text-center">
                                 <a href="%(edit_url)s" title="edit">
                                   <span class="glyphicon glyphicon-pencil" aria-hidden="true">
@@ -973,7 +972,7 @@ class GeRenDiZhiAjaxsearch(YaoXingAjaxsearch):
                                 <td class="col-md-1 text-left">%(guojia)s</td>
                                 <td class="col-md-2">%(sheng)s</td>
                                 <td class="col-md-2">%(shi)s</td>
-                                <td class="col-md-5">%(jiedao)s</td>                            
+                                <td class="col-md-5">%(jiedao)s</td>
                                 <td class="col-md-1 text-center">
                                 <a href="%(edit_url)s" title="edit">
                                   <span class="glyphicon glyphicon-pencil" aria-hidden="true">
@@ -1035,7 +1034,7 @@ class DanWeiDiZhiAjaxsearch(YaoXingAjaxsearch):
                                 <td class="col-md-1 text-left">%(guojia)s</td>
                                 <td class="col-md-2">%(sheng)s</td>
                                 <td class="col-md-2">%(shi)s</td>
-                                <td class="col-md-5">%(jiedao)s</td>                            
+                                <td class="col-md-5">%(jiedao)s</td>
                                 <td class="col-md-1 text-center">
                                 <a href="%(edit_url)s" title="edit">
                                   <span class="glyphicon glyphicon-pencil" aria-hidden="true">
@@ -1097,7 +1096,7 @@ class DanWeiAjaxsearch(YaoXingAjaxsearch):
                                 <td class="col-md-1">%(num)s</td>
                                 <td class="col-md-9 text-left">
                                 <a href="%(obj_url)s">%(mingcheng)s</a>
-                                </td>                                                               
+                                </td>
                                 <td class="col-md-1 text-center">
                                 <a href="%(edit_url)s" title="edit">
                                   <span class="glyphicon glyphicon-pencil" aria-hidden="true">
@@ -1310,9 +1309,8 @@ class DeleteYaoXing(DeleteForm):
 class InputBase(z3f.Form):
     """ input form base class
     """
-    
-    ignoreContext = True
 
+    ignoreContext = True
     def update(self):
         self.request.set('disable_border', True)
         self.request.set('disable_plone.rightcolumn',1)
@@ -1325,7 +1323,6 @@ class InputYaoXing(InputBase):
     """
     label = _(u"Input yao xing data")
     fields = field.Fields(IYaoXing).omit('id')
-
 
     def update(self):
         self.request.set('disable_border', True)
@@ -1569,13 +1566,12 @@ class DeleteYao(DeleteForm):
         #Let z3c.form do its magic
         super(DeleteYao, self).update()
 
-
     @button.buttonAndHandler(_(u"Delete"))
     def submit(self, action):
         """Delete yao recorder
         """
 
-        data, errors = self.extractData()      
+        data, errors = self.extractData()
         if errors:
             self.status = self.formErrorsMessage
             return
@@ -1762,7 +1758,7 @@ class DeleteWoYao(DeleteForm):
         """Delete yao recorder
         """
 
-        data, errors = self.extractData()       
+        data, errors = self.extractData()
         if errors:
             self.status = self.formErrorsMessage
             return
@@ -1920,7 +1916,7 @@ class DeleteJingLuo(DeleteForm):
         """Delete jingluo recorder
         """
 
-        data, errors = self.extractData()     
+        data, errors = self.extractData()
         if errors:
             self.status = self.formErrorsMessage
             return
@@ -2132,7 +2128,7 @@ class InputChuFang(z3f.AddForm):
             asso_attr = 'chufang'
             vls = [getattr(i,k,'') for k in asso_columns ]
             ppt = dict(zip(asso_columns,vls))
-            asso_obj_tables.append((pk,pk_cls,pk_attr,asso_cls,asso_attr,ppt))                    
+            asso_obj_tables.append((pk,pk_cls,pk_attr,asso_cls,asso_attr,ppt))
         for i in bingrens:
             pk = getattr(i,'bingren_id',1)
             pk_cls = BingRen
@@ -2285,7 +2281,7 @@ class UpdateChuFang(UpdateBase):
         for i in yaoes:
             pk = getattr(i,'yao_id',1)
             pk_cls = Yao
-            pk_attr = 'yao'            
+            pk_attr = 'yao'
             asso_cls = Yao_ChuFang_Asso
             asso_attr = 'chufang'
             vls = [getattr(i,k,'') for k in asso_columns ]
@@ -2397,11 +2393,11 @@ class InputBingRen(InputBase):
         _clmns = filter_cln(BingRen)
         # type is joined inheritance polymorphic_on,should be filtered
         if "type" in _clmns:
-              _clmns.remove("type")      
+              _clmns.remove("type")
         #过滤非本表的字段
         _data = dict()
         for i in _clmns:
-            _data[i] = data[i]                 
+            _data[i] = data[i]
         _id = data['dizhi']
         fk_tables = [(_id,GeRenDiZhi,'dizhi')]
         asso_tables = []
@@ -3059,7 +3055,7 @@ class InputYiSheng(InputBase):
     label = _(u"Input yi sheng data")
     contentProviders = ContentProviders()
     contentProviders['yishenginputHelp'] = YiShengExtendedHelp
-    contentProviders['yishenginputHelp'].position = 0    
+    contentProviders['yishenginputHelp'].position = 0
     fields = field.Fields(IYiShengUI).omit('id','danwei_id','type')
 
     @button.buttonAndHandler(_(u"Submit"))
@@ -3073,12 +3069,11 @@ class InputYiSheng(InputBase):
         funcations = queryUtility(IDbapi, name='yisheng')
         _clmns = filter_cln(YiSheng)
         if "type" in _clmns:
-            _clmns.remove("type")       
+            _clmns.remove("type")
         #过滤非本表的字段
         _data = dict()
         for i in _clmns:
             _data[i] = data[i]
-                 
         _id = data['danwei']
         fk_tables = [(_id,DanWei,'danwei')]
         try:

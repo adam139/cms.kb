@@ -52,8 +52,7 @@ class YaoSource(Source):
             [SimpleTerm(value=int(i.id), token=str(i.id), title=i.mingcheng) for i in values],
         )
         self.items = [(i.id,i.mingcheng,) for i in values]
-        
-        
+
 @implementer(IContextSourceBinder)
 class YaoSourceBinder(object):
 
@@ -72,8 +71,7 @@ class WoyaoSource(Source):
             [SimpleTerm(value=int(i[0]), token=str(i[0]), title=i[3]) for i in values],
         )
         self.items = [(i[0],i[3],) for i in values]
-        
-        
+
 @implementer(IContextSourceBinder)
 class WoyaoSourceBinder(object):
 
@@ -94,7 +92,6 @@ class BingrenSource(Source):
             [SimpleTerm(value=int(i.id), token=str(i.id), title=i.xingming) for i in values],
         )
         self.items = [(i.id,i.xingming,) for i in values]
-
 
 @implementer(IContextSourceBinder)
 class BingrenSourceBinder(object):

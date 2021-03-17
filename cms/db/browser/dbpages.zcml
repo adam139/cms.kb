@@ -28,7 +28,7 @@
         name="wo_yao_ajaxsearch"
         for="*"
         permission="zope2.View"
-        class=".ajax_listing.WoYaoAjaxsearch"/>        
+        class=".ajax_listing.WoYaoAjaxsearch"/>
      <browser:page
         name="chufang_ajaxsearch"
         for="*"
@@ -48,7 +48,7 @@
         name="danweidizhi_ajaxsearch"
         for="*"
         permission="zope2.View"
-        class=".ajax_listing.DanWeiDiZhiAjaxsearch"/>                
+        class=".ajax_listing.DanWeiDiZhiAjaxsearch"/>
      <browser:page
         name="yisheng_ajaxsearch"
         for="*"
@@ -69,8 +69,7 @@
         for="*"
         permission="zope2.View"
         class=".ajax_listing.NianGanZhiAjaxsearch"/>
-                                                
-     
+
      <!-- input form views define--> 
      <browser:page
         name="input_yaoxing"
@@ -124,7 +123,7 @@
         name="input_danweidizhi"
         for="cms.db.contents.ormfolder.IOrmfolder"
         permission="cms.db.input_db"
-        class=".ajax_listing.InputDanWeiDiZhi"/>                
+        class=".ajax_listing.InputDanWeiDiZhi"/>
       <browser:page
         name="input_yisheng"
         for="cms.db.contents.ormfolder.IOrmfolder"
@@ -151,7 +150,7 @@
         name="update_wo_yao"
         for="cms.db.contents.ormfolder.IOrmfolder"
         permission="cms.policy.edit_yao"
-        class=".ajax_listing.UpdateWoYao"/>        
+        class=".ajax_listing.UpdateWoYao"/>
      <browser:page
         name="update_yaowei"
         for="cms.db.contents.ormfolder.IOrmfolder"
@@ -186,7 +185,7 @@
         name="update_danweidizhi"
         for="cms.db.contents.ormfolder.IOrmfolder"
         permission="cms.db.input_db"
-        class=".ajax_listing.UpdateDanWeiDiZhi"/>                
+        class=".ajax_listing.UpdateDanWeiDiZhi"/>
       <browser:page
         name="update_yisheng"
         for="cms.db.contents.ormfolder.IOrmfolder"
@@ -249,7 +248,7 @@
         name="delete_danweidizhi"
         for="cms.db.contents.ormfolder.IOrmfolder"
         permission="cms.db.input_db"
-        class=".ajax_listing.DeleteDanWeiDiZhi"/>                
+        class=".ajax_listing.DeleteDanWeiDiZhi"/>
       <browser:page
         name="delete_yisheng"
         for="cms.db.contents.ormfolder.IOrmfolder"
@@ -260,24 +259,23 @@
         for="cms.db.contents.ormfolder.IOrmfolder"
         permission="cms.db.input_db"
         class=".ajax_listing.DeleteDanWei"/>
-            
-   
+
     <browser:page
         name="yaoxing_listings"
         template="templates/yaoxing_listings.pt"
         for="cms.db.contents.ormfolder.IOrmfolder"
         permission="cms.db.view_db"
-        class=".ajax_listing.YaoXingsView"/>            
+        class=".ajax_listing.YaoXingsView"/>
     <browser:page
         name="yaowei_listings"
-        permission="cms.db.view_db"    
-        for="cms.db.contents.ormfolder.IOrmfolder"        
+        permission="cms.db.view_db"
+        for="cms.db.contents.ormfolder.IOrmfolder"
         template="templates/yaowei_listings.pt"
         class=".ajax_listing.YaoWeiesView"/>
     <browser:page
         name="jingluo_listings"
-        permission="cms.db.view_db"    
-        for="cms.db.contents.ormfolder.IOrmfolder"        
+        permission="cms.db.view_db"
+        for="cms.db.contents.ormfolder.IOrmfolder"
         template="templates/jingluo_listings.pt"
         class=".ajax_listing.JingLuoesView"/>
     <browser:page
@@ -288,44 +286,44 @@
         class=".ajax_listing.YaoesView"/>
     <browser:page
         name="wo_yao_listings"
-        permission="cms.db.view_db"    
-        for="cms.db.contents.ormfolder.IOrmfolder"        
+        permission="cms.db.view_db"
+        for="cms.db.contents.ormfolder.IOrmfolder"
         template="templates/wo_yao_listings.pt"
-        class=".ajax_listing.WoYaoesView"/>        
+        class=".ajax_listing.WoYaoesView"/>
     <browser:page
         name="chufang_listings"
-        permission="cms.db.view_db"    
-        for="cms.db.contents.ormfolder.IOrmfolder"        
+        permission="cms.db.view_db"
+        for="cms.db.contents.ormfolder.IOrmfolder"
         template="templates/chufang_listings.pt"
         class=".ajax_listing.ChuFangsView"/>
     <browser:page
         name="bingren_listings"
-        permission="cms.db.view_db"    
-        for="cms.db.contents.ormfolder.IOrmfolder"        
+        permission="cms.db.view_db"
+        for="cms.db.contents.ormfolder.IOrmfolder"
         template="templates/bingren_listings.pt"
         class=".ajax_listing.BingRensView"/>
     <browser:page
         name="dizhi_listings"
-        permission="cms.db.view_db"    
-        for="cms.db.contents.ormfolder.IOrmfolder"        
+        permission="cms.db.view_db"
+        for="cms.db.contents.ormfolder.IOrmfolder"
         template="templates/dizhi_listings.pt"
         class=".ajax_listing.DiZhiesView"/>
     <browser:page
         name="gerendizhi_listings"
-        permission="cms.db.view_db"    
-        for="cms.db.contents.ormfolder.IOrmfolder"        
+        permission="cms.db.view_db"
+        for="cms.db.contents.ormfolder.IOrmfolder"
         template="templates/gerendizhi_listings.pt"
         class=".ajax_listing.GeRenDiZhiesView"/>
     <browser:page
         name="danweidizhi_listings"
-        permission="cms.db.view_db"    
-        for="cms.db.contents.ormfolder.IOrmfolder"        
+        permission="cms.db.view_db"
+        for="cms.db.contents.ormfolder.IOrmfolder"
         template="templates/danweidizhi_listings.pt"
-        class=".ajax_listing.DanWeiDiZhiesView"/>                
+        class=".ajax_listing.DanWeiDiZhiesView"/>
     <browser:page
         name="danwei_listings"
-        permission="cms.db.view_db"    
-        for="cms.db.contents.ormfolder.IOrmfolder"        
+        permission="cms.db.view_db"
+        for="cms.db.contents.ormfolder.IOrmfolder"
         template="templates/danwei_listings.pt"
         class=".ajax_listing.DanWeiesView"/>
     <browser:page
@@ -340,5 +338,5 @@
         for="cms.db.contents.ormfolder.IOrmfolder"
         template="templates/nianganzhi_listings.pt"
         class=".ajax_listing.NianGanZhisView"/>
-               
-</configure>    
+
+</configure>
