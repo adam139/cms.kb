@@ -6,6 +6,8 @@ from zope import schema
 from plone.directives import form
 from z3c.form.browser.checkbox import CheckBoxFieldWidget
 from cms.db.sources import YaoSourceBinder
+from cms.db.sources import BingrenSourceBinder
+from cms.db.sources import WoyaoSourceBinder
 from cms.db.orm import IYao
 from cms.db.orm import IDanWei
 from cms.db.orm import IYiSheng
@@ -65,7 +67,8 @@ class IChuFang_BingRen_AssoUI (Interface):
 
     bingren_id = schema.Choice(
             title=_(u"bing ren"),
-            vocabulary='cms.db.bingren',
+#             vocabulary='cms.db.bingren',
+            source = BingrenSourceBinder(),
             required=True,
         )
     shijian = schema.Datetime(
@@ -84,12 +87,24 @@ class IChuFang_BingRen_AssoUI (Interface):
         )
 
 
+class IChuFang_BingRen_AssoUpdateUI (IChuFang_BingRen_AssoUI):
+    """chufang_bingren association table editing ui """
+
+    bingren_id = schema.Choice(
+            title=_(u"bing ren"),
+            vocabulary='cms.db.bingren',
+#             source = BingrenSourceBinder(),
+            required=True,
+        )
+
+
 class IYao_ChuFang_AssoUI (Interface):
     """yao chufang association table editing ui """
 
     yao_id = schema.Choice(
             title=_(u"ming cheng"),
-            vocabulary='cms.db.wo_yao',
+#             vocabulary='cms.db.wo_yao',
+            source = WoyaoSourceBinder(),
             required=True,
         )          
     yaoliang = schema.Int(
@@ -100,6 +115,16 @@ class IYao_ChuFang_AssoUI (Interface):
             required=False,
         )
  
+ 
+class IYao_ChuFang_AssoUpdateUI (IYao_ChuFang_AssoUI):
+    """yao chufang association table editing ui """
+
+    yao_id = schema.Choice(
+            title=_(u"ming cheng"),
+            vocabulary='cms.db.wo_yao',
+            required=True,
+        )
+
 
 class IChuFangUI (IChuFang):
     """chufang table editing ui """
@@ -113,7 +138,7 @@ class IChuFangUI (IChuFang):
     yaoes = YaoListField(title=_(u"yao qingdan"),
         value_type=schema.Object(title=_(u"yao qingdan data row"), schema=IYao_ChuFang_AssoUI),
         required=False,
-        )   
+        )
 
     bingrens = BingRenListField(title=_(u"bing ren qingdan"),
         value_type=schema.Object(title=_(u"bing ren qing dan"), schema=IChuFang_BingRen_AssoUI),

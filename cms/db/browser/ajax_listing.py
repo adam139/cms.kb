@@ -48,7 +48,7 @@ from cms.db.browser.intermediate_objs import EditYao_DanWei_AssoUI
 #register multiwidget for association object interfaces
 from cms.db.browser.interfaces import IYao_ChuFang_AssoUI
 from cms.db.browser.interfaces import IChuFang_BingRen_AssoUI
-from cms.db.browser.intermediate_objs import ChuFang_BingRen_AssoUI
+from cms.db.browser.intermediate_objs import ChuFang_BingRen_AssoUI,EditChuFang_BingRen_AssoUpdateUI
 from cms.db.browser.intermediate_objs import Yao_ChuFang_AssoUI
 from z3c.form.object import registerFactoryAdapter
 registerFactoryAdapter(IYao_ChuFang_AssoUI, Yao_ChuFang_AssoUI)
@@ -2082,9 +2082,19 @@ class InputChuFang(z3f.AddForm):
         self.request.set('disable_plone.leftcolumn',1)
         super(InputChuFang, self).update()
 
+    def datagridInitialise(self,subform, widget):
+        "set subform field widgetFactory"
+        
+        if subform.schema.getName() == "IYao_ChuFang_AssoUI":
+            subform.fields = field.Fields(subform.schema)
+            subform.fields['yao_id'].widgetFactory = AutocompleteFieldWidget
+        if subform.schema.getName() == "IChuFang_BingRen_AssoUI":
+            subform.fields = field.Fields(subform.schema)
+            subform.fields['bingren_id'].widgetFactory = AutocompleteFieldWidget
+
     def datagridUpdateWidgets(self, subform, widgets, widget):
         # This one hides the widgets
-
+ 
         if subform.schema.getName() == "IChuFang_BingRen_AssoUI":
             widgets['shijian'].mode = HIDDEN_MODE
 
@@ -2224,7 +2234,7 @@ class UpdateChuFang(UpdateBase):
                     vls = [getattr(asso_obj,j,"") for j in fields]
                     vls = to_utf_8(vls)
                     value = dict(zip(fields,vls))
-                    obj = EditChuFang_BingRen_AssoUI(**value)
+                    obj = EditChuFang_BingRen_AssoUpdateUI(**value)
                     objs.append(obj)
                 data[name] = objs
                 continue

@@ -27,7 +27,9 @@ from cms.db.browser.interfaces import IChuFangUI
 from cms.db.browser.interfaces import IBingRenUI
 from cms.db.browser.interfaces import IYiShengUI
 from cms.db.browser.interfaces import IChuFang_BingRen_AssoUI
+from cms.db.browser.interfaces import IChuFang_BingRen_AssoUpdateUI
 from cms.db.browser.interfaces import IYao_ChuFang_AssoUI
+from cms.db.browser.interfaces import IYao_ChuFang_AssoUpdateUI
 from cms.db.browser.interfaces import IYao_DanWei_AssoUI
 from cms.db.browser.interfaces import IYao_DanWei_AssoUpdateUI
 
@@ -223,7 +225,13 @@ class EditChuFang_BingRen_AssoUI(object):
         self.shijian = shijian
         self.maixiang = maixiang
         self.shexiang = shexiang
-        self.zhusu = zhusu                        
+        self.zhusu = zhusu
+
+
+@implementer(IChuFang_BingRen_AssoUI)
+class EditChuFang_BingRen_AssoUpdateUI(EditChuFang_BingRen_AssoUI):
+
+    bingren_id = FieldProperty(IChuFang_BingRen_AssoUpdateUI['bingren_id'])
 
 
 @implementer(IYao_ChuFang_AssoUI)
